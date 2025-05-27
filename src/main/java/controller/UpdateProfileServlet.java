@@ -11,7 +11,6 @@ import java.io.PrintWriter;
 import java.sql.SQLException;
 
 @WebServlet(name = "UpdateProfileServlet", value = "/update-profile")
-@MultipartConfig
 
 public class UpdateProfileServlet extends HttpServlet {
     @Override

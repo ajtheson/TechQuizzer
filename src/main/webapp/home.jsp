@@ -88,9 +88,17 @@
          const form = document.getElementById("form_update_profile")
          const formData = new FormData(form);
 
+         const params = new URLSearchParams();
+         for (const [key, value] of formData.entries()) {
+             params.append(key, value);
+         }
+
          fetch("update-profile", {
              method: "POST",
-             body: formData
+             headers: {
+                 "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8"
+             },
+             body: params.toString()
          })
              .then(response => response.json())
              .then(data => {

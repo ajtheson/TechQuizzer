@@ -21,7 +21,7 @@
             </div>
             <div class="modal-body row">
                 <div class="col-5 mt-3">
-                    <form id="avatarForm" action="upload-avatar" method="post" enctype="multipart/form-data">
+                    <form id="avatarForm" action="upload-avatar" method="post" >
                         <div style="width: 170px; height: 200px; margin: auto;">
                             <img src="assets/images/avatar/${sessionScope.user.avatar}" alt="avatar image"
                                  style="width: 100%; height: 100%; object-fit: cover; border: #4d5154 solid 2px"/>
@@ -96,7 +96,7 @@
                 if (data) {
                     document.getElementById('fullName').value = data.name || '';
                     document.getElementById('address').value = data.address || '';
-                    document.getElementById('gender').value = data.gender === true ? 'male' : (user.gender === false ? 'female' : 'null');
+                    document.getElementById('gender').value = data.gender === true ? 'male' : (data.gender === false ? 'female' : 'null');
                 } else {
                     alert("get user failed");
                 }
