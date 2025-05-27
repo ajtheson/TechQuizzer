@@ -21,9 +21,9 @@
                         </span>
                     </li>
                     <li>
-                        <span class="dropdown-item" style="cursor: pointer">
+                        <a class="dropdown-item" style="cursor: pointer" href="change-password">
                             <i class="bi bi-gear me-2 fs-5"></i> Change password
-                        </span>
+                        </a>
                     </li>
                     <li>
                         <span class="dropdown-item" style="cursor: pointer">

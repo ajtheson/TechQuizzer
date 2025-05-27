@@ -169,35 +169,6 @@ public class UserDAO extends DBContext {
         return false;
     }
 
-    public User getFirstUserToTest() {
-        String sql = "select TOP(1) [id], [name], [email], [gender], [mobile], [address], [avatar] from [users]";
-        try {
-            PreparedStatement pstm = connection.prepareStatement(sql);
-            ResultSet rs = pstm.executeQuery();
-            if (rs.next()) {
-                int id = rs.getInt("id");
-                String name = rs.getString("name");
-                String email = rs.getString("email");
-                Boolean gender = rs.getBoolean("gender");
-                String mobile = rs.getString("mobile");
-                String address = rs.getString("address");
-                String avatar = rs.getString("avatar");
-                User user = new User();
-                user.setId(id);
-                user.setName(name);
-                user.setEmail(email);
-                user.setGender(gender);
-                user.setMobile(mobile);
-                user.setAddress(address);
-                user.setAvatar(avatar);
-                return user;
-            }
-        } catch (Exception e) {
-            System.out.println("Error: " + e.getMessage());
-        }
-        return null;
-    }
-
     public boolean updateUserInfo(User user) throws SQLException {
         String sql = "UPDATE [users] SET [name] = ?, [email] = ?, [gender] = ?, [mobile] = ?, [address] = ?, [avatar] = ? WHERE id = ?";
         try {
