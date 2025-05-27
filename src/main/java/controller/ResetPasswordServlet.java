@@ -35,6 +35,7 @@ public class ResetPasswordServlet extends HttpServlet {
         //Verify token in session
         if(resetToken == null || !resetToken.equals(resetTokenSession)) {
             response.sendRedirect("login");
+            return;
         }
         String email = request.getParameter("email");
         String password = request.getParameter("password").trim();
