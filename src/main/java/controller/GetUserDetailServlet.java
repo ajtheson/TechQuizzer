@@ -19,10 +19,10 @@ public class GetUserDetailServlet extends HttpServlet {
 
         HttpSession session = request.getSession(false);
         if (session != null) {
-            int id = ((User) session.getAttribute("user")).getId();
-            User user = new UserDAO().getUserById(id);
+            String email = ((User) session.getAttribute("user")).getEmail();
+            User user = new UserDAO().getUserByEmailToChangePassword(email);
             if (user != null) {
-                out.write("{'name': " + user.getName() + ", 'gender':" + user.getGender() + ", 'address: '" + user.getAddress() + "}");
+                out.write("{'name': " + user.getName() + ", 'gender':" + user.getGender() + ", 'address: '" + user.getAddress() + ", 'email': " + user.getEmail() + ", 'mobile: '" + user.getMobile() + "}");
             }
         }
     }
