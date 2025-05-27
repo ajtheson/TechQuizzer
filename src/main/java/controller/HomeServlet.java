@@ -12,6 +12,9 @@ import java.io.IOException;
 public class HomeServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        User user = new UserDAO().getFirstUserToTest();
+        HttpSession session = request.getSession();
+        session.setAttribute("user", user);
         request.getRequestDispatcher("/home.jsp").forward(request, response);
     }
 

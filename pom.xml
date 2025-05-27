@@ -83,6 +83,14 @@
             <artifactId>modelmapper</artifactId>
             <version>3.1.1</version>
         </dependency>
+
+        <!--org.json library is used for creating and processing JSON in Java-->
+        <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+            <version>20231013</version>
+        </dependency>
+
     </dependencies>
 
     <build>

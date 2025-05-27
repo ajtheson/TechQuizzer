@@ -169,6 +169,35 @@ public class UserDAO extends DBContext {
         return false;
     }
 
+    public User getFirstUserToTest() {
+        String sql = "select TOP(1) [id], [name], [email], [gender], [mobile], [address], [avatar] from [users]";
+        try {
+            PreparedStatement pstm = connection.prepareStatement(sql);
+            ResultSet rs = pstm.executeQuery();
+            if (rs.next()) {
+                int id = rs.getInt("id");
+                String name = rs.getString("name");
+                String email = rs.getString("email");
+                Boolean gender = rs.getBoolean("gender");
+                String mobile = rs.getString("mobile");
+                String address = rs.getString("address");
+                String avatar = rs.getString("avatar");
+                User user = new User();
+                user.setId(id);
+                user.setName(name);
+                user.setEmail(email);
+                user.setGender(gender);
+                user.setMobile(mobile);
+                user.setAddress(address);
+                user.setAvatar(avatar);
+                return user;
+            }
+        } catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+        return null;
+    }
+
     public User getUserByEmailToChangePassword(String email) {
         String sql = "select [name], [gender], [mobile], [address], [avatar], [email], [password], [wrong_password_attempts], [password_change_locked_until]\n" +
                 "from [users]\n" +
@@ -200,6 +229,36 @@ public class UserDAO extends DBContext {
                 } else {
                     user.setPasswordChangeLockedUntil(null);
                 }
+                return user;
+            }
+        } catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+        return null;
+    }
+
+    public User getUserByEmail(String email) {
+        String sql = "select [name], [gender], [mobile], [address], [avatar], [email]\n" +
+                "from [users]\n" +
+                "where [email] = ?";
+        try {
+            PreparedStatement pstm = connection.prepareStatement(sql);
+            pstm.setString(1, email);
+            ResultSet rs = pstm.executeQuery();
+            if (rs.next()) {
+                String name = rs.getString("name");
+                Boolean gender = rs.getBoolean("gender");
+                if(rs.wasNull()) gender = null;
+                String mobile = rs.getString("mobile");
+                String address = rs.getString("address");
+                String avatar = rs.getString("avatar");
+                User user = new User();
+                user.setName(name);
+                user.setEmail(email);
+                user.setGender(gender);
+                user.setMobile(mobile);
+                user.setAddress(address);
+                user.setAvatar(avatar);
                 return user;
             }
         } catch (Exception e) {
