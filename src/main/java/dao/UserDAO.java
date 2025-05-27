@@ -169,6 +169,45 @@ public class UserDAO extends DBContext {
         return false;
     }
 
+    public User getUserByEmailToChangePassword(String email) {
+        String sql = "select [name], [gender], [mobile], [address], [avatar], [email], [password], [wrong_password_attempts], [password_change_locked_until]\n" +
+                "from [users]\n" +
+                "where [email] = ?";
+        try {
+            PreparedStatement pstm = connection.prepareStatement(sql);
+            pstm.setString(1, email);
+            ResultSet rs = pstm.executeQuery();
+            if (rs.next()) {
+                String name = rs.getString("name");
+                Boolean gender = rs.getBoolean("gender");
+                String mobile = rs.getString("mobile");
+                String address = rs.getString("address");
+                String avatar = rs.getString("avatar");
+                String password = rs.getString("password");
+                int wrong_password_attempts = rs.getInt("wrong_password_attempts");
+                User user = new User();
+                user.setName(name);
+                user.setEmail(email);
+                user.setGender(gender);
+                user.setMobile(mobile);
+                user.setAddress(address);
+                user.setAvatar(avatar);
+                user.setPassword(password);
+                user.setWrongPasswordAttempts(wrong_password_attempts);
+                Timestamp passwordChangeLockedUntil = rs.getTimestamp("password_change_locked_until");
+                if (passwordChangeLockedUntil != null) {
+                    user.setPasswordChangeLockedUntil(passwordChangeLockedUntil.toLocalDateTime());
+                } else {
+                    user.setPasswordChangeLockedUntil(null);
+                }
+                return user;
+            }
+        } catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+        return null;
+    }
+
     public boolean updateUserInfo(User user) throws SQLException {
         String sql = "UPDATE [users] SET [name] = ?, [email] = ?, [gender] = ?, [mobile] = ?, [address] = ?, [avatar] = ? WHERE id = ?";
         try {
