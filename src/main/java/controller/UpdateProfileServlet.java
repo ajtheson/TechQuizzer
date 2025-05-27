@@ -33,7 +33,7 @@ public class UpdateProfileServlet extends HttpServlet {
         switch (gender) {
             case "male": genderBoolean = true; break;
             case "female": genderBoolean = false; break;
-            default: genderBoolean = null; break;
+            default: break;
         }
 
         HttpSession session = request.getSession();
