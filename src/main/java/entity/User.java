@@ -160,5 +160,4 @@ public class User {
         this.passwordChangeLockedUntil = passwordChangeLockedUntil;
     }
 
-
 }
