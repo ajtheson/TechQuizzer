@@ -58,8 +58,6 @@
                         <label for="email" class="form-label">Email</label>
                         <span id="emailSpan" class="form-control-plaintext"
                               style="padding: 0px"></span>
-                        <input type="hidden" name="email" value="" class="form-control"
-                               id="emailInput" required>
                     </div>
 
                     <div class="mb-3">
@@ -117,7 +115,6 @@
                     document.getElementById('fullName').value = data.name || '';
                     document.getElementById('address').value = data.address || '';
                     document.getElementById('gender').value = data.gender === true ? 'male' : (data.gender === false ? 'female' : 'null');
-                    document.getElementById('emailInput').value = data.email || '';
                     document.getElementById('emailSpan').textContent = data.email || '';
                     document.getElementById('mobile').textContent = data.mobile || '';
                     document.getElementById('avatarPreview').src = 'assets/images/avatar/' + data.avatar

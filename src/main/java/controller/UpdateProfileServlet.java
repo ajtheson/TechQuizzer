@@ -1,6 +1,7 @@
 package controller;
 
 import dao.UserDAO;
+import dto.UserDTO;
 import entity.User;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
@@ -26,19 +27,17 @@ public class UpdateProfileServlet extends HttpServlet {
         response.setContentType("application/json");
         HttpSession session = request.getSession(false);
         JSONObject json = new JSONObject();
-        String errorMsg = "";
 
         try {
             if (session == null || session.getAttribute("user") == null) {
-                errorMsg = "User not logged in";
-                throw new Exception();
+                throw new Exception("User not logged in");
             }
 
             Part fileUpload = request.getPart("image");
-            String name = request.getParameter("name");
+            System.out.println(fileUpload.getSubmittedFileName());
+            String name = request.getParameter("name").trim();
             String gender = request.getParameter("gender");
-            String address = request.getParameter("address");
-            String email = request.getParameter("email");
+            String address = request.getParameter("address").trim();
 
             Boolean genderBoolean = null;
             switch (gender) {
@@ -52,30 +51,42 @@ public class UpdateProfileServlet extends HttpServlet {
                     break;
             }
 
-            String uploadDirectory = getServletContext().getRealPath("assets/images/avatar");
-            String originalFileName = fileUpload.getSubmittedFileName();
-            String extension = originalFileName.substring(originalFileName.lastIndexOf('.'));
-            String fileName = email + "_" + Instant.now().toEpochMilli() + extension;
+            UserDTO userDTO = (UserDTO) session.getAttribute("user");
+            userDTO.setName(name);
+            userDTO.setAddress(address);
+            userDTO.setGender(genderBoolean);
 
-            User user = (User) session.getAttribute("user");
+            User user = new UserDAO().getUserByEmail(userDTO.getEmail());
             user.setName(name);
             user.setAddress(address);
             user.setGender(genderBoolean);
-            user.setAvatar(fileName);
 
-            boolean isUpdated = new UserDAO().updateUserInfo(user);
-            if (!isUpdated) {
-                errorMsg = "Failed to update user in database";
+            if(fileUpload.getSize() > 0) {
+                String uploadDirectory = getServletContext().getRealPath("assets/images/avatar");
+                String originalFileName = fileUpload.getSubmittedFileName();
+                String extension = originalFileName.substring(originalFileName.lastIndexOf('.'));
+                String fileName = userDTO.getEmail() + "_" + Instant.now().toEpochMilli() + extension;
+
+                user.setAvatar(fileName);
+
+                boolean isUpdated = new UserDAO().updateUserInfo(user);
+                if (!isUpdated) {
+                    throw new Exception("Failed to update user in database");
+                }
+                userDTO.setAvatar(fileName);
+                ImageUploader.saveImage(uploadDirectory, fileName, fileUpload);
+            }else{
+                boolean isUpdated = new UserDAO().updateUserInfo(user);
+                if (!isUpdated) {
+                    throw new Exception("Failed to update user in database");
+                }
             }
-
-            ImageUploader.saveImage(uploadDirectory, fileName, fileUpload);
 
             json.put("status", true);
             json.put("message", "Update user successfully");
         } catch (Exception e) {
-            e.printStackTrace();
             json.put("status", false);
-            json.put("message", errorMsg);
+            json.put("message", e.getMessage());
         }
         finally {
             response.getWriter().write(json.toString());

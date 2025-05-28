@@ -1,6 +1,7 @@
 package controller;
 
 import dao.UserDAO;
+import dto.UserDTO;
 import entity.User;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
@@ -18,7 +19,7 @@ public class GetUserDetailServlet extends HttpServlet {
 
         HttpSession session = request.getSession(false);
         if (session != null) {
-            String email = ((User) session.getAttribute("user")).getEmail();
+            String email = ((UserDTO) session.getAttribute("user")).getEmail();
             User user = new UserDAO().getUserByEmail(email);
             if (user != null) {
                 JSONObject json = new JSONObject();

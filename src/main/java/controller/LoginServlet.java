@@ -49,11 +49,9 @@ public class LoginServlet extends HttpServlet {
             session.setAttribute("email", email);
             session.setAttribute("error", "Wrong email or password");
             System.out.println("email");
-            response.sendRedirect("login");
         } else if (!user.getPassword().equals(PasswordEncoder.encode(password))) {
             session.setAttribute("error", "Wrong email or password");
-            System.out.println("password");
-
+            System.out.println("here");
             response.sendRedirect("login");
         } else {
             UserService userService = new UserService();
