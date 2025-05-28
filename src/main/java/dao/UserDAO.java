@@ -1,22 +1,26 @@
 package dao;
 
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.sql.Types;
+import java.time.LocalDateTime;
+
 import dal.DBContext;
 import entity.User;
 
-import java.sql.*;
-import java.time.LocalDateTime;
-
 public class UserDAO extends DBContext {
-    private final String isEmailInSystem = "select [activate]  from [user] where [email] = ?";
-    private final String isMobileExist = "select 1 from [user] where [mobile] = ? and [activate] = 1";
-    private final String register = "insert into [user] ([email], [password], [name], [gender], [mobile], " +
+    private final String isEmailInSystem = "select [activate]  from [users] where [email] = ?";
+    private final String isMobileExist = "select 1 from [users] where [mobile] = ? and [activate] = 1";
+    private final String register = "insert into [users] ([email], [password], [name], [gender], [mobile], " +
             "[address], [token], [role_id]) values (?,?,?,?,?,?,?,3)";
-    private final String getTokenInformation = "select [token], [token_create_at], [token_send_at] from [user] where [email] = ?";
-    private final String updateToken = "update [user] set [token] = ?, [token_create_at] = ?, [token_send_at] = ? where [email] = ?";
-    private final String getMobile = "select [mobile] from [user] where [email] = ?";
-    private final String getVerifyInformation = "select [email], [token_create_at] from [user] where [token] = ?";
-    private final String activateAccount = "update [user] set [activate] = 1, [token] = null, [token_create_at] = null, [token_send_at] = null where [email] = ?";
-    private final String resetPassword = "update [user] set [password] = ? where [email] = ?";
+    private final String getTokenInformation = "select [token], [token_create_at], [token_send_at] from [users] where [email] = ?";
+    private final String updateToken = "update [users] set [token] = ?, [token_create_at] = ?, [token_send_at] = ? where [email] = ?";
+    private final String getMobile = "select [mobile] from [users] where [email] = ?";
+    private final String getVerifyInformation = "select [email], [token_create_at] from [users] where [token] = ?";
+    private final String activateAccount = "update [users] set [activate] = 1, [token] = null, [token_create_at] = null, [token_send_at] = null where [email] = ?";
+    private final String resetPassword = "update [users] set [password] = ? where [email] = ?";
 
     public User isEmailInSystem(String email) {
         try {
@@ -169,60 +173,30 @@ public class UserDAO extends DBContext {
         return false;
     }
 
-    public User getFirstUserToTest() {
-        String sql = "select TOP(1) [id], [name], [email], [gender], [mobile], [address], [avatar] from [users]";
+    public User getUserByEmail(String email) {
         try {
-            PreparedStatement pstm = connection.prepareStatement(sql);
-            ResultSet rs = pstm.executeQuery();
-            if (rs.next()) {
-                int id = rs.getInt("id");
-                String name = rs.getString("name");
-                String email = rs.getString("email");
-                Boolean gender = rs.getBoolean("gender");
-                String mobile = rs.getString("mobile");
-                String address = rs.getString("address");
-                String avatar = rs.getString("avatar");
-                User user = new User();
-                user.setId(id);
-                user.setName(name);
-                user.setEmail(email);
-                user.setGender(gender);
-                user.setMobile(mobile);
-                user.setAddress(address);
-                user.setAvatar(avatar);
-                return user;
-            }
-        } catch (Exception e) {
-            System.out.println("Error: " + e.getMessage());
-        }
-        return null;
-    }
+            String sql = "SELECT * FROM [users] WHERE [email] = ? AND [status] = 1 AND [activate] = 1";
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1, email);
+            ResultSet rs = statement.executeQuery();
 
-    public User getUserByEmailToChangePassword(String email) {
-        String sql = "select [name], [gender], [mobile], [address], [avatar], [email], [password], [wrong_password_attempts], [password_change_locked_until]\n" +
-                "from [users]\n" +
-                "where [email] = ?";
-        try {
-            PreparedStatement pstm = connection.prepareStatement(sql);
-            pstm.setString(1, email);
-            ResultSet rs = pstm.executeQuery();
             if (rs.next()) {
-                String name = rs.getString("name");
-                Boolean gender = rs.getBoolean("gender");
-                String mobile = rs.getString("mobile");
-                String address = rs.getString("address");
-                String avatar = rs.getString("avatar");
-                String password = rs.getString("password");
-                int wrong_password_attempts = rs.getInt("wrong_password_attempts");
                 User user = new User();
-                user.setName(name);
-                user.setEmail(email);
+                user.setId(rs.getInt("id"));
+                user.setEmail(rs.getString("email"));
+                user.setPassword(rs.getString("password"));
+                user.setName(rs.getString("name"));
+                Boolean gender = rs.getBoolean("gender");
+                if (rs.wasNull()) {
+                    gender = null;
+                }
                 user.setGender(gender);
-                user.setMobile(mobile);
-                user.setAddress(address);
-                user.setAvatar(avatar);
-                user.setPassword(password);
-                user.setWrongPasswordAttempts(wrong_password_attempts);
+                user.setMobile(rs.getString("mobile"));
+                user.setAddress(rs.getString("address"));
+                user.setAvatar(rs.getString("avatar"));
+                user.setBalance(rs.getDouble("balance"));
+                user.setRoleId(rs.getInt("role_id"));
+                user.setWrongPasswordAttempts(rs.getInt("wrong_password_attempts"));
                 Timestamp passwordChangeLockedUntil = rs.getTimestamp("password_change_locked_until");
                 if (passwordChangeLockedUntil != null) {
                     user.setPasswordChangeLockedUntil(passwordChangeLockedUntil.toLocalDateTime());
@@ -232,39 +206,40 @@ public class UserDAO extends DBContext {
                 return user;
             }
         } catch (Exception e) {
+            e.printStackTrace();
             System.out.println("Error: " + e.getMessage());
         }
         return null;
     }
 
-    public User getUserByEmail(String email) {
-        String sql = "select [name], [gender], [mobile], [address], [avatar], [email]\n" +
-                "from [users]\n" +
-                "where [email] = ?";
+    public boolean updateWrongPasswordAttempts(String email, int attempts) {
+        String sql = "UPDATE [users] SET [wrong_password_attempts] = ? WHERE email = ?";
         try {
             PreparedStatement pstm = connection.prepareStatement(sql);
-            pstm.setString(1, email);
-            ResultSet rs = pstm.executeQuery();
-            if (rs.next()) {
-                String name = rs.getString("name");
-                Boolean gender = rs.getBoolean("gender");
-                if(rs.wasNull()) gender = null;
-                String mobile = rs.getString("mobile");
-                String address = rs.getString("address");
-                String avatar = rs.getString("avatar");
-                User user = new User();
-                user.setName(name);
-                user.setEmail(email);
-                user.setGender(gender);
-                user.setMobile(mobile);
-                user.setAddress(address);
-                user.setAvatar(avatar);
-                return user;
-            }
+            pstm.setInt(1, attempts);
+            pstm.setString(2, email);
+            return pstm.executeUpdate() > 0;
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
         }
-        return null;
+        return false;
+    }
+
+    public boolean lockPasswordChange(String email, LocalDateTime lockedUntil) {
+        String sql = "UPDATE [users] SET [password_change_locked_until] = ?, wrong_password_attempts = 0 WHERE email = ?";
+        try {
+            PreparedStatement pstm = connection.prepareStatement(sql);
+            if (lockedUntil != null) {
+                pstm.setTimestamp(1, Timestamp.valueOf(lockedUntil));
+            } else {
+                pstm.setNull(1, Types.TIMESTAMP);
+            }
+            pstm.setString(2, email);
+            return pstm.executeUpdate() > 0;
+        } catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+        return false;
     }
 
     public boolean updateUserInfo(User user) throws SQLException {
