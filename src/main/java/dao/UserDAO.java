@@ -1,13 +1,14 @@
 package dao;
 
-import dal.DBContext;
-import entity.User;
-
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.sql.Types;
 import java.time.LocalDateTime;
+
+import dal.DBContext;
+import entity.User;
 
 public class UserDAO extends DBContext {
     private final String isEmailInSystem = "select [activate]  from [users] where [email] = ?";
@@ -206,6 +207,7 @@ public class UserDAO extends DBContext {
             }
         } catch (Exception e) {
             e.printStackTrace();
+            System.out.println("Error: " + e.getMessage());
         }
         return null;
     }
@@ -239,4 +241,56 @@ public class UserDAO extends DBContext {
         }
         return false;
     }
+
+    public boolean updateUserInfo(User user) throws SQLException {
+        String sql = "UPDATE [users] SET [name] = ?, [email] = ?, [gender] = ?, [mobile] = ?, [address] = ?, [avatar] = ? WHERE id = ?";
+        try {
+            PreparedStatement pstm = connection.prepareStatement(sql);
+            pstm.setString(1, user.getName());
+            pstm.setString(2, user.getEmail());
+            pstm.setObject(3, user.getGender(), Types.BOOLEAN);
+            pstm.setString(4, user.getMobile());
+            pstm.setString(5, user.getAddress());
+            pstm.setString(6, user.getAvatar());
+            pstm.setInt(7, user.getId());
+
+            int affectedRows = pstm.executeUpdate();
+            return affectedRows > 0;
+        } catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
+        } finally {
+            connection.close();
+        }
+        return false;
+    }
+
+    public User getUserById(int id) {
+        String sql = "select [name], [email], [gender], [mobile], [address], [avatar] from [users] where id = ?";
+        try {
+            PreparedStatement pstm = connection.prepareStatement(sql);
+            pstm.setInt(1, id);
+            ResultSet rs = pstm.executeQuery();
+            if (rs.next()) {
+                String name = rs.getString("name");
+                String email = rs.getString("email");
+                Boolean gender = rs.getBoolean("gender");
+                String mobile = rs.getString("mobile");
+                String address = rs.getString("address");
+                String avatar = rs.getString("avatar");
+                User user = new User();
+                user.setId(id);
+                user.setName(name);
+                user.setEmail(email);
+                user.setGender(gender);
+                user.setMobile(mobile);
+                user.setAddress(address);
+                user.setAvatar(avatar);
+                return user;
+            }
+        } catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+        return null;
+    }
+
 }
