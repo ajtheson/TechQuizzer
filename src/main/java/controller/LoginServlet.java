@@ -51,7 +51,6 @@ public class LoginServlet extends HttpServlet {
             System.out.println("email");
         } else if (!user.getPassword().equals(PasswordEncoder.encode(password))) {
             session.setAttribute("error", "Wrong email or password");
-            System.out.println("here");
             response.sendRedirect("login");
         } else {
             UserService userService = new UserService();

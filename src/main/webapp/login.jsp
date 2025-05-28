@@ -38,38 +38,20 @@
                 <div class="alert alert-info">${requestScope.verifyNotification}</div>
             </c:if>
             <div class="mb-3">
-                <div class="utility">
-                    <div class="form-check">
-                        <label class="form-check-label">
-                            <input class="form-check-input" type="checkbox"><span class="label-text">Stay Signed in</span>
-                        </label>
-                    </div>
-                    <p class="semibold-text mb-2"><a href="#" data-toggle="flip">Forgot Password ?</a></p>
+                <div class="utility d-flex justify-content-center">
+                    <p class="semibold-text mb-2"><a href="forgot_password">Forgot Password ?</a></p>
                 </div>
             </div>
             <div class="mb-3 btn-container d-grid">
                 <button class="btn btn-primary btn-block"><i class="bi bi-box-arrow-in-right me-2 fs-5"></i>SIGN IN</button>
             </div>
             <div class="mb-3 btn-container d-grid">
-                <p class="semibold-text mb-2">Don't have an account? <a href="#" data-toggle="flip">Register Now</a></p>
-            </div>
-
-        </form>
-        <form class="forget-form" action="index.html">
-            <h3 class="login-head"><i class="bi bi-person-lock me-2"></i>Forgot Password ?</h3>
-            <div class="mb-3">
-                <label class="form-label">EMAIL</label>
-                <input class="form-control" type="text" placeholder="Email">
-            </div>
-            <div class="mb-3 btn-container d-grid">
-                <button class="btn btn-primary btn-block"><i class="bi bi-unlock me-2 fs-5"></i>RESET</button>
-            </div>
-            <div class="mb-3 mt-3">
-                <p class="semibold-text mb-0"><a href="#" data-toggle="flip"><i class="bi bi-chevron-left me-1"></i> Back to Login</a></p>
+                <p class="semibold-text mb-2">Don't have an account? <a href="register" data-toggle="flip">Register Now</a></p>
             </div>
         </form>
     </div>
 </section>
+<%@include file="layout/footer.jsp"%>
 <%@include file="common/jsload.jsp" %>
 <!-- Page specific javascripts-->
 <link rel="stylesheet" href="https://cdn.datatables.net/v/bs5/dt-1.13.4/datatables.min.css">

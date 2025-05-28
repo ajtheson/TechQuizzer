@@ -34,7 +34,7 @@ public class UserServlet extends HttpServlet {
                 targetPage = "expert.jsp";
                 break;
             case 3:
-                targetPage = "customer.jsp";
+                targetPage = "home";
                 break;
             default:
                 request.setAttribute("error", "Invalid role");
