@@ -75,6 +75,7 @@
         </form>
     </div>
 </section>
+<%@include file="layout/footer.jsp"%>
 <%@include file="common/jsload.jsp" %>
 </body>
 </html>

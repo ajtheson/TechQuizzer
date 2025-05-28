@@ -74,6 +74,7 @@
         </form>
     </div>
 </section>
+<%@include file="layout/footer.jsp"%>
 <%@include file="common/jsload.jsp" %>
 <script>
     document.querySelector('.login-form').addEventListener('submit', function (e) {

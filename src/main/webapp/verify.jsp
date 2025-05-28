@@ -22,7 +22,6 @@
     <div class="logo">
         <h1>TechQuizzer</h1>
     </div>
-
     <c:set var="boxHeight" value="280"/>
     <c:if test="${fn:length(fn:trim(requestScope.message)) > 0 && fn:length(fn:trim(requestScope.sendError)) > 0}">
         <c:set var="boxHeight" value="320"/>
@@ -59,6 +58,7 @@
         </form>
     </div>
 </section>
+<%@include file="layout/footer.jsp"%>
 <%@include file="common/jsload.jsp" %>
 </body>
 </html>
