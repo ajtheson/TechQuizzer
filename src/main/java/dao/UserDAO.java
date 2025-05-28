@@ -10,15 +10,15 @@ import java.sql.Types;
 import java.time.LocalDateTime;
 
 public class UserDAO extends DBContext {
-    private final String isEmailInSystem = "select [activate]  from [user] where [email] = ?";
-    private final String isMobileExist = "select 1 from [user] where [mobile] = ? and [activate] = 1";
-    private final String register = "insert into [user] ([email], [password], [name], [gender], [mobile], " +
+    private final String isEmailInSystem = "select [activate]  from [users] where [email] = ?";
+    private final String isMobileExist = "select 1 from [users] where [mobile] = ? and [activate] = 1";
+    private final String register = "insert into [users] ([email], [password], [name], [gender], [mobile], " +
             "[address], [token], [role_id]) values (?,?,?,?,?,?,?,3)";
-    private final String getTokenInformation = "select [token], [token_create_at], [token_send_at] from [user] where [email] = ?";
-    private final String updateToken = "update [user] set [token] = ?, [token_create_at] = ?, [token_send_at] = ? where [email] = ?";
-    private final String getMobile = "select [mobile] from [user] where [email] = ?";
-    private final String getVerifyInformation = "select [email], [token_create_at] from [user] where [token] = ?";
-    private final String activateAccount = "update [user] set [activate] = 1, [token] = null, [token_create_at] = null, [token_send_at] = null where [email] = ?";
+    private final String getTokenInformation = "select [token], [token_create_at], [token_send_at] from [users] where [email] = ?";
+    private final String updateToken = "update [users] set [token] = ?, [token_create_at] = ?, [token_send_at] = ? where [email] = ?";
+    private final String getMobile = "select [mobile] from [users] where [email] = ?";
+    private final String getVerifyInformation = "select [email], [token_create_at] from [users] where [token] = ?";
+    private final String activateAccount = "update [users] set [activate] = 1, [token] = null, [token_create_at] = null, [token_send_at] = null where [email] = ?";
     private final String resetPassword = "update [users] set [password] = ? where [email] = ?";
 
     public User isEmailInSystem(String email) {
@@ -173,17 +173,28 @@ public class UserDAO extends DBContext {
     }
 
     public User getUserByEmail(String email) {
-        String sql = "select [email], [password], [wrong_password_attempts], [password_change_locked_until]\n" +
-                "from [users]\n" +
-                "where [email] = ?";
         try {
-            PreparedStatement pstm = connection.prepareStatement(sql);
-            pstm.setString(1, email);
-            ResultSet rs = pstm.executeQuery();
+            String sql = "SELECT * FROM [users] WHERE Email = ? AND status = 1 AND activate = 1";
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1, email);
+            ResultSet rs = statement.executeQuery();
+
             if (rs.next()) {
                 User user = new User();
+                user.setId(rs.getInt("id"));
                 user.setEmail(rs.getString("email"));
                 user.setPassword(rs.getString("password"));
+                user.setName(rs.getString("name"));
+                Boolean gender = rs.getBoolean("gender");
+                if (rs.wasNull()) {
+                    gender = null;
+                }
+                user.setGender(gender);
+                user.setMobile(rs.getString("mobile"));
+                user.setAddress(rs.getString("address"));
+                user.setAvatar(rs.getString("avatar"));
+                user.setBalance(rs.getDouble("balance"));
+                user.setRoleId(rs.getInt("role_id"));
                 user.setWrongPasswordAttempts(rs.getInt("wrong_password_attempts"));
                 Timestamp passwordChangeLockedUntil = rs.getTimestamp("password_change_locked_until");
                 if (passwordChangeLockedUntil != null) {
@@ -194,7 +205,7 @@ public class UserDAO extends DBContext {
                 return user;
             }
         } catch (Exception e) {
-            System.out.println("Error: " + e.getMessage());
+            e.printStackTrace();
         }
         return null;
     }
@@ -212,9 +223,9 @@ public class UserDAO extends DBContext {
         return false;
     }
 
-    public boolean lockPasswordChange(String email, LocalDateTime  lockedUntil) {
+    public boolean lockPasswordChange(String email, LocalDateTime lockedUntil) {
         String sql = "UPDATE [users] SET [password_change_locked_until] = ?, wrong_password_attempts = 0 WHERE email = ?";
-        try{
+        try {
             PreparedStatement pstm = connection.prepareStatement(sql);
             if (lockedUntil != null) {
                 pstm.setTimestamp(1, Timestamp.valueOf(lockedUntil));
@@ -228,7 +239,4 @@ public class UserDAO extends DBContext {
         }
         return false;
     }
-
-
 }
-
