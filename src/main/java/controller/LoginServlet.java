@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import dao.UserDAO;
 import dto.UserDTO;
+import entity.User;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -12,6 +13,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import jakarta.servlet.RequestDispatcher;
+import service.UserService;
 import util.PasswordEncoder;
 
 @WebServlet("/login")
@@ -41,21 +43,23 @@ public class LoginServlet extends HttpServlet {
         String email = request.getParameter("email");
         String password = request.getParameter("password");
         UserDAO userDAO = new UserDAO();
-        UserDTO user = userDAO.getUserByEmail(email);
+        User user = userDAO.getUserByEmail(email);
         HttpSession session = request.getSession();
         if (user == null) {
             session.setAttribute("email", email);
             session.setAttribute("error", "Wrong email or password");
-            response.sendRedirect("login.jsp");
-            return;
+            System.out.println("email");
+            response.sendRedirect("login");
         } else if (!user.getPassword().equals(PasswordEncoder.encode(password))) {
             session.setAttribute("error", "Wrong email or password");
-            response.sendRedirect("login.jsp");
-            return;
+            System.out.println("password");
 
+            response.sendRedirect("login");
         } else {
-            session.setAttribute("user", user);
-            response.sendRedirect("User");
+            UserService userService = new UserService();
+            UserDTO userDTO = userService.toUserLoginDTO(user);
+            session.setAttribute("user", userDTO);
+            response.sendRedirect("home");
         }
 
     }

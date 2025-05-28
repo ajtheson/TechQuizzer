@@ -19,7 +19,7 @@ public class UserServlet extends HttpServlet {
         UserDTO user = (UserDTO) session.getAttribute("user");
 
         if (user == null) {
-            response.sendRedirect("login.jsp");
+            response.sendRedirect("login");
             return;
         }
 
@@ -38,7 +38,7 @@ public class UserServlet extends HttpServlet {
                 break;
             default:
                 request.setAttribute("error", "Invalid role");
-                targetPage = "login.jsp";
+                targetPage = "login";
                 break;
         }
         response.sendRedirect(targetPage);

@@ -174,7 +174,7 @@ public class UserDAO extends DBContext {
 
     public User getUserByEmail(String email) {
         try {
-            String sql = "SELECT * FROM [users] WHERE Email = ? AND status = 1 AND activate = 1";
+            String sql = "SELECT * FROM [users] WHERE [email] = ? AND [status] = 1 AND [activate] = 1";
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setString(1, email);
             ResultSet rs = statement.executeQuery();

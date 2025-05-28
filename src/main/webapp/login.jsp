@@ -20,7 +20,7 @@
         <h1>TechQuizzer</h1>
     </div>
     <div class="login-box" style="height: 480px;">
-        <form class="login-form" action="Login" method="POST">
+        <form class="login-form" action="login" method="POST">
             <h3 class="login-head"><i class="bi bi-person me-2"></i>SIGN IN</h3>
             <div class="mb-3">
                 <label class="form-label">EMAIL</label>

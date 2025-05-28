@@ -1,6 +1,7 @@
 package controller;
 
 import dao.UserDAO;
+import dto.UserDTO;
 import entity.User;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -34,7 +35,7 @@ public class ChangePasswordServlet extends HttpServlet {
 
         //Get session user
         HttpSession session = request.getSession();
-        User sessionUser = (User) session.getAttribute("user");
+        UserDTO sessionUser = (UserDTO) session.getAttribute("user");
 
         //Get user information from database
         String email = sessionUser.getEmail();
@@ -80,7 +81,7 @@ public class ChangePasswordServlet extends HttpServlet {
                 userDAO.updateWrongPasswordAttempts(email, 0);
                 userDAO.lockPasswordChange(email, null);
                 request.setAttribute("success", "Your password has been changed successfully");
-                request.getRequestDispatcher("change-password").forward(request, response);
+                request.getRequestDispatcher("change_password.jsp").forward(request, response);
                 return;
             }
             else{
@@ -94,6 +95,6 @@ public class ChangePasswordServlet extends HttpServlet {
         request.setAttribute("confirmPassword", confirmPassword);
         request.setAttribute("error", error);
 
-        request.getRequestDispatcher("change_password").forward(request, response);
+        request.getRequestDispatcher("change_password.jsp").forward(request, response);
     }
 }

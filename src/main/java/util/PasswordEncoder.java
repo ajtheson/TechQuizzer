@@ -16,4 +16,8 @@ public class PasswordEncoder {
             throw new RuntimeException("Hashing error", e);
         }
     }
+
+    public static void main(String[] args) {
+        System.out.println(PasswordEncoder.encode("24082005Aa@"));
+    }
 }
