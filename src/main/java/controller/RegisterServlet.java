@@ -49,16 +49,16 @@ public class RegisterServlet extends HttpServlet {
         //Validate through database
         if (error == null) {
             //Check valid email
-            if (false/*!EmailValidator.isEmailValid(email)*/) {
+            if (!EmailValidator.isEmailValid(email)) {
                 error = "Email is not valid";
             } else {
-                //Check mobile number exist
-                if(uDAO.isMobileExist(mobile)) {
-                    error = "Mobile number already exist";
-                }else{
-                    User checkExist = uDAO.isEmailInSystem(email);
-                    //Email is not already existed in system
-                    if (checkExist == null) {
+                User checkExist = uDAO.isEmailInSystem(email);
+                //Email is not already existed in system
+                if (checkExist == null) {
+                    //Check mobile number exist
+                    if(uDAO.isMobileExist(mobile)) {
+                        error = "Mobile number already exist";
+                    }else{
                         //Convert DTO to Entity
                         User user = convertFromRegisterDTO(information);
 
@@ -67,7 +67,7 @@ public class RegisterServlet extends HttpServlet {
                         //Encrypt token
                         user.setToken(PasswordEncoder.encode(token));
 
-                        if(uDAO.register(user)){
+                        if (uDAO.register(user)) {
                             //Send email
                             EmailService emailService = new EmailService();
                             emailService.sendActivatingEmail(request, email, token, false);
@@ -77,17 +77,17 @@ public class RegisterServlet extends HttpServlet {
                             response.sendRedirect("activate");
                             return;
                         }
-                    }else {
-                        //Email is already activated
-                        if(checkExist.getActivate()){
-                            error = "Email already in use and is already activated";
-                        }else {
-                            //Email in the system but is not activated
-                            TokenService tokenService = new TokenService();
-                            tokenService.handleVerifyToken(request, email, true);
-                            response.sendRedirect("activate");
-                            return;
-                        }
+                    }
+                } else {
+                    //Email is already activated
+                    if (checkExist.getActivate()) {
+                        error = "Email already in use and is already activated";
+                    } else {
+                        //Email in the system but is not activated
+                        TokenService tokenService = new TokenService();
+                        tokenService.handleVerifyToken(request, email, true);
+                        response.sendRedirect("activate");
+                        return;
                     }
                 }
             }
@@ -137,10 +137,10 @@ public class RegisterServlet extends HttpServlet {
 
         //Set gender
         Boolean gender = null;
-        if(registerDTO.getGenderString().equals("male")) {
+        if (registerDTO.getGenderString().equals("male")) {
             gender = true;
         }
-        if(registerDTO.getGenderString().equals("female")) {
+        if (registerDTO.getGenderString().equals("female")) {
             gender = false;
         }
         user.setGender(gender);

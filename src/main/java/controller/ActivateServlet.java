@@ -26,7 +26,7 @@ public class ActivateServlet extends HttpServlet {
         }else{
             //Mode activate account
             if(session.getAttribute("unverifiedEmail") != null) {
-                request.setAttribute("message", "Your account has not been activated. Verify by clicking the link have sent to your email");
+                request.setAttribute("message", "Account for email has not been activated. Verify by link have sent to your email");
                 //Check resend link error
                 if(session.getAttribute("sendError") != null) {
                     session.removeAttribute("sendError");
