@@ -7,6 +7,7 @@
 --%>
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -21,7 +22,15 @@
     <div class="logo">
         <h1>TechQuizzer</h1>
     </div>
-    <div class="login-box" style="min-width: 380px; min-height: 355px">
+    <c:choose>
+        <c:when test="${fn:length(fn:trim(requestScope.error)) > 0}">
+            <c:set var="boxHeight" value="390"/>
+        </c:when>
+        <c:otherwise>
+            <c:set var="boxHeight" value="345"/>
+        </c:otherwise>
+    </c:choose>
+    <div class="login-box" style="min-width: 380px; min-height: ${boxHeight}px">
         <form class="login-form" action="reset_password" method="post">
             <input type="hidden" name="email" value="${requestScope.email}">
             <input type="hidden" name="resetToken" value="${sessionScope.resetToken}">
@@ -42,7 +51,7 @@
                 />
             </div>
             <label class="control-label mb-3">Confirm password</label>
-            <div class="form-group">
+            <div class="form-group mb-3">
                 <input
                         class="form-control"
                         type="password"
@@ -52,7 +61,11 @@
                         name="confirmPassword"
                 />
             </div>
-            <p class="mt-3" style="text-align: center; color: red">${requestScope.error}</p>
+            <c:if test="${fn:length(fn:trim(requestScope.error)) > 0}">
+                <div class="alert alert-danger text-center mt-3" role="alert" style="font-size: 14px;">
+                        ${requestScope.error}
+                </div>
+            </c:if>
             <div class="mb-3 btn-container d-grid">
                 <button class="btn btn-primary btn-block">
                     <i class="fa fa-unlock fa-lg fa-fw"></i> Reset

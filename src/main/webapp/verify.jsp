@@ -7,6 +7,7 @@
 --%>
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -21,18 +22,34 @@
     <div class="logo">
         <h1>TechQuizzer</h1>
     </div>
-    <div class="login-box" style="min-width: 380px; min-height: 250px">
+
+    <c:set var="boxHeight" value="280"/>
+    <c:if test="${fn:length(fn:trim(requestScope.message)) > 0 && fn:length(fn:trim(requestScope.sendError)) > 0}">
+        <c:set var="boxHeight" value="320"/>
+    </c:if>
+
+    <div class="login-box" style="min-width: 380px; min-height: ${boxHeight}px">
         <form class="login-form" action="activate" method="post">
             <h3 class="login-head">
-                <c:if test="${not empty requestScope.mode and requestScope.mode == 'register'}"><i class="fa fa-lg fa-fw fa-user"></i>SIGN UP</c:if>
-                <c:if test="${not empty requestScope.mode and requestScope.mode == 'forgot_password'}"><i class="fa fa-lock fa-lg fa-fw"></i>FORGOT PASSWORD</c:if>
+                <c:if test="${not empty requestScope.mode and requestScope.mode == 'register'}">
+                    <i class="fa fa-lg fa-fw fa-user"></i>SIGN UP
+                </c:if>
+                <c:if test="${not empty requestScope.mode and requestScope.mode == 'forgot_password'}">
+                    <i class="fa fa-lock fa-lg fa-fw"></i>FORGOT PASSWORD
+                </c:if>
             </h3>
-            <p style="text-align: center; color: green">
-                ${requestScope.message}
-            </p>
-            <p style="text-align: center; color: red">
-                ${requestScope.sendError}
-            </p>
+
+            <c:if test="${fn:length(fn:trim(requestScope.message)) > 0}">
+                <div class="alert alert-success text-center" role="alert">
+                        ${requestScope.message}
+                </div>
+            </c:if>
+
+            <c:if test="${fn:length(fn:trim(requestScope.sendError)) > 0}">
+                <div class="alert alert-danger text-center" role="alert">
+                        ${requestScope.sendError}
+                </div>
+            </c:if>
 
             <div class="mb-3 btn-container d-grid">
                 <button class="btn btn-primary btn-block">

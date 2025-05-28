@@ -7,6 +7,7 @@
 --%>
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -21,7 +22,15 @@
     <div class="logo">
         <h1>TechQuizzer</h1>
     </div>
-    <div class="login-box" style="min-width: 380px; min-height: 300px">
+    <c:choose>
+        <c:when test="${fn:length(fn:trim(requestScope.error)) > 0}">
+            <c:set var="boxHeight" value="330"/>
+        </c:when>
+        <c:otherwise>
+            <c:set var="boxHeight" value="280"/>
+        </c:otherwise>
+    </c:choose>
+    <div class="login-box" style="min-width: 380px; min-height: ${boxHeight}px">
         <form class="login-form" action="forgot_password" method="post">
             <h3 class="login-head">
                 <i class="fa fa-lock fa-lg fa-fw"></i> FORGOT PASSWORD
@@ -30,7 +39,7 @@
             <div class="form-group mb-3">
                 <input
                         class="form-control"
-                        type="text"
+                        type="email"
                         placeholder="Email"
                         autofocus
                         pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
@@ -39,7 +48,11 @@
                         required
                 />
             </div>
-            <p style="text-align: center; color: red">${requestScope.error}</p>
+            <c:if test="${fn:length(fn:trim(requestScope.error)) > 0}">
+                <div class="alert alert-danger text-center mt-3" role="alert" style="font-size: 14px;">
+                        ${requestScope.error}
+                </div>
+            </c:if>
             <div class="mb-3 btn-container d-grid">
                 <button class="btn btn-primary btn-block">
                     <i class="fa fa-unlock fa-lg fa-fw"></i> Reset

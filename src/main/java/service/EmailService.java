@@ -31,7 +31,7 @@ public class EmailService {
                     + "If you did not make this request, please ignore this email.\n\n"
                     + "This activation link is valid for 24 hours or until a new activation request is made, whichever comes first.\n\n"
                     + "Best regards,\n"
-                    + "The Quiz Practicing Support Team";
+                    + "The TechQuizzer";
         } else {
             title = "[Welcome] Please Activate Your New Account";
 
@@ -42,7 +42,7 @@ public class EmailService {
                     + "If you did not make this request, please ignore this email.\n\n"
                     + "This activation link is valid for 24 hours or until a new activation request is made, whichever comes first.\n\n"
                     + "Best regards,\n"
-                    + "The Quiz Practicing Support Team";
+                    + "The TechQuizzer";
         }
 
         EmailSender.sendEmail(email, title, content);
@@ -60,7 +60,7 @@ public class EmailService {
                 + "If you did not request a password reset, please ignore this email.\n\n"
                 + "This password reset link is valid for 24 hours or until a new reset request is made, whichever comes first.\n\n"
                 + "Best regards,\n"
-                + "The Quiz Practicing Support Team";
+                + "The TechQuizzer";
 
         EmailSender.sendEmail(email, title, content);
     }
