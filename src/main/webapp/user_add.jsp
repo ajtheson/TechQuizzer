@@ -124,6 +124,9 @@
                             <a href="admin" class="btn btn-secondary">Cancel</a>
                             <button type="submit" class="btn btn-success">Create User</button>
                         </div>
+                        <c:if test="${not empty error}">
+                            <div class="alert alert-danger">${error}</div>
+                        </c:if>
                     </form>
                 </div>
             </div>

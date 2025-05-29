@@ -146,7 +146,11 @@ public class AdminServlet extends HttpServlet {
             String address = request.getParameter("address");
             double balance = Double.parseDouble(request.getParameter("balance"));
             boolean status = Boolean.parseBoolean(request.getParameter("status"));
-
+            if(userDAO.checkExistByEmailAndMobile(email, mobile)){
+                request.setAttribute("error", "Duplicate email or mobile");
+                request.getRequestDispatcher("user_add.jsp").forward(request, response);
+                return;
+            }
             User newUser = new User();
             newUser.setEmail(email);
             newUser.setPassword(PasswordEncoder.encode(password));

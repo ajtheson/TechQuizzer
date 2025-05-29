@@ -64,6 +64,28 @@
                                 <i class="bi bi-plus-lg me-1"></i> Add New User
                             </a>
                         </div>
+                        <div class="row mb-3">
+                            <div class="col-md-3">
+
+                                <select id="roleFilter" class="form-select">
+                                    <option value="">Role</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <select id="statusFilter" class="form-select">
+                                    <option value="">Status</option>
+                                    <option value="Active">Active</option>
+                                    <option value="Inactive">Inactive</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <select id="genderFilter" class="form-select">
+                                    <option value="">Gender</option>
+                                    <option value="Male">Male</option>
+                                    <option value="Female">Female</option>
+                                </select>
+                            </div>
+                        </div>
                         <table class="table table-hover table-bordered" id="sampleTable">
                             <thead>
                             <tr>
@@ -155,5 +177,34 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/assets/js/plugins/jquery.dataTables.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/assets/js/plugins/dataTables.bootstrap.min.js"></script>
 <script type="text/javascript">$('#sampleTable').DataTable();</script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        const table = $('#sampleTable').DataTable();
+
+        // Tự động thêm options vào bộ lọc "Role"
+        table.column(3).data().unique().sort().each(function (d) {
+            $('#roleFilter').append('<option value="' + d + '">' + d + '</option>');
+        });
+
+        // Xử lý lọc theo Role
+        $('#roleFilter').on('change', function () {
+            const val = $.fn.dataTable.util.escapeRegex($(this).val());
+            table.column(3).search(val ? '^' + val + '$' : '', true, false).draw();
+        });
+
+        // Xử lý lọc theo Status
+        $('#statusFilter').on('change', function () {
+            const val = $(this).val();
+            table.column(8).search(val, true, false).draw();
+        });
+
+        // Xử lý lọc theo Gender
+        $('#genderFilter').on('change', function () {
+            const val = $(this).val();
+            table.column(4).search(val, true, false).draw();
+        });
+    });
+</script>
+
 </body>
 </html>

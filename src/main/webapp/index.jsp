@@ -7,7 +7,7 @@
 <body>
 <div>
     <h1>Index</h1>
-    <% response.sendRedirect(request.getContextPath() + "/login");%>
+    <% response.sendRedirect(request.getContextPath() + "/home");%>
 </div>
 </body>
 </html>

@@ -334,7 +334,7 @@ public class UserDAO extends DBContext {
         }
         return false;
     }
-    public boolean addUser(User user) {
+    public boolean insertUser(User user) {
         String sql = "INSERT INTO [users] ([email], [password], [name], [gender], [mobile], [address], [status], [activate],[token_create_at],[token_send_at], [role_id]) " +
                 "VALUES (?, ?, ?, ?, ?, ?, ?, ?,null, null, ?)";
         try {
@@ -346,7 +346,7 @@ public class UserDAO extends DBContext {
             pstm.setString(5, user.getMobile());
             pstm.setString(6, user.getAddress());
             pstm.setBoolean(7, user.getStatus());
-            pstm.setBoolean(8, user.getActivate());
+            pstm.setBoolean(8, true);
             pstm.setInt(9, user.getRoleId());
             return pstm.executeUpdate() > 0;
         } catch (Exception e) {
@@ -371,23 +371,21 @@ public class UserDAO extends DBContext {
             return false;
         }
     }
-    public void insertUser(User user) {
-        String sql = "INSERT INTO users (email, password, name, role_id, gender, mobile, address, balance, status, activate) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    public boolean checkExistByEmailAndMobile(String email, String mobile) {
+        String sql = "select 1 from [users] where [email] = ? or [mobile] = ?";
+
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
-            ps.setString(1, user.getEmail());
-            ps.setString(2, user.getPassword());
-            ps.setString(3, user.getName());
-            ps.setInt(4, user.getRoleId());
-            ps.setBoolean(5, user.getGender());
-            ps.setString(6, user.getMobile());
-            ps.setString(7, user.getAddress());
-            ps.setDouble(8, user.getBalance());
-            ps.setBoolean(9, user.getStatus());
-            ps.setBoolean(10, true); // activate = 1
-            ps.executeUpdate();
+
+            ps.setString(1, email );
+            ps.setString(2, mobile);
+            ResultSet rs = ps.executeQuery();
+            if(rs.next()){
+                return true;
+            }
+            return false;
         } catch (SQLException e) {
             e.printStackTrace();
+            return false;
         }
     }
 
