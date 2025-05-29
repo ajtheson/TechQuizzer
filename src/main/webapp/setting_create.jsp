@@ -42,7 +42,7 @@
         </div>
     </div>
     <ul class="app-menu">
-        <li><a class="app-menu__item" href="dashboard.html"><i class="app-menu__icon bi bi-people-fill"></i><span
+        <li><a class="app-menu__item" href="admin"><i class="app-menu__icon bi bi-people-fill"></i><span
                 class="app-menu__label">User List</span></a></li>
         <li><a class="app-menu__item active" href="get-setting-list"><i class="app-menu__icon bi bi-gear-wide-connected"></i><span
                 class="app-menu__label">Setting List</span></a></li>

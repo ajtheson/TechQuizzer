@@ -12,35 +12,42 @@
     <title>Add User</title>
 </head>
 <body class="app sidebar-mini">
-<header class="app-header"><a class="app-header__logo" href="index.html">TechQuizzer</a>
-    <a class="app-sidebar__toggle" href="#" data-toggle="sidebar" aria-label="Hide Sidebar"></a>
+<!-- Navbar-->
+<header class="app-header"><a class="app-header__logo" href="home">TechQuizzer</a>
+    <!-- Sidebar toggle button--><a class="app-sidebar__toggle" href="#" data-toggle="sidebar"
+                                    aria-label="Hide Sidebar"></a>
+    <!-- Navbar Right Menu-->
     <ul class="app-nav">
-        <li class="dropdown"><a class="app-nav__item" href="#" data-bs-toggle="dropdown" aria-label="Open Profile Menu"><i class="bi bi-person fs-4"></i></a>
+        <!-- User Menu-->
+        <li class="dropdown"><a class="app-nav__item" href="#" data-bs-toggle="dropdown" aria-label="Open Profile Menu"><i
+                class="bi bi-person fs-4"></i></a>
             <ul class="dropdown-menu settings-menu dropdown-menu-right">
-                <li><a class="dropdown-item" href="#"><i class="bi bi-gear me-2 fs-5"></i> Settings</a></li>
-                <li><a class="dropdown-item" href="#"><i class="bi bi-person me-2 fs-5"></i> Profile</a></li>
-                <li><a class="dropdown-item" href="#"><i class="bi bi-box-arrow-right me-2 fs-5"></i> Logout</a></li>
+                <li><a class="dropdown-item" href="change-password"><i class="bi bi-person me-2 fs-5"></i> Change Password</a>
+                </li>
+                <li><a class="dropdown-item" href="logout"><i class="bi bi-box-arrow-right me-2 fs-5"></i>
+                    Logout</a></li>
             </ul>
         </li>
     </ul>
 </header>
 
+<!-- Sidebar menu-->
 <div class="app-sidebar__overlay" data-toggle="sidebar"></div>
 <aside class="app-sidebar">
     <div class="app-sidebar__user"><img class="app-sidebar__user-avatar"
-                                        src="https://randomuser.me/api/portraits/lego/1.jpg" alt="User Image">
+                                        src="assets/images/avatar/${sessionScope.user.avatar}" alt="User Image">
         <div>
-            <p class="app-sidebar__user-name">Admin</p>
+            <p class="app-sidebar__user-name">${sessionScope.user.name}</p>
+            <p class="app-sidebar__user-designation">Admin</p>
         </div>
     </div>
     <ul class="app-menu">
-        <li><a class="app-menu__item" href="admin"><i class="app-menu__icon bi bi-people-fill"></i><span
+        <li><a class="app-menu__item active" href="admin"><i class="app-menu__icon bi bi-people-fill"></i><span
                 class="app-menu__label">User List</span></a></li>
-        <li><a class="app-menu__item" href="user_list.jsp"><i class="app-menu__icon bi bi-gear-wide-connected"></i><span
+        <li><a class="app-menu__item" href="get-setting-list"><i class="app-menu__icon bi bi-gear-wide-connected"></i><span
                 class="app-menu__label">Setting List</span></a></li>
     </ul>
 </aside>
-
 <main class="app-content">
     <div class="app-title">
         <div>
