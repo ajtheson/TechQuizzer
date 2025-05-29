@@ -19,17 +19,13 @@
     <div class="logo">
         <h1>TechQuizzer</h1>
     </div>
-    <div class="login-box">
+    <div class="login-box" style="height: 300px;">
         <form class="login-form" action="change-password" method="post">
-            <h3 class="login-head"><i class="bi bi-person-lock me-2"></i>   CHANGE PASSWORD</h3>
-            <div class="row justify-content-end">
-                <div class="col-auto">
-                    <div class="d-flex gap-2">
-                        <button class="btn btn-primary">
-                            <i class="bi bi bi-box-arrow-left me-2 fs-5"></i> Back to Login
-                        </button>
-                    </div>
-                </div>
+            <h3 class="login-head text-center">Your password has been changed successfully</h3>
+            <div class="text-center mt-4">
+                <a class="btn btn-primary" href="login">
+                    <i class="bi bi-box-arrow-left me-2 fs-5"></i> Back to Login
+                </a>
             </div>
         </form>
     </div>

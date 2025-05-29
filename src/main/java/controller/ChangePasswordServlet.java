@@ -81,7 +81,8 @@ public class ChangePasswordServlet extends HttpServlet {
                 userDAO.updateWrongPasswordAttempts(email, 0);
                 userDAO.lockPasswordChange(email, null);
                 request.setAttribute("success", "Your password has been changed successfully");
-                request.getRequestDispatcher("change_password.jsp").forward(request, response);
+                session.invalidate();
+                request.getRequestDispatcher("change_password_success.jsp").forward(request, response);
                 return;
             }
             else{
