@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.sql.Types;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 
 import dal.DBContext;
 import entity.User;
@@ -261,7 +262,7 @@ public class UserDAO extends DBContext {
     }
 
     public User getUserById(int id) {
-        String sql = "select [name], [email], [gender], [mobile], [address], [avatar] from [users] where id = ?";
+        String sql = "select [name], [email], [gender], [mobile], [address], [avatar],[status],[role_id] from [users] where id = ?";
         try {
             PreparedStatement pstm = connection.prepareStatement(sql);
             pstm.setInt(1, id);
@@ -281,12 +282,106 @@ public class UserDAO extends DBContext {
                 user.setMobile(mobile);
                 user.setAddress(address);
                 user.setAvatar(avatar);
+                user.setStatus(rs.getBoolean("status"));
+                user.setRoleId(rs.getInt("role_id"));
                 return user;
             }
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
         }
         return null;
+    }
+    public ArrayList<User> getAllUsers() {
+        ArrayList<User> users = new ArrayList<>();
+        String sql = "SELECT [id],[email], [name], [gender], [mobile], [address], [status],[role_id] FROM [users]";
+        try {
+            PreparedStatement pstm = connection.prepareStatement(sql);
+            ResultSet rs = pstm.executeQuery();
+            while (rs.next()) {
+                User user = new User();
+                user.setId(rs.getInt("id"));
+                user.setName(rs.getString("name"));
+                user.setEmail(rs.getString("email"));
+                user.setGender(rs.getBoolean("gender"));
+                user.setMobile(rs.getString("mobile"));
+                user.setAddress(rs.getString("address"));
+                user.setStatus(rs.getBoolean("status"));
+                user.setRoleId(rs.getInt("role_id"));
+                users.add(user);
+
+            }
+        } catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+        return users;
+    }
+    public boolean changeUserStatus(int id, boolean status) {
+        String sql = "UPDATE [users] SET [status] = ? WHERE [id] = ?";
+        try {
+            PreparedStatement pstm = connection.prepareStatement(sql);
+            pstm.setBoolean(1, status);
+            pstm.setInt(2, id);
+            return pstm.executeUpdate() > 0;
+        } catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+        return false;
+    }
+    public boolean addUser(User user) {
+        String sql = "INSERT INTO [users] ([email], [password], [name], [gender], [mobile], [address], [status], [activate], [role_id]) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        try {
+            PreparedStatement pstm = connection.prepareStatement(sql);
+            pstm.setString(1, user.getEmail());
+            pstm.setString(2, user.getPassword());
+            pstm.setString(3, user.getName());
+            pstm.setObject(4, user.getGender(), Types.BOOLEAN);
+            pstm.setString(5, user.getMobile());
+            pstm.setString(6, user.getAddress());
+            pstm.setBoolean(7, user.getStatus());
+            pstm.setBoolean(8, user.getActivate());
+            pstm.setInt(9, user.getRoleId());
+            return pstm.executeUpdate() > 0;
+        } catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+        return false;
+    }
+    public boolean updateUser(User user) {
+        String sql = "UPDATE users SET name = ?, mobile = ?, address = ?, role_id = ?, gender = ?, status = ? WHERE id = ?";
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setString(1, user.getName());
+            ps.setString(2, user.getMobile());
+            ps.setString(3, user.getAddress());
+            ps.setInt(4, user.getRoleId());
+            ps.setBoolean(5, user.getGender());
+            ps.setBoolean(6, user.getStatus());
+            ps.setInt(7, user.getId());
+
+            return ps.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+    public void insertUser(User user) {
+        String sql = "INSERT INTO users (email, password, name, role_id, gender, mobile, address, balance, status, activate) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setString(1, user.getEmail());
+            ps.setString(2, user.getPassword());
+            ps.setString(3, user.getName());
+            ps.setInt(4, user.getRoleId());
+            ps.setBoolean(5, user.getGender());
+            ps.setString(6, user.getMobile());
+            ps.setString(7, user.getAddress());
+            ps.setDouble(8, user.getBalance());
+            ps.setBoolean(9, user.getStatus());
+            ps.setBoolean(10, true); // activate = 1
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
 }

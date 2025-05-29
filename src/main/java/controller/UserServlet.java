@@ -1,7 +1,9 @@
 package controller;
 
 
+import dao.UserDAO;
 import dto.UserDTO;
+import entity.User;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -10,8 +12,9 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
-@WebServlet("/User")
+@WebServlet("/user")
 public class UserServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -19,16 +22,21 @@ public class UserServlet extends HttpServlet {
         UserDTO user = (UserDTO) session.getAttribute("user");
 
         if (user == null) {
-            response.sendRedirect("login");
+            response.sendRedirect("login.jsp");
             return;
         }
 
         int role = user.getRoleId();
+        System.out.println(role);
         String targetPage = "";
 
         switch (role) {
             case 1:
-                targetPage = "setting_list.jsp";
+                UserDAO userDAO = new UserDAO();
+                ArrayList<User> users = userDAO.getAllUsers();
+                System.out.println(users.size());
+                session.setAttribute("users",users);
+                targetPage = "admin";
                 break;
             case 2:
                 targetPage = "expert.jsp";
@@ -43,4 +51,6 @@ public class UserServlet extends HttpServlet {
         }
         response.sendRedirect(targetPage);
     }
+
+
 }

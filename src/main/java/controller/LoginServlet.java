@@ -33,7 +33,7 @@ public class LoginServlet extends HttpServlet {
             RequestDispatcher rs = request.getRequestDispatcher("login.jsp");
             rs.forward(request, response);
         } else {
-            response.sendRedirect("User");
+            response.sendRedirect("user");
         }
     }
 
@@ -47,17 +47,18 @@ public class LoginServlet extends HttpServlet {
         HttpSession session = request.getSession();
         if (user == null) {
             session.setAttribute("email", email);
-            session.setAttribute("error", "Wrong email or password");
-            System.out.println("email");
+            request.setAttribute("error", "Wrong email or password");
+            request.getRequestDispatcher("login").forward(request, response);
         } else if (!user.getPassword().equals(PasswordEncoder.encode(password))) {
-            session.setAttribute("error", "Wrong email or password");
-            response.sendRedirect("login");
+            request.setAttribute("error", "Wrong email or password");
+            request.getRequestDispatcher("login").forward(request, response);
         } else {
             UserService userService = new UserService();
             UserDTO userDTO = userService.toUserLoginDTO(user);
             session.setAttribute("user", userDTO);
-            response.sendRedirect("home");
+            response.sendRedirect("user");
         }
+
 
     }
 
