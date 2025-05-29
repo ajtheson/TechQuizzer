@@ -15,7 +15,7 @@ import java.sql.SQLException;
 import java.time.Instant;
 
 @WebServlet(name = "UpdateProfileServlet", value = "/update-profile")
-@MultipartConfig
+@MultipartConfig(maxFileSize = 5 * 1024 * 1024, maxRequestSize = 5 * 1024 * 1024)
 public class UpdateProfileServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -34,10 +34,15 @@ public class UpdateProfileServlet extends HttpServlet {
             }
 
             Part fileUpload = request.getPart("image");
-            System.out.println(fileUpload.getSubmittedFileName());
             String name = request.getParameter("name").trim();
             String gender = request.getParameter("gender");
             String address = request.getParameter("address").trim();
+            if(name.isEmpty()) {
+                throw new Exception("Name is empty");
+            }
+            if(address.isEmpty()) {
+                throw new Exception("Address is empty");
+            }
 
             Boolean genderBoolean = null;
             switch (gender) {
