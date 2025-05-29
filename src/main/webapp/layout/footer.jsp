@@ -76,8 +76,8 @@
                         <i class="fas fa-envelope me-3"></i>
                         tech.quizzer.dev@gmail.com
                     </p>
-                    <p><i class="fas fa-phone me-3"></i> + 84 343 008 127</p>
-                    <p><i class="fas fa-print me-3"></i> + 84 888 666 86</p>
+                    <p><i class="fas fa-phone me-3"></i> + 84 111 222 333</p>
+                    <p><i class="fas fa-print me-3"></i> + 84 444 555 666</p>
                 </div>
             </div>
         </div>
