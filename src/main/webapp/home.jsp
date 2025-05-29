@@ -44,25 +44,31 @@
         </div>
         <div class="carousel-inner">
             <div class="carousel-item active">
-                <img style="width: 100%; height: 100%" src="assets/images/slider/slider_1.png" class="d-block w-100"
-                     alt="...">
-                <div class="carousel-caption d-none d-md-block">
-                    <h5>Title</h5>
-                </div>
+                <a href="slider/1">
+                    <img style="width: 100%; height: 100%" src="assets/images/slider/slider_1.png" class="d-block w-100"
+                         alt="slider thumbnail">
+                    <div class="carousel-caption d-none d-md-block">
+                        <h5>Title 1</h5>
+                    </div>
+                </a>
             </div>
             <div class="carousel-item">
-                <img style="width: 100%; height: 100%" src="assets/images/slider/slider_2.jpg" class="d-block w-100"
-                     alt="...">
-                <div class="carousel-caption d-none d-md-block">
-                    <h5>Title</h5>
-                </div>
+                <a href="slider/2">
+                    <img style="width: 100%; height: 100%" src="assets/images/slider/slider_2.jpg" class="d-block w-100"
+                         alt="slider thumbnail">
+                    <div class="carousel-caption d-none d-md-block">
+                        <h5>Title 2</h5>
+                    </div>
+                </a>
             </div>
             <div class="carousel-item">
-                <img style="width: 100%; height: 100%" src="assets/images/slider/slider_3.png" class="d-block w-100"
-                     alt="...">
-                <div class="carousel-caption d-none d-md-block">
-                    <h5>Title</h5>
-                </div>
+                <a href="slider/3">
+                    <img style="width: 100%; height: 100%" src="assets/images/slider/slider_3.png" class="d-block w-100"
+                         alt="slider thumbnail">
+                    <div class="carousel-caption d-none d-md-block">
+                        <h5>Title 3</h5>
+                    </div>
+                </a>
             </div>
         </div>
         <button class="carousel-control-prev" type="button" data-bs-target="#slider" data-bs-slide="prev">
