@@ -359,7 +359,7 @@
                         <a href="post/7">
                             <div class="position-relative"
                                  style="width: 100%; height: 250px; overflow: hidden; border-radius: 8px; padding: 0px">
-                                <img src="assets/images/thumbnail/post/new_2.png" alt="post thumbnail"
+                                <img src="assets/images/thumbnail/post/hot_4.png" alt="post thumbnail"
                                      style="width: 100%; height: 100%; object-fit: cover;">
                                 <span class="position-absolute top-0 start-0 text-bg-primary px-3 py-1 rounded">
                                     Hot

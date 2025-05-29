@@ -1,4 +1,4 @@
-<%--
+<%@ page import="dto.UserDTO" %><%--
   Created by IntelliJ IDEA.
   User: Ud
   Date: 24-May-25
@@ -13,7 +13,7 @@
 </head>
 <body class="app sidebar-mini">
 <!-- Navbar-->
-<header class="app-header"><a class="app-header__logo" href="index.html">TechQuizzer</a>
+<header class="app-header"><a class="app-header__logo" href="home">TechQuizzer</a>
     <!-- Sidebar toggle button--><a class="app-sidebar__toggle" href="#" data-toggle="sidebar"
                                     aria-label="Hide Sidebar"></a>
     <!-- Navbar Right Menu-->
@@ -22,24 +22,23 @@
         <li class="dropdown"><a class="app-nav__item" href="#" data-bs-toggle="dropdown" aria-label="Open Profile Menu"><i
                 class="bi bi-person fs-4"></i></a>
             <ul class="dropdown-menu settings-menu dropdown-menu-right">
-                <li><a class="dropdown-item" href="page-user.html"><i class="bi bi-gear me-2 fs-5"></i> Profile</a>
-                </li>
                 <li><a class="dropdown-item" href="change-password"><i class="bi bi-person me-2 fs-5"></i> Change Password</a>
                 </li>
-                <li><a class="dropdown-item" href="page-login.html"><i class="bi bi-box-arrow-right me-2 fs-5"></i>
+                <li><a class="dropdown-item" href="logout"><i class="bi bi-box-arrow-right me-2 fs-5"></i>
                     Logout</a></li>
             </ul>
         </li>
     </ul>
 </header>
+
 <!-- Sidebar menu-->
 <div class="app-sidebar__overlay" data-toggle="sidebar"></div>
 <aside class="app-sidebar">
     <div class="app-sidebar__user"><img class="app-sidebar__user-avatar"
-                                        src="https://randomuser.me/api/portraits/men/1.jpg" alt="User Image">
+                                        src="assets/images/avatar/${sessionScope.user.avatar}" alt="User Image">
         <div>
-            <p class="app-sidebar__user-name">John Doe</p>
-            <p class="app-sidebar__user-designation">Frontend Developer</p>
+            <p class="app-sidebar__user-name">${sessionScope.user.name}</p>
+            <p class="app-sidebar__user-designation">Admin</p>
         </div>
     </div>
     <ul class="app-menu">

@@ -54,6 +54,7 @@
         </form>
     </div>
 </section>
+<%@include file="layout/footer.jsp"%>
 </body>
 <script>
     document.querySelector('.login-form').addEventListener('submit', function (e) {
