@@ -27,14 +27,12 @@ public class UserServlet extends HttpServlet {
         }
 
         int role = user.getRoleId();
-        System.out.println(role);
         String targetPage = "";
 
         switch (role) {
             case 1:
                 UserDAO userDAO = new UserDAO();
                 ArrayList<User> users = userDAO.getAllUsers();
-                System.out.println(users.size());
                 session.setAttribute("users",users);
                 targetPage = "admin";
                 break;

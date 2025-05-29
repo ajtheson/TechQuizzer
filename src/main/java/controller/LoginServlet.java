@@ -48,10 +48,10 @@ public class LoginServlet extends HttpServlet {
         if (user == null) {
             session.setAttribute("email", email);
             request.setAttribute("error", "Wrong email or password");
-            request.getRequestDispatcher("login").forward(request, response);
+            request.getRequestDispatcher("login.jsp").forward(request, response);
         } else if (!user.getPassword().equals(PasswordEncoder.encode(password))) {
             request.setAttribute("error", "Wrong email or password");
-            request.getRequestDispatcher("login").forward(request, response);
+            request.getRequestDispatcher("login.jsp").forward(request, response);
         } else {
             UserService userService = new UserService();
             UserDTO userDTO = userService.toUserLoginDTO(user);

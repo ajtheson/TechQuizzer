@@ -30,9 +30,8 @@
                 <label class="form-label">PASSWORD</label>
                 <input class="form-control" type="password" name="password" placeholder="Password">
             </div>
-            <c:if test="${not empty error}">
-                <div class="alert alert-danger">${error}</div>
-                <c:remove var="error" scope="session"/>
+            <c:if test="${not empty requestScope.error}">
+                <div class="alert alert-danger">${requestScope.error}</div>
             </c:if>
             <c:if test="${not empty requestScope.verifyNotification}">
                 <div class="alert alert-info">${requestScope.verifyNotification}</div>
