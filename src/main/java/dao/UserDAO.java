@@ -17,10 +17,11 @@ public class UserDAO extends DBContext {
             "[address], [token], [role_id]) values (?,?,?,?,?,?,?,3)";
     private final String getTokenInformation = "select [token], [token_create_at], [token_send_at] from [users] where [email] = ?";
     private final String updateToken = "update [users] set [token] = ?, [token_create_at] = ?, [token_send_at] = ? where [email] = ?";
-    private final String getMobile  = "select [mobile] from [users] where [email] = ?";
+    private final String getMobile = "select [mobile] from [users] where [email] = ?";
     private final String getVerifyInformation = "select [email], [token_create_at] from [users] where [token] = ?";
     private final String activateAccount = "update [users] set [activate] = 1, [token] = null, [token_create_at] = null, [token_send_at] = null where [email] = ?";
     private final String resetPassword = "update [users] set [password] = ? where [email] = ?";
+
     public User isEmailInSystem(String email) {
         try {
             PreparedStatement pstm = connection.prepareStatement(isEmailInSystem);
@@ -53,7 +54,7 @@ public class UserDAO extends DBContext {
     }
 
     public boolean register(User user) {
-        try{
+        try {
             PreparedStatement pstm = connection.prepareStatement(register);
             pstm.setString(1, user.getEmail());
             pstm.setString(2, user.getPassword());
@@ -63,14 +64,14 @@ public class UserDAO extends DBContext {
             pstm.setString(6, user.getAddress());
             pstm.setString(7, user.getToken());
             return pstm.executeUpdate() > 0;
-        }catch (Exception e) {
+        } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
         }
         return false;
     }
 
     public User getTokenInformation(String email) {
-        try{
+        try {
             PreparedStatement pstm = connection.prepareStatement(getTokenInformation);
             pstm.setString(1, email);
             ResultSet rs = pstm.executeQuery();
@@ -78,55 +79,56 @@ public class UserDAO extends DBContext {
                 User user = new User();
                 user.setToken(rs.getString("token"));
                 Timestamp tokenCreateAt = rs.getTimestamp("token_create_at");
-                if(tokenCreateAt != null) {
+                if (tokenCreateAt != null) {
                     user.setTokenCreateAt(tokenCreateAt.toLocalDateTime());
-                }else {
+                } else {
                     user.setTokenCreateAt(null);
                 }
                 Timestamp tokenSendAt = rs.getTimestamp("token_send_at");
                 if (tokenSendAt != null) {
                     user.setTokenSendAt(tokenSendAt.toLocalDateTime());
-                }else {
+                } else {
                     user.setTokenSendAt(null);
                 }
 
                 return user;
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
         }
         return null;
     }
 
     public boolean updateToken(String email, String token, LocalDateTime tokenCreateAt, LocalDateTime tokenSendAt) {
-        try{
+        try {
             PreparedStatement pstm = connection.prepareStatement(updateToken);
             pstm.setString(1, token);
             pstm.setObject(2, tokenCreateAt);
             pstm.setObject(3, tokenSendAt);
             pstm.setString(4, email);
             return pstm.executeUpdate() > 0;
-        }catch (Exception e) {
+        } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
         }
         return false;
     }
 
     public String getMobile(String email) {
-        try{
+        try {
             PreparedStatement pstm = connection.prepareStatement(getMobile);
             pstm.setString(1, email);
             ResultSet rs = pstm.executeQuery();
             if (rs.next()) {
                 return rs.getString("mobile");
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
         }
         return null;
     }
+
     public User getVerifyInformation(String token) {
-        try{
+        try {
             PreparedStatement pstm = connection.prepareStatement(getVerifyInformation);
             pstm.setString(1, token);
             ResultSet rs = pstm.executeQuery();
@@ -136,34 +138,36 @@ public class UserDAO extends DBContext {
                 Timestamp tokenCreateAt = rs.getTimestamp("token_create_at");
                 if (tokenCreateAt != null) {
                     user.setTokenCreateAt(tokenCreateAt.toLocalDateTime());
-                }else {
+                } else {
                     user.setTokenCreateAt(null);
                 }
                 return user;
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
         }
         return null;
     }
+
     public boolean activateAccount(String email) {
-        try{
+        try {
             PreparedStatement pstm = connection.prepareStatement(activateAccount);
             pstm.setString(1, email);
             return pstm.executeUpdate() > 0;
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
         }
         return false;
     }
+
     public boolean resetPassword(String email, String password) {
-        try{
+        try {
             PreparedStatement pstm = connection.prepareStatement(resetPassword);
             pstm.setString(1, password);
             pstm.setString(2, email);
             pstm.execute();
             return true;
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
         }
         return false;
@@ -270,6 +274,9 @@ public class UserDAO extends DBContext {
                 String name = rs.getString("name");
                 String email = rs.getString("email");
                 Boolean gender = rs.getBoolean("gender");
+                if (rs.wasNull()) {
+                    gender = null;
+                }
                 String mobile = rs.getString("mobile");
                 String address = rs.getString("address");
                 String avatar = rs.getString("avatar");
