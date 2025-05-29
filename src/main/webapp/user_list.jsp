@@ -42,9 +42,9 @@
         </div>
     </div>
     <ul class="app-menu">
-        <li><a class="app-menu__item active" href="dashboard.html"><i class="app-menu__icon bi bi-people-fill"></i><span
+        <li><a class="app-menu__item active" href="user_list.jsp"><i class="app-menu__icon bi bi-people-fill"></i><span
                 class="app-menu__label">User List</span></a></li>
-        <li><a class="app-menu__item" href="user_list.jsp"><i class="app-menu__icon bi bi-gear-wide-connected"></i><span
+        <li><a class="app-menu__item" href="setting_list.jsp"><i class="app-menu__icon bi bi-gear-wide-connected"></i><span
                 class="app-menu__label">Setting List</span></a></li>
         </ul>
 </aside>
