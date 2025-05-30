@@ -17,15 +17,9 @@ public class GetSettingListSetvlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         SettingDAO settingDAO = new SettingDAO();
+        //Get all settings from database and set to request attribute
         ArrayList<Setting> settings = settingDAO.getAllSettings();
         request.setAttribute("settings", settings);
         request.getRequestDispatcher("setting_list.jsp").forward(request, response);
-
-    }
-
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-
     }
 }

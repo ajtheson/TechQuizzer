@@ -56,6 +56,7 @@
 </section>
 <%@include file="layout/footer.jsp"%>
 </body>
+<%--Script to check if the password and confirm password match.--%>
 <script>
     document.querySelector('.login-form').addEventListener('submit', function (e) {
         const newPassword = document.querySelector('input[name="newPassword"]').value;

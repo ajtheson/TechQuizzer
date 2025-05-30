@@ -127,7 +127,7 @@
 
 <!-- Essential javascripts for application to work-->
 <%@include file="common/jsload.jsp" %>
-
+<%--Script to get toastNotification from EditSettingServlet to show and remove it in session--%>
 <%
     String toastNotification = (String) session.getAttribute("toastNotification");
     if (toastNotification != null) {

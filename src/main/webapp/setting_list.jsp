@@ -153,25 +153,25 @@
     $(document).ready(function () {
         const table = $('#sampleTable').DataTable();
 
-        // Tự động thêm options vào bộ lọc "Type"
+        //Add option in the filter of "Type"
         table.column(1).data().unique().sort().each(function (d) {
             $('#typeFilter').append('<option value="' + d + '">' + d + '</option>');
         });
 
-        // Xử lý lọc theo Type
+        //Handle filter by Type
         $('#typeFilter').on('change', function () {
             const val = $.fn.dataTable.util.escapeRegex($(this).val());
             table.column(1).search(val ? '^' + val + '$' : '', true, false).draw();
         });
 
-        // Xử lý lọc theo Status
+        //Handle filter by Status
         $('#statusFilter').on('change', function () {
             const val = $.fn.dataTable.util.escapeRegex($(this).val());
             table.column(4).search(val ? '^' + val + '$' : '', true, false).draw();
         });
     });
 </script>
-
+<%--Script to get toastNotification from CreateSettingServlet to show and remove it in session--%>
 <%
     String toastNotification = (String) session.getAttribute("toastNotification");
     if (toastNotification != null) {

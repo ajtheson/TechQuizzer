@@ -22,7 +22,7 @@ public class CreateSettingServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        //Get parameter from setting_edit form
+        //Get parameter from setting_create form
         String type = request.getParameter("type").trim();
         String value = request.getParameter("value").trim();
         String orderParam = request.getParameter("order").trim();
@@ -33,7 +33,7 @@ public class CreateSettingServlet extends HttpServlet {
 
         String error = "";
         int order = 0;
-
+        //Check input if it is empty or invalid
         if (type.isEmpty()) {
             error = "Please choose a valid type";
         }
@@ -50,6 +50,7 @@ public class CreateSettingServlet extends HttpServlet {
             error = "Please enter a valid order";
         } else {
             try {
+                //check order is an integer greater than or equal to 0
                 order = Integer.parseInt(orderParam);
                 if(order < 0){
                     throw new NumberFormatException();
@@ -58,9 +59,11 @@ public class CreateSettingServlet extends HttpServlet {
                 error = "Order is an integer greater than or equal to 0";
             }
         }
+        //Check if value in this type is already exist in system
         if(settingDAO.checkValueExist(value, type)){
             error = "Setting with value \"" + value + "\" and type \"" + type + "\" already exist";
         }
+        //If there is an error, redirect to setting_create page and show error message
         if(!error.isEmpty()){
             request.setAttribute("error", error);
             request.setAttribute("type", type);
@@ -70,14 +73,17 @@ public class CreateSettingServlet extends HttpServlet {
             request.setAttribute("status", status);
             request.getRequestDispatcher("setting_create.jsp").forward(request, response);
         }
+        //If there is no error, create a new setting and redirect to setting_list page
         else{
             Setting setting = new Setting(type, value, description, order, status.equals("activate"));
             HttpSession session = request.getSession();
             if(settingDAO.add(setting)){
+                //Add toastNotification success to session to show success message in setting_list page
                 session.setAttribute("toastNotification", "Setting has been created successfully.");
                 response.sendRedirect("get-setting-list");
             }
             else{
+                //Add toastNotification failed to session to show failed message in setting_list page
                 session.setAttribute("toastNotification", "Setting has been created failed. Please try again later.");
                 response.sendRedirect("get-setting-list");
             }
