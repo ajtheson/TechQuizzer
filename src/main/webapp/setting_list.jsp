@@ -147,7 +147,13 @@
         src="${pageContext.request.contextPath}/assets/js/plugins/jquery.dataTables.min.js"></script>
 <script type="text/javascript"
         src="${pageContext.request.contextPath}/assets/js/plugins/dataTables.bootstrap.min.js"></script>
-<script type="text/javascript">$('#sampleTable').DataTable();</script>
+<script type="text/javascript">
+    $('#sampleTable').DataTable({
+        columnDefs: [
+            { orderable: false, targets: [5] } // No sort on column 5(Action)
+        ]
+    });
+</script>
 <!-- Filter Script -->
 <script type="text/javascript">
     $(document).ready(function () {
