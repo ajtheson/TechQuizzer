@@ -40,6 +40,8 @@ public class EditSettingServlet extends HttpServlet {
         String status = request.getParameter("status").trim();
 
         String error = "";
+        SettingDAO settingDAO = new SettingDAO();
+
         int order = 0;
 
         if (type.isEmpty()) {
@@ -66,6 +68,9 @@ public class EditSettingServlet extends HttpServlet {
                 error = "Order is an integer greater than or equal to 0";
             }
         }
+        if(settingDAO.checkValueExist(value, type, id)){
+            error = "Setting with value \"" + value + "\" and type \"" + type + "\" already exist";
+        }
         if(!error.isEmpty()){
             request.setAttribute("error", error);
             request.setAttribute("id", id);
@@ -78,7 +83,6 @@ public class EditSettingServlet extends HttpServlet {
         }
         else{
             Setting setting = new Setting(id, type, value, description, order, status.equals("activate"));
-            SettingDAO settingDAO = new SettingDAO();
             HttpSession session = request.getSession();
             if(settingDAO.update(setting)){
                 session.setAttribute("toastNotification", "Setting has been updated successfully.");

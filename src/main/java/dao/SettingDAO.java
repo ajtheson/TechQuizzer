@@ -108,6 +108,23 @@ public class SettingDAO extends DBContext {
         return false;
     }
 
+    public boolean checkValueExist(String value, String type, int id){
+        String sql = "select 1 from [system_settings] where [value] = ? and [type] = ? and [id] != ?";
+        try {
+            PreparedStatement pstm = connection.prepareStatement(sql);
+            pstm.setString(1, value);
+            pstm.setString(2, type);
+            pstm.setInt(3, id);
+            ResultSet rs = pstm.executeQuery();
+            if(rs.next()){
+                return true;
+            }
+        } catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+        return false;
+    }
+
     public boolean updateStatus(int id, boolean status){
         String sql = "UPDATE [system_settings]\n" +
                 "SET [status] = ?\n" +
