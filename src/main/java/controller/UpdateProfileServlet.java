@@ -86,7 +86,7 @@ public class UpdateProfileServlet extends HttpServlet {
                     throw new Exception("Failed to update user in database");
                 }
             }
-
+            session.setAttribute("user", userDTO);
             json.put("status", true);
             json.put("message", "Update user successfully");
         } catch (Exception e) {
