@@ -13,7 +13,7 @@ public class ImageUploader {
         File file = new File(uploadsDir, fileName);
         try (InputStream inputData = uploadedFile.getInputStream();
              OutputStream out = new FileOutputStream(file)) {
-            byte[] buffer = new byte[1024];
+            byte[] buffer = new byte[5120];
             int length;
             while ((length = inputData.read(buffer)) != -1) {
                 out.write(buffer, 0, length);
