@@ -23,7 +23,7 @@ public class EmailSender {
             jakarta.mail.Session session = Session.getInstance(properties, new Authenticator() {
                 @Override
                 protected PasswordAuthentication getPasswordAuthentication() {
-                    return new PasswordAuthentication("tech.quizzer.dev@gmail.com", "ytmqlkyygahwncxw");
+                    return new PasswordAuthentication("thesondayne@gmail.com", "njykpasaplvmzrkn");
                 }
             });
 
