@@ -92,7 +92,7 @@
                                 <input class="form-control" type="number" min="0" step="0.01" name="listPrice" value="${p.listPrice}" readonly>
                             </div>
                             <div class="col-md-6">
-                                <label class="col-form-label">Sale duration</label>
+                                <label class="col-form-label">Sale price</label>
                                 <input class="form-control" type="number" min="0" step="0.01" name="salePrice" value="${p.salePrice}" readonly>
                             </div>
                         </div>
