@@ -60,10 +60,57 @@ public class AdminServlet extends HttpServlet {
     }
     private void listUsers(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        ArrayList<User> users = userDAO.getAllUsers();
+        String roleParam = request.getParameter("role");
+        String statusParam = request.getParameter("status");
+        String genderParam = request.getParameter("gender");
+
+        Integer roleId = (roleParam != null && !roleParam.isEmpty()) ? Integer.parseInt(roleParam) : null;
+        Integer status = (statusParam != null && !statusParam.isEmpty()) ? Integer.parseInt(statusParam) : null;
+        Integer gender = (genderParam != null && !genderParam.isEmpty()) ? Integer.parseInt(genderParam) : null;
+
+
+        int page = 1;
+        int pageSize = 10;
+
+        String pageParam = request.getParameter("page");
+        if (pageParam != null) {
+            try {
+                page = Integer.parseInt(pageParam);
+            } catch (NumberFormatException ignored) {}
+        }
+
+        String pageSizeParam = request.getParameter("pageSize");
+        if (pageSizeParam != null) {
+            try {
+                pageSize = Integer.parseInt(pageSizeParam);
+            } catch (NumberFormatException ignored) {}
+        }
+
+
+        String sortField = request.getParameter("sortField");
+        String sortOrder = request.getParameter("sortOrder");
+
+        if (sortField == null || sortField.isEmpty()) sortField = "id";
+        if (sortOrder == null || sortOrder.isEmpty()) sortOrder = "asc";
+
+        ArrayList<User> users = userDAO.getUsersByPage(roleId, gender, status, page, pageSize, sortField, sortOrder);
+        int totalUsers = userDAO.getTotalUsers(roleId, gender, status);
+        int totalPages = (int) Math.ceil((double) totalUsers / pageSize);
+
         request.setAttribute("users", users);
+        request.setAttribute("currentPage", page);
+        request.setAttribute("pageSize", pageSize);
+        request.setAttribute("totalPages", totalPages);
+        request.setAttribute("sortField", sortField);
+        request.setAttribute("sortOrder", sortOrder);
+
+        request.setAttribute("selectedRole", roleParam);
+        request.setAttribute("selectedGender", genderParam);
+        request.setAttribute("selectedStatus", statusParam);
+
         request.getRequestDispatcher("user_list.jsp").forward(request, response);
     }
+
 
     private void viewUser(HttpServletRequest request, HttpServletResponse response, String idParam)
             throws ServletException, IOException {

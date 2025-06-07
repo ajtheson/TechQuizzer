@@ -22,33 +22,33 @@ public class UserServlet extends HttpServlet {
         UserDTO user = (UserDTO) session.getAttribute("user");
 
         if (user == null) {
-            response.sendRedirect("login.jsp");
-            return;
-        }
+            response.sendRedirect("login");
+        } else {
+            int role = user.getRoleId();
+            String targetPage = "";
 
-        int role = user.getRoleId();
-        String targetPage = "";
+            switch (role) {
+                case 1:
 
-        switch (role) {
-            case 1:
-                UserDAO userDAO = new UserDAO();
-                ArrayList<User> users = userDAO.getAllUsers();
-                session.setAttribute("users",users);
-                targetPage = "admin";
-                break;
-            case 2:
-                targetPage = "expert.jsp";
-                break;
-            case 3:
-                targetPage = "home";
-                break;
-            default:
-                request.setAttribute("error", "Invalid role");
-                targetPage = "login";
-                break;
+                    targetPage = "admin";
+                    break;
+                case 2:
+                    targetPage = "expert.jsp";
+                    break;
+                case 3:
+                    targetPage = "home";
+                    break;
+                default:
+                    request.setAttribute("error", "Invalid role");
+                    targetPage = "login";
+                    break;
+            }
+            request.getRequestDispatcher(targetPage).forward(request, response);
         }
-        response.sendRedirect(targetPage);
     }
-
-
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        doGet(request, response);
+    }
 }
