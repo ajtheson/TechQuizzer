@@ -9,8 +9,10 @@ public class Registration {
     private LocalDateTime validFrom;
     private LocalDateTime validTo;
     private String status;
+    private String note;
     private int pricePackageId;
     private int userId;
+    private int lastUpdatedBy;
 
     public int getId() {
         return id;
@@ -60,6 +62,14 @@ public class Registration {
         this.status = status;
     }
 
+    public String getNote() {
+        return note;
+    }
+
+    public void setNote(String note) {
+        this.note = note;
+    }
+
     public int getPricePackageId() {
         return pricePackageId;
     }
@@ -74,5 +84,13 @@ public class Registration {
 
     public void setUserId(int userId) {
         this.userId = userId;
+    }
+
+    public int getLastUpdatedBy() {
+        return lastUpdatedBy;
+    }
+
+    public void setLastUpdatedBy(int lastUpdatedBy) {
+        this.lastUpdatedBy = lastUpdatedBy;
     }
 }

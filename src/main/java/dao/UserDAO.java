@@ -11,7 +11,7 @@ public class UserDAO extends DBContext {
     private final String isEmailInSystem = "select [activate]  from [users] where [email] = ?";
     private final String isMobileExist = "select 1 from [users] where [mobile] = ? and [activate] = 1";
     private final String register = "insert into [users] ([email], [password], [name], [gender], [mobile], " +
-            "[address], [token], [role_id]) values (?,?,?,?,?,?,?,3)";
+            "[address], [token], [role_id]) values (?,?,?,?,?,?,?,?)";
     private final String getTokenInformation = "select [token], [token_create_at], [token_send_at] from [users] where [email] = ?";
     private final String updateToken = "update [users] set [token] = ?, [token_create_at] = ?, [token_send_at] = ? where [email] = ?";
     private final String getMobile = "select [mobile] from [users] where [email] = ?";
@@ -60,6 +60,8 @@ public class UserDAO extends DBContext {
             pstm.setString(5, user.getMobile());
             pstm.setString(6, user.getAddress());
             pstm.setString(7, user.getToken());
+            RoleDAO roleDao = new RoleDAO();
+            pstm.setInt(8, roleDao.getRoleIdByName("Customer"));
             return pstm.executeUpdate() > 0;
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
@@ -387,14 +389,15 @@ public class UserDAO extends DBContext {
 
     public int addAccountForRegisterSubject(User user) {
         String sql = "INSERT INTO [users] ([email], [mobile], [name], [gender], [address], [token_create_at], [token_send_at], [temp_user], [role_id]) " +
-                "VALUES (?, ?, ?, ?, ?, NULL, NULL, 1, 3)";
+                "VALUES (?, ?, ?, ?, ?, NULL, NULL, 1, ?)";
         try (PreparedStatement pstm = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             pstm.setString(1, user.getEmail());
             pstm.setString(2, user.getMobile());
             pstm.setString(3, user.getName());
             pstm.setObject(4, user.getGender(), Types.BIT);
             pstm.setString(5, user.getAddress());
-
+            RoleDAO roleDAO = new RoleDAO();
+            pstm.setInt(6, roleDAO.getRoleIdByName("Customer"));
             int affectedRows = pstm.executeUpdate();
             if (affectedRows > 0) {
                 try (ResultSet rs = pstm.getGeneratedKeys()) {

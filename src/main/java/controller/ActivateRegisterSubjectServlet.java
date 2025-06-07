@@ -87,7 +87,7 @@ public class ActivateRegisterSubjectServlet extends HttpServlet {
                     Registration registration = new Registration();
                     registration.setTime(LocalDateTime.now());
                     registration.setTotalCost(pricePackage.getSalePrice());
-                    registration.setStatus("Pending");
+                    registration.setStatus("pending");
                     registration.setPricePackageId(packageID);
                     registration.setUserId(userID);
                     if(rDAO.addRegistration(registration)) {

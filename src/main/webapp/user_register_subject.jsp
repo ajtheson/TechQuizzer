@@ -55,7 +55,7 @@
         <h1>TechQuizzer</h1>
     </div>
 
-    <div class="login-box" style="min-height: 460px; min-width: 650px;">
+    <div class="login-box" style="min-height: 465px; min-width: 650px;">
         <div class="row">
             <!-- Form -->
             <div class="col-md-7">
@@ -63,7 +63,7 @@
                     <h3 class="login-head"><i class="bi bi-journal-plus me-2"></i>REGISTER SUBJECT</h3>
                     <!-- Thumbnail -->
                     <div class="col-md-5 text-center">
-                        <img class="subject-thumbnail" src="${subject.thumbnail}" alt="${subject.name}">
+                        <img class="subject-thumbnail" src="assets/images/thumbnail/subject/${subject.thumbnail}" alt="${subject.name}">
                     </div>
 
                     <div class="col-md-7">
