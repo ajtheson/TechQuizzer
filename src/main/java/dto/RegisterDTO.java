@@ -1,5 +1,7 @@
 package dto;
 
+import java.io.Serializable;
+
 public class RegisterDTO {
     private String email;
     private String password;
@@ -8,6 +10,9 @@ public class RegisterDTO {
     private String genderString;
     private String mobile;
     private String address;
+
+    public RegisterDTO() {
+    }
 
     public RegisterDTO(String email, String password, String confirmPassword, String name, String genderString, String mobile, String address) {
         this.email = email;

@@ -39,30 +39,34 @@ public class ForgotPasswordServlet extends HttpServlet {
             if(user == null){
                 error = "Email does not exist";
             }else{
-                //User in system and have been activated
-                if(user.getActivate()){
-                    User tokenInfo = uDao.getTokenInformation(email);
-                    //Check token exist
-                    if(tokenInfo.getToken() == null){
-                        //If dont have token
-                        String token = TokenGenerator.generateToken(uDao.getMobile(email));
-                        EmailService emailService = new EmailService();
-                        emailService.sendResetPasswordEmail(request, email, token);
-                        uDao.updateToken(email, PasswordEncoder.encode(token), LocalDateTime.now(), LocalDateTime.now());
-                        HttpSession session = request.getSession();
-                        session.setAttribute("resetPasswordEmail", email);
-                    }else{
-                        //Have token
-                        TokenService tokenService = new TokenService();
-                        tokenService.handleVerifyToken(request, email, false);
-                    }
+                if (uDao.checkTempUser(email)) {
+                    error = "Account use this email is in register subject process";
                 }else {
-                    //User in system but have not been activated
-                    TokenService tokenService = new TokenService();
-                    tokenService.handleVerifyToken(request, email, true);
+                    //User in system and have been activated
+                    if(user.getActivate()){
+                        User tokenInfo = uDao.getTokenInformation(email);
+                        //Check token exist
+                        if(tokenInfo.getToken() == null){
+                            //If dont have token
+                            String token = TokenGenerator.generateToken(uDao.getMobile(email));
+                            EmailService emailService = new EmailService();
+                            emailService.sendResetPasswordEmail(request, email, token);
+                            uDao.updateToken(email, PasswordEncoder.encode(token), LocalDateTime.now(), LocalDateTime.now());
+                            HttpSession session = request.getSession();
+                            session.setAttribute("resetPasswordEmail", email);
+                        }else{
+                            //Have token
+                            TokenService tokenService = new TokenService();
+                            tokenService.handleVerifyToken(request, email, false);
+                        }
+                    }else {
+                        //User in system but have not been activated
+                        TokenService tokenService = new TokenService();
+                        tokenService.handleVerifyToken(request, email, true);
+                    }
+                    response.sendRedirect("activate");
+                    return;
                 }
-                response.sendRedirect("activate");
-                return;
             }
         }
         request.setAttribute("error", error);

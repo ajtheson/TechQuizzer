@@ -64,4 +64,22 @@ public class EmailService {
 
         EmailSender.sendEmail(email, title, content);
     }
+
+    public void sendOTPForRegisterSubject(String email, String otp, boolean isResend) {
+        String subject = isResend
+                ? "[OTP Resend] Verify Your Quiz Account"
+                : "[OTP Verification] Complete Your Quiz Registration";
+
+        String content = "Hello,\n\n"
+                + "Thank you for registering with TechQuizzer.\n\n"
+                + "To complete your registration, please enter the following One-Time Password (OTP):\n\n"
+                + "OTP: " + otp + "\n\n"
+                + "This OTP is valid for 5 minutes only.\n\n"
+                + "If you did not request this code, please ignore this email.\n\n"
+                + "Best regards,\n"
+                + "The TechQuizzer";
+
+        EmailSender.sendEmail(email, subject, content);
+    }
+
 }

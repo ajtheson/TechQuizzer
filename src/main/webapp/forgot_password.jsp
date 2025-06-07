@@ -24,7 +24,7 @@
     </div>
     <c:choose>
         <c:when test="${fn:length(fn:trim(requestScope.error)) > 0}">
-            <c:set var="boxHeight" value="330"/>
+            <c:set var="boxHeight" value="340"/>
         </c:when>
         <c:otherwise>
             <c:set var="boxHeight" value="280"/>

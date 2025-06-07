@@ -151,8 +151,29 @@ public class PricePackageDAO extends DBContext {
         }
         return false;
     }
-    public static void main(String[] args) {
-        PricePackageDAO dao = new PricePackageDAO();
-        System.out.println(dao.get(1));
+
+    public List<PricePackage> getActiveOfSubject(int subjectId){
+        String sql = "select * from [price_packages] where [subject_id] = ? and [status] = 1";
+        try(PreparedStatement pstm = connection.prepareStatement(sql)){
+            List<PricePackage> list = new ArrayList<>();
+            pstm.setInt(1, subjectId);
+            ResultSet rs = pstm.executeQuery();
+            while(rs.next()){
+                PricePackage p = new PricePackage();
+                p.setId(rs.getInt("id"));
+                p.setName(rs.getString("name"));
+                p.setDuration(rs.getObject("duration", Integer.class));
+                p.setListPrice(rs.getDouble("list_price"));
+                p.setSalePrice(rs.getDouble("sale_price"));
+                p.setDescription(rs.getString("description"));
+                p.setStatus(rs.getBoolean("status"));
+                p.setSubjectId(subjectId);
+                list.add(p);
+            }
+            return list;
+        }catch (SQLException e){
+            System.out.println("Error: " + e.getMessage());
+        }
+        return null;
     }
 }

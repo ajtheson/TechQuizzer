@@ -1,10 +1,6 @@
 package dao;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.sql.Types;
+import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
@@ -388,5 +384,45 @@ public class UserDAO extends DBContext {
             return false;
         }
     }
+
+    public int addAccountForRegisterSubject(User user) {
+        String sql = "INSERT INTO [users] ([email], [mobile], [name], [gender], [address], [token_create_at], [token_send_at], [temp_user], [role_id]) " +
+                "VALUES (?, ?, ?, ?, ?, NULL, NULL, 1, 3)";
+        try (PreparedStatement pstm = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+            pstm.setString(1, user.getEmail());
+            pstm.setString(2, user.getMobile());
+            pstm.setString(3, user.getName());
+            pstm.setObject(4, user.getGender(), Types.BIT);
+            pstm.setString(5, user.getAddress());
+
+            int affectedRows = pstm.executeUpdate();
+            if (affectedRows > 0) {
+                try (ResultSet rs = pstm.getGeneratedKeys()) {
+                    if (rs.next()) {
+                        return rs.getInt(1);
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+        return -1;
+    }
+
+    public boolean checkTempUser(String email){
+        String sql = "select [temp_user] from [users] where [email] = ?";
+        try(PreparedStatement pstm = connection.prepareStatement(sql)){
+            pstm.setString(1, email);
+            ResultSet rs = pstm.executeQuery();
+            if(rs.next()){
+                return rs.getBoolean("temp_user");
+            }
+        }catch (SQLException e){
+            System.out.println("Error: " + e.getMessage());
+        }
+        return false;
+    }
+
+
 
 }

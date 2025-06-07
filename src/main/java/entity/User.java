@@ -20,6 +20,7 @@ public class User {
     private int roleId;
     private int wrongPasswordAttempts;
     private LocalDateTime passwordChangeLockedUntil;
+    private boolean tempUser;
 
     public User() {
     }
@@ -160,4 +161,11 @@ public class User {
         this.passwordChangeLockedUntil = passwordChangeLockedUntil;
     }
 
+    public boolean isTempUser() {
+        return tempUser;
+    }
+
+    public void setTempUser(boolean tempUser) {
+        this.tempUser = tempUser;
+    }
 }

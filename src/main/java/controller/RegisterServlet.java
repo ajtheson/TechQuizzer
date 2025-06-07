@@ -52,44 +52,50 @@ public class RegisterServlet extends HttpServlet {
             if (!EmailValidator.isEmailValid(email)) {
                 error = "Email is not valid";
             } else {
-                User checkExist = uDAO.isEmailInSystem(email);
-                //Email is not already existed in system
-                if (checkExist == null) {
-                    //Check mobile number exist
-                    if(uDAO.isMobileExist(mobile)) {
-                        error = "Mobile number already exist";
-                    }else{
-                        //Convert DTO to Entity
-                        User user = convertFromRegisterDTO(information);
+                //Check temp user
+                if (uDAO.checkTempUser(email)) {
+                    error = "Account use this email is in register subject process";
+                } else {
+                    User checkExist = uDAO.isEmailInSystem(email);
+                    //Email is not already existed in system
+                    if (checkExist == null) {
+                        //Check mobile number exist
+                        if (uDAO.isMobileExist(mobile)) {
+                            error = "Mobile number already exist";
+                        } else {
+                            //Convert DTO to Entity
+                            User user = convertFromRegisterDTO(information);
 
-                        //Create token and add user to database
-                        String token = TokenGenerator.generateToken(mobile);
-                        //Encrypt token
-                        user.setToken(PasswordEncoder.encode(token));
+                            //Create token and add user to database
+                            String token = TokenGenerator.generateToken(mobile);
+                            //Encrypt token
+                            user.setToken(PasswordEncoder.encode(token));
 
-                        if (uDAO.register(user)) {
-                            //Send email
-                            EmailService emailService = new EmailService();
-                            emailService.sendActivatingEmail(request, email, token, false);
+                            if (uDAO.register(user)) {
+                                //Send email
+                                EmailService emailService = new EmailService();
+                                emailService.sendActivatingEmail(request, email, token, false);
 
-                            HttpSession session = request.getSession();
-                            session.setAttribute("unverifiedEmail", email);
+                                HttpSession session = request.getSession();
+                                session.setAttribute("unverifiedEmail", email);
+                                response.sendRedirect("activate");
+                                return;
+                            }
+                        }
+                    } else {
+                        //Email is already activated
+                        if (checkExist.getActivate()) {
+                            error = "Email already in use and is already activated";
+                        } else {
+                            //Email in the system but is not activated
+                            TokenService tokenService = new TokenService();
+                            tokenService.handleVerifyToken(request, email, true);
                             response.sendRedirect("activate");
                             return;
                         }
                     }
-                } else {
-                    //Email is already activated
-                    if (checkExist.getActivate()) {
-                        error = "Email already in use and is already activated";
-                    } else {
-                        //Email in the system but is not activated
-                        TokenService tokenService = new TokenService();
-                        tokenService.handleVerifyToken(request, email, true);
-                        response.sendRedirect("activate");
-                        return;
-                    }
                 }
+
             }
         }
         //Having error
