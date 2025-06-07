@@ -43,7 +43,7 @@ public class UserServlet extends HttpServlet {
                     targetPage = "login";
                     break;
             }
-            request.getRequestDispatcher(targetPage).forward(request, response);
+            response.sendRedirect(targetPage);
         }
     }
     @Override
