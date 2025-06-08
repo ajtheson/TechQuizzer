@@ -1,10 +1,3 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: Dell
-  Date: 05/06/2025
-  Time: 23:51
-  To change this template use File | Settings | File Templates.
---%>
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
@@ -13,9 +6,9 @@
     <%@include file="common/headload.jsp" %>
     <jsp:include page="./layout/header.jsp"/>
     <jsp:include page="./user_profile.jsp"/>
-    <title>Register Subject</title>
+    <title>Modify Registration</title>
     <style>
-        body{
+        body {
             display: flex;
             flex-direction: column;
         }
@@ -32,6 +25,10 @@
             background-color: white;
             font-weight: bold;
         }
+        .package-btn:disabled {
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
         .subject-thumbnail {
             width: 100%;
             aspect-ratio: 1 / 1;
@@ -42,8 +39,6 @@
             font-weight: bold;
             color: #08645c; /* xanh lá đậm */
         }
-
-
         .list-price {
             text-decoration: line-through;
             color: gray;
@@ -62,8 +57,9 @@
         <div class="row">
             <!-- Form -->
             <div class="col-md-7">
-                <form class="login-form row" action="user_register_subject" method="post">
-                    <h3 class="login-head"><i class="bi bi-journal-plus me-2"></i>REGISTER SUBJECT</h3>
+                <form class="login-form row" action="user_modify_registration" method="post" id="modifyForm">
+                    <h3 class="login-head"><i class="bi bi-journal-plus me-2"></i> MODIFY REGISTRATION</h3>
+
                     <!-- Thumbnail -->
                     <div class="col-md-5 text-center">
                         <img class="subject-thumbnail" src="assets/images/thumbnail/subject/${subject.thumbnail}" alt="${subject.name}">
@@ -87,8 +83,9 @@
                             </c:forEach>
                         </div>
 
-                        <input type="hidden" name="subjectId" value="${subject.id}">
+                        <input type="hidden" name="registrationID" value="${requestScope.registrationID}">
                         <input type="hidden" name="packageId" id="selectedPackageId" value="">
+
                         <c:if test="${fn:length(fn:trim(requestScope.error)) > 0}">
                             <div class="alert alert-danger text-center" role="alert">
                                     ${requestScope.error}
@@ -104,10 +101,10 @@
                         <div class="row justify-content-end">
                             <div class="col-auto">
                                 <div class="d-flex gap-2">
-                                    <button class="btn btn-primary">
-                                        <i class="bi bi-check2-circle me-2 fs-5"></i> Register
+                                    <button id="submitBtn" class="btn btn-primary" disabled>
+                                        <i class="bi bi-check2-circle me-2 fs-5"></i> Update
                                     </button>
-                                    <a href="home" class="btn btn-light border border-secondary text-dark">Cancel</a>
+                                    <a href="my_registration" class="btn btn-light border border-secondary text-dark">Cancel</a>
                                 </div>
                             </div>
                         </div>
@@ -120,6 +117,8 @@
 
 <script>
     let packages = [];
+    // userChoice là packageId user đang đăng ký
+    let userChoice = ${userChoice != null ? userChoice : -1};
 
     function initPackages() {
         packages = [
@@ -132,10 +131,36 @@
             }<c:if test="${!loop.last}">,</c:if>
             </c:forEach>
         ];
-        selectPackage(packages[0].id);
+
+        packages.forEach(p => {
+            const btn = document.getElementById("btn-" + p.id);
+            if (p.id === userChoice) {
+                btn.classList.add("active");
+                btn.disabled = true; // disable nút user đã chọn
+                btn.title = "This package is your current selection and cannot be reselected";
+            } else {
+                btn.disabled = false;
+                btn.classList.remove("active");
+            }
+        });
+
+        // Chọn gói đầu tiên khác với userChoice để user phải thay đổi
+        const firstSelectable = packages.find(p => p.id !== userChoice);
+        if (firstSelectable) {
+            selectPackage(firstSelectable.id);
+            document.getElementById("submitBtn").disabled = false; // bật nút submit khi có gói chọn khác
+        } else {
+            // Trường hợp userChoice là duy nhất (hiếm), disable luôn nút submit
+            document.getElementById("submitBtn").disabled = true;
+        }
     }
 
     function selectPackage(id) {
+        if (id === userChoice) {
+            // Không cho chọn lại gói hiện tại
+            return;
+        }
+
         const salePriceSpan = document.getElementById("salePrice");
         const listPriceSpan = document.getElementById("listPrice");
         const selectedInput = document.getElementById("selectedPackageId");
@@ -148,11 +173,14 @@
                 btn.classList.add("active");
                 selectedInput.value = p.id;
             } else {
-                btn.classList.remove("active");
+                if (p.id !== userChoice) {
+                    btn.classList.remove("active");
+                }
             }
         });
     }
 </script>
+
 <%@include file="layout/footer.jsp" %>
 <%@include file="common/jsload.jsp" %>
 </body>

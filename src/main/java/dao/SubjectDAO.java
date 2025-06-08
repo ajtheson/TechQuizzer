@@ -25,4 +25,22 @@ public class SubjectDAO extends DBContext {
         }
         return null;
     }
+
+    public Subject getForUserRegistration(int subjectId){
+        String sql = "select [name], [thumbnail], [category_id] from [subjects] where [id] = ?";
+        try(PreparedStatement pstm = connection.prepareStatement(sql)){
+            pstm.setInt(1, subjectId);
+            ResultSet rs = pstm.executeQuery();
+            if(rs.next()){
+                Subject subject = new Subject();
+                subject.setName(rs.getString("name"));
+                subject.setThumbnail(rs.getString("thumbnail"));
+                subject.setCategoryId(rs.getInt("category_id"));
+                return subject;
+            }
+        }catch (SQLException e){
+            System.out.println("Error: " + e.getMessage());
+        }
+        return null;
+    }
 }

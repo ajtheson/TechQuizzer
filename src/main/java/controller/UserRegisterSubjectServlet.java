@@ -49,7 +49,7 @@ public class UserRegisterSubjectServlet extends HttpServlet {
 
         r.setTime(LocalDateTime.now());
         r.setTotalCost(p.getSalePrice());
-        r.setStatus("pending");
+        r.setStatus("Pending");
         r.setPricePackageId(packageID);
         r.setUserId(user.getId());
 

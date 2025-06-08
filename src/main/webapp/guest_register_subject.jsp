@@ -198,8 +198,8 @@
         packages.forEach(p => {
             const btn = document.getElementById("btn-" + p.id);
             if (p.id === id) {
-                salePriceSpan.innerText = "₫" + p.salePrice.toLocaleString();
-                listPriceSpan.innerText = "₫" + p.listPrice.toLocaleString();
+                salePriceSpan.innerText = "$" + p.salePrice.toLocaleString();
+                listPriceSpan.innerText = "$" + p.listPrice.toLocaleString();
                 btn.classList.add("active");
                 selectedInput.value = p.id;
             } else {

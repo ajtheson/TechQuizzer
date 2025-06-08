@@ -4,6 +4,7 @@ public class Subject {
     private int id;
     private String name;
     private String thumbnail;
+    private int categoryId;
 
     public int getId() {
         return id;
@@ -27,5 +28,13 @@ public class Subject {
 
     public void setThumbnail(String thumbnail) {
         this.thumbnail = thumbnail;
+    }
+
+    public int getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(int categoryId) {
+        this.categoryId = categoryId;
     }
 }
