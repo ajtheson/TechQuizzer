@@ -9,7 +9,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Title</title>
+    <title>Simulation Exam</title>
 </head>
 <body>
 
@@ -104,7 +104,7 @@
                     <td id="row_duration">${quiz.getDuration()}</td>
                     <td id="row_passRate">${quiz.getPassRate()}</td>
                     <td>
-                        <button>Take</button>
+                        <a href="simulation-exam/detail?id=${quiz.getId()}" class="btn btn-outline-secondary">Take</a>
                     </td>
                 </tr>
             </c:forEach>
