@@ -157,16 +157,31 @@
 <!-- Filter Script -->
 <script type="text/javascript">
     $(document).ready(function () {
+        //Initialize DataTable with element id 'sampleTable'
         const table = $('#sampleTable').DataTable();
 
-        //Add option in the filter of "Type"
+        /*
+        Add option in the filter of "Type"
+        Select data in column 1 (Type), select unique data and sort them
+        Append option in the filter of "Type" with id 'typeFilter'
+         */
         table.column(1).data().unique().sort().each(function (d) {
             $('#typeFilter').append('<option value="' + d + '">' + d + '</option>');
         });
 
-        //Handle filter by Type
+        //Listen for type filter change and filter DataTable
         $('#typeFilter').on('change', function () {
+            //Get the value of the filter and search for it in the DataTable
+            //escapeRegex is used to prevent regex special characters such as $, ^, *
             const val = $.fn.dataTable.util.escapeRegex($(this).val());
+            /*
+            Search for the value in the column 1 (Type)
+            If the val is not empty, change val become regex '^' + val + '$' and search for it in column 1
+            else, val is '' which means search for all data in column 1
+            search( searchText, useRegex = false, useSmart = true)
+            useSmart : search for exact match - tìm tách từ
+            draw() : redraw DataTable
+            */
             table.column(1).search(val ? '^' + val + '$' : '', true, false).draw();
         });
 

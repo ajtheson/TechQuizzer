@@ -8,8 +8,6 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 
 public class SettingDAO extends DBContext {
-    public SettingDAO() {
-    }
 
     public ArrayList<Setting> getAllSettings() {
         ArrayList<Setting> settings = new ArrayList<>();
