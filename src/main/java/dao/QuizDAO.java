@@ -13,6 +13,31 @@ import java.util.stream.Collectors;
 
 public class QuizDAO extends DBContext {
 
+    public Quiz findById(int id) {
+        String sql = "SELECT [name], [level], [duration], [pass_rate], [description], [test_type_id], [quiz_setting_id], [subject_id] FROM [quizzes] WHERE [id] = ?";
+        try(PreparedStatement pstm = connection.prepareStatement(sql)){
+            pstm.setInt(1, id);
+            try(ResultSet rs = pstm.executeQuery()){
+                if(rs.next()){
+                    Quiz quiz = new Quiz();
+                    quiz.setId(id);
+                    quiz.setName(rs.getString("name"));
+                    quiz.setLevel(rs.getString("level"));
+                    quiz.setDuration(rs.getInt("duration"));
+                    quiz.setPassRate(rs.getInt("pass_rate"));
+                    quiz.setDescription(rs.getString("description"));
+                    quiz.setTestTypeId(rs.getInt("test_type_id"));
+                    quiz.setQuizSettingId(rs.getInt("quiz_setting_id"));
+                    quiz.setSubjectId(rs.getInt("subject_id"));
+                    return quiz;
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     public List<Quiz> findAllByTestTypeIdAndSubjectIdsWithPagination(int testTypeId, List<Integer> subjectIds, int page, int size, String search) throws SQLException {
         ArrayList<Quiz> quizzes = new ArrayList<>();
 

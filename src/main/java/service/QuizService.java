@@ -38,4 +38,17 @@ public class QuizService {
         }
         return quizDTOList;
     }
+
+    public QuizDTO convertQuizToQuizDTO(Quiz quiz) {
+        QuizDTO quizDTO = new QuizDTO();
+        quizDTO.setId(quiz.getId());
+        quizDTO.setName(quiz.getName());
+        quizDTO.setSubject(new SubjectDAO().findById(quiz.getSubjectId()));
+        quizDTO.setQuizSetting(new QuizSettingDAO().findById(quiz.getQuizSettingId()));
+        quizDTO.setLevel(quiz.getLevel());
+        quizDTO.setDuration(quiz.getDuration());
+        quizDTO.setPassRate(quiz.getPassRate());
+
+        return quizDTO;
+    }
 }
