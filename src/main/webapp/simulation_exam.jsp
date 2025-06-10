@@ -211,9 +211,21 @@
             const checked = e.target.checked
             const th = document.getElementById('col_' + id);
             th.style.display = checked ? '' : 'none';
-            document.querySelectorAll("#row_" + id).forEach(td => td.style.display = checked ? '' : 'none')
+            document.querySelectorAll("#row_" + id).forEach(td => td.style.display = checked ? '' : 'none');
+
+            let checkedCheckboxes = Array.from(document.querySelectorAll('input[type="checkbox"]')).filter(cb => cb.checked);
+            if(checkedCheckboxes.length === 1){
+                checkedCheckboxes[0].setAttribute("disabled", "true");
+            }else{
+                let disabledCheckbox = document.querySelector('input[type="checkbox"][disabled]');
+                if (disabledCheckbox) {
+                    disabledCheckbox.removeAttribute("disabled");
+                }
+            }
         });
     });
+
+
 
 </script>
 
