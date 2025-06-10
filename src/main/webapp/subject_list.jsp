@@ -30,21 +30,21 @@
                     <strong>TechQuizzer</strong> makes it easy to learn and improve — anytime, anywhere, from beginner
                     to advanced.
                 </p>
-                <a href="#user-timeline" class="btn btn-light btn-lg px-4 rounded-pill shadow">Start Learning</a>
+                <a href="#myTabContent" class="btn btn-light btn-lg px-4 rounded-pill shadow">Start Learning</a>
             </div>
         </div>
     </div>
 </section>
 
-
-<main class="container">
+<!-- Main content -->
+<main class="container" id="myTabContent">
     <div class="row user">
-        <%--        sidebar--%>
+        <%--Main content left/Sider--%>
         <div class="col-md-4">
             <div class="card" style="margin-top: 20px">
                 <div class="card-body p-0">
 
-                    <!-- 1. Search -->
+                    <!-- Search -->
                     <div class="p-3 border-bottom">
                         <div class="input-group rounded shadow-sm">
                             <input type="search" id="searchInput" class="form-control"
@@ -54,7 +54,7 @@
                     </div>
 
 
-                    <!-- 2. Featured Subject -->
+                    <!-- Featured Subject -->
                     <div class="p-3 border-bottom hover-bg position-relative d-flex justify-content-between align-items-center">
                         <h6 class="text-uppercase fw-bold mb-0">Featured Subject</h6>
                         <input type="checkbox"
@@ -63,7 +63,7 @@
                         ${requestScope.isFeatured ? 'checked' : ''}>
                     </div>
 
-                    <!-- 3. Subject Category (Accordion Dropdown) -->
+                    <!-- Subject Category-->
                     <div class="accordion border-bottom" id="accordionCategory">
                         <div class="accordion-item">
                             <h2 class="accordion-header">
@@ -77,21 +77,24 @@
                                     <c:forEach items="${requestScope.categories}" var="category">
                                         <div class="form-check">
                                             <input class="form-check-input" type="radio" name="category"
-                                                   value="${category.id}" id="${category.id}" ${requestScope.categoryId == category.id ? 'checked' : ''}>
+                                                   value="${category.id}"
+                                                   id="${category.id}" ${requestScope.categoryId == category.id ? 'checked' : ''}>
                                             <label for="${category.id}"
                                                    class="form-check-label">${category.name}</label>
                                         </div>
                                     </c:forEach>
-                                    <!-- Nút Clear Category -->
+                                    <!--Clear Category -->
                                     <div class="d-flex justify-content-center">
-                                        <button id="clearCategoryBtn" class="btn btn-outline-primary btn-sm">Clear Category</button>
+                                        <button id="clearCategoryBtn" class="btn btn-outline-primary btn-sm">Clear
+                                            Category
+                                        </button>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- 4. Show Fields (Accordion Dropdown) -->
+                    <!--Show Fields (Accordion Dropdown) -->
                     <div class="accordion border-bottom" id="accordionFields">
                         <div class="accordion-item">
                             <h2 class="accordion-header">
@@ -103,19 +106,19 @@
                             <div id="collapseFields" class="accordion-collapse collapse show">
                                 <div class="accordion-body px-3 pt-2 pb-3">
                                     <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" id="thumbnail">
+                                        <input class="form-check-input" type="checkbox" id="thumbnail" checked>
                                         <label class="form-check-label" for="thumbnail">Thumbnail</label>
                                     </div>
                                     <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" id="tag-line">
+                                        <input class="form-check-input" type="checkbox" id="tag-line" checked>
                                         <label class="form-check-label" for="tag-line">Tag Line</label>
                                     </div>
                                     <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" id="list-price">
+                                        <input class="form-check-input" type="checkbox" id="list-price" checked>
                                         <label class="form-check-label" for="list-price">List Price</label>
                                     </div>
                                     <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" id="sale-price">
+                                        <input class="form-check-input" type="checkbox" id="sale-price" checked>
                                         <label class="form-check-label" for="sale-price">Sale Price</label>
                                     </div>
                                 </div>
@@ -123,13 +126,13 @@
                         </div>
                     </div>
 
-                    <!-- 5. Need More Advice -->
+                    <!-- Need More Advice -->
                     <div class="p-3">
                         <h6 class="mb-3 text-center">
                             Need More Advice? Contact TechQuizzer
                         </h6>
                         <div class="d-flex justify-content-center">
-                            <a class="btn btn-outline-primary btn-sm" href="#user-settings" data-bs-toggle="tab">Ask
+                            <a class="btn btn-outline-primary btn-sm" href="https://zalo.me/0343008127" target="_blank">Ask
                                 Now</a>
                         </div>
                     </div>
@@ -138,12 +141,20 @@
             </div>
         </div>
 
-
+        <!--Main content right -->
         <div class="col-md-8">
             <div class="tab-content">
+                <%--Part on the subject list--%>
                 <div class="mb-3 d-flex align-items-center justify-content-between">
-                    <label class="form-label mb-0" for="type">Showing ${size*(page-1)+1}
-                        to ${size * page > totalSubjects ? totalSubjects: size * page} of ${totalSubjects} items</label>
+                    <%--Number of subject shown--%>
+                    <label class="form-label mb-0" for="type">
+                        <c:if test="${totalSubjects == 0}">
+                        No data</label>
+                    </c:if>
+                    <c:if test="${totalSubjects > 0}">
+                        Showing ${size*(page-1)+1} to ${size * page > totalSubjects ? totalSubjects: size * page} of ${totalSubjects} items</label>
+                    </c:if>
+                    <%--Sort order--%>
                     <select class="form-select w-auto ms-2" name="sortOrder" id="sortOrderSelect">
                         <option value="desc" ${sortOrder == 'desc' ? 'selected="selected"' : ''}>Newest to
                             Oldest
@@ -154,13 +165,14 @@
                     </select>
                 </div>
 
+                <%--Subject list--%>
                 <div class="tab-pane active" id="user-timeline">
-                    <%--                    Div for one subject--%>
+                    <%--Part for one subject--%>
                     <c:forEach items="${subjects}" var="subject">
                         <div class="timeline-post">
                             <div class="row">
                                 <div class="subject-media col-md-4">
-                                    <a href="#">
+                                    <a href="get-subject-detail?id=${subject.id}">
                                         <img class="subject-thumbnail"
                                              src="assets/images/thumbnail/subject/${subject.thumbnail}"
                                              alt="Subject_Thumbnail">
@@ -168,21 +180,26 @@
                                 </div>
                                 <div class="post-content col-md-6">
                                     <h4 class="text-uppercase">${subject.name}</h4>
-                                    <p>${subject.tagLine}</p>
+                                    <p class="subject-tagline">${subject.tagLine}</p>
                                 </div>
                                 <div class="price_register_button col-md-2">
-                                    <p class="text-decoration-line-through">$${subject.minListPrice}</p>
-                                    <p class="fw-bold">$${subject.minSalePrice}</p>
-                                    <button class="btn" style="background-color:#00897B; color:white; border:none;"
-                                            type="button">Register
-                                    </button>
+                                    <p class="text-decoration-line-through subject-list-price">
+                                        $${subject.minListPrice}</p>
+                                    <p class="fw-bold subject-sale-price">$${subject.minSalePrice}</p>
+                                    <a class="btn" style="background-color:#00897B; color:white; border:none;"
+                                       href="register_subject?subject_id=${subject.id}"
+                                       type="button">Register
+                                    </a>
                                 </div>
                             </div>
                         </div>
                     </c:forEach>
                 </div>
             </div>
+
+            <%--Pagination--%>
             <div class="d-flex align-items-center justify-content-between mb-3">
+                <%--Items per page--%>
                 <div class="d-flex align-items-center me-3">
                     <label for="size" class="me-2 mb-0">Items per page:</label>
                     <input type="number" min="1" name="size" class="form-control me-2" style="width: 80px;"
@@ -190,23 +207,27 @@
                     <button type="submit" class="btn btn-primary btn-sm" id="sizeBtn">Apply</button>
                 </div>
 
+                <%--Page list--%>
                 <nav>
                     <ul class="pagination mb-0">
                         <c:if test="${page > 1}">
                             <li class="page-item">
-                                <a class="page-link" href="?page=${requestScope.page - 1}&size=${requestScope.size}&${not empty requestScope.search ? '&search='.concat(requestScope.search) : ''}${requestScope.isFeatured ? '&isFeatured=true' : ''}${requestScope.categoryId != 0 ? '&categoryId='.concat(requestScope.categoryId) : ''}&sortOrder=${requestScope.sortOrder}">Previous</a>
+                                <a class="page-link"
+                                   href="?page=${requestScope.page - 1}&size=${requestScope.size}&${not empty requestScope.search ? '&search='.concat(requestScope.search) : ''}${requestScope.isFeatured ? '&isFeatured=true' : ''}${requestScope.categoryId != 0 ? '&categoryId='.concat(requestScope.categoryId) : ''}&sortOrder=${requestScope.sortOrder}">Previous</a>
                             </li>
                         </c:if>
 
                         <c:forEach begin="1" end="${totalPages}" var="i">
                             <li class="page-item ${i == page ? 'active' : ''}">
-                                <a class="page-link" href="?page=${i}&size=${requestScope.size}&${not empty requestScope.search ? '&search='.concat(requestScope.search) : ''}${requestScope.isFeatured ? '&isFeatured=true' : ''}${requestScope.categoryId != 0 ? '&categoryId='.concat(requestScope.categoryId) : ''}&sortOrder=${requestScope.sortOrder}">${i}</a>
+                                <a class="page-link"
+                                   href="?page=${i}&size=${requestScope.size}&${not empty requestScope.search ? '&search='.concat(requestScope.search) : ''}${requestScope.isFeatured ? '&isFeatured=true' : ''}${requestScope.categoryId != 0 ? '&categoryId='.concat(requestScope.categoryId) : ''}&sortOrder=${requestScope.sortOrder}">${i}</a>
                             </li>
                         </c:forEach>
 
                         <c:if test="${page < totalPages}">
                             <li class="page-item">
-                                <a class="page-link" href="?page=${requestScope.page + 1}&size=${requestScope.size}&${not empty requestScope.search ? '&search='.concat(requestScope.search) : ''}${requestScope.isFeatured ? '&isFeatured=true' : ''}${requestScope.categoryId != 0 ? '&categoryId='.concat(requestScope.categoryId) : ''}&sortOrder=${requestScope.sortOrder}">Next</a>
+                                <a class="page-link"
+                                   href="?page=${requestScope.page + 1}&size=${requestScope.size}&${not empty requestScope.search ? '&search='.concat(requestScope.search) : ''}${requestScope.isFeatured ? '&isFeatured=true' : ''}${requestScope.categoryId != 0 ? '&categoryId='.concat(requestScope.categoryId) : ''}&sortOrder=${requestScope.sortOrder}">Next</a>
                             </li>
                         </c:if>
 
@@ -224,95 +245,83 @@
     const categoryId = ${requestScope.categoryId};
     const sortOrder = "${requestScope.sortOrder}";
 
+    //Handle change item per page
     document.getElementById("sizeBtn").addEventListener("click", (e) => {
         let sizeInput = document.getElementById("sizeInput").value.trim()
         sizeInput = parseInt(sizeInput);
         sizeInput = isNaN(sizeInput) || sizeInput < 1 ? 5 : sizeInput;
         let url = "?page=1&size=" + sizeInput
-        if(search.length > 0) {
-            url+= "&search=" + searchInput
+        if (search.length > 0) {
+            url += "&search=" + searchInput
         }
-        if(isFeatured) {
+        if (isFeatured) {
             url += "&isFeatured=true"
         }
-        if(categoryId !== 0) {
+        if (categoryId !== 0) {
             url += "&categoryId=" + categoryId
         }
-        if(sortOrder != null) {
+        if (sortOrder != null) {
             url += "&sortOrder=" + sortOrder
         }
         window.location.href = url
     });
 
+    //Handle search by name
     document.getElementById("searchBtn").addEventListener("click", (e) => {
         let searchInput = document.getElementById("searchInput").value.trim()
         let url = "?page=1&size=" + size
-        if(searchInput.length > 0) {
-            url+= "&search=" + searchInput
+        if (searchInput.length > 0) {
+            url += "&search=" + searchInput
         }
-        if(isFeatured) {
+        if (isFeatured) {
             url += "&isFeatured=true"
         }
-        if(categoryId !== 0) {
+        if (categoryId !== 0) {
             url += "&categoryId=" + categoryId
         }
-        if(sortOrder != null) {
+        if (sortOrder != null) {
             url += "&sortOrder=" + sortOrder
         }
         window.location.href = url
     });
 
+    //handle Featured subject
     document.getElementById("featuredCheckbox").addEventListener("change", (e) => {
         let url = "?page=1&size=" + size
-        if(search.length > 0) {
-            url+= "&search=" + search
+        if (search.length > 0) {
+            url += "&search=" + search
         }
-        if(e.target.checked) {
+        if (e.target.checked) {
             url += "&isFeatured=true"
         }
-        if(categoryId !== 0) {
+        if (categoryId !== 0) {
             url += "&categoryId=" + categoryId
         }
-        if(sortOrder != null) {
+        if (sortOrder != null) {
             url += "&sortOrder=" + sortOrder
         }
         window.location.href = url
     });
 
+    //Handle filter subject by category
     document.getElementById("categoryList").addEventListener("change", (e) => {
         let url = "?page=1&size=" + size
-        if(search.length > 0) {
-            url+= "&search=" + search
+        if (search.length > 0) {
+            url += "&search=" + search
         }
-        if(isFeatured) {
+        if (isFeatured) {
             url += "&isFeatured=true"
         }
-        if(e.target.value != null) {
+        if (e.target.value != null) {
             url += "&categoryId=" + e.target.value
         }
-        if(sortOrder != null) {
+        if (sortOrder != null) {
             url += "&sortOrder=" + sortOrder
         }
         window.location.href = url
     });
 
-    document.getElementById("sortOrderSelect").addEventListener("change", (e) => {
-        let url = "?page=1&size=" + size
-        if(search.length > 0) {
-            url+= "&search=" + search
-        }
-        if(isFeatured) {
-            url += "&isFeatured=true"
-        }
-        if(categoryId !== 0) {
-            url += "&categoryId=" + categoryId
-        }
-        if(e.target.value != null) {
-            url += "&sortOrder=" + e.target.value
-        }
-        window.location.href = url
-    });
-
+    //handle clear filter subject by category
     document.getElementById("clearCategoryBtn").addEventListener("click", () => {
         let url = "?page=1&size=" + size;
         if (search.length > 0) {
@@ -327,7 +336,54 @@
         window.location.href = url;
     });
 
+    // Handle sort order
+    document.getElementById("sortOrderSelect").addEventListener("change", (e) => {
+        let url = "?page=1&size=" + size
+        if (search.length > 0) {
+            url += "&search=" + search
+        }
+        if (isFeatured) {
+            url += "&isFeatured=true"
+        }
+        if (categoryId !== 0) {
+            url += "&categoryId=" + categoryId
+        }
+        if (e.target.value != null) {
+            url += "&sortOrder=" + e.target.value
+        }
+        window.location.href = url
+    });
 
+    function updateFieldVisibility() {
+        const showThumbnail = document.getElementById("thumbnail").checked;
+        const showTagLine = document.getElementById("tag-line").checked;
+        const showListPrice = document.getElementById("list-price").checked;
+        const showSalePrice = document.getElementById("sale-price").checked;
+
+        document.querySelectorAll(".subject-media").forEach(el => {
+            el.style.display = showThumbnail ? "block" : "none";
+        });
+
+        document.querySelectorAll(".subject-tagline").forEach(el => {
+            el.style.display = showTagLine ? "block" : "none";
+        });
+
+        document.querySelectorAll(".subject-list-price").forEach(el => {
+            el.style.display = showListPrice ? "block" : "none";
+        });
+
+        document.querySelectorAll(".subject-sale-price").forEach(el => {
+            el.style.display = showSalePrice ? "block" : "none";
+        });
+    }
+
+    // Gán sự kiện thay đổi cho tất cả checkbox
+    ["thumbnail", "tag-line", "list-price", "sale-price"].forEach(id => {
+        document.getElementById(id).addEventListener("change", updateFieldVisibility);
+    });
+
+    // Gọi lần đầu khi trang tải
+    document.addEventListener("DOMContentLoaded", updateFieldVisibility);
 </script>
 
 

@@ -57,7 +57,7 @@ public class GetSubjectListServlet extends HttpServlet {
         CategoryDAO categoryDAO = new CategoryDAO();
 
         //Get all subjects, categories from database and set to request attribute
-        List<Subject> subjectList = subjectDAO.getAllSubjects(page, size, categoryId, sortOrder, isFeatured, search);
+        List<Subject> subjectList = subjectDAO.getAllSubjectsWithPagination(page, size, categoryId, sortOrder, isFeatured, search);
         List<SubjectDTO> subjects = new ArrayList<>();
         SubjectService subjectService = new SubjectService();
         for(Subject subject : subjectList) {

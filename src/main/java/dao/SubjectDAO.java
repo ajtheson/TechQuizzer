@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SubjectDAO extends DBContext {
-    public List<Subject> getAllSubjects(int page, int size, int categoryId, boolean isDesc, boolean isFeatured, String searchParam) {
+    public List<Subject> getAllSubjectsWithPagination(int page, int size, int categoryId, boolean isDesc, boolean isFeatured, String searchParam) {
         List<Subject> subjects = new ArrayList<>();
         StringBuilder sql = new StringBuilder("""
                     SELECT [id], [name], [tag_line], [thumbnail], [featured_subject], [category_id], [update_date]
