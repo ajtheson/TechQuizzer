@@ -84,4 +84,29 @@ public class SubjectDAO extends DBContext {
         }
         return 0;
     }
+    
+    public Subject getSubjectById(int id){
+        Subject subject = new Subject();
+        String sql = "Select * from [subjects] where [id] = ?";
+        try (PreparedStatement pstm = connection.prepareStatement(sql)) {
+            pstm.setInt(1, id);
+            ResultSet rs = pstm.executeQuery();
+            if (rs.next()) {
+                subject.setId(rs.getInt("id"));
+                subject.setName(rs.getString("name"));
+                subject.setTagLine(rs.getString("tag_line"));
+                subject.setThumbnail(rs.getString("thumbnail"));
+                subject.setShortDescription(rs.getString("short_description"));
+                subject.setLongDescription(rs.getString("detail_description").replace("\\n", "<br>"));
+                subject.setFeaturedSubject(rs.getBoolean("featured_subject"));
+                subject.setPublished(rs.getBoolean("status"));
+                subject.setCategoryId(rs.getInt("category_id"));
+                subject.setOwnerId(rs.getInt("owner_id"));
+                subject.setUpdateDate(rs.getTimestamp("update_date").toLocalDateTime());
+            }
+        } catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+        return subject;
+    }
 }

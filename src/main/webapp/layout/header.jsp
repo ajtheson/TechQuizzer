@@ -17,7 +17,7 @@
     <%--left side--%>
     <ul class="nav nav-underline mx-3">
         <li class="nav-item" style="padding-left: 20px">
-            <a class="nav-link text-white d-flex align-items-center gap-2" href="get-subject-list" style="padding: 14px 0 5px 0;">
+            <a class="nav-link text-white d-flex align-items-center gap-2" href="subjects" style="padding: 14px 0 5px 0;">
                 <i class="bi bi-book"></i>
                 <h5 style="margin: 0">Subject</h5>
             </a>

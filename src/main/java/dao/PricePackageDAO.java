@@ -177,13 +177,13 @@ public class PricePackageDAO extends DBContext {
         return null;
     }
 
-    public int getMinListPrice(int subjectId){
+    public double getMinListPrice(int subjectId){
         String sql = "select min(list_price) from [price_packages] where [subject_id] = ? and [status] = 1";
         try(PreparedStatement pstm = connection.prepareStatement(sql)){
             pstm.setInt(1, subjectId);
             ResultSet rs = pstm.executeQuery();
             if(rs.next()){
-                return rs.getInt(1);
+                return rs.getDouble(1);
             }
         }catch (SQLException e){
             System.out.println("Error: " + e.getMessage());
@@ -191,13 +191,13 @@ public class PricePackageDAO extends DBContext {
         return 0;
     }
 
-    public int getMinSalePrice(int subjectId){
+    public double getMinSalePrice(int subjectId){
         String sql = "select min(sale_price) from [price_packages] where [subject_id] = ? and [status] = 1";
         try(PreparedStatement pstm = connection.prepareStatement(sql)){
             pstm.setInt(1, subjectId);
             ResultSet rs = pstm.executeQuery();
             if(rs.next()){
-                return rs.getInt(1);
+                return rs.getDouble(1);
             }
         }catch (SQLException e){
             System.out.println("Error: " + e.getMessage());

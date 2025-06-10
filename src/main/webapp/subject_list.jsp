@@ -172,7 +172,7 @@
                         <div class="timeline-post">
                             <div class="row">
                                 <div class="subject-media col-md-4">
-                                    <a href="get-subject-detail?id=${subject.id}">
+                                    <a href="get-subject-detail?subject_id=${subject.id}">
                                         <img class="subject-thumbnail"
                                              src="assets/images/thumbnail/subject/${subject.thumbnail}"
                                              alt="Subject_Thumbnail">
@@ -183,7 +183,7 @@
                                     <p class="subject-tagline">${subject.tagLine}</p>
                                 </div>
                                 <div class="price_register_button col-md-2">
-                                    <p class="text-decoration-line-through subject-list-price">
+                                    <p class="text-decoration-line-through subject-list-price text-muted">
                                         $${subject.minListPrice}</p>
                                     <p class="fw-bold subject-sale-price">$${subject.minSalePrice}</p>
                                     <a class="btn" style="background-color:#00897B; color:white; border:none;"
