@@ -89,17 +89,6 @@
 
                         <input type="hidden" name="subjectId" value="${subject.id}">
                         <input type="hidden" name="packageId" id="selectedPackageId" value="">
-                        <c:if test="${fn:length(fn:trim(requestScope.error)) > 0}">
-                            <div class="alert alert-danger text-center" role="alert">
-                                    ${requestScope.error}
-                            </div>
-                        </c:if>
-                        <c:if test="${fn:length(fn:trim(requestScope.success)) > 0}">
-                            <div class="alert alert-success text-center" role="alert">
-                                    ${requestScope.success}
-                            </div>
-                        </c:if>
-
                         <!-- Register Button -->
                         <div class="row justify-content-end">
                             <div class="col-auto">

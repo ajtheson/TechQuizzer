@@ -381,7 +381,45 @@
 
 
 <jsp:include page="./layout/footer.jsp"/>
+<!-- Toast Notification -->
+<div class="position-fixed top-0 end-0 p-3" style="z-index: 9999" data-bs-delay="2000">
+    <div id="toast" class="toast align-items-center border-0" role="alert"
+         aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+            <div class="toast-body">
+                <!-- Message will be injected here -->
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
+                    aria-label="Close"></button>
+        </div>
+    </div>
+</div>
+<%--Script to get toastNotification from CreateSettingServlet to show and remove it in session--%>
+<%
+    String toastNotification = (String) session.getAttribute("toastNotification");
+    if (toastNotification != null) {
+        boolean isSuccess = toastNotification.contains("successfully");
+        session.removeAttribute("toastNotification");
+%>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const toastElement = document.getElementById('toast');
+        const toastElementBody = toastElement.querySelector('.toast-body');
 
+        toastElementBody.textContent = "<%= toastNotification %>";
+        toastElement.classList.remove('<%= isSuccess ? "text-bg-danger" : "text-bg-success" %>');
+        toastElement.classList.add('<%= isSuccess ? "text-bg-success" : "text-bg-danger" %>');
+
+        const toast = new bootstrap.Toast(toastElement, {
+            autohide: true,
+            delay: 2000
+        });
+        toast.show();
+    });
+</script>
+<%
+    }
+%>
 </body>
 
 <script>

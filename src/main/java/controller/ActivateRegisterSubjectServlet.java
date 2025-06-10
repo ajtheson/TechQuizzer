@@ -91,12 +91,12 @@ public class ActivateRegisterSubjectServlet extends HttpServlet {
                     registration.setPricePackageId(packageID);
                     registration.setUserId(userID);
                     if(rDAO.addRegistration(registration)) {
-                        session.setAttribute("verifyNotification", "Your registration has been verified");
-                        response.sendRedirect("login");
+                        session.setAttribute("toastNotification", "Registration has been added successfully.");
+                        response.sendRedirect("home");
                         return;
                     }else {
-                        session.setAttribute("verifyNotification", "Something went wrong");
-                        response.sendRedirect("login");
+                        session.setAttribute("toastNotification", "Something went wrong. Please try again later.");
+                        response.sendRedirect("home");
                         return;
                     }
 

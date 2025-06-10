@@ -109,7 +109,7 @@
                     &nbsp;&nbsp;&nbsp;
                     <a class="btn btn-primary" href="create_price_package?subject_id=${p.subjectId}"><i class="bi bi-plus-circle me-2"></i>Create new price package</a>
                     &nbsp;&nbsp;&nbsp;
-                    <a class="btn btn-secondary" href="get_price_package?subject_id=${p.subjectId}"><i class="bi bi-x-circle-fill me-2"></i>Cancel</a>
+                    <a class="btn btn-secondary" href="get_price_package?subject_id=${p.subjectId}"><i class="bi bi-x-circle-fill me-2"></i>Back</a>
                 </div>
             </div>
         </div>

@@ -35,7 +35,7 @@ public class RegistrationDAO extends DBContext {
 
     public List<RegistrationDTO> getRegistrationListOfUser(int userID){
         List<RegistrationDTO> list = new ArrayList<>();
-        String sql = "select * from [registrations] where [user_id] = ? order by [status] desc";
+        String sql = "select * from [registrations] where [user_id] = ? order by [status] desc, [time] desc";
         try(PreparedStatement pstm = connection.prepareStatement(sql)){
             pstm.setInt(1, userID);
             ResultSet rs = pstm.executeQuery();

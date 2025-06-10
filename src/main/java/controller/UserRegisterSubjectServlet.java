@@ -59,11 +59,11 @@ public class UserRegisterSubjectServlet extends HttpServlet {
         request.setAttribute("subject", s);
         request.setAttribute("packages", packages);
         if(rDAO.addRegistration(r)){
-            request.setAttribute("success", "Your registration has been confirmed");
-            request.getRequestDispatcher("user_register_subject.jsp").forward(request, response);
+            session.setAttribute("toastNotification", "Registration has been added successfully.");
+            response.sendRedirect("my_registration");
         }else{
-            request.setAttribute("error", "Something went wrong. Please try again");
-            request.getRequestDispatcher("user_register_subject.jsp").forward(request, response);
+            session.setAttribute("toastNotification", "Something went wrong. Please try again later.");
+            response.sendRedirect("my_registration");
         }
     }
 }
