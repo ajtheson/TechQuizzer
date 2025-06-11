@@ -8,7 +8,6 @@
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-<%@ page import="java.time.LocalDateTime, java.time.format.DateTimeFormatter" %>
 
 <html>
 <head>
@@ -24,7 +23,7 @@
     <div class="row user">
         <%--        sidebar--%>
         <div class="col-md-4">
-            <div class="card">
+            <div class="card" style="position: sticky; top: 100px; z-index: 1020">
                 <div class="card-body p-0">
 
                     <!-- 1. Search -->
