@@ -141,4 +141,23 @@ public class RegistrationDAO extends DBContext {
         }
         return false;
     }
+
+    public boolean isRegistrationExist(int userID, int subjectID){
+        String sql = """
+                SELECT 1
+                FROM registrations r JOIN price_packages p
+                ON r.price_package_id = p.id
+                WHERE r.user_id = ? AND p.subject_id = ? AND r.status = 'Paid'
+                """;
+        try(PreparedStatement pstm = connection.prepareStatement(sql)){
+            pstm.setInt(1, userID);
+            pstm.setInt(2, subjectID);
+            if(pstm.executeQuery().next()){
+                return true;
+            }
+        }catch (SQLException e){
+            System.out.println("Error: " + e.getMessage());
+        }
+        return false;
+    }
 }

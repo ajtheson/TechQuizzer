@@ -1,8 +1,8 @@
-package entity;
+package dto;
 
 import java.time.LocalDateTime;
 
-public class Subject {
+public class SubjectDTO {
     private int id;
     private String name;
     private String tagLine;
@@ -14,6 +14,9 @@ public class Subject {
     private int categoryId;
     private int ownerId;
     private LocalDateTime updateDate;
+    private double minListPrice;
+    private double minSalePrice;
+    private boolean isRegistered;
 
     public int getId() {
         return id;
@@ -21,14 +24,6 @@ public class Subject {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public boolean isPublished() {
-        return isPublished;
-    }
-
-    public void setPublished(boolean published) {
-        isPublished = published;
     }
 
     public String getName() {
@@ -79,6 +74,14 @@ public class Subject {
         isFeaturedSubject = featuredSubject;
     }
 
+    public boolean isPublished() {
+        return isPublished;
+    }
+
+    public void setPublished(boolean published) {
+        isPublished = published;
+    }
+
     public int getCategoryId() {
         return categoryId;
     }
@@ -95,11 +98,35 @@ public class Subject {
         this.ownerId = ownerId;
     }
 
+    public double getMinListPrice() {
+        return minListPrice;
+    }
+
+    public void setMinListPrice(double minListPrice) {
+        this.minListPrice = minListPrice;
+    }
+
+    public double getMinSalePrice() {
+        return minSalePrice;
+    }
+
+    public void setMinSalePrice(double minSalePrice) {
+        this.minSalePrice = minSalePrice;
+    }
+
     public LocalDateTime getUpdateDate() {
         return updateDate;
     }
 
     public void setUpdateDate(LocalDateTime updateDate) {
         this.updateDate = updateDate;
+    }
+
+    public boolean getIsRegistered() {
+        return isRegistered;
+    }
+
+    public void setRegistered(boolean registered) {
+        isRegistered = registered;
     }
 }
