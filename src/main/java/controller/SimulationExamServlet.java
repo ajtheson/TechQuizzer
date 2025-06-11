@@ -56,7 +56,7 @@ public class SimulationExamServlet extends HttpServlet {
 
             request.setAttribute("quizzes", quizzesDTO);
             request.setAttribute("registrationSubjects", subjects);
-            request.setAttribute("totalPages", totalPages);
+            request.setAttribute("totalPages", totalPages != 0 ? totalPages : 1);
             request.setAttribute("page", page);
             request.setAttribute("size", size);
             request.setAttribute("filter", filter);
