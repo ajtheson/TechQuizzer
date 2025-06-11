@@ -101,7 +101,7 @@
                         </div>
 
                         <div class="col-md-12 mt-1 mb-3">
-                            <a class="btn btn-primary btn-lg" style="width: 100%" href="#">Register</a>
+                            <a class="btn btn-primary btn-lg" style="width: 100%" href="register_subject?subject_id=${requestScope.subject.id}">Register</a>
                         </div>
 
                         <hr>

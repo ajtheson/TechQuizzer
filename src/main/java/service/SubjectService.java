@@ -1,6 +1,8 @@
 package service;
 
 import dao.PricePackageDAO;
+import dao.RegistrationDAO;
+import dao.UserDAO;
 import dto.SubjectDTO;
 import entity.Subject;
 

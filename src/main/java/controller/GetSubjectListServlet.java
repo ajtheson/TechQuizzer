@@ -1,8 +1,10 @@
 package controller;
 
 import dao.CategoryDAO;
+import dao.RegistrationDAO;
 import dao.SubjectDAO;
 import dto.SubjectDTO;
+import dto.UserDTO;
 import entity.Category;
 import entity.Subject;
 import jakarta.servlet.ServletException;
@@ -10,6 +12,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import service.SubjectService;
 
 import java.io.IOException;
@@ -27,6 +30,13 @@ public class GetSubjectListServlet extends HttpServlet {
         boolean isFeatured = false;
         int categoryId = 0;
         boolean sortOrder = true;
+        int userID = 0;
+
+        HttpSession session = request.getSession();
+        if(session.getAttribute("user") != null) {
+            UserDTO user = (UserDTO)session.getAttribute("user");
+            userID = user.getId();
+        }
 
         if (request.getParameter("page") != null) {
             page = Integer.parseInt(request.getParameter("page"));
@@ -55,13 +65,16 @@ public class GetSubjectListServlet extends HttpServlet {
 
         SubjectDAO subjectDAO = new SubjectDAO ();
         CategoryDAO categoryDAO = new CategoryDAO();
+        RegistrationDAO registrationDAO = new RegistrationDAO();
 
         //Get all subjects, categories from database and set to request attribute
         List<Subject> subjectList = subjectDAO.getAllSubjectsWithPagination(page, size, categoryId, sortOrder, isFeatured, search);
         List<SubjectDTO> subjects = new ArrayList<>();
         SubjectService subjectService = new SubjectService();
         for(Subject subject : subjectList) {
-            subjects.add(subjectService.toSubjectDTO(subject));
+            SubjectDTO subjectDTO = subjectService.toSubjectDTO(subject);
+            subjectDTO.setRegistered(registrationDAO.isRegistrationExist(userID, subjectDTO.getId()));
+            subjects.add(subjectDTO);
         }
         int totalSubjects = subjectDAO.getTotalSubjects(categoryId, isFeatured, search);
         int totalPages = (int) Math.ceil((double) totalSubjects / size);

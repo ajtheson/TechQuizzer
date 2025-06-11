@@ -16,6 +16,7 @@ public class SubjectDTO {
     private LocalDateTime updateDate;
     private double minListPrice;
     private double minSalePrice;
+    private boolean isRegistered;
 
     public int getId() {
         return id;
@@ -119,5 +120,13 @@ public class SubjectDTO {
 
     public void setUpdateDate(LocalDateTime updateDate) {
         this.updateDate = updateDate;
+    }
+
+    public boolean getIsRegistered() {
+        return isRegistered;
+    }
+
+    public void setRegistered(boolean registered) {
+        isRegistered = registered;
     }
 }

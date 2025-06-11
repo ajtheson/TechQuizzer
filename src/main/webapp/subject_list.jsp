@@ -186,10 +186,19 @@
                                     <p class="text-decoration-line-through subject-list-price text-muted">
                                         $${subject.minListPrice}</p>
                                     <p class="fw-bold subject-sale-price">$${subject.minSalePrice}</p>
-                                    <a class="btn" style="background-color:#00897B; color:white; border:none;"
-                                       href="register_subject?subject_id=${subject.id}"
-                                       type="button">Register
-                                    </a>
+                                    <c:choose>
+                                        <c:when test="${subject.isRegistered}">
+                                            <button class="btn" style="background-color:#e0e0e0; color:black; border:none;" type="button" disabled>
+                                                Registered
+                                            </button>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <a class="btn" style="background-color:#00897B; color:white; border:none;"
+                                               href="register_subject?subject_id=${subject.id}"
+                                               type="button">Register
+                                            </a>
+                                        </c:otherwise>
+                                    </c:choose>
                                 </div>
                             </div>
                         </div>
