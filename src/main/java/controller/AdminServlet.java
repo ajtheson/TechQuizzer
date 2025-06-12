@@ -63,7 +63,7 @@ public class AdminServlet extends HttpServlet {
         String roleParam = request.getParameter("role");
         String statusParam = request.getParameter("status");
         String genderParam = request.getParameter("gender");
-
+        String searchText = request.getParameter("searchText");
         Integer roleId = (roleParam != null && !roleParam.isEmpty()) ? Integer.parseInt(roleParam) : null;
         Integer status = (statusParam != null && !statusParam.isEmpty()) ? Integer.parseInt(statusParam) : null;
         Integer gender = (genderParam != null && !genderParam.isEmpty()) ? Integer.parseInt(genderParam) : null;
@@ -93,14 +93,15 @@ public class AdminServlet extends HttpServlet {
         if (sortField == null || sortField.isEmpty()) sortField = "id";
         if (sortOrder == null || sortOrder.isEmpty()) sortOrder = "asc";
 
-        ArrayList<User> users = userDAO.getUsersByPage(roleId, gender, status, page, pageSize, sortField, sortOrder);
-        int totalUsers = userDAO.getTotalUsers(roleId, gender, status);
+        ArrayList<User> users = userDAO.getUsersByPage(roleId, gender, status, searchText,page, pageSize, sortField, sortOrder);
+        int totalUsers = userDAO.getTotalUsers(roleId, gender, status, searchText);
         int totalPages = (int) Math.ceil((double) totalUsers / pageSize);
 
         request.setAttribute("users", users);
         request.setAttribute("currentPage", page);
         request.setAttribute("pageSize", pageSize);
         request.setAttribute("totalPages", totalPages);
+        request.setAttribute("searchText", searchText);
         request.setAttribute("sortField", sortField);
         request.setAttribute("sortOrder", sortOrder);
 
@@ -184,6 +185,7 @@ public class AdminServlet extends HttpServlet {
     private void insertUser(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
+
             String email = request.getParameter("email");
             String password = request.getParameter("password");
             String name = request.getParameter("name");
@@ -210,6 +212,7 @@ public class AdminServlet extends HttpServlet {
             newUser.setStatus(status);
 
             userDAO.insertUser(newUser);
+            request.getSession().setAttribute("success", "Add user successfully");
             response.sendRedirect("admin");
         } catch (Exception e) {
             throw new ServletException("Insert failed", e);

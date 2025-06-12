@@ -107,6 +107,23 @@
                                 <span>entries</span>
                             </div>
                         </form>
+                        <form action="admin" method="get" class="d-flex mb-3" role="search">
+                            <input type="text" name="searchText" class="form-control me-2" placeholder="Search name/email/mobile" value="${searchText}">
+                            <input type="hidden" name="role" value="${selectedRole}">
+                            <input type="hidden" name="gender" value="${selectedGender}">
+                            <input type="hidden" name="status" value="${selectedStatus}">
+                            <input type="hidden" name="sortField" value="${sortField}">
+                            <input type="hidden" name="sortOrder" value="${sortOrder}">
+                            <input type="hidden" name="pageSize" value="${pageSize}">
+                            <button class="btn btn-outline-success" type="submit">Search</button>
+                        </form>
+                        <c:if test="${not empty sessionScope.success}">
+                            <div class="alert alert-success" role="alert">
+                                    ${sessionScope.success}
+                            </div>
+                            <c:remove var="success" scope="session"/>
+                        </c:if>
+
 
                         <c:set var="users" value="${requestScope.users}"/>
 
@@ -199,6 +216,9 @@
 
 
                             <tbody>
+                            <c:if test="${empty users}">
+                                <h4>No Data</h4>
+                            </c:if>
                             <c:forEach var="user" items="${users}">
                                 <tr>
                                     <td>${user.id}</td>
