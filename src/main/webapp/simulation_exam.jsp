@@ -94,32 +94,40 @@
             </tr>
             </thead>
             <tbody class="table-group-divider">
-            <c:forEach var="quiz" items="${requestScope.quizzes}">
+            <c:if test="${not empty requestScope.quizzes}">
+                <c:forEach var="quiz" items="${requestScope.quizzes}">
+                    <tr>
+                        <th id="row_id" scope="row">${quiz.getId()}</th>
+                        <td id="row_subject">${quiz.getSubject().getName()}</td>
+                        <td id="row_name">${quiz.getName()}</td>
+                        <td id="row_level">${quiz.getLevel()}</td>
+                        <td id="row_question">${quiz.getQuizSetting().getNumberOfQuestions()}</td>
+                        <td id="row_duration">${quiz.getDuration()}</td>
+                        <td id="row_passRate">${quiz.getPassRate()}</td>
+                        <td>
+                            <a href="simulation-exam/detail?id=${quiz.getId()}"
+                               class="btn btn-outline-secondary">Take</a>
+                        </td>
+                    </tr>
+                </c:forEach>
+            </c:if>
+            <c:if test="${empty requestScope.quizzes}">
                 <tr>
-                    <th id="row_id" scope="row">${quiz.getId()}</th>
-                    <td id="row_subject">${quiz.getSubject().getName()}</td>
-                    <td id="row_name">${quiz.getName()}</td>
-                    <td id="row_level">${quiz.getLevel()}</td>
-                    <td id="row_question">${quiz.getQuizSetting().getNumberOfQuestions()}</td>
-                    <td id="row_duration">${quiz.getDuration()}</td>
-                    <td id="row_passRate">${quiz.getPassRate()}</td>
-                    <td>
-                        <a href="simulation-exam/detail?id=${quiz.getId()}" class="btn btn-outline-secondary">Take</a>
-                    </td>
+                    <td colspan="8" class="text-center text-muted">No data</td>
                 </tr>
-            </c:forEach>
-
+            </c:if>
             </tbody>
         </table>
 
         <%-- Dưới table: items per page + pagination --%>
         <div class="d-flex justify-content-end align-items-center gap-3 mt-4 mb-5">
-            <select id="sizeList" class="form-select w-auto">
-                <option ${requestScope.size == 10 ? 'selected' : ''} value="10">10/page</option>
-                <option ${requestScope.size == 20 ? 'selected' : ''} value="20">20/page</option>
-                <option ${requestScope.size == 50 ? 'selected' : ''} value="50">50/page</option>
-                <option ${requestScope.size == 100 ? 'selected' : ''} value="100">100/page</option>
-            </select>
+
+            <div class="d-flex align-items-center me-3">
+                <label for="size" class="me-2 mb-0">Items per page:</label>
+                <input type="number" min="1" name="size" class="form-control me-2" style="width: 80px;"
+                       value="${requestScope.size}" id="sizeInput">
+                <button type="submit" class="btn btn-primary btn-sm" id="sizeBtn">Apply</button>
+            </div>
 
             <nav>
                 <ul class="pagination mb-0">
@@ -165,8 +173,8 @@
     const size = ${requestScope.size};
     const search = "${requestScope.search}";
 
-    document.getElementById("sizeList").addEventListener("change", (e) => {
-        let url = "?page=1&size=" + e.target.value
+    document.getElementById("sizeBtn").addEventListener("click", (e) => {
+        let url = "?page=1&size=" + document.getElementById("sizeInput").value;
         if (filter !== 0) {
             url += "&filter=" + filter;
         }
@@ -200,7 +208,7 @@
     });
 
     document.querySelectorAll('.dropdown-menu label').forEach(label => {
-        label.addEventListener('click', function(e) {
+        label.addEventListener('click', function (e) {
             e.stopPropagation();
         });
     });
@@ -214,9 +222,9 @@
             document.querySelectorAll("#row_" + id).forEach(td => td.style.display = checked ? '' : 'none');
 
             let checkedCheckboxes = Array.from(document.querySelectorAll('input[type="checkbox"]')).filter(cb => cb.checked);
-            if(checkedCheckboxes.length === 1){
+            if (checkedCheckboxes.length === 1) {
                 checkedCheckboxes[0].setAttribute("disabled", "true");
-            }else{
+            } else {
                 let disabledCheckbox = document.querySelector('input[type="checkbox"][disabled]');
                 if (disabledCheckbox) {
                     disabledCheckbox.removeAttribute("disabled");
@@ -224,7 +232,6 @@
             }
         });
     });
-
 
 
 </script>

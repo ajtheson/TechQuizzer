@@ -40,11 +40,13 @@ public class QuizDAO extends DBContext {
 
     public List<Quiz> findAllByTestTypeIdAndSubjectIdsWithPagination(int testTypeId, List<Integer> subjectIds, int page, int size, String search) throws SQLException {
         ArrayList<Quiz> quizzes = new ArrayList<>();
-
+        if(subjectIds == null || subjectIds.isEmpty()){
+            return quizzes;
+        }
         String inClause = subjectIds.stream().map(id -> "?").collect(Collectors.joining(", "));
         String sql = "SELECT [id], [name], [level], [duration], [pass_rate], [description], [test_type_id], [quiz_setting_id], [subject_id] "
                 + "FROM [quizzes] "
-                + "WHERE [test_type_id] = ? AND [subject_id] IN (" + inClause + ") AND [name] LIKE ? "
+                + "WHERE [status] = 1 AND [test_type_id] = ? AND [subject_id] IN (" + inClause + ") AND [name] LIKE ? "
                 + "ORDER BY [id] "
                 + "OFFSET ? ROWS "
                 + "FETCH NEXT ? ROWS ONLY";
@@ -79,8 +81,11 @@ public class QuizDAO extends DBContext {
     }
 
     public int countByTestTypeIdAndSubjectIds(int testTypeId, List<Integer> subjectIds) throws SQLException {
+        if(subjectIds == null || subjectIds.isEmpty()){
+            return 0;
+        }
         String inClause = subjectIds.stream().map(id -> "?").collect(Collectors.joining(", "));
-        String sql = "SELECT COUNT(*) FROM [quizzes] WHERE [test_type_id] = ? AND [subject_id] IN (" + inClause + ")";
+        String sql = "SELECT COUNT(*) FROM [quizzes] WHERE [status] = 1 AND [test_type_id] = ? AND [subject_id] IN (" + inClause + ")";
         try{
             PreparedStatement pstm = connection.prepareStatement(sql);
             int index = 1;

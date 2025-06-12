@@ -11,6 +11,7 @@ public class Quiz {
     private int testTypeId;
     private int quizSettingId;
     private int subjectId;
+    private int status;
 
     public int getTestTypeId() {
         return testTypeId;
@@ -82,5 +83,13 @@ public class Quiz {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
     }
 }

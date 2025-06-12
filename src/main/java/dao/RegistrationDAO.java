@@ -4,6 +4,7 @@ import dal.DBContext;
 import dto.RegistrationDTO;
 import entity.PricePackage;
 import entity.Registration;
+import entity.Subject;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -33,27 +34,27 @@ public class RegistrationDAO extends DBContext {
 
     public List<RegistrationDTO> findAllByUserID(int userID) throws SQLException {
         List<RegistrationDTO> registrations = new ArrayList<>();
-        String sql = "select * from [registrations] where [user_id] = ? AND [status] = 'Paid'";
+        String sql = "select r.*, s.[id] as sId, s.[name] " +
+                "from [registrations] r " +
+                "join [price_packages] p on r.price_package_id = p.id " +
+                "join [subjects] s on s.id = p.subject_id " +
+                "where [user_id] = ? AND r.[status] = 'Paid'";
         try(PreparedStatement pstm = connection.prepareStatement(sql)){
             pstm.setInt(1, userID);
             ResultSet rs = pstm.executeQuery();
             while (rs.next()){
                 RegistrationDTO registrationDTO = new RegistrationDTO();
                 registrationDTO.setId(rs.getInt("id"));
-
-                PricePackage pricePackage = new PricePackageDAO().findById(rs.getInt("price_package_id"));
-
-                registrationDTO.setSubject(new SubjectDAO().findById(pricePackage.getSubjectId()));
+                Subject subject = new Subject();
+                subject.setId(rs.getInt("sId"));
+                subject.setName(rs.getString("name"));
+                registrationDTO.setSubject(subject);
                 registrations.add(registrationDTO);
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
         return registrations;
-    }
-
-    public static void main(String[] args) throws SQLException {
-        System.out.println(new RegistrationDAO().findAllByUserID(2).toString());
     }
 
 }

@@ -17,14 +17,15 @@
 <jsp:include page="./layout/header.jsp"/>
 <jsp:include page="./user_profile.jsp"/>
 
+<button onclick="window.history.back(); return false;" class="btn btn-outline-secondary"
+        style="position: fixed; left: 50px; top: 100px; z-index: 1000;">
+    <i class="bi bi-arrow-left"></i> Back
+</button>
+
 <div class="container" style="margin-top: 100px">
-    <%-- Breadcrumb --%>
-    <nav aria-label="breadcrumb">
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="${pageContext.request.contextPath}/simulation-exam">Simulation Exam</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Exam Detail #${requestScope.quiz.getId()}</li>
-        </ol>
-    </nav>
+
+    <h2 class="text-center mb-4">Exam Detail #${requestScope.quiz.getId()}</h2>
+
     <div class="mx-auto" style="max-width: 720px;">
         <div class="row g-3">
             <div class="col-6 mb-3">

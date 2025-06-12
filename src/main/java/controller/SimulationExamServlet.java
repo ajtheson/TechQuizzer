@@ -11,11 +11,8 @@ import jakarta.servlet.annotation.*;
 import service.QuizService;
 
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @WebServlet(name = "SimulationExamServlet", value = "/simulation-exam")
 public class SimulationExamServlet extends HttpServlet {
