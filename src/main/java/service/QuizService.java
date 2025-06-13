@@ -25,12 +25,11 @@ public class QuizService {
 
         List<Subject> subjects = subjectDAO.findByIds(subjectIds);
         List<QuizSetting> quizSettings = quizSettingDAO.findByIds(quizSettingIds);
-        List<TestType> testTypes = testTypeDAO.findByIds(testTypeIds); // You'll implement this method
+        List<TestType> testTypes = testTypeDAO.findByIds(testTypeIds);
 
         Map<Integer, Subject> subjectMap = subjects.stream().collect(Collectors.toMap(Subject::getId, s -> s));
         Map<Integer, QuizSetting> quizSettingMap = quizSettings.stream().collect(Collectors.toMap(QuizSetting::getId, q -> q));
         Map<Integer, TestType> testTypeMap = testTypes.stream().collect(Collectors.toMap(TestType::getId, t -> t));
-
         for (Quiz quiz : quizzes) {
             QuizDTO quizDTO = new QuizDTO();
             quizDTO.setId(quiz.getId());

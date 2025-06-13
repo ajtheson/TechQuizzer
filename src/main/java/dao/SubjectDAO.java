@@ -1,23 +1,27 @@
 package dao;
 
 import dal.DBContext;
+import entity.Quiz;
 import entity.Subject;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class SubjectDAO extends DBContext {
-    public ArrayList<Subject> getAllSubjects() {
-        ArrayList<Subject> list = new ArrayList<>();
-        String sql = "SELECT * FROM subjects WHERE status = 1 ORDER BY name ASC";
+    public List<Subject> getAllSubjects(int owner_id) {
+        List<Subject> list = new ArrayList<>();
+        String sql = "SELECT * FROM subjects WHERE status = 1 and owner_id=? ORDER BY name ASC ";
 
         try (
                 PreparedStatement ps = connection.prepareStatement(sql);
              ) {
+            ps.setInt(1, owner_id);
             ResultSet rs = ps.executeQuery();
+
             while (rs.next()) {
                 Subject s = new Subject(
                         rs.getInt("id"),
@@ -124,4 +128,16 @@ public class SubjectDAO extends DBContext {
         }
         return subjects;
     }
+    public boolean updateSubjectName(int id, String name) {
+        String sql = "UPDATE [subjects] SET [name] = ? WHERE [id] = ?";
+        try (PreparedStatement pstm = connection.prepareStatement(sql)) {
+            pstm.setString(1, name);
+            pstm.setInt(2, id);
+            return pstm.executeUpdate() > 0;
+        } catch (SQLException e) {
+            System.err.println("Error updating subject name: " + e.getMessage());
+        }
+        return false;
+    }
+
 }

@@ -36,7 +36,7 @@ public class GetQuizzesListServlet extends HttpServlet {
         TestTypeDao testDao = new TestTypeDao();
         SubjectDAO subjectDAO = new SubjectDAO();
         List<TestType> testTypes = testDao.getAllTestTypes();
-        List<Subject> subjects = subjectDAO.getAllSubjects();
+        List<Subject> subjects = subjectDAO.getAllSubjects(user.getId());
 
 
         String subjectFilter = request.getParameter("subject");

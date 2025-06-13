@@ -6,6 +6,7 @@ import entity.Subject;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -59,5 +60,15 @@ public class QuizSettingDAO extends DBContext {
         }
         return quizSettings;
     }
-
+    public boolean updateQuizSetting(int id, int numberOfQuestion ) {
+        String sql = "UPDATE [quiz_settings] SET [number_question] = ? WHERE [id] = ?";
+        try (PreparedStatement pstm = connection.prepareStatement(sql)) {
+            pstm.setInt(1, numberOfQuestion);
+            pstm.setInt(2, id);
+            return pstm.executeUpdate() > 0;
+        } catch (SQLException e) {
+            System.err.println("Error updating subject name: " + e.getMessage());
+        }
+        return false;
+    }
 }

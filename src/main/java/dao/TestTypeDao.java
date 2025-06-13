@@ -1,17 +1,19 @@
 package dao;
 
 import dal.DBContext;
+import entity.Subject;
 import entity.TestType;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 public class TestTypeDao extends DBContext {
-    public ArrayList<TestType> getAllTestTypes() {
-        ArrayList<TestType> list = new ArrayList<>();
+    public List<TestType> getAllTestTypes() {
+        List<TestType> list = new ArrayList<>();
         String sql = "select * from test_types";
 
         try (PreparedStatement ps = connection.prepareStatement(sql);) {
@@ -63,6 +65,16 @@ public class TestTypeDao extends DBContext {
         }
         return list;
     }
-
+    public boolean updateTesType(int id, String name) {
+        String sql = "UPDATE [test_types] SET [name] = ? WHERE [id] = ?";
+        try (PreparedStatement pstm = connection.prepareStatement(sql)) {
+            pstm.setString(1, name);
+            pstm.setInt(2, id);
+            return pstm.executeUpdate() > 0;
+        } catch (SQLException e) {
+            System.err.println("Error updating subject name: " + e.getMessage());
+        }
+        return false;
+    }
 
 }

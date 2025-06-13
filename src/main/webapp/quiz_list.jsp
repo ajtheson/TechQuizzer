@@ -186,6 +186,8 @@
                                 </th>
                                 <th class="col-4"><a style="display: flex; align-items: center; gap: 5px; text-decoration: none; color: inherit;" href="?subject=${subject}&testType=${testType}&search=${search}&sortField=q.duration&sortOrder=${sortOrder == 'ASC' ? 'DESC' : 'ASC'}&page=${currentPage}&pageSize=${pageSize}">Duration<i class="fa fa-sort"></i></a>
                                 </th>
+                                <th class="col-4"><a style="display: flex; align-items: center; gap: 5px; text-decoration: none; color: inherit;" href="?subject=${subject}&testType=${testType}&search=${search}&sortField=qs.number_question&sortOrder=${sortOrder == 'ASC' ? 'DESC' : 'ASC'}&page=${currentPage}&pageSize=${pageSize}">#Questions<i class="fa fa-sort"></i></a>
+                                </th>
                                 <th class="col-5" style="width:105px;height: 56px"><a style="display: flex; align-items: center; gap: 5px; text-decoration: none; color: inherit;"
                                         href="?subject=${subject}&testType=${testType}&search=${search}&sortField=q.pass_rate&sortOrder=${sortOrder == 'ASC' ? 'DESC' : 'ASC'}&page=${currentPage}&pageSize=${pageSize}">Pass Rate<i class="fa fa-sort"></i>
                                     </a></th>
@@ -208,6 +210,7 @@
                                     <td>${quiz.name}</td>
                                     <td>${quiz.level}</td>
                                     <td>${quiz.duration} min</td>
+                                    <td>${quiz.quizSetting.numberOfQuestions}</td>
                                     <td>${quiz.passRate}%</td>
                                     <td>${quiz.subject.name}</td>
                                     <td>${quiz.testType.name}</td>
@@ -231,8 +234,7 @@
                                     </td>
                                     <td>
                                         <div class="d-flex justify-content-center gap-2">
-                                            <a href="#" class="btn btn-info" style="color: white">View</a>
-                                            <a href="#" class="btn btn-warning" style="color: white">Edit</a>
+                                            <a href="get-quiz-detail?action=view&id=${quiz.id}" class="btn btn-info" style="color: white">Overview/Setting</a>
                                         </div>
                                     </td>
                                 </tr>
