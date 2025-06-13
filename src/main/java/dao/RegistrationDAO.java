@@ -9,12 +9,11 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.security.auth.Subject;
-
 import dal.DBContext;
 import dto.RegistrationDTO;
 import entity.PricePackage;
 import entity.Registration;
+import entity.Subject;
 
 public class RegistrationDAO extends DBContext {
     public boolean addRegistration(Registration registration) {

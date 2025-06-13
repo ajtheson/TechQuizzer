@@ -7,9 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import javax.security.auth.Subject;
-
 import dal.DBContext;
+import entity.Subject;
 
 public class SubjectDAO extends DBContext {
     public Subject getForRegister(int subjectId) {
