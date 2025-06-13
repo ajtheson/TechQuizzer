@@ -1,10 +1,5 @@
 package dao;
 
-import dal.DBContext;
-import dto.RegistrationDTO;
-import entity.PricePackage;
-import entity.Registration;
-
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -14,11 +9,18 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.security.auth.Subject;
+
+import dal.DBContext;
+import dto.RegistrationDTO;
+import entity.PricePackage;
+import entity.Registration;
+
 public class RegistrationDAO extends DBContext {
     public boolean addRegistration(Registration registration) {
         String sql = "insert into [registrations] ([time], [total_cost], [valid_from], [valid_to], [status], " +
                 "[price_package_id], [user_id]) values (?,?,?,?,?,?,?)";
-        try(PreparedStatement pstm = connection.prepareStatement(sql)){
+        try (PreparedStatement pstm = connection.prepareStatement(sql)) {
             pstm.setObject(1, registration.getTime());
             pstm.setDouble(2, registration.getTotalCost());
             pstm.setObject(3, registration.getValidFrom());
@@ -27,19 +29,19 @@ public class RegistrationDAO extends DBContext {
             pstm.setInt(6, registration.getPricePackageId());
             pstm.setInt(7, registration.getUserId());
             return pstm.executeUpdate() > 0;
-        }catch (SQLException e){
+        } catch (SQLException e) {
             System.out.println("Error: " + e.getMessage());
         }
         return false;
     }
 
-    public List<RegistrationDTO> getRegistrationListOfUser(int userID){
+    public List<RegistrationDTO> getRegistrationListOfUser(int userID) {
         List<RegistrationDTO> list = new ArrayList<>();
         String sql = "select * from [registrations] where [user_id] = ? order by [status] desc, [time] desc";
-        try(PreparedStatement pstm = connection.prepareStatement(sql)){
+        try (PreparedStatement pstm = connection.prepareStatement(sql)) {
             pstm.setInt(1, userID);
             ResultSet rs = pstm.executeQuery();
-            while (rs.next()){
+            while (rs.next()) {
                 RegistrationDTO r = new RegistrationDTO();
                 r.setId(rs.getInt("id"));
 
@@ -72,7 +74,6 @@ public class RegistrationDAO extends DBContext {
                 r.setStatus(rs.getString("status"));
                 r.setNote(rs.getString("note"));
 
-
                 PricePackageDAO pDAO = new PricePackageDAO();
                 PricePackage p = pDAO.get(rs.getInt("price_package_id"));
                 r.setPricePackage(p);
@@ -82,82 +83,108 @@ public class RegistrationDAO extends DBContext {
 
                 list.add(r);
             }
-        }catch (SQLException e){
+        } catch (SQLException e) {
             System.out.println("Error: " + e.getMessage());
         }
         return list;
     }
 
-    public boolean changeStatus(int id, String status){
+    public boolean changeStatus(int id, String status) {
         String sql = "update [registrations] set status = ? where id = ?";
-        try(PreparedStatement pstm = connection.prepareStatement(sql)){
+        try (PreparedStatement pstm = connection.prepareStatement(sql)) {
             pstm.setString(1, status);
             pstm.setInt(2, id);
             return pstm.executeUpdate() > 0;
-        }catch (SQLException e){
+        } catch (SQLException e) {
             System.out.println("Error: " + e.getMessage());
         }
         return false;
     }
 
-    public int getSubjectId(int registrationID){
+    public int getSubjectId(int registrationID) {
         String sql = "select p.[subject_id] from [registrations] r join [price_packages] p on r.price_package_id = p.id where r.[id] = ?";
-        try(PreparedStatement pstm = connection.prepareStatement(sql)){
+        try (PreparedStatement pstm = connection.prepareStatement(sql)) {
             pstm.setInt(1, registrationID);
             ResultSet rs = pstm.executeQuery();
-            while (rs.next()){
+            while (rs.next()) {
                 return rs.getInt("subject_id");
             }
-        }catch (SQLException e){
+        } catch (SQLException e) {
             System.out.println("Error: " + e.getMessage());
         }
         return -1;
     }
 
-    public int getPricePackageId(int registrationID){
+    public int getPricePackageId(int registrationID) {
         String sql = "select [price_package_id] from [registrations] where [id] = ?";
-        try(PreparedStatement pstm = connection.prepareStatement(sql)){
+        try (PreparedStatement pstm = connection.prepareStatement(sql)) {
             pstm.setInt(1, registrationID);
             ResultSet rs = pstm.executeQuery();
-            while (rs.next()){
+            while (rs.next()) {
                 return rs.getInt("price_package_id");
             }
-        }catch (SQLException e){
+        } catch (SQLException e) {
             System.out.println("Error: " + e.getMessage());
         }
         return -1;
     }
 
-    public boolean userModifyRegistration(LocalDateTime time, double totalCost, int pricePackageId, int id){
+    public boolean userModifyRegistration(LocalDateTime time, double totalCost, int pricePackageId, int id) {
         String sql = "update [registrations] set [time] = ?, [total_cost] = ?, [price_package_id] = ? where [id] = ?";
-        try(PreparedStatement pstm = connection.prepareStatement(sql)){
+        try (PreparedStatement pstm = connection.prepareStatement(sql)) {
             pstm.setObject(1, time);
             pstm.setDouble(2, totalCost);
             pstm.setInt(3, pricePackageId);
             pstm.setInt(4, id);
             return pstm.executeUpdate() > 0;
-        }catch (SQLException e){
+        } catch (SQLException e) {
             System.out.println("Error: " + e.getMessage());
         }
         return false;
     }
 
-    public boolean isRegistrationExist(int userID, int subjectID){
+    public boolean isRegistrationExist(int userID, int subjectID) {
         String sql = """
                 SELECT 1
                 FROM registrations r JOIN price_packages p
                 ON r.price_package_id = p.id
                 WHERE r.user_id = ? AND p.subject_id = ? AND r.status = 'Paid'
                 """;
-        try(PreparedStatement pstm = connection.prepareStatement(sql)){
+        try (PreparedStatement pstm = connection.prepareStatement(sql)) {
             pstm.setInt(1, userID);
             pstm.setInt(2, subjectID);
-            if(pstm.executeQuery().next()){
+            if (pstm.executeQuery().next()) {
                 return true;
             }
-        }catch (SQLException e){
+        } catch (SQLException e) {
             System.out.println("Error: " + e.getMessage());
         }
         return false;
     }
+
+    public List<RegistrationDTO> findAllByUserID(int userID) throws SQLException {
+        List<RegistrationDTO> registrations = new ArrayList<>();
+        String sql = "select r.*, s.[id] as sId, s.[name] " +
+                "from [registrations] r " +
+                "join [price_packages] p on r.price_package_id = p.id " +
+                "join [subjects] s on s.id = p.subject_id " +
+                "where [user_id] = ? AND r.[status] = 'Paid'";
+        try (PreparedStatement pstm = connection.prepareStatement(sql)) {
+            pstm.setInt(1, userID);
+            ResultSet rs = pstm.executeQuery();
+            while (rs.next()) {
+                RegistrationDTO registrationDTO = new RegistrationDTO();
+                registrationDTO.setId(rs.getInt("id"));
+                Subject subject = new Subject();
+                subject.setId(rs.getInt("sId"));
+                subject.setName(rs.getString("name"));
+                registrationDTO.setSubject(subject);
+                registrations.add(registrationDTO);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return registrations;
+    }
+
 }

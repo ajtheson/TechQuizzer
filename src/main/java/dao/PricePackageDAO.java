@@ -1,8 +1,5 @@
 package dao;
 
-import dal.DBContext;
-import entity.PricePackage;
-
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -10,14 +7,17 @@ import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 
+import dal.DBContext;
+import entity.PricePackage;
+
 public class PricePackageDAO extends DBContext {
-    public List<PricePackage> getOfSubject(int subjectID){
+    public List<PricePackage> getOfSubject(int subjectID) {
         String sql = "select * from [price_packages] where [subject_id] = ?";
-        try(PreparedStatement pstm = connection.prepareStatement(sql)){
+        try (PreparedStatement pstm = connection.prepareStatement(sql)) {
             List<PricePackage> list = new ArrayList<>();
             pstm.setInt(1, subjectID);
             ResultSet rs = pstm.executeQuery();
-            while(rs.next()){
+            while (rs.next()) {
                 PricePackage p = new PricePackage();
                 p.setId(rs.getInt("id"));
                 p.setName(rs.getString("name"));
@@ -30,15 +30,15 @@ public class PricePackageDAO extends DBContext {
                 list.add(p);
             }
             return list;
-        }catch (SQLException e){
+        } catch (SQLException e) {
             System.out.println("Error: " + e.getMessage());
         }
         return null;
     }
 
-    public boolean updateStatus(int id, boolean status){
+    public boolean updateStatus(int id, boolean status) {
         String sql = "update [price_packages] set [status] = ? where [id] = ?";
-        try (PreparedStatement pstm = connection.prepareStatement(sql)){
+        try (PreparedStatement pstm = connection.prepareStatement(sql)) {
             pstm.setInt(1, status ? 1 : 0);
             pstm.setInt(2, id);
             return pstm.executeUpdate() > 0;
@@ -48,53 +48,53 @@ public class PricePackageDAO extends DBContext {
         return false;
     }
 
-    public int getSubjectId(int id){
+    public int getSubjectId(int id) {
         String sql = "select [subject_id] from [price_packages] where [id] = ?";
-        try(PreparedStatement pstm = connection.prepareStatement(sql)){
+        try (PreparedStatement pstm = connection.prepareStatement(sql)) {
             pstm.setInt(1, id);
             ResultSet rs = pstm.executeQuery();
-            if(rs.next()){
+            if (rs.next()) {
                 return rs.getInt("subject_id");
             }
-        }catch (SQLException e){
+        } catch (SQLException e) {
             System.out.println("Error: " + e.getMessage());
         }
         return -1;
     }
 
-    public boolean checkNameExist(String name, int subjectID){
+    public boolean checkNameExist(String name, int subjectID) {
         String sql = "select 1 from [price_packages] where [name] = ? and [subject_id] = ?";
-        try(PreparedStatement pstm = connection.prepareStatement(sql)){
+        try (PreparedStatement pstm = connection.prepareStatement(sql)) {
             pstm.setString(1, name);
             pstm.setInt(2, subjectID);
-            if(pstm.executeQuery().next()){
+            if (pstm.executeQuery().next()) {
                 return true;
             }
-        }catch (SQLException e){
+        } catch (SQLException e) {
             System.out.println("Error: " + e.getMessage());
         }
         return false;
     }
 
-    public boolean checkNameExist(String name, int subjectID, int id){
+    public boolean checkNameExist(String name, int subjectID, int id) {
         String sql = "select 1 from [price_packages] where [name] = ? and [subject_id] = ? and [id] != ?";
-        try(PreparedStatement pstm = connection.prepareStatement(sql)){
+        try (PreparedStatement pstm = connection.prepareStatement(sql)) {
             pstm.setString(1, name);
             pstm.setInt(2, subjectID);
             pstm.setInt(3, id);
-            if(pstm.executeQuery().next()){
+            if (pstm.executeQuery().next()) {
                 return true;
             }
-        }catch (SQLException e){
+        } catch (SQLException e) {
             System.out.println("Error: " + e.getMessage());
         }
         return false;
     }
 
-    public boolean add(PricePackage p){
+    public boolean add(PricePackage p) {
         String sql = "insert into [price_packages] ([name], [duration], [list_price], [sale_price], \n" +
                 "    [description], [status], [subject_id]) values (?, ?, ?, ?, ?, ?, ?)";
-        try(PreparedStatement pstm = connection.prepareStatement(sql)){
+        try (PreparedStatement pstm = connection.prepareStatement(sql)) {
             pstm.setString(1, p.getName());
             pstm.setObject(2, p.getDuration(), Types.INTEGER);
             pstm.setDouble(3, p.getListPrice());
@@ -103,18 +103,18 @@ public class PricePackageDAO extends DBContext {
             pstm.setBoolean(6, p.isStatus());
             pstm.setInt(7, p.getSubjectId());
             return pstm.executeUpdate() > 0;
-        }catch (SQLException e){
+        } catch (SQLException e) {
             System.out.println("Error: " + e.getMessage());
         }
         return false;
     }
 
-    public PricePackage get(int id){
+    public PricePackage get(int id) {
         String sql = "select * from [price_packages] where [id] = ?";
-        try(PreparedStatement pstm = connection.prepareStatement(sql)){
+        try (PreparedStatement pstm = connection.prepareStatement(sql)) {
             pstm.setInt(1, id);
             ResultSet rs = pstm.executeQuery();
-            if(rs.next()){
+            if (rs.next()) {
                 PricePackage p = new PricePackage();
                 p.setId(rs.getInt("id"));
                 p.setName(rs.getString("name"));
@@ -126,17 +126,17 @@ public class PricePackageDAO extends DBContext {
                 p.setSubjectId(rs.getInt("subject_id"));
                 return p;
             }
-        }catch (SQLException e){
+        } catch (SQLException e) {
             System.out.println("Error: " + e.getMessage());
         }
         return null;
     }
 
-    public boolean update(PricePackage p){
+    public boolean update(PricePackage p) {
         String sql = "UPDATE [price_packages] SET [name] = ?, [duration] = ?, [list_price] = ?, " +
                 "[sale_price] = ?, [description] = ?, [status] = ?, [subject_id] = ? " +
                 "WHERE [id] = ?";
-        try(PreparedStatement pstm = connection.prepareStatement(sql)){
+        try (PreparedStatement pstm = connection.prepareStatement(sql)) {
             pstm.setString(1, p.getName());
             pstm.setObject(2, p.getDuration(), Types.INTEGER);
             pstm.setDouble(3, p.getListPrice());
@@ -146,19 +146,19 @@ public class PricePackageDAO extends DBContext {
             pstm.setInt(7, p.getSubjectId());
             pstm.setInt(8, p.getId());
             return pstm.executeUpdate() > 0;
-        }catch (SQLException e){
+        } catch (SQLException e) {
             System.out.println("Error: " + e.getMessage());
         }
         return false;
     }
 
-    public List<PricePackage> getActiveOfSubject(int subjectId){
+    public List<PricePackage> getActiveOfSubject(int subjectId) {
         String sql = "select * from [price_packages] where [subject_id] = ? and [status] = 1";
-        try(PreparedStatement pstm = connection.prepareStatement(sql)){
+        try (PreparedStatement pstm = connection.prepareStatement(sql)) {
             List<PricePackage> list = new ArrayList<>();
             pstm.setInt(1, subjectId);
             ResultSet rs = pstm.executeQuery();
-            while(rs.next()){
+            while (rs.next()) {
                 PricePackage p = new PricePackage();
                 p.setId(rs.getInt("id"));
                 p.setName(rs.getString("name"));
@@ -171,37 +171,55 @@ public class PricePackageDAO extends DBContext {
                 list.add(p);
             }
             return list;
-        }catch (SQLException e){
+        } catch (SQLException e) {
             System.out.println("Error: " + e.getMessage());
         }
         return null;
     }
 
-    public double getMinListPrice(int subjectId){
+    public double getMinListPrice(int subjectId) {
         String sql = "select min(list_price) from [price_packages] where [subject_id] = ? and [status] = 1";
-        try(PreparedStatement pstm = connection.prepareStatement(sql)){
+        try (PreparedStatement pstm = connection.prepareStatement(sql)) {
             pstm.setInt(1, subjectId);
             ResultSet rs = pstm.executeQuery();
-            if(rs.next()){
+            if (rs.next()) {
                 return rs.getDouble(1);
             }
-        }catch (SQLException e){
+        } catch (SQLException e) {
             System.out.println("Error: " + e.getMessage());
         }
         return 0;
     }
 
-    public double getMinSalePrice(int subjectId){
+    public double getMinSalePrice(int subjectId) {
         String sql = "select min(sale_price) from [price_packages] where [subject_id] = ? and [status] = 1";
-        try(PreparedStatement pstm = connection.prepareStatement(sql)){
+        try (PreparedStatement pstm = connection.prepareStatement(sql)) {
             pstm.setInt(1, subjectId);
             ResultSet rs = pstm.executeQuery();
-            if(rs.next()){
+            if (rs.next()) {
                 return rs.getDouble(1);
             }
-        }catch (SQLException e){
+        } catch (SQLException e) {
             System.out.println("Error: " + e.getMessage());
         }
         return 0;
+    }
+
+    public PricePackage findById(int id) {
+        String sql = "select * from [price_packages] where id = ?";
+        try (PreparedStatement pstm = connection.prepareStatement(sql)) {
+            pstm.setInt(1, id);
+            try (ResultSet rs = pstm.executeQuery()) {
+                if (rs.next()) {
+                    PricePackage p = new PricePackage();
+                    p.setId(id);
+                    p.setSubjectId(rs.getInt("subject_id"));
+                    return p;
+                }
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return null;
     }
 }

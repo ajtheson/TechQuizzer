@@ -13,7 +13,7 @@
 <body>
 <header class="app-header">
     <%--logo--%>
-    <a class="app-header__logo" href="home">TechQuizzer</a>
+    <a class="app-header__logo" href="${pageContext.request.contextPath}/home">TechQuizzer</a>
     <%--left side--%>
     <ul class="nav nav-underline mx-3">
         <li class="nav-item" style="padding-left: 20px">
@@ -24,7 +24,7 @@
         </li>
         <c:if test="${sessionScope.user != null}">
             <li class="nav-item" style="padding-left: 20px">
-                <a class="nav-link text-white d-flex align-items-center gap-2" href="#"
+                <a class="nav-link text-white d-flex align-items-center gap-2" href="${pageContext.request.contextPath}/practices"
                    style="padding: 14px 0 5px 0;">
                     <i class="bi bi-pencil-square"></i>
                     <h5 style="margin: 0">Practice</h5></a>
@@ -48,12 +48,17 @@
                             </span>
                         </li>
                         <li>
-                            <a class="dropdown-item" href="change-password">
+                            <a class="dropdown-item" href="${pageContext.request.contextPath}/my_registration">
+                                <i class="bi bi-archive"></i> My registration
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="${pageContext.request.contextPath}/change-password">
                                 <i class="bi bi-gear me-2 fs-5"></i> Change password
                             </a>
                         </li>
                         <li>
-                            <a class="dropdown-item" href="logout">
+                            <a class="dropdown-item" href="${pageContext.request.contextPath}/logout">
                                 <i class="bi bi-box-arrow-right me-2 fs-5"></i> Logout
                             </a>
                         </li>
@@ -61,7 +66,7 @@
                 </li>
             </c:when>
             <c:otherwise>
-                <a class="nav-link text-white d-flex align-items-center" href="login" style="padding: 5px 0 5px 0;">
+                <a class="nav-link text-white d-flex align-items-center" href="${pageContext.request.contextPath}/login" style="padding: 5px 0 5px 0;">
                     <h5 style="margin: 0">Login</h5>
                 </a>
             </c:otherwise>

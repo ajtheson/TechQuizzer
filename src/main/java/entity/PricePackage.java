@@ -13,7 +13,8 @@ public class PricePackage {
     public PricePackage() {
     }
 
-    public PricePackage(int id, String name, Integer duration, double listPrice, double salePrice, String description, boolean status, int subjectId) {
+    public PricePackage(int id, String name, Integer duration, double listPrice, double salePrice, String description,
+            boolean status, int subjectId) {
         this.id = id;
         this.name = name;
         this.duration = duration;
