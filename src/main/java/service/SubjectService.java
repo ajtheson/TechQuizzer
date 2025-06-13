@@ -1,8 +1,6 @@
 package service;
 
-import dao.PricePackageDAO;
-import dao.RegistrationDAO;
-import dao.UserDAO;
+import dao.*;
 import dto.SubjectDTO;
 import entity.Subject;
 
@@ -11,6 +9,9 @@ public class SubjectService {
         if(subject == null) return null;
         else{
             PricePackageDAO pricePackageDAO = new PricePackageDAO();
+            UserDAO userDAO = new UserDAO();
+            LessonDAO lessonDAO = new LessonDAO();
+            CategoryDAO categoryDAO = new CategoryDAO();
 
             SubjectDTO subjectDTO = new SubjectDTO();
             subjectDTO.setId(subject.getId());
@@ -26,6 +27,8 @@ public class SubjectService {
             subjectDTO.setUpdateDate(subject.getUpdateDate());
             subjectDTO.setMinListPrice(pricePackageDAO.getMinListPrice(subject.getId()));
             subjectDTO.setMinSalePrice(pricePackageDAO.getMinSalePrice(subject.getId()));
+            subjectDTO.setNumberOfLesson(lessonDAO.getTotalLessons(subject.getId()));
+            subjectDTO.setCategoryName(categoryDAO.getCategoryNameById(subject.getCategoryId()));
             return subjectDTO;
         }
     }

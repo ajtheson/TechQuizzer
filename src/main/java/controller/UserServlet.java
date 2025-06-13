@@ -37,7 +37,7 @@ public class UserServlet extends HttpServlet {
                 targetPage = "admin";
                 break;
             case 2:
-                targetPage = "expert.jsp";
+                targetPage = "manage-subject";
                 break;
             case 3:
                 targetPage = "home";

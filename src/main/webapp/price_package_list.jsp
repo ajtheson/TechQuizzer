@@ -5,37 +5,17 @@
     <%@include file="common/headload.jsp" %>
     <title>Price Package List</title>
 </head>
-<jsp:include page="./user_profile.jsp"/>
 <body class="app sidebar-mini">
 
-<!-- Navbar -->
-<header class="app-header"><a class="app-header__logo" href="home">TechQuizzer</a>
-    <a class="app-sidebar__toggle" href="#" data-toggle="sidebar" aria-label="Hide Sidebar"></a>
-    <ul class="app-nav">
-        <li class="dropdown"><a class="app-nav__item" href="#" data-bs-toggle="dropdown"><i class="bi bi-person fs-4"></i></a>
-            <ul class="dropdown-menu settings-menu dropdown-menu-right">
-                <li><span class="dropdown-item" data-bs-toggle="modal" data-bs-target="#userProfile" style="cursor: pointer"><i class="bi bi-person me-2 fs-5"></i> User profile</span></li>
-                <li><a class="dropdown-item" href="change-password"><i class="bi bi-person me-2 fs-5"></i> Change Password</a></li>
-                <li><a class="dropdown-item" href="logout"><i class="bi bi-box-arrow-right me-2 fs-5"></i> Logout</a></li>
-            </ul>
-        </li>
-    </ul>
-</header>
+<!-- Navbar-->
+<jsp:include page="./layout/manage/header.jsp"/>
 
-<!-- Sidebar -->
-<div class="app-sidebar__overlay" data-toggle="sidebar"></div>
-<aside class="app-sidebar">
-    <div class="app-sidebar__user"><img class="app-sidebar__user-avatar" src="assets/images/avatar/${sessionScope.user.avatar}" alt="User Image">
-        <div>
-            <p class="app-sidebar__user-name">${sessionScope.user.name}</p>
-            <p class="app-sidebar__user-designation">Admin</p>
-        </div>
-    </div>
-    <ul class="app-menu">
-        <li><a class="app-menu__item" href="admin"><i class="app-menu__icon bi bi-people-fill"></i><span class="app-menu__label">User List</span></a></li>
-        <li><a class="app-menu__item active" href="get-setting-list"><i class="app-menu__icon bi bi-gear-wide-connected"></i><span class="app-menu__label">Setting List</span></a></li>
-    </ul>
-</aside>
+<!-- Sidebar menu-->
+<jsp:include page="./layout/manage/sidebar.jsp">
+    <jsp:param name="currentPage" value="subject"/>
+</jsp:include>
+<%--User profile--%>
+<jsp:include page="./user_profile.jsp"/>
 
 <!-- Main content -->
 <main class="app-content">

@@ -20,4 +20,18 @@ public class RoleDAO extends DBContext {
         }
         return -1;
     }
+
+    public String getRoleNameById(int id){
+        String sql = "select [name] from [roles] where [id] = ?";
+        try(PreparedStatement pstm = connection.prepareStatement(sql)){
+            pstm.setInt(1, id);
+            ResultSet rs = pstm.executeQuery();
+            if(rs.next()){
+                return rs.getString("name");
+            }
+        }catch (SQLException e){
+            System.out.println("Error: " + e.getMessage());
+        }
+        return "";
+    }
 }

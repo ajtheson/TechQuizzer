@@ -26,4 +26,18 @@ public class CategoryDAO  extends DBContext {
         }
         return list;
     }
+
+    public String getCategoryNameById(int id){
+        String sql = "select [name] from [subject_categories] where [id] = ?";
+        try(PreparedStatement pstm = connection.prepareStatement(sql)){
+            pstm.setInt(1, id);
+            ResultSet rs = pstm.executeQuery();
+            if(rs.next()){
+                return rs.getString("name");
+            }
+        }catch (SQLException e){
+            System.out.println("Error: " + e.getMessage());
+        }
+        return null;
+    }
 }

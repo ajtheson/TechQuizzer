@@ -17,6 +17,9 @@ public class SubjectDTO {
     private double minListPrice;
     private double minSalePrice;
     private boolean isRegistered;
+    private int numberOfLesson;
+    private String categoryName;
+    private String ownerName;
 
     public int getId() {
         return id;
@@ -128,5 +131,30 @@ public class SubjectDTO {
 
     public void setRegistered(boolean registered) {
         isRegistered = registered;
+    }
+
+
+    public int getNumberOfLesson() {
+        return numberOfLesson;
+    }
+
+    public void setNumberOfLesson(int numberOfLesson) {
+        this.numberOfLesson = numberOfLesson;
+    }
+
+    public String getCategoryName() {
+        return categoryName;
+    }
+
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
+    }
+
+    public String getOwnerName() {
+        return ownerName;
+    }
+
+    public void setOwnerName(String ownerName) {
+        this.ownerName = ownerName;
     }
 }

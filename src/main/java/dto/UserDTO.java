@@ -11,11 +11,12 @@ public class UserDTO {
     private String address;
     private double balance;
     private int roleId;
+    private String roleName;
 
     public UserDTO() {
     }
 
-    public UserDTO(int id, String email, String password, String name, Boolean gender, String mobile, String avatar, String address, double balance, int roleId) {
+    public UserDTO(int id, String email, String password, String name, Boolean gender, String mobile, String avatar, String address, double balance, int roleId, String roleName) {
         this.id = id;
         this.email = email;
         this.password = password;
@@ -26,6 +27,7 @@ public class UserDTO {
         this.address = address;
         this.balance = balance;
         this.roleId = roleId;
+        this.roleName = roleName;
     }
 
     // Getters and setters for all fields
@@ -58,4 +60,7 @@ public class UserDTO {
 
     public int getRoleId() { return roleId; }
     public void setRoleId(int roleId) { this.roleId = roleId; }
+
+    public String getRoleName() { return roleName; }
+    public void setRoleName(String roleName) { this.roleName = roleName; }
 }

@@ -57,4 +57,15 @@ public class LessonDAO extends DBContext {
         return lessons;
     }
 
+    public int getTotalLessons(int subjectId){
+        String sql = "SELECT COUNT(*) FROM [lessons] where [subject_id] = ?";
+        try(PreparedStatement pstm = connection.prepareStatement(sql)){
+            pstm.setInt(1, subjectId);
+            ResultSet rs = pstm.executeQuery();
+            if(rs.next()){
+                return rs.getInt(1);
+            }
+        }catch (Exception e) {}
+        return 0;
+    }
 }

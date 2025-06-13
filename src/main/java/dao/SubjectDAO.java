@@ -68,21 +68,21 @@ public class SubjectDAO extends DBContext {
         return null;
     }
 
-    public List<Subject> getAllSubjectsWithPagination(int page, int size, int categoryId, boolean isDesc,
-            boolean isFeatured, String searchParam) {
+    //Just get subjects is publish
+    public List<Subject> getAllPublishSubjectsWithPagination(int page, int size, int categoryId, boolean isDesc, boolean isFeatured, String searchParam) {
         List<Subject> subjects = new ArrayList<>();
         StringBuilder sql = new StringBuilder("""
-                    SELECT [id], [name], [tag_line], [thumbnail], [featured_subject], [category_id], [update_date]
+                    SELECT [id], [name], [tag_line], [thumbnail], [featured_subject], [category_id], [update_date], [owner_id]
                     FROM [subjects]
                     WHERE [status] = 1
                 """);
-        if (categoryId != 0) {
+        if(categoryId != 0){
             sql.append(" AND [category_id] = ?");
         }
-        if (isFeatured) {
+        if(isFeatured){
             sql.append(" AND [featured_subject] = 1");
         }
-        if (searchParam != null && !searchParam.isBlank()) {
+        if(searchParam != null && !searchParam.isBlank()){
             sql.append(" AND [name] LIKE ?");
         }
         sql.append(" ORDER BY [update_date] ").append(isDesc ? "DESC" : "ASC");
@@ -92,7 +92,7 @@ public class SubjectDAO extends DBContext {
             if (categoryId != 0) {
                 pstm.setInt(paramIndex++, categoryId);
             }
-            if (searchParam != null && !searchParam.isBlank()) {
+            if(searchParam != null && !searchParam.isBlank()){
                 pstm.setString(paramIndex++, "%" + searchParam + "%");
             }
             pstm.setInt(paramIndex++, (page - 1) * size);
@@ -104,6 +104,61 @@ public class SubjectDAO extends DBContext {
                 subject.setName(rs.getString("name"));
                 subject.setTagLine(rs.getString("tag_line"));
                 subject.setThumbnail(rs.getString("thumbnail"));
+                subject.setOwnerId(rs.getInt("owner_id"));
+                subjects.add(subject);
+            }
+        } catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+        return subjects;
+    }
+
+    //Get all subject with all status, if admin the ownerId = 0
+    public List<Subject> getAllSubjectsWithPagination(int page, int size, int categoryId, String searchParam, String status, int ownerId) {
+        List<Subject> subjects = new ArrayList<>();
+        StringBuilder sql = new StringBuilder("""
+                    SELECT [id], [name], [category_id], [status], [owner_id]
+                    FROM [subjects]
+                    WHERE 1 = 1
+                """);
+        if(categoryId != 0){
+            sql.append(" AND [category_id] = ?");
+        }
+        if(searchParam != null && !searchParam.isBlank()){
+            sql.append(" AND [name] LIKE ?");
+        }
+        if(!status.isBlank()){
+            if(status.equalsIgnoreCase("Published")){
+                sql.append(" AND [status] = 1");
+            }
+            else sql.append(" AND [status] = 0");
+        }
+        if(ownerId != 0){
+            sql.append(" AND [owner_id] = ?");
+        }
+        sql.append(" ORDER BY [id]");
+        sql.append(" OFFSET ? ROWS FETCH NEXT ? ROWS ONLY");
+        try (PreparedStatement pstm = connection.prepareStatement(sql.toString())) {
+            int paramIndex = 1;
+            if (categoryId != 0) {
+                pstm.setInt(paramIndex++, categoryId);
+            }
+            if(searchParam != null && !searchParam.isBlank()){
+                pstm.setString(paramIndex++, "%" + searchParam + "%");
+            }
+            if(ownerId != 0){
+                pstm.setInt(paramIndex++, ownerId);
+            }
+            pstm.setInt(paramIndex++, (page - 1) * size);
+            pstm.setInt(paramIndex++, size);
+            ResultSet rs = pstm.executeQuery();
+            while (rs.next()) {
+                Subject subject = new Subject();
+                subject.setId(rs.getInt("id"));
+                subject.setName(rs.getString("name"));
+                subject.setCategoryId(rs.getInt("category_id"));
+                subject.setPublished(rs.getBoolean("status"));
+                subject.setOwnerId(rs.getInt("owner_id"));
                 subjects.add(subject);
             }
         } catch (Exception e) {
@@ -152,18 +207,19 @@ public class SubjectDAO extends DBContext {
         return subjects;
     }
 
-    public int getTotalSubjects(int categoryId, boolean isFeatured, String searchParam) {
+    //Get total number of Publish subjects
+    public int getTotalPublishSubjects(int categoryId, boolean isFeatured, String searchParam) {
         StringBuilder sql = new StringBuilder("""
                 SELECT COUNT(*) FROM subjects
                 WHERE [status] = 1
-                """);
-        if (categoryId != 0) {
+                """) ;
+        if(categoryId != 0){
             sql.append(" AND [category_id] = ?");
         }
-        if (isFeatured) {
+        if(isFeatured){
             sql.append(" AND [featured_subject] = 1");
         }
-        if (searchParam != null && !searchParam.isBlank()) {
+        if(searchParam != null && !searchParam.isBlank()){
             sql.append(" AND [name] LIKE ?");
         }
 
@@ -172,8 +228,51 @@ public class SubjectDAO extends DBContext {
             if (categoryId != 0) {
                 pstm.setInt(paramIndex++, categoryId);
             }
-            if (searchParam != null && !searchParam.isBlank()) {
+            if(searchParam != null && !searchParam.isBlank()){
                 pstm.setString(paramIndex++, "%" + searchParam + "%");
+            }
+            ResultSet rs = pstm.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        } catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+        return 0;
+    }
+
+    //Get total number of subjects
+    public int getTotalSubjects(int categoryId, String searchParam, String status, int ownerId) {
+        StringBuilder sql = new StringBuilder("""
+                SELECT COUNT(*) FROM subjects
+                WHERE 1 = 1
+                """) ;
+        if(categoryId != 0){
+            sql.append(" AND [category_id] = ?");
+        }
+        if(searchParam != null && !searchParam.isBlank()){
+            sql.append(" AND [name] LIKE ?");
+        }
+        if(!status.isBlank()){
+            if(status.equalsIgnoreCase("Published")){
+                sql.append(" AND [status] = 1");
+            }
+            else sql.append(" AND [status] = 0");
+        }
+        if(ownerId != 0){
+            sql.append(" AND [owner_id] = ?");
+        }
+
+        try (PreparedStatement pstm = connection.prepareStatement(sql.toString())) {
+            int paramIndex = 1;
+            if (categoryId != 0) {
+                pstm.setInt(paramIndex++, categoryId);
+            }
+            if(searchParam != null && !searchParam.isBlank()){
+                pstm.setString(paramIndex++, "%" + searchParam + "%");
+            }
+            if(ownerId != 0){
+                pstm.setInt(paramIndex++, ownerId);
             }
             ResultSet rs = pstm.executeQuery();
             if (rs.next()) {

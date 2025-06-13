@@ -1,8 +1,9 @@
 package controller;
 
 import dao.CategoryDAO;
-import dao.RegistrationDAO;
+import dao.RoleDAO;
 import dao.SubjectDAO;
+import dao.UserDAO;
 import dto.SubjectDTO;
 import dto.UserDTO;
 import entity.Category;
@@ -19,8 +20,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-@WebServlet(name = "GetSubjectListServlet", urlPatterns = {"/subjects"})
-public class GetSubjectListServlet extends HttpServlet {
+@WebServlet(name = "ManageSubjectServlet", urlPatterns = {"/manage-subject"})
+public class ManageSubjectServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -28,16 +29,23 @@ public class GetSubjectListServlet extends HttpServlet {
         int page = 1;
         int size = 5;
         String search = "";
-        boolean isFeatured = false;
         int categoryId = 0;
-        boolean sortOrder = true;
+        String status = "";
+
+        //Init DAO object needed
+        SubjectDAO subjectDAO = new SubjectDAO();
+        RoleDAO roleDAO = new RoleDAO();
+        CategoryDAO categoryDAO = new CategoryDAO();
+        UserDAO userDAO = new UserDAO();
 
         //Get userID from session
-        int userID = 0;
+        int ownerId = 0;
         HttpSession session = request.getSession();
         if (session.getAttribute("user") != null) {
             UserDTO user = (UserDTO) session.getAttribute("user");
-            userID = user.getId();
+            if (roleDAO.getRoleNameById(user.getRoleId()).equals("Expert")) {
+                ownerId = user.getId();
+            }
         }
 
         //Get page, size, search, isFeatured, categoryId, sortOrder from request
@@ -50,34 +58,25 @@ public class GetSubjectListServlet extends HttpServlet {
         if (request.getParameter("search") != null) {
             search = request.getParameter("search");
         }
-        if (request.getParameter("isFeatured") != null) {
-            isFeatured = Boolean.parseBoolean(request.getParameter("isFeatured"));
-        }
         if (request.getParameter("categoryId") != null) {
             categoryId = Integer.parseInt(request.getParameter("categoryId"));
         }
-        if (request.getParameter("sortOrder") != null) {
-            sortOrder = request.getParameter("sortOrder").equalsIgnoreCase("desc");
+        if (request.getParameter("status") != null) {
+            status = request.getParameter("status");
         }
 
-        //Init DAO object needed
-        SubjectDAO subjectDAO = new SubjectDAO();
-        CategoryDAO categoryDAO = new CategoryDAO();
-        RegistrationDAO registrationDAO = new RegistrationDAO();
-
         //Get all subjects from database and convert them to subjectDTO
-        List<Subject> subjectList = subjectDAO.getAllPublishSubjectsWithPagination(page, size, categoryId, sortOrder, isFeatured, search);
+        List<Subject> subjectList = subjectDAO.getAllSubjectsWithPagination(page, size, categoryId, search, status, ownerId);
         List<SubjectDTO> subjects = new ArrayList<>();
         SubjectService subjectService = new SubjectService();
         for (Subject subject : subjectList) {
             SubjectDTO subjectDTO = subjectService.toSubjectDTO(subject);
-            //If the user has already registered for that course, they are not allowed to register again.
-            subjectDTO.setRegistered(registrationDAO.isRegistrationExist(userID, subjectDTO.getId()));
+            subjectDTO.setOwnerName(userDAO.getUserById(subject.getOwnerId()).getName());
             subjects.add(subjectDTO);
         }
 
         //Get total subjects, total pages and categories to show in subject list page
-        int totalSubjects = subjectDAO.getTotalPublishSubjects(categoryId, isFeatured, search);
+        int totalSubjects = subjectDAO.getTotalSubjects(categoryId, search, status, ownerId);
         int totalPages = (int) Math.ceil((double) totalSubjects / size);
         List<Category> categories = categoryDAO.getAllCategory();
 
@@ -88,9 +87,11 @@ public class GetSubjectListServlet extends HttpServlet {
         request.setAttribute("totalPages", totalPages);
         request.setAttribute("size", size);
         request.setAttribute("search", search);
-        request.setAttribute("isFeatured", isFeatured ? "true" : "");
+        if (!status.equals("")){
+            request.setAttribute("status", status);
+        }
         request.setAttribute("categoryId", categoryId);
-        request.setAttribute("sortOrder", sortOrder ? "desc" : "asc");
-        request.getRequestDispatcher("subject_list.jsp").forward(request, response);
+        request.setAttribute("ownerId", ownerId);
+        request.getRequestDispatcher("manage_subject.jsp").forward(request, response);
     }
 }
