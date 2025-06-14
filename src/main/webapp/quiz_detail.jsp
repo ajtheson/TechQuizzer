@@ -53,6 +53,9 @@
       gap: 10px;
       margin-top: 20px;
     }
+    .disabled-overlay {
+      pointer-events: none; /* Disable editing */
+    }
   </style>
 
   <script>
@@ -133,7 +136,14 @@
   <div id="Overview" class="row tabcontent">
     <div class="col-md-8 offset-md-2">
       <div class="tile">
-        <div class="tile-body">
+        <div class="tile-body ${hasAttempt ? 'disabled-overlay' : ''}">
+
+          <c:if test="${hasAttempt}">
+            <div class="alert alert-warning" role="alert">
+              <i class="bi bi-exclamation-triangle"></i>
+              This quiz has already been attempted and cannot be edited.
+            </div>
+          </c:if>
           <c:if test="${not empty sessionScope.message}">
             <div class="alert alert-success" role="alert">
                 ${sessionScope.message}
@@ -212,8 +222,14 @@
     <div class="row">
       <div class="col-md-10 offset-md-1">
         <div class="tile">
-          <div class="tile-body">
+          <div class="tile-body ${hasAttempt ? 'disabled-overlay' : ''}">
 
+            <c:if test="${hasAttempt}">
+              <div class="alert alert-warning" role="alert">
+                <i class="bi bi-exclamation-triangle"></i>
+                This quiz has already been attempted and cannot be edited.
+              </div>
+            </c:if>
             <form action="quiz-setting" method="post" id="quizSettingForm">
               <input type="hidden" name="action" value="updateSetting">
               <input type="hidden" name="id" value="${quiz.id}">

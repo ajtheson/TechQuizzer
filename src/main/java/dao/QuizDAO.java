@@ -16,7 +16,19 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 public class QuizDAO extends DBContext {
+    public boolean hasExamAttempt(int quizId) throws SQLException {
+        String sql = "SELECT 1 FROM exam_attempts WHERE quiz_id = ?";   // chỉ cần 1 cột
+        try (PreparedStatement pstm = connection.prepareStatement(sql)) {
+            pstm.setInt(1, quizId);
+            try (ResultSet rs = pstm.executeQuery()) {
+                return rs.next();
+            }
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
 
+    }
     public QuizDTO findByQuizId(int id){
         String sql = "SELECT q.id, q.name as quiz_name, q.subject_id, q.test_type_id, q.quiz_setting_id, " +
                 "s.name as subject_name, q.level, qs.number_question, q.duration, q.pass_rate, " +

@@ -12,6 +12,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,7 +53,13 @@ public class GetQuizzesDetailServlet extends HttpServlet {
                 } else if (!listDimensionQuestion.isEmpty()) {
                     currentQuizType = "dimension";
                 }
-
+                boolean hasAttempt = false;
+                try {
+                    hasAttempt = quizDAO.hasExamAttempt(id);
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+                request.setAttribute("hasAttempt", hasAttempt);
                 request.setAttribute("dimensions", dimensions);
                 request.setAttribute("lessons", lessons);
                 request.setAttribute("quiz", quiz);
