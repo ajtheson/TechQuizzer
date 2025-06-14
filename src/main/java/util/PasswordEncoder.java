@@ -18,6 +18,6 @@ public class PasswordEncoder {
     }
 
     public static void main(String[] args) {
-        System.out.println(encode("123456789"));
+        System.out.println(encode("Pass123@"));
     }
 }

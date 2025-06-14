@@ -5,6 +5,7 @@ import entity.Setting;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class SettingDAO extends DBContext {
@@ -137,4 +138,5 @@ public class SettingDAO extends DBContext {
         } catch (Exception e) {}
         return false;
     }
+
 }

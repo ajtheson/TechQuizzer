@@ -67,10 +67,16 @@
                 <div class="tile-body">
                     <div class="table-responsive">
                         <div class="mb-3 text-start">
-                            <a href="#" class="btn btn-primary">
+                            <a href="create_quiz" class="btn btn-primary">
                                 <i class="bi bi-plus-lg me-1"></i> Add new quizz
                             </a>
                         </div>
+                        <c:if test="${not empty sessionScope.successMessage}">
+                            <div class="alert alert-success" role="alert">
+                                    ${sessionScope.successMessage}
+                            </div>
+                            <c:remove var="successMessage" scope="session"/>
+                        </c:if>
                         <form method="get" action="quizzeslist" class="d-flex align-items-center gap-3 mb-3">
                             <select name="subject" class="form-select" style="width: 250px;" onchange="this.form.submit()">
                                 <option value="">All Subjects</option>
@@ -206,15 +212,15 @@
                             </c:if>
                             <c:forEach var="quiz" items="${quizList}">
                                 <tr>
-                                    <td>${quiz.id}</td>
-                                    <td>${quiz.name}</td>
-                                    <td>${quiz.level}</td>
-                                    <td>${quiz.duration} min</td>
-                                    <td>${quiz.quizSetting.numberOfQuestions}</td>
-                                    <td>${quiz.passRate}%</td>
-                                    <td>${quiz.subject.name}</td>
-                                    <td>${quiz.testType.name}</td>
-                                    <td>
+                                    <td class="col-1">${quiz.id}</td>
+                                    <td class="col-2">${quiz.name}</td>
+                                    <td class="col-3">${quiz.level}</td>
+                                    <td class="col-4">${quiz.duration} min</td>
+                                    <td class="col-5">${quiz.quizSetting.numberOfQuestions}</td>
+                                    <td class="col-6">${quiz.passRate}%</td>
+                                    <td class="col-7">${quiz.subject.name}</td>
+                                    <td class="col-8">${quiz.testType.name}</td>
+                                    <td class="col-9">
                                         <c:choose>
                                             <c:when test="${quiz.published}">
                                                 <a href="toggle-quiz-status?action=changeStatus&id=${quiz.id}&publishes=false"
