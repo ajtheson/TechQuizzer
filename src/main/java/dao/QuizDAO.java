@@ -50,7 +50,7 @@ public class QuizDAO extends DBContext {
                     quizDTO.setLevel(rs.getString("level"));
                     quizDTO.setDuration(rs.getInt("duration"));
                     quizDTO.setPassRate(rs.getInt("pass_rate"));
-                    quizDTO.setPublished(rs.getBoolean("status"));
+                    quizDTO.setStatus(rs.getInt("status"));
 
                     Subject subject = new Subject();
                     subject.setId(rs.getInt("subject_id"));
@@ -132,7 +132,7 @@ public List<QuizDTO> getQuizzesByPage(String subjectName, String testTypeName, S
                 dto.setLevel(rs.getString("level"));
                 dto.setDuration(rs.getInt("duration"));
                 dto.setPassRate(rs.getInt("pass_rate"));
-                dto.setPublished(rs.getBoolean("status"));
+                dto.setStatus(rs.getInt("status"));
 
                 Subject subject = new Subject();
                 subject.setId(rs.getInt("subject_id"));
@@ -333,7 +333,7 @@ public Quiz findById(int id) {
             ps.setInt(3, quiz.getDuration());
             ps.setInt(4, quiz.getPassRate());
             ps.setString(5, quiz.getDescription());
-            ps.setBoolean(6, quiz.getPublished());
+            ps.setInt(6, quiz.getStatus());
             ps.setInt(7, quiz.getTestTypeId());
             ps.setInt(8, quiz.getSubjectId());
             ps.setInt(9, quiz.getQuizSettingId());

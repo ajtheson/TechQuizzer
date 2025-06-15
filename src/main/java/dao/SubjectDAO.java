@@ -51,7 +51,7 @@ public class SubjectDAO extends DBContext {
                         rs.getBoolean("status"),
                         rs.getInt("category_id"),
                         rs.getInt("owner_id"),
-                        rs.getTimestamp("update_date")
+                        rs.getTimestamp("update_date").toLocalDateTime()
                 );
                 list.add(s);
             }

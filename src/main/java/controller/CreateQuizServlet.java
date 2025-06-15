@@ -170,7 +170,7 @@ public class CreateQuizServlet extends HttpServlet {
             quiz.setDuration(duration);
             quiz.setPassRate(passRate);
             quiz.setDescription(description);
-            quiz.setPublished(true); // Default active
+            quiz.setStatus(1); // Default active
             quiz.setTestTypeId(testTypeId);
             quiz.setSubjectId(subjectId);
             quiz.setQuizSettingId(quizSettingId);

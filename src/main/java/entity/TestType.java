@@ -4,6 +4,14 @@ public class TestType {
     private int id;
     private String name;
 
+    public TestType() {
+    }
+
+    public TestType(int id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
     public int getId() {
         return id;
     }

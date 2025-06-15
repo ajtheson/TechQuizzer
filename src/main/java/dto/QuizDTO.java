@@ -12,7 +12,7 @@ public class QuizDTO {
     private String level;
     private QuizSetting quizSetting;
     private TestType testType;
-    private Boolean published;
+    private int status;
     private int  duration;
     private int passRate;
 
@@ -81,11 +81,11 @@ public class QuizDTO {
         this.passRate = passRate;
     }
 
-    public Boolean getPublished() {
-        return published;
+    public int getStatus() {
+        return status;
     }
 
-    public void setPublished(Boolean published) {
-        this.published = published;
+    public void setStatus(int status) {
+        this.status = status;
     }
 }

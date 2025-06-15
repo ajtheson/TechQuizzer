@@ -70,7 +70,6 @@ public class LessonDAO extends DBContext {
         return 0;
     }
 
-public class LessonDAO extends DBContext {
     public List<Lesson> selectAllLesson(int subjectID) {
         List<Lesson> lessons = new ArrayList<Lesson>();
         String sql = "select * from [lessons] join [subjects] on [lessons].[subject_id]=subjects.id where subjects.id =?";

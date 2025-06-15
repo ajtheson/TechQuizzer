@@ -43,7 +43,7 @@ public class QuizService {
             quizDTO.setLevel(quiz.getLevel());
             quizDTO.setDuration(quiz.getDuration());
             quizDTO.setPassRate(quiz.getPassRate());
-            quizDTO.setPublished(quiz.getPublished());
+            quizDTO.setStatus(quiz.getStatus());
             quizDTOList.add(quizDTO);
         }
         return quizDTOList;
@@ -63,7 +63,7 @@ public class QuizService {
         quizDTO.setLevel(quiz.getLevel());
         quizDTO.setDuration(quiz.getDuration());
         quizDTO.setPassRate(quiz.getPassRate());
-        quizDTO.setPublished(quiz.getPublished());
+        quizDTO.setStatus(quiz.getStatus());
 
         return quizDTO;
     }

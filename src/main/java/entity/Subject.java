@@ -15,6 +15,23 @@ public class Subject {
     private int ownerId;
     private LocalDateTime updateDate;
 
+    public Subject() {
+    }
+
+    public Subject(int id, String name, String tagLine, String thumbnail, String shortDescription, String longDescription, boolean isFeaturedSubject, boolean isPublished, int categoryId, int ownerId, LocalDateTime updateDate) {
+        this.id = id;
+        this.name = name;
+        this.tagLine = tagLine;
+        this.thumbnail = thumbnail;
+        this.shortDescription = shortDescription;
+        this.longDescription = longDescription;
+        this.isFeaturedSubject = isFeaturedSubject;
+        this.isPublished = isPublished;
+        this.categoryId = categoryId;
+        this.ownerId = ownerId;
+        this.updateDate = updateDate;
+    }
+
     public int getId() {
         return id;
     }
