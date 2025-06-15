@@ -2,6 +2,7 @@ package dto;
 
 import entity.QuizSetting;
 import entity.Subject;
+import entity.TestType;
 
 public class QuizDTO {
 
@@ -10,8 +11,11 @@ public class QuizDTO {
     private Subject subject;
     private String level;
     private QuizSetting quizSetting;
+    private TestType testType;
+    private Boolean published;
     private int  duration;
     private int passRate;
+
 
     public int getId() {
         return id;
@@ -45,6 +49,14 @@ public class QuizDTO {
         this.level = level;
     }
 
+    public TestType getTestType() {
+        return testType;
+    }
+
+    public void setTestType(TestType testType) {
+        this.testType = testType;
+    }
+
     public QuizSetting getQuizSetting() {
         return quizSetting;
     }
@@ -69,4 +81,11 @@ public class QuizDTO {
         this.passRate = passRate;
     }
 
+    public Boolean getPublished() {
+        return published;
+    }
+
+    public void setPublished(Boolean published) {
+        this.published = published;
+    }
 }

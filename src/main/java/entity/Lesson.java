@@ -1,7 +1,6 @@
 package entity;
 
 public class Lesson {
-
     private int id;
     private String name;
     private String topic;
@@ -10,7 +9,25 @@ public class Lesson {
     private String content;
     private boolean status;
     private int subjectId;
-    private int lessonTypeId;
+    private Integer lessonTypeId;
+
+    public Lesson() {
+    }
+
+    public Lesson(int id, String name, String topic, int order, String videoLink,
+                  String content, boolean status, int subjectId, Integer lessonTypeId) {
+        this.id = id;
+        this.name = name;
+        this.topic = topic;
+        this.order = order;
+        this.videoLink = videoLink;
+        this.content = content;
+        this.status = status;
+        this.subjectId = subjectId;
+        this.lessonTypeId = lessonTypeId;
+    }
+
+
 
     public int getId() {
         return id;
@@ -76,11 +93,11 @@ public class Lesson {
         this.subjectId = subjectId;
     }
 
-    public int getLessonTypeId() {
+    public Integer getLessonTypeId() {
         return lessonTypeId;
     }
 
-    public void setLessonTypeId(int lessonTypeId) {
+    public void setLessonTypeId(Integer lessonTypeId) {
         this.lessonTypeId = lessonTypeId;
     }
 }

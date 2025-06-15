@@ -46,11 +46,10 @@ public class LoginServlet extends HttpServlet {
         User user = userDAO.getUserByEmail(email);
         HttpSession session = request.getSession();
         if (user == null) {
-            session.setAttribute("email", email);
-            request.setAttribute("error", "Wrong email or password");
+            request.getSession().setAttribute("error", "Wrong email or password");
             request.getRequestDispatcher("login.jsp").forward(request, response);
         } else if (!user.getPassword().equals(PasswordEncoder.encode(password))) {
-            request.setAttribute("error", "Wrong email or password");
+            request.getSession().setAttribute("error", "Wrong email or password");
             request.getRequestDispatcher("login.jsp").forward(request, response);
         } else {
             UserService userService = new UserService();
@@ -58,7 +57,7 @@ public class LoginServlet extends HttpServlet {
             session.setAttribute("user", userDTO);
             response.sendRedirect("user");
         }
-
+        System.out.println(user.getEmail());
 
     }
 

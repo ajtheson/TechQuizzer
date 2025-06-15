@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class DimensionDAO extends DBContext {
-
     public Dimension findById(int id) {
         String sql = "select [id], [name], [subject_id] from [dimensions] where id = ?";
         try(PreparedStatement pstm = connection.prepareStatement(sql)){
@@ -57,4 +56,27 @@ public class DimensionDAO extends DBContext {
         return dimensions;
     }
 
+    public List<Dimension> selectAllDimension(int subjectID) {
+        List<Dimension> list = new ArrayList<Dimension>();
+        String sql = "SELECT dimensions.id, type, dimensions.name, description, subject_id FROM dimensions join [subjects] on dimensions.[subject_id]=subjects.id where subjects.id =?";
+        try (
+                PreparedStatement ps = connection.prepareStatement(sql);
+        ) {
+            ps.setInt(1, subjectID);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Dimension d = new Dimension(
+                        rs.getInt("id"),
+                        rs.getString("type"),
+                        rs.getString("name"),
+                        rs.getString("description"),
+                        rs.getInt("subject_id")
+                );
+                list.add(d);
+                    }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
 }

@@ -3,6 +3,8 @@ package dao;
 import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import dal.DBContext;
 import entity.User;
@@ -426,6 +428,113 @@ public class UserDAO extends DBContext {
         return false;
     }
 
+
+
+    public ArrayList<User> getUsersByPage(Integer roleId, Integer gender, Integer status, String searchText,
+                                          int page, int pageSize, String sortField, String sortOrder) {
+        ArrayList<User> users = new ArrayList<>();
+        int offset = (page - 1) * pageSize;
+        StringBuilder sql = new StringBuilder("SELECT * FROM Users WHERE 1=1");
+
+
+        if (roleId != null) {
+            sql.append(" AND role_id = ?");
+        }
+        if (gender != null) sql.append(" AND gender = ?");
+        if (status != null) sql.append(" AND status = ?");
+        if (searchText != null && !searchText.isEmpty()) {
+            sql.append(" AND (name LIKE ? OR email LIKE ? OR mobile LIKE ?)");
+        }
+        List<String> allowedFields = Arrays.asList("id", "name", "email", "gender", "mobile", "address", "status", "role_id");
+        if (!allowedFields.contains(sortField)){
+            sortField = "id";
+
+        }
+        if (!sortOrder.equalsIgnoreCase("asc") && !sortOrder.equalsIgnoreCase("desc")){
+            sortOrder = "asc";
+        }
+        sql.append(" ORDER BY ").append(sortField).append(" ").append(sortOrder);
+        sql.append(" OFFSET ? ROWS FETCH NEXT ? ROWS ONLY");
+
+        try (PreparedStatement pstm = connection.prepareStatement(sql.toString())) {
+            int paramIndex = 1;
+            if (roleId != null) pstm.setInt(paramIndex++, roleId);
+            if (gender != null) pstm.setInt(paramIndex++, gender);
+            if (status != null) pstm.setInt(paramIndex++, status);
+            if (searchText != null && !searchText.isEmpty()) {
+                String searchPattern = "%" + searchText + "%";
+                pstm.setString(paramIndex++, searchPattern);
+                pstm.setString(paramIndex++, searchPattern);
+                pstm.setString(paramIndex++, searchPattern);
+            }
+            pstm.setInt(paramIndex++, offset);
+            pstm.setInt(paramIndex, pageSize);
+
+            ResultSet rs = pstm.executeQuery();
+            while (rs.next()) {
+                User user = new User();
+                user.setId(rs.getInt("id"));
+                user.setName(rs.getString("name"));
+                user.setEmail(rs.getString("email"));
+                user.setMobile(rs.getString("mobile"));
+                user.setAddress(rs.getString("address"));
+                user.setGender(rs.getBoolean("gender"));
+                user.setStatus(rs.getBoolean("status"));
+                user.setRoleId(rs.getInt("role_id"));
+                users.add(user);
+            }
+        } catch (SQLException e) {
+            System.err.println("Error: " + e.getMessage());
+        }
+        return users;
+    }
+
+
+    public int getTotalUsers(Integer roleId, Integer gender, Integer status, String searchText) {
+        StringBuilder sql = new StringBuilder("SELECT COUNT(*) FROM Users WHERE 1=1");
+
+        if (roleId != null) {
+            sql.append(" AND role_id = ?");
+        }
+        if (gender != null) {
+            sql.append(" AND gender = ?");
+        }
+        if (status != null) {
+            sql.append(" AND status = ?");
+        }
+        if (searchText != null && !searchText.isEmpty()) {
+            sql.append(" AND (name LIKE ? OR email LIKE ? OR mobile LIKE ?)");
+        }
+
+        try (PreparedStatement pstm = connection.prepareStatement(sql.toString())) {
+            int paramIndex = 1;
+
+            if (roleId != null) {
+                pstm.setInt(paramIndex++, roleId);
+            }
+            if (gender != null) {
+                pstm.setInt(paramIndex++, gender);
+            }
+            if (status != null) {
+                pstm.setInt(paramIndex++, status);
+            }
+            if (searchText != null && !searchText.isEmpty()) {
+                String searchPattern = "%" + searchText + "%";
+                pstm.setString(paramIndex++, searchPattern);
+                pstm.setString(paramIndex++, searchPattern);
+                pstm.setString(paramIndex++, searchPattern);
+            }
+
+            ResultSet rs = pstm.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            System.err.println("Error: " + e.getMessage());
+        }
+
+        return 0;
+    }
 
 
 }

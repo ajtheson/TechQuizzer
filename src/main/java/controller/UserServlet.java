@@ -22,12 +22,13 @@ public class UserServlet extends HttpServlet {
         UserDTO user = (UserDTO) session.getAttribute("user");
 
         if (user == null) {
-            response.sendRedirect("login.jsp");
-            return;
-        }
+            response.sendRedirect("login");
+        } else {
+            int role = user.getRoleId();
+            String targetPage = "";
 
-        int role = user.getRoleId();
-        String targetPage = "";
+            switch (role) {
+                case 1:
 
         switch (role) {
             case 1:
@@ -47,8 +48,10 @@ public class UserServlet extends HttpServlet {
                 targetPage = "login";
                 break;
         }
-        response.sendRedirect(targetPage);
     }
-
-
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        doGet(request, response);
+    }
 }

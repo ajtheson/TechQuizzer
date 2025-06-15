@@ -42,7 +42,7 @@ public class Subject {
     public String getTagLine() {
         return tagLine;
     }
-
+    
     public void setTagLine(String tagLine) {
         this.tagLine = tagLine;
     }
@@ -50,7 +50,6 @@ public class Subject {
     public String getThumbnail() {
         return thumbnail;
     }
-
     public void setThumbnail(String thumbnail) {
         this.thumbnail = thumbnail;
     }
@@ -58,7 +57,6 @@ public class Subject {
     public String getShortDescription() {
         return shortDescription;
     }
-
     public void setShortDescription(String shortDescription) {
         this.shortDescription = shortDescription;
     }

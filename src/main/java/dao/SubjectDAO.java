@@ -1,14 +1,15 @@
 package dao;
 
+import dal.DBContext;
+import entity.Quiz;
+import entity.Subject;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-
-import dal.DBContext;
-import entity.Subject;
 
 public class SubjectDAO extends DBContext {
     public Subject getForRegister(int subjectId) {
@@ -27,6 +28,39 @@ public class SubjectDAO extends DBContext {
             System.out.println("Error: " + e.getMessage());
         }
         return null;
+    }
+    
+    public List<Subject> getAllSubjects(int owner_id) {
+        List<Subject> list = new ArrayList<>();
+        String sql = "SELECT * FROM subjects WHERE status = 1 and owner_id=? ORDER BY name ASC ";
+        try (
+                PreparedStatement ps = connection.prepareStatement(sql);
+             ) {
+            ps.setInt(1, owner_id);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                Subject s = new Subject(
+                        rs.getInt("id"),
+                        rs.getString("name"),
+                        rs.getString("tag_line"),
+                        rs.getString("thumbnail"),
+                        rs.getString("short_description"),
+                        rs.getString("detail_description"),
+                        rs.getBoolean("featured_subject"),
+                        rs.getBoolean("status"),
+                        rs.getInt("category_id"),
+                        rs.getInt("owner_id"),
+                        rs.getTimestamp("update_date")
+                );
+                list.add(s);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return list;
     }
 
     public Subject findById(int id) {
@@ -325,5 +359,17 @@ public class SubjectDAO extends DBContext {
             System.out.println("Error: " + e.getMessage());
         }
         return null;
+    }
+    
+    public boolean updateSubjectName(int id, String name) {
+        String sql = "UPDATE [subjects] SET [name] = ? WHERE [id] = ?";
+        try (PreparedStatement pstm = connection.prepareStatement(sql)) {
+            pstm.setString(1, name);
+            pstm.setInt(2, id);
+            return pstm.executeUpdate() > 0;
+        } catch (SQLException e) {
+            System.err.println("Error updating subject name: " + e.getMessage());
+        }
+        return false;
     }
 }

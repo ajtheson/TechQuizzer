@@ -1,7 +1,6 @@
 package entity;
 
 public class TestType {
-
     private int id;
     private String name;
 
