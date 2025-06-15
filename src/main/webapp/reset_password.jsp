@@ -11,7 +11,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <%@include file="common/headload.jsp" %>
+    <jsp:include page="./common/headload.jsp"/>
     <title>TechQuizzer - Reset Password</title>
 </head>
 <body>

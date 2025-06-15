@@ -8,7 +8,7 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
-    <%@include file="common/headload.jsp" %>
+    <jsp:include page="./common/headload.jsp"/>
     <title>Change Password</title>
 </head>
 <body>
@@ -45,7 +45,7 @@
                         <button class="btn btn-primary">
                             <i class="bi bi-box-arrow-in-right me-2 fs-5"></i> Change password
                         </button>
-                        <a class="btn btn-light border border-secondary text-dark">
+                        <a class="btn btn-light border border-secondary text-dark" href="user">
                             Cancel
                         </a>
                     </div>

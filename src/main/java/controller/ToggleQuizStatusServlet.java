@@ -18,7 +18,7 @@ public class ToggleQuizStatusServlet extends HttpServlet {
 
         try {
             int id = Integer.parseInt(request.getParameter("id"));
-            boolean status = Boolean.parseBoolean(request.getParameter("status"));
+            int status =Integer.parseInt(request.getParameter("status"));
 
             QuizDAO dao = new QuizDAO();
             dao.changeQuizStatus(id, status);

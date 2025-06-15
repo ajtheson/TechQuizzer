@@ -199,10 +199,10 @@ public List<QuizDTO> getQuizzesByPage(String subjectName, String testTypeName, S
         return 0;
     }
 
-    public boolean changeQuizStatus(int id, boolean status) {
+    public boolean changeQuizStatus(int id, int status) {
         String sql = "UPDATE [quizzes] SET status = ? WHERE id = ?";
         try (PreparedStatement pstm = connection.prepareStatement(sql)) {
-            pstm.setBoolean(1, status);
+            pstm.setInt(1, status);
             pstm.setInt(2, id);
             return pstm.executeUpdate() > 0;
         } catch (Exception e) {

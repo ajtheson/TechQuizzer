@@ -8,7 +8,7 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
-    <%@include file="./common/headload.jsp" %>
+    <jsp:include page="./common/headload.jsp"/>
     <title>Setting List</title>
 </head>
 <body class="app sidebar-mini">

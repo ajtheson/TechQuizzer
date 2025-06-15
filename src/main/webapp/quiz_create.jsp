@@ -9,6 +9,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
+    <jsp:include page="./common/headload.jsp"/>
     <title>Create New Quiz</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
@@ -52,10 +53,11 @@
     </style>
 </head>
 <body>
-<jsp:include page="./common/headload.jsp"/>
-<jsp:include page="./layout/header.jsp"/>
-<jsp:include page="./user_profile.jsp"/>
+<!-- Navbar-->
+<jsp:include page="./layout/manage/header.jsp"/>
 
+<%--User profile--%>
+<jsp:include page="./user_profile.jsp"/>
 <button onclick="window.history.back(); return false;" class="btn btn-outline-secondary"
         style="position: fixed; left: 50px; top: 100px; z-index: 1000;">
     <i class="bi bi-arrow-left"></i> Back

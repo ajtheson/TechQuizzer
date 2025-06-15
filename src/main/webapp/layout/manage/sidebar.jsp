@@ -38,7 +38,7 @@
                 class="app-menu__icon bi bi-question-circle"></i><span
                 class="app-menu__label">Question List</span></a></li>
         <c:if test="${sessionScope.user.roleName == 'Expert'}">
-            <li><a class="app-menu__item ${currentPage == 'quiz' ? 'active' : ''}" href=""><i
+            <li><a class="app-menu__item ${currentPage == 'quiz' ? 'active' : ''}" href="quizzeslist"><i
                     class="app-menu__icon bi bi-card-checklist"></i><span
                     class="app-menu__label">Quiz List</span></a></li>
         </c:if>

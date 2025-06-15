@@ -8,7 +8,7 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
-    <%@include file="common/headload.jsp" %>
+    <jsp:include page="./common/headload.jsp"/>
     <title>Quizzes List</title>
 </head>
 <style>
@@ -17,44 +17,14 @@
 
 <body class="app sidebar-mini">
 <!-- Navbar-->
-<header class="app-header"><a class="app-header__logo" href="home">TechQuizzer</a>
-    <!-- Sidebar toggle button--><a class="app-sidebar__toggle" href="#" data-toggle="sidebar"
-                                    aria-label="Hide Sidebar"></a>
-    <!-- Navbar Right Menu-->
-    <ul class="app-nav">
-        <!-- User Menu-->
-        <li class="dropdown"><a class="app-nav__item" href="#" data-bs-toggle="dropdown" aria-label="Open Profile Menu"><i
-                class="bi bi-person fs-4"></i></a>
-            <ul class="dropdown-menu settings-menu dropdown-menu-right">
-                <li><a class="dropdown-item" href="change-password"><i class="bi bi-person me-2 fs-5"></i> Change
-                    Password</a>
-                </li>
-                <li><a class="dropdown-item" href="logout"><i class="bi bi-box-arrow-right me-2 fs-5"></i>
-                    Logout</a></li>
-            </ul>
-        </li>
-    </ul>
-</header>
+<jsp:include page="./layout/manage/header.jsp"/>
 
 <!-- Sidebar menu-->
-<div class="app-sidebar__overlay" data-toggle="sidebar"></div>
-<aside class="app-sidebar">
-    <div class="app-sidebar__user"><img class="app-sidebar__user-avatar"
-                                        src="assets/images/avatar/${sessionScope.user.avatar}" alt="User Image">
-        <div>
-            <p class="app-sidebar__user-name">${sessionScope.user.name}</p>
-            <p class="app-sidebar__user-designation">Expert</p>
-        </div>
-
-    </div>
-    <ul class="app-menu">
-        <li><a class="app-menu__item active" href="quizzeslist"><i class="app-menu__icon bi bi-people-fill"></i><span
-                class="app-menu__label">Quizzes List</span></a></li>
-        <li><a class="app-menu__item" href="#"><i
-                class="app-menu__icon bi bi-gear-wide-connected"></i><span
-                class="app-menu__label">Subjects List</span></a></li>
-    </ul>
-</aside>
+<jsp:include page="./layout/manage/sidebar.jsp">
+    <jsp:param name="currentPage" value="quiz"/>
+</jsp:include>
+<%--User profile--%>
+<jsp:include page="./user_profile.jsp"/>
 <main class="app-content">
     <div class="app-title">
         <div>
@@ -222,15 +192,15 @@
                                     <td class="col-8">${quiz.testType.name}</td>
                                     <td class="col-9">
                                         <c:choose>
-                                            <c:when test="${quiz.published}">
-                                                <a href="toggle-quiz-status?action=changeStatus&id=${quiz.id}&publishes=false"
+                                            <c:when test="${quiz.status==1}">
+                                                <a href="toggle-quiz-status?action=changeStatus&id=${quiz.id}&status=0"
                                                    class="btn btn-success"
                                                    onclick="return confirm('Are you sure you want to deactivate this quiz?');">
                                                     Active
                                                 </a>
                                             </c:when>
                                             <c:otherwise>
-                                                <a href="toggle-quiz-status?action=changeStatus&id=${quiz.id}&publishes=true"
+                                                <a href="toggle-quiz-status?action=changeStatus&id=${quiz.id}&status=1"
                                                    class="btn btn-danger"
                                                    onclick="return confirm('Are you sure you want to activate this quiz?');">
                                                     Inactive
