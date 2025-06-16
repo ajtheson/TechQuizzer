@@ -38,7 +38,9 @@ public class QuizSettingDAO extends DBContext {
 
     public List<QuizSetting> findByIds(List<Integer> ids) {
         List<QuizSetting> quizSettings = new ArrayList<>();
-
+        if(ids == null || ids.isEmpty()) {
+            return quizSettings;
+        }
         String inClause = ids.stream().map(id -> "?").collect(Collectors.joining(","));
         String sql = "SELECT [id], [number_question], [question_type] FROM [quiz_settings] WHERE id IN (" + inClause + ")";
         try(PreparedStatement pstm = connection.prepareStatement(sql)){
