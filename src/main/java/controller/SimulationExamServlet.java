@@ -48,7 +48,7 @@ public class SimulationExamServlet extends HttpServlet {
             List<QuizDTO> quizzesDTO = quizService.convertQuizToQuizDTO(quizzes);
 
             //calculate total page
-            int totalQuizzes = quizDAO.countByTestTypeIdAndSubjectIds(testTypeId, subjectIds);
+            int totalQuizzes = quizDAO.countByTestTypeIdAndSubjectIds(testTypeId, subjectIds, search);
             int totalPages = totalQuizzes / size + (totalQuizzes % size == 0 ? 0 : 1);
 
             request.setAttribute("quizzes", quizzesDTO);

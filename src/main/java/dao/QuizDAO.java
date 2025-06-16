@@ -279,12 +279,12 @@ public Quiz findById(int id) {
         return quizzes;
     }
 
-    public int countByTestTypeIdAndSubjectIds(int testTypeId, List<Integer> subjectIds) throws SQLException {
+    public int countByTestTypeIdAndSubjectIds(int testTypeId, List<Integer> subjectIds, String search) throws SQLException {
         if(subjectIds == null || subjectIds.isEmpty()){
             return 0;
         }
         String inClause = subjectIds.stream().map(id -> "?").collect(Collectors.joining(", "));
-        String sql = "SELECT COUNT(*) FROM [quizzes] WHERE [status] = 1 AND [test_type_id] = ? AND [subject_id] IN (" + inClause + ")";
+        String sql = "SELECT COUNT(*) FROM [quizzes] WHERE [status] = 1 AND [test_type_id] = ? AND [subject_id] IN (" + inClause + ") AND [name] LIKE ? ";
         try{
             PreparedStatement pstm = connection.prepareStatement(sql);
             int index = 1;
@@ -292,6 +292,7 @@ public Quiz findById(int id) {
             for (Integer id : subjectIds) {
                 pstm.setInt(index++, id);
             }
+            pstm.setString(index, "%" + search + "%");
             ResultSet rs = pstm.executeQuery();
             rs.next();
             return rs.getInt(1);
