@@ -7,7 +7,6 @@ public class Subject {
     private String name;
     private String tagLine;
     private String thumbnail;
-    private String shortDescription;
     private String longDescription;
     private boolean isFeaturedSubject;
     private boolean isPublished;
@@ -18,12 +17,11 @@ public class Subject {
     public Subject() {
     }
 
-    public Subject(int id, String name, String tagLine, String thumbnail, String shortDescription, String longDescription, boolean isFeaturedSubject, boolean isPublished, int categoryId, int ownerId, LocalDateTime updateDate) {
+    public Subject(int id, String name, String tagLine, String thumbnail, String longDescription, boolean isFeaturedSubject, boolean isPublished, int categoryId, int ownerId, LocalDateTime updateDate) {
         this.id = id;
         this.name = name;
         this.tagLine = tagLine;
         this.thumbnail = thumbnail;
-        this.shortDescription = shortDescription;
         this.longDescription = longDescription;
         this.isFeaturedSubject = isFeaturedSubject;
         this.isPublished = isPublished;
@@ -69,13 +67,6 @@ public class Subject {
     }
     public void setThumbnail(String thumbnail) {
         this.thumbnail = thumbnail;
-    }
-
-    public String getShortDescription() {
-        return shortDescription;
-    }
-    public void setShortDescription(String shortDescription) {
-        this.shortDescription = shortDescription;
     }
 
     public String getLongDescription() {

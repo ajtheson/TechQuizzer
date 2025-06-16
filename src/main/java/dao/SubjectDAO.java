@@ -45,7 +45,6 @@ public class SubjectDAO extends DBContext {
                         rs.getString("name"),
                         rs.getString("tag_line"),
                         rs.getString("thumbnail"),
-                        rs.getString("short_description"),
                         rs.getString("detail_description"),
                         rs.getBoolean("featured_subject"),
                         rs.getBoolean("status"),
@@ -69,7 +68,6 @@ public class SubjectDAO extends DBContext {
                         [name],
                         [tag_line],
                         [thumbnail],
-                        [short_description],
                         [detail_description],
                         [featured_subject],
                         [status],
@@ -88,7 +86,6 @@ public class SubjectDAO extends DBContext {
                 subject.setName(rs.getString("name"));
                 subject.setTagLine(rs.getString("tag_line"));
                 subject.setThumbnail(rs.getString("thumbnail"));
-                subject.setShortDescription(rs.getString("short_description"));
                 subject.setLongDescription(rs.getString("detail_description"));
                 subject.setFeaturedSubject(rs.getBoolean("featured_subject"));
                 subject.setPublished(rs.getBoolean("status"));
@@ -231,7 +228,6 @@ public class SubjectDAO extends DBContext {
                 subject.setName(rs.getString("name"));
                 subject.setTagLine(rs.getString("tag_line"));
                 subject.setThumbnail(rs.getString("thumbnail"));
-                subject.setShortDescription(rs.getString("short_description"));
                 subject.setLongDescription(rs.getString("detail_description"));
                 subjects.add(subject);
             }
@@ -329,7 +325,6 @@ public class SubjectDAO extends DBContext {
                 subject.setName(rs.getString("name"));
                 subject.setTagLine(rs.getString("tag_line"));
                 subject.setThumbnail(rs.getString("thumbnail"));
-                subject.setShortDescription(rs.getString("short_description"));
                 subject.setLongDescription(rs.getString("detail_description").replace("\\n", "<br>"));
                 subject.setFeaturedSubject(rs.getBoolean("featured_subject"));
                 subject.setPublished(rs.getBoolean("status"));

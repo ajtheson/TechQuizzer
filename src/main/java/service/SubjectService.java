@@ -18,7 +18,6 @@ public class SubjectService {
             subjectDTO.setName(subject.getName());
             subjectDTO.setTagLine(subject.getTagLine());
             subjectDTO.setThumbnail(subject.getThumbnail());
-            subjectDTO.setShortDescription(subject.getShortDescription());
             subjectDTO.setLongDescription(subject.getLongDescription());
             subjectDTO.setFeaturedSubject(subject.isFeaturedSubject());
             subjectDTO.setPublished(subject.isPublished());

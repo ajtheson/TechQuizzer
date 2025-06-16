@@ -7,7 +7,6 @@ public class SubjectDTO {
     private String name;
     private String tagLine;
     private String thumbnail;
-    private String shortDescription;
     private String longDescription;
     private boolean isFeaturedSubject;
     private boolean isPublished;
@@ -51,14 +50,6 @@ public class SubjectDTO {
 
     public void setThumbnail(String thumbnail) {
         this.thumbnail = thumbnail;
-    }
-
-    public String getShortDescription() {
-        return shortDescription;
-    }
-
-    public void setShortDescription(String shortDescription) {
-        this.shortDescription = shortDescription;
     }
 
     public String getLongDescription() {
