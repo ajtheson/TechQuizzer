@@ -10,13 +10,13 @@ import java.util.List;
 
 public class QuestionDAO extends DBContext {
 
-    public List<Question> findAllByDimensionIdAndQuestionLevel(int dimensionId, int questionLevel) {
-        List<Question> questions = new ArrayList<Question>();
+    public List<Question> findAllByDimensionIdAndQuestionLevel(int dimensionId, int questionLevelId) {
+        List<Question> questions = new ArrayList<>();
         String sql = "select [id], [content], [media], [explaination], [question_level_id], [subject_lesson_id], [subject_dimension_id] " +
-                "from [questions] where [subject_dimension_id] = ? and [question_level_id] = ?";
+                "from [questions] where [subject_dimension_id] = ? and [question_level_id] = ? and [is_deleted] = 0";
         try(PreparedStatement pstm = connection.prepareStatement(sql)){
             pstm.setInt(1, dimensionId);
-            pstm.setInt(2, questionLevel);
+            pstm.setInt(2, questionLevelId);
             ResultSet rs = pstm.executeQuery();
             while(rs.next()){
                 Question question = new Question();
@@ -35,8 +35,29 @@ public class QuestionDAO extends DBContext {
         return questions;
     }
 
-//    public List<Question> findAllByLessonIdAndQuestionLevel(int lessonId, int questionLevel) {
-//
-//    }
+    public List<Question> findAllByLessonIdAndQuestionLevel(int lessonId, int questionLevelId) {
+        List<Question> questions = new ArrayList<>();
+        String sql = "select [id], [content], [media], [explaination], [question_level_id], [subject_lesson_id], [subject_dimension_id] " +
+                "from [questions] where [subject_lesson_id] = ? and [question_level_id] = ? and [is_deleted] = 0";
+        try(PreparedStatement pstm = connection.prepareStatement(sql)){
+            pstm.setInt(1, lessonId);
+            pstm.setInt(2, questionLevelId);
+            ResultSet rs = pstm.executeQuery();
+            while(rs.next()){
+                Question question = new Question();
+                question.setId(rs.getInt("id"));
+                question.setContent(rs.getString("content"));
+                question.setMedia(rs.getString("media"));
+                question.setExplaination(rs.getString("explaination"));
+                question.setQuestionLevelId(rs.getInt("question_level_id"));
+                question.setSubjectLessonId(rs.getInt("subject_lesson_id"));
+                question.setSubjectDimensionId(rs.getInt("subject_dimension_id"));
+                questions.add(question);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return questions;
+    }
 
 }

@@ -6,6 +6,7 @@ public class Question {
     private String content;
     private String media;
     private String explaination;
+    private boolean isDeleted;
     private int questionLevelId;
     private int subjectLessonId;
     private int subjectDimensionId;
@@ -64,5 +65,13 @@ public class Question {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public boolean isDeleted() {
+        return isDeleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        isDeleted = deleted;
     }
 }

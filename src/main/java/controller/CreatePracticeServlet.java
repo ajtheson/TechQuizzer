@@ -1,6 +1,7 @@
 package controller;
 
 import dao.*;
+import dto.PracticeQuestionLevelDTO;
 import dto.RegistrationDTO;
 import dto.UserDTO;
 import entity.*;
@@ -9,9 +10,8 @@ import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @WebServlet(name = "CreatePracticeServlet", value = "/practices/create")
 public class CreatePracticeServlet extends HttpServlet {
@@ -102,9 +102,34 @@ public class CreatePracticeServlet extends HttpServlet {
                 throw new Exception("Exam attempt not created");
             }
 
+            //insert question attempt
+            List<Question> questions = new ArrayList<>(numberOfQuestions);
+            int basePerLevel = numberOfQuestions / questionLevelIds.size();
+            int remainder = numberOfQuestions % questionLevelIds.size();
+            int index = 0;
+            if(practice.getSubjectDimensionId() != null){
+                for(Integer questionLevelId : questionLevelIds){
+                    List<Question> questionSubList = new QuestionDAO().findAllByDimensionIdAndQuestionLevel(practice.getSubjectDimensionId(), questionLevelId);
+                    Collections.shuffle(questionSubList);
+                    int numberToTake = basePerLevel + (index < remainder ? 1 : 0);
+                    questions.addAll(questionSubList.subList(0, numberToTake));
+                    index++;
+                }
+            }else{
+                for(Integer questionLevelId : questionLevelIds) {
+                    List<Question> questionSubList = new QuestionDAO().findAllByLessonIdAndQuestionLevel(practice.getSubjectLessonId(), questionLevelId);
+                    Collections.shuffle(questionSubList);
+                    int numberToTake = basePerLevel + (index < remainder ? 1 : 0);
+                    questions.addAll(questionSubList.subList(0, numberToTake));
+                    index++;
+                }
+            }
+            List<Integer> questionIds = questions.stream().map(q -> q.getId()).toList();
+            if(! new QuestionAttemptDAO().insertAllByExamAttemptIdAndQuestionIds(insertedExamAttemptId, questionIds)){
+                throw new Exception("Question attempt not created");
+            }
 
-
-            response.sendRedirect(request.getContextPath() + "/practices");
+            response.sendRedirect(request.getContextPath() + "/quiz-handle?examAttemptId=" + insertedExamAttemptId);
 
         } catch (Exception e) {
             e.printStackTrace();
