@@ -158,7 +158,7 @@
 
             <div class="mb-3">
               <label class="form-label"># Questions</label>
-              <input type="number" class="form-control" name="numberOfQuestions" value="${quiz.quizSetting.numberOfQuestions}" min="1" required>
+              <input type="number" class="form-control" name="numberOfQuestions" value="${quiz.quizSetting.numberOfQuestions}" min="1" readonly>
             </div>
 
             <div class="mb-3">
