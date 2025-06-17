@@ -31,13 +31,14 @@
                     to advanced.
                 </p>
                 <a href="#myTabContent" class="btn btn-light btn-lg px-4 rounded-pill shadow">Start Learning</a>
+                <div id="myTabContent"></div>
             </div>
         </div>
     </div>
 </section>
 
 <!-- Main content -->
-<main class="container" id="myTabContent">
+<main class="container">
     <div class="row user">
         <%--Main content left/Sider--%>
         <div class="col-md-4">
@@ -48,8 +49,8 @@
                     <div class="p-3 border-bottom">
                         <div class="input-group rounded shadow-sm">
                             <input type="search" id="searchInput" class="form-control"
-                                   placeholder="Search by name..." value="${requestScope.search}"">
-                            <button class="btn btn-primary" type="button" id="searchBtn">Search</button>
+                                   placeholder="Search by name..." value="${requestScope.search}">
+                            <button class="btn btn-primary" type="submit" id="searchBtn">Search</button>
                         </div>
                     </div>
 
@@ -149,7 +150,7 @@
                     <%--Number of subject shown--%>
                     <label class="form-label mb-0" for="type">
                         <c:if test="${totalSubjects == 0}">
-                        No data</label>
+                        Showing 0 of 0 item</label>
                     </c:if>
                     <c:if test="${totalSubjects > 0}">
                         Showing ${size*(page-1)+1} to ${size * page > totalSubjects ? totalSubjects: size * page} of ${totalSubjects} items</label>
@@ -167,42 +168,51 @@
 
                 <%--Subject list--%>
                 <div class="tab-pane active" id="user-timeline">
-                    <%--Part for one subject--%>
-                    <c:forEach items="${subjects}" var="subject">
-                        <div class="timeline-post">
-                            <div class="row">
-                                <div class="subject-media col-md-4">
-                                    <a href="get-subject-detail?subject_id=${subject.id}">
-                                        <img class="subject-thumbnail"
-                                             src="assets/images/thumbnail/subject/${subject.thumbnail}"
-                                             alt="Subject_Thumbnail">
-                                    </a>
-                                </div>
-                                <div class="post-content col-md-6">
-                                    <h4 class="text-uppercase">${subject.name}</h4>
-                                    <p class="subject-tagline">${subject.tagLine}</p>
-                                </div>
-                                <div class="price_register_button col-md-2">
-                                    <p class="text-decoration-line-through subject-list-price text-muted">
-                                        $${subject.minListPrice}</p>
-                                    <p class="fw-bold subject-sale-price">$${subject.minSalePrice}</p>
-                                    <c:choose>
-                                        <c:when test="${subject.isRegistered}">
-                                            <button class="btn" style="background-color:#e0e0e0; color:black; border:none;" type="button" disabled>
-                                                Registered
-                                            </button>
-                                        </c:when>
-                                        <c:otherwise>
-                                            <a class="btn" style="background-color:#00897B; color:white; border:none;"
-                                               href="register_subject?subject_id=${subject.id}"
-                                               type="button">Register
+                    <c:choose>
+                        <c:when test="${totalSubjects == 0}">
+                            <h3 class="text-center text-danger mt-4 mb-4">
+                                No data
+                            </h3>
+                        </c:when>
+                        <c:otherwise>
+                            <%--Part for one subject--%>
+                            <c:forEach items="${subjects}" var="subject">
+                                <div class="timeline-post">
+                                    <div class="row">
+                                        <div class="subject-media col-md-4">
+                                            <a href="get-subject-detail?subject_id=${subject.id}">
+                                                <img class="subject-thumbnail"
+                                                     src="assets/images/thumbnail/subject/${subject.thumbnail}"
+                                                     alt="Subject_Thumbnail">
                                             </a>
-                                        </c:otherwise>
-                                    </c:choose>
+                                        </div>
+                                        <div class="post-content col-md-6">
+                                            <h4 class="text-uppercase">${subject.name}</h4>
+                                            <p class="subject-tagline">${subject.tagLine}</p>
+                                        </div>
+                                        <div class="price_register_button col-md-2">
+                                            <p class="text-decoration-line-through subject-list-price text-muted">
+                                                $${subject.minListPrice}</p>
+                                            <p class="fw-bold subject-sale-price">$${subject.minSalePrice}</p>
+                                            <c:choose>
+                                                <c:when test="${subject.isRegistered}">
+                                                    <button class="btn" style="background-color:#e0e0e0; color:black; border:none;" type="button" disabled>
+                                                        Registered
+                                                    </button>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <a class="btn" style="background-color:#00897B; color:white; border:none;"
+                                                       href="register_subject?subject_id=${subject.id}"
+                                                       type="button">Register
+                                                    </a>
+                                                </c:otherwise>
+                                            </c:choose>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
-                    </c:forEach>
+                            </c:forEach>
+                        </c:otherwise>
+                    </c:choose>
                 </div>
             </div>
 
@@ -261,7 +271,7 @@
         sizeInput = isNaN(sizeInput) || sizeInput < 1 ? 5 : sizeInput;
         let url = "?page=1&size=" + sizeInput
         if (search.length > 0) {
-            url += "&search=" + searchInput
+            url += "&search=" + search
         }
         if (isFeatured) {
             url += "&isFeatured=true"
@@ -292,6 +302,12 @@
             url += "&sortOrder=" + sortOrder
         }
         window.location.href = url
+    });
+
+    document.getElementById("searchInput").addEventListener("keypress", function (e) {
+        if (e.key === "Enter") {
+            document.getElementById("searchBtn").click();
+        }
     });
 
     //handle Featured subject

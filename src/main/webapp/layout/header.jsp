@@ -49,7 +49,7 @@
                         </li>
                         <li>
                             <a class="dropdown-item" href="${pageContext.request.contextPath}/my_registration">
-                                <i class="bi bi-archive"></i> My registration
+                                <i class="bi bi-archive me-2 fs-5"></i> My registration
                             </a>
                         </li>
                         <li>

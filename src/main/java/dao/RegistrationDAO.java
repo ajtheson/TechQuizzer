@@ -147,7 +147,7 @@ public class RegistrationDAO extends DBContext {
                 SELECT 1
                 FROM registrations r JOIN price_packages p
                 ON r.price_package_id = p.id
-                WHERE r.user_id = ? AND p.subject_id = ? AND r.status = 'Paid'
+                WHERE r.user_id = ? AND p.subject_id = ? AND r.status IN ('Paid', 'Pending')
                 """;
         try (PreparedStatement pstm = connection.prepareStatement(sql)) {
             pstm.setInt(1, userID);

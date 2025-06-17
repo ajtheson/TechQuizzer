@@ -209,7 +209,6 @@ public class SubjectDAO extends DBContext {
                 "[name]," +
                 "[tag_line]," +
                 "[thumbnail]," +
-                "[short_description]," +
                 "[detail_description]," +
                 "[featured_subject]," +
                 "[status]," +

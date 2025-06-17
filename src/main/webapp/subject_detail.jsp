@@ -100,9 +100,24 @@
                             </span>
                         </div>
 
-                        <div class="col-md-12 mt-1 mb-3">
-                            <a class="btn btn-primary btn-lg" style="width: 100%" href="register_subject?subject_id=${requestScope.subject.id}">Register</a>
-                        </div>
+                        <c:choose>
+                            <c:when test="${subject.isRegistered}">
+                                <div class="col-md-12 mt-1 mb-3 text-center">
+                                    <button class="btn"
+                                            style="background-color:#e0e0e0; color:black; border:none; width: 100%"
+                                            type="button" disabled>
+                                        Registered
+                                    </button>
+                                    <a href="my_registration">Modify</a>
+                                </div>
+                            </c:when>
+                            <c:otherwise>
+                                <div class="col-md-12 mt-1 mb-3">
+                                    <a class="btn btn-primary btn-lg" style="width: 100%"
+                                       href="register_subject?subject_id=${requestScope.subject.id}">Register</a>
+                                </div>
+                            </c:otherwise>
+                        </c:choose>
 
                         <hr>
 
@@ -121,7 +136,8 @@
                                 Need More Advice? Contact TechQuizzer
                             </h6>
                             <div class="d-flex justify-content-center">
-                                <a class="btn btn-outline-primary btn-sm" href="https://zalo.me/0343008127" target="_blank">Ask
+                                <a class="btn btn-outline-primary btn-sm" href="https://zalo.me/0343008127"
+                                   target="_blank">Ask
                                     Now</a>
                             </div>
                         </div>
@@ -157,11 +173,11 @@
         border-top: 1px solid #E5E5E5;
     }
 
-    .subject_card .col-md-5{
+    .subject_card .col-md-5 {
         padding-right: 1%;
     }
 
-    .subject_card .col-md-4{
+    .subject_card .col-md-4 {
         margin-left: 8%;
     }
 
@@ -192,11 +208,12 @@
         margin-bottom: 10px;
     }
 
-    .brief-description p{
+    .brief-description p {
         margin-bottom: 8px;
         font-size: 15px;
     }
-    .brief-description p i{
+
+    .brief-description p i {
         padding-right: 25px;
     }
 
