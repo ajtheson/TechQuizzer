@@ -67,7 +67,7 @@
                                 </c:forEach>
                             </select>
 
-<%--                            Test Type: <input type="text" name="testType" value="${testType}">--%>
+                            <%--                            Test Type: <input type="text" name="testType" value="${testType}">--%>
                             Search: <input type="text" name="search" value="${search}">
                             <input type="hidden" name="sortField" value="${sortField}">
                             <input type="hidden" name="sortOrder" value="${sortOrder}">
@@ -127,23 +127,27 @@
                                 </div>
                                 <div class="form-check">
                                     <input class="form-check-input toggle-column" type="checkbox" data-column="5" id="col5" checked>
-                                    <label class="form-check-label" for="col5">Pass Rate</label>
+                                    <label class="form-check-label" for="col5">#Question</label>
                                 </div>
                                 <div class="form-check">
                                     <input class="form-check-input toggle-column" type="checkbox" data-column="6" id="col6" checked>
-                                    <label class="form-check-label" for="col6">Subject</label>
+                                    <label class="form-check-label" for="col6">Pass Rate</label>
                                 </div>
                                 <div class="form-check">
                                     <input class="form-check-input toggle-column" type="checkbox" data-column="7" id="col7" checked>
-                                    <label class="form-check-label" for="col7">Test Type</label>
+                                    <label class="form-check-label" for="col7">Subject</label>
                                 </div>
                                 <div class="form-check">
                                     <input class="form-check-input toggle-column" type="checkbox" data-column="8" id="col8" checked>
-                                    <label class="form-check-label" for="col8">Status</label>
+                                    <label class="form-check-label" for="col8">Test Type</label>
                                 </div>
                                 <div class="form-check">
                                     <input class="form-check-input toggle-column" type="checkbox" data-column="9" id="col9" checked>
-                                    <label class="form-check-label" for="col9">Action</label>
+                                    <label class="form-check-label" for="col9">Status</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input toggle-column" type="checkbox" data-column="10" id="col10" checked>
+                                    <label class="form-check-label" for="col10">Action</label>
                                 </div>
                             </div>
                         </div>
@@ -162,18 +166,18 @@
                                 </th>
                                 <th class="col-4"><a style="display: flex; align-items: center; gap: 5px; text-decoration: none; color: inherit;" href="?subject=${subject}&testType=${testType}&search=${search}&sortField=q.duration&sortOrder=${sortOrder == 'ASC' ? 'DESC' : 'ASC'}&page=${currentPage}&pageSize=${pageSize}">Duration<i class="fa fa-sort"></i></a>
                                 </th>
-                                <th class="col-4"><a style="display: flex; align-items: center; gap: 5px; text-decoration: none; color: inherit;" href="?subject=${subject}&testType=${testType}&search=${search}&sortField=qs.number_question&sortOrder=${sortOrder == 'ASC' ? 'DESC' : 'ASC'}&page=${currentPage}&pageSize=${pageSize}">#Questions<i class="fa fa-sort"></i></a>
+                                <th class="col-5"><a style="display: flex; align-items: center; gap: 5px; text-decoration: none; color: inherit;" href="?subject=${subject}&testType=${testType}&search=${search}&sortField=qs.number_question&sortOrder=${sortOrder == 'ASC' ? 'DESC' : 'ASC'}&page=${currentPage}&pageSize=${pageSize}">#Questions<i class="fa fa-sort"></i></a>
                                 </th>
-                                <th class="col-5" style="width:105px;height: 56px"><a style="display: flex; align-items: center; gap: 5px; text-decoration: none; color: inherit;"
-                                        href="?subject=${subject}&testType=${testType}&search=${search}&sortField=q.pass_rate&sortOrder=${sortOrder == 'ASC' ? 'DESC' : 'ASC'}&page=${currentPage}&pageSize=${pageSize}">Pass Rate<i class="fa fa-sort"></i>
-                                    </a></th>
-                                <th class="col-6">
+                                <th class="col-6" style="width:105px;height: 56px"><a style="display: flex; align-items: center; gap: 5px; text-decoration: none; color: inherit;"
+                                                                                      href="?subject=${subject}&testType=${testType}&search=${search}&sortField=q.pass_rate&sortOrder=${sortOrder == 'ASC' ? 'DESC' : 'ASC'}&page=${currentPage}&pageSize=${pageSize}">Pass Rate<i class="fa fa-sort"></i>
+                                </a></th>
+                                <th class="col-7">
                                     <a style="display: flex; align-items: center; gap: 5px; text-decoration: none; color: inherit;" href="?subject=${subject}&testType=${testType}&search=${search}&sortField=s.name&sortOrder=${sortOrder == 'ASC' ? 'DESC' : 'ASC'}&page=${currentPage}&pageSize=${pageSize}">Subject<i class="fa fa-sort"></i></a>
                                 </th>
-                                <th class="col-7"><a style="display: flex; align-items: center; gap: 5px; text-decoration: none; color: inherit;" href="?subject=${subject}&testType=${testType}&search=${search}&sortField=t.name&sortOrder=${sortOrder == 'ASC' ? 'DESC' : 'ASC'}&page=${currentPage}&pageSize=${pageSize}">Test Type<i class="fa fa-sort"></i>
-                                    </a></th>
-                                <th class="col-8">Status</th>
-                                <th class="col-9">Action</th>
+                                <th class="col-8"><a style="display: flex; align-items: center; gap: 5px; text-decoration: none; color: inherit;" href="?subject=${subject}&testType=${testType}&search=${search}&sortField=t.name&sortOrder=${sortOrder == 'ASC' ? 'DESC' : 'ASC'}&page=${currentPage}&pageSize=${pageSize}">Test Type<i class="fa fa-sort"></i>
+                                </a></th>
+                                <th class="col-9">Status</th>
+                                <th class="col-10">Action</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -208,7 +212,7 @@
                                             </c:otherwise>
                                         </c:choose>
                                     </td>
-                                    <td>
+                                    <td class="col-10">
                                         <div class="d-flex justify-content-center gap-2">
                                             <a href="get-quiz-detail?action=view&id=${quiz.id}" class="btn btn-info" style="color: white">Overview/Setting</a>
                                         </div>
