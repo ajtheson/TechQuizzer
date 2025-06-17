@@ -41,18 +41,13 @@
 
         .option-item.selected .option-radio::after {
             background-color: black;
+            border: 3px solid white;
         }
 
-        .marked {
-            background-color: #64c281 !important;
+        .markedBtn {
+            background-color:orange !important;
             color: white !important;
-            border-color: #64c281 !important;
-        }
-
-        .unmarked {
-            background-color: white !important;
-            color: #64c281 !important;
-            border-color: #64c281 !important;
+            border-color: orange !important;
         }
 
         .question-box {
@@ -80,8 +75,15 @@
         }
 
         .question-box.marked {
-            border: 2px solid orangered;
-            color: orangered;
+            border: 2px solid orange;
+            background: orange;
+            color: black;
+        }
+
+        .btn.selected {
+            border: grey solid 2px;
+            background: grey;
+            color: white !important;
         }
 
     </style>
@@ -130,7 +132,7 @@
 
         <%--right bottom corner button--%>
         <div class="d-flex justify-content-end gap-3 mt-auto">
-            <button id="peekBtn"
+            <button id="peekBtn" data-bs-toggle="modal" data-bs-target="#popupPeekAtAnswer"
                     class="btn ${requestScope.questionAttempts[0].examAttempt.type.equalsIgnoreCase("Practice") ? '' : 'invisible'}"
                     style="border: grey solid 2px; color: grey">
                 Peek at answer
@@ -182,7 +184,8 @@
                     <button class="btn" style="border: grey solid 2px; color: grey" data-bs-dismiss="modal">
                         <i class="bi bi-arrow-left"></i> Back
                     </button>
-                    <button id="seSubmitBtn" class="btn" style="width: 150px; border: #64c281 solid 2px; color: #64c281">
+                    <button id="seSubmitBtn" class="btn"
+                            style="width: 150px; border: #64c281 solid 2px; color: #64c281">
                         ...
                     </button>
                 </div>
@@ -197,6 +200,7 @@
     <div class="modal-dialog" style="max-width: 1050px;">
         <div class="modal-content">
             <div class="modal-body p-4">
+
                 <div class="d-flex justify-content-between">
                     <h5 class="mb-4 fw-bold">Review Progress</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -209,23 +213,26 @@
                 <%--line of 5 buttons--%>
                 <div class="d-flex justify-content-between">
                     <div id="filterQuestionBtn">
-                        <button id="rpUnansweredBtn" class="btn fw-semibold"
-                                style="border: grey solid 2px; color: grey">
+                        <button id="rpUnansweredBtn" class="btn fw-semibold" style="border: grey solid 2px; color: grey"
+                                onclick="selectFilterButton(this)">
                             <i class="bi bi-square"></i> UNANSWERED
                         </button>
-                        <button id="rpMarkedBtn" class="btn fw-semibold" style="border: grey solid 2px; color: grey">
-                            <i class="bi bi-bookmark-fill" style="color: orangered;"></i> MARKED
+                        <button id="rpMarkedBtn" class="btn fw-semibold" style="border: grey solid 2px; color: grey"
+                                onclick="selectFilterButton(this)">
+                            <i class="bi bi-bookmark-fill" style="color: orange;"></i> MARKED
                         </button>
-                        <button id="rpAnsweredBtn" class="btn fw-semibold" style="border: grey solid 2px; color: grey">
+                        <button id="rpAnsweredBtn" class="btn fw-semibold" style="border: grey solid 2px; color: grey"
+                                onclick="selectFilterButton(this)">
                             <i class="bi bi-square-fill"></i> ANSWERED
                         </button>
                         <button id="rpAllQuestionsBtn" class="btn fw-semibold"
-                                style="border: grey solid 2px; color: grey">
+                                style="border: grey solid 2px; color: grey"
+                                onclick="selectFilterButton(this)">
                             ALL QUESTIONS
                         </button>
                     </div>
                     <div>
-                        <button id="rpScoreExamBtn" class="btn fw-semibold" style="border: grey solid 2px; color: grey">
+                        <button id="rpScoreExamBtn" class="btn fw-semibold" style="border: grey solid 2px; color: grey" data-bs-toggle="modal" data-bs-target="#popupScoreExam">
                             SCORE EXAM NOW
                         </button>
                     </div>
@@ -233,15 +240,29 @@
             </div>
 
             <%--question box--%>
-            <div id="questionBoxArea" class="px-4 pb-4">
-                <div class="d-flex flex-wrap gap-2">
-                    <c:forEach var="question" items="${requestScope.questionAttempts}" varStatus="status">
-                        <button class="question-box"
-                                onclick="clickQuestionInPopup(${status.index})"
-                                id="questionBox${status.index}"> ${status.count}
-                        </button>
-                    </c:forEach>
+            <div id="questionBoxContainer" class="d-flex flex-wrap gap-2 px-4 pb-4">
+                ...
+            </div>
+        </div>
+    </div>
+</div>
+
+<%--popupPeekAtAnswer--%>
+<div class="modal fade" id="popupPeekAtAnswer" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="d-flex justify-content-between">
+                    <h5 class="mb-4 fw-bold">Peek at Answer</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+
                 </div>
+                <div id="explainContainer">
+                <span style="display: block" class="mb-3">...</span>
+                <p>
+                    ...
+                </p>
+            </div>
             </div>
         </div>
     </div>
@@ -260,6 +281,7 @@
     const popupScoreExam = document.getElementById("popupScoreExam");
     const popupReviewProgress = document.getElementById("popupReviewProgress");
     const seSubmitBtn = document.getElementById("seSubmitBtn"); //score exam submit button
+    const popupPeekAtAnswer = document.getElementById("popupPeekAtAnswer");
 
     //init question array
     <c:forEach var="qa" items="${requestScope.questionAttempts}">
@@ -302,11 +324,9 @@
             scoreExamBtn.classList.remove("d-none");
         }
 
-        markBtn.classList.remove("marked", "unmarked");
+        markBtn.classList.remove("markedBtn");
         if (allQuestions[currentIndex].isMarked) {
-            markBtn.classList.add("marked");
-        } else {
-            markBtn.classList.add("unmarked");
+            markBtn.classList.add("markedBtn");
         }
     }
 
@@ -414,19 +434,19 @@
 
 
     //insert content to popup score exam
-    popupScoreExam.addEventListener("show.bs.modal" , (e) => {
+    popupScoreExam.addEventListener("show.bs.modal", (e) => {
         const length = allQuestions.filter(q => q.userChoice).length;
-        if(length === 0){
+        if (length === 0) {
             popupScoreExam.querySelector("h5").textContent = "Exit Exam?";
             popupScoreExam.querySelector("p").textContent = "You have not answered any questions. By clicking on the [Exit Exam] button below, " +
                 "you will complete your current exam and be returned to the dashboard.";
             seSubmitBtn.textContent = "Exit Exam";
-        }else if(length === allQuestions.length){
+        } else if (length === allQuestions.length) {
             popupScoreExam.querySelector("h5").textContent = "Score Exam?";
             popupScoreExam.querySelector("p").textContent = "By clicking on the [Score Exam] button below, you will complete your current exam and" +
-            " receive your score. You will not be able to change any answers after this point.";
+                " receive your score. You will not be able to change any answers after this point.";
             seSubmitBtn.textContent = "Score Exam";
-        }else{
+        } else {
             popupScoreExam.querySelector("h5").textContent = "Score Exam?";
             popupScoreExam.querySelector("p").innerHTML = `
                 <span style='color: red; display: block' class='mb-3'>\${length} of \${allQuestions.length} Questions Answered</span>` +
@@ -436,29 +456,78 @@
         }
     });
 
+
     //insert content to popup review progress
-    popupReviewProgress.addEventListener("show.bs.modal", () => {
-        allQuestions.forEach((q, i) => {
-            const el = document.getElementById(`questionBox\${i}`);
-            if (!el) return;
+    const renderQuestionBoxes = (filterType) => {
+        const container = document.getElementById("questionBoxContainer");
+        container.innerHTML = "";
 
-            el.classList.remove('answered', 'marked');
-
-            if (q.isMarked) {
-                el.classList.add('marked');
-            }
-            if (q.userChoice !== null) {
-                el.classList.add('answered');
+        const filteredQuestions = allQuestions.filter((q) => {
+            switch (filterType) {
+                case "ALL":
+                    return true;
+                case "ANSWERED":
+                    return q.userChoice !== null;
+                case "UNANSWERED":
+                    return q.userChoice === null;
+                case "MARKED":
+                    return q.isMarked;
             }
         });
-    });
 
-    const clickQuestionInPopup = index => {
+        filteredQuestions.forEach((q) => {
+            const index = allQuestions.indexOf(q);
+
+            const btn = document.createElement("button");
+            btn.className = "question-box";
+            if (q.userChoice) {
+                btn.classList.add("answered");
+            }
+            if (q.isMarked) {
+                btn.classList.add("marked");
+            }
+            btn.id = `questionBox\${index}`;
+            btn.innerText = index + 1;
+            btn.onclick = () => clickQuestionBoxInPopup(index);
+
+            container.appendChild(btn);
+        });
+    };
+
+    const selectFilterButton = btnElement => {
+        popupReviewProgress.querySelectorAll("#filterQuestionBtn button").forEach(b => b.classList.remove("selected"));
+        btnElement.classList.add("selected");
+
+        if (btnElement.id === "rpAllQuestionsBtn") {
+            renderQuestionBoxes("ALL");
+        } else if (btnElement.id === "rpMarkedBtn") {
+            renderQuestionBoxes("MARKED");
+        } else if (btnElement.id === "rpUnansweredBtn") {
+            renderQuestionBoxes("UNANSWERED");
+        } else {
+            renderQuestionBoxes("ANSWERED");
+        }
+    }
+
+    const clickQuestionBoxInPopup = index => {
         currentIndex = index;
         const modal = bootstrap.Modal.getOrCreateInstance(popupReviewProgress);
         modal.hide();
+        renderButton()
         renderQuestion(index);
     };
+
+    popupReviewProgress.addEventListener("show.bs.modal", () => {
+        selectFilterButton(document.getElementById("rpAllQuestionsBtn"));
+    });
+
+
+    //insert content to popup Peek at Answer
+    popupPeekAtAnswer.addEventListener("show.bs.modal", (e) => {
+        const answerLetter = allQuestions[currentIndex].options.find(op => op.isAnswer).optionContent.charAt(0);
+        popupPeekAtAnswer.querySelector("#explainContainer span").textContent = `The correct answer is \${answerLetter}`;
+        popupPeekAtAnswer.querySelector("#explainContainer p").textContent = allQuestions[currentIndex].question.explaination;
+    })
 
 
     //init UI
