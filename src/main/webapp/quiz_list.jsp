@@ -300,6 +300,8 @@
     });
 
 
+
+
     window.addEventListener('load', updateColumnVisibility);
 </script>
 
