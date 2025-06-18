@@ -57,7 +57,7 @@ public class LoginServlet extends HttpServlet {
             session.setAttribute("user", userDTO);
             response.sendRedirect("user");
         }
-        System.out.println(user.getEmail());
+
 
     }
 
