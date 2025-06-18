@@ -35,7 +35,7 @@ public class QuestionAttemptDAO extends DBContext {
 
     public List<QuestionAttemptDTO> findAllByExamAttemptId(int examAttemptId) {
         List<QuestionAttemptDTO> questionAttempts = new ArrayList<>();
-        String sql = "select qa.id, qa.exam_attempt_id, qa.question_id, e.*, q.* " +
+        String sql = "select qa.id, qa.exam_attempt_id, qa.question_id, qa.user_choice, qa.is_marked, e.*, q.* " +
                 "from question_attempts qa " +
                 "join exam_attempts e on e.id = qa.exam_attempt_id " +
                 "join questions q on qa.question_id = q.id " +
@@ -47,6 +47,8 @@ public class QuestionAttemptDAO extends DBContext {
                 while (rs.next()) {
                     QuestionAttemptDTO questionAttemptDTO = new QuestionAttemptDTO();
                     questionAttemptDTO.setId(rs.getInt("id"));
+                    questionAttemptDTO.setUserChoice(rs.getObject("user_choice", Integer.class));
+                    questionAttemptDTO.setMarked(rs.getBoolean("is_marked"));
 
                     Question question = new Question();
                     question.setId(rs.getInt("question_id"));
@@ -91,6 +93,26 @@ public class QuestionAttemptDAO extends DBContext {
             e.printStackTrace();
         }
         return questionAttempts;
+    }
+
+    public boolean updateQuestionAttemptDuringExamAttempt(List<QuestionAttemptDTO> questionAttemptDTOs) {
+        if(questionAttemptDTOs == null || questionAttemptDTOs.isEmpty()) {
+            return false;
+        }
+        String sql = "UPDATE question_attempts SET user_choice = ?, is_marked = ? WHERE id = ?";
+        try(PreparedStatement pstm = connection.prepareStatement(sql)){
+            for(QuestionAttemptDTO questionAttemptDTO : questionAttemptDTOs) {
+                pstm.setObject(1, questionAttemptDTO.getUserChoice(), Types.INTEGER);
+                pstm.setBoolean(2, questionAttemptDTO.isMarked());
+                pstm.setInt(3, questionAttemptDTO.getId());
+                pstm.addBatch();
+            }
+            pstm.executeBatch();
+        }catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
     }
 
 }

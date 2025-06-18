@@ -45,7 +45,7 @@
         }
 
         .markedBtn {
-            background-color:orange !important;
+            background-color: orange !important;
             color: white !important;
             border-color: orange !important;
         }
@@ -86,9 +86,59 @@
             color: white !important;
         }
 
+        .fullscreen-prompt {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.9);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+
+        .prompt-content {
+            background: white;
+            color: #333;
+            padding: 30px;
+            border-radius: 10px;
+            text-align: center;
+            max-width: 400px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .prompt-button {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px 5px;
+            transition: background 0.3s;
+        }
+
+        .prompt-button:hover {
+            background: #5a6fd8;
+        }
+
     </style>
 </head>
 <body>
+
+<div id="fullscreenPrompt" class="fullscreen-prompt">
+    <div class="prompt-content">
+        <h3><i class="bi bi-bullseye"></i> Quiz Examination Mode</h3>
+        <p>This exam requires fullscreen mode. Please enter fullscreen to continue.</p>
+        <p><strong>Note:</strong> Any unusual action will result in your exam being terminated.</p>
+        <button class="prompt-button" onclick="enterFullscreenAndStart()">
+            <i class="bi bi-tv"></i> Enter Fullscreen Mode
+        </button>
+    </div>
+</div>
 
 <%--quiz--%>
 <div class="d-flex flex-column" style="min-height: 100vh;">
@@ -98,26 +148,30 @@
         <div class="d-flex align-items-center gap-4 px-4">
             <div class="d-flex align-items-center text-secondary fs-5">
                 <i class="bi bi-geo-alt me-2 fa-lg"></i>
-                <span id="location">1/20</span>
+                <span id="location">0/0</span>
             </div>
             <div class="d-flex align-items-center fs-5 py-2 px-2" style="background: #a6bee3">
                 <i class="fas fa-hourglass-half me-2 fa-lg"></i>
-                <span id="timer">00:10:34</span>
+                <span id="timer">00:00:00</span>
             </div>
         </div>
     </div>
 
     <!--black header-->
     <div class="d-flex justify-content-between align-items-center px-4 py-2 bg-dark text-white mt-2">
-        <div id="stt" class="fw-bold">...</div>
-        <div id="qId" class="text-secondary small">...</div>
+        <div id="stt" class="fw-bold">
+
+        </div>
+        <div id="qId" class="text-secondary small">
+
+        </div>
     </div>
 
     <!--quiz content-->
     <div class="flex-grow-1 d-flex flex-column" style="padding: 20px 40px">
         <%--question content--%>
         <div id="qContent" class="fs-5 mb-4 mx-5">
-            ...
+
         </div>
 
         <%--question option--%>
@@ -125,7 +179,9 @@
             <ul id="qOption" class="list-unstyled m-0 p-0">
                 <li class="option-item">
                     <div class="option-radio"></div>
-                    <span>...</span>
+                    <span>
+
+                    </span>
                 </li>
             </ul>
         </div>
@@ -168,6 +224,11 @@
             </button>
         </div>
     </div>
+
+    <form id="quizHandleForm" method="post" action="quiz-handle">
+        <input type="hidden" name="examAttemptId" value="${requestScope.questionAttempts[0].examAttempt.id}" />
+    </form>
+
 </div>
 
 <%--popup confirm score exam--%>
@@ -184,7 +245,7 @@
                     <button class="btn" style="border: grey solid 2px; color: grey" data-bs-dismiss="modal">
                         <i class="bi bi-arrow-left"></i> Back
                     </button>
-                    <button id="seSubmitBtn" class="btn"
+                    <button id="seSubmitBtn" class="btn" onclick="submitQuiz()"
                             style="width: 150px; border: #64c281 solid 2px; color: #64c281">
                         ...
                     </button>
@@ -232,7 +293,8 @@
                         </button>
                     </div>
                     <div>
-                        <button id="rpScoreExamBtn" class="btn fw-semibold" style="border: grey solid 2px; color: grey" data-bs-toggle="modal" data-bs-target="#popupScoreExam">
+                        <button id="rpScoreExamBtn" class="btn fw-semibold" style="border: grey solid 2px; color: grey"
+                                data-bs-toggle="modal" data-bs-target="#popupScoreExam">
                             SCORE EXAM NOW
                         </button>
                     </div>
@@ -248,7 +310,8 @@
 </div>
 
 <%--popupPeekAtAnswer--%>
-<div class="modal fade" id="popupPeekAtAnswer" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+<div class="modal fade" id="popupPeekAtAnswer" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+     aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-body">
@@ -258,11 +321,11 @@
 
                 </div>
                 <div id="explainContainer">
-                <span style="display: block" class="mb-3">...</span>
-                <p>
-                    ...
-                </p>
-            </div>
+                    <span style="display: block" class="mb-3">...</span>
+                    <p>
+                        ...
+                    </p>
+                </div>
             </div>
         </div>
     </div>
@@ -282,13 +345,14 @@
     const popupReviewProgress = document.getElementById("popupReviewProgress");
     const seSubmitBtn = document.getElementById("seSubmitBtn"); //score exam submit button
     const popupPeekAtAnswer = document.getElementById("popupPeekAtAnswer");
+    let countSecond = ${requestScope.questionAttempts[0].examAttempt.duration};
 
     //init question array
     <c:forEach var="qa" items="${requestScope.questionAttempts}">
     allQuestions.push({
         id: ${qa.getId()},
         userChoice: ${qa.getUserChoice() == null ? 'null' : qa.getUserChoice()},
-        isMarked: ${qa.isMarked()},
+        marked: ${qa.isMarked()},
         question: {
             id: ${qa.getQuestion().getId()},
             content: '${fn:escapeXml(qa.getQuestion().getContent())}',
@@ -300,7 +364,7 @@
             {
                 id: ${option.getId()},
                 optionContent: '${fn:escapeXml(option.getOptionContent())}',
-                isAnswer: ${option.isAnswer()},
+                answer: ${option.isAnswer()},
                 questionId: ${option.getQuestionId()}
             }<c:if test="${!loop.last}">, </c:if>
             </c:forEach>
@@ -325,7 +389,7 @@
         }
 
         markBtn.classList.remove("markedBtn");
-        if (allQuestions[currentIndex].isMarked) {
+        if (allQuestions[currentIndex].marked) {
             markBtn.classList.add("markedBtn");
         }
     }
@@ -381,7 +445,7 @@
 
     //mark question
     markBtn.addEventListener("click", () => {
-        allQuestions[currentIndex].isMarked = !allQuestions[currentIndex].isMarked;
+        allQuestions[currentIndex].marked = !allQuestions[currentIndex].marked;
         renderButton();
     });
 
@@ -414,6 +478,7 @@
         updateDisplay(timer);
         let interval = setInterval(() => {
             timer--;
+            countSecond++;
             if (timer < 0) {
                 clearInterval(interval);
                 display.textContent = "Time's up!";
@@ -428,6 +493,7 @@
         updateDisplay(timer);
         let interval = setInterval(() => {
             timer++;
+            countSecond++;
             updateDisplay(timer);
         }, 1000);
     }
@@ -471,7 +537,7 @@
                 case "UNANSWERED":
                     return q.userChoice === null;
                 case "MARKED":
-                    return q.isMarked;
+                    return q.marked;
             }
         });
 
@@ -483,7 +549,7 @@
             if (q.userChoice) {
                 btn.classList.add("answered");
             }
-            if (q.isMarked) {
+            if (q.marked) {
                 btn.classList.add("marked");
             }
             btn.id = `questionBox\${index}`;
@@ -524,22 +590,101 @@
 
     //insert content to popup Peek at Answer
     popupPeekAtAnswer.addEventListener("show.bs.modal", (e) => {
-        const answerLetter = allQuestions[currentIndex].options.find(op => op.isAnswer).optionContent.charAt(0);
+        const answerLetter = allQuestions[currentIndex].options.find(op => op.answer).optionContent.charAt(0);
         popupPeekAtAnswer.querySelector("#explainContainer span").textContent = `The correct answer is \${answerLetter}`;
         popupPeekAtAnswer.querySelector("#explainContainer p").textContent = allQuestions[currentIndex].question.explaination;
     })
 
 
+    //update question attempt interval
+    const callApiUpdateQuestionAttempt = () => {
+        const data = {
+            questionAttempts : allQuestions,
+            duration: countSecond,
+            examAttemptId: ${requestScope.questionAttempts[0].examAttempt.id}
+        }
+        fetch('update-question-attempt', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+            .then(response => response)
+            .then(data => {
+                console.log('Server trả về:', data);
+
+            })
+            .catch(error => {
+                console.error('Lỗi khi fetch:', error);
+            });
+    }
+
+    //call api update question attempt every 10s
+    const updateQuestionAttemptInterval = () => {
+        setInterval(() => {
+            callApiUpdateQuestionAttempt();
+        }, 10 * 1000);
+    }
+
+
+    //submit to end quiz
+    const submitQuiz = async () => {
+        await callApiUpdateQuestionAttempt();
+        document.getElementById('quizHandleForm').submit();
+        return false;
+    }
+
+
+    function setupExamEnvironment() {
+        // Block F5 and Ctrl + R
+        document.addEventListener("keydown", function (e) {
+            if ((e.key === "F5") || (e.ctrlKey && e.key.toLowerCase() === "r")) {
+                e.preventDefault();
+            }
+        });
+        // submit quiz when the user exits fullscreen mode
+        document.addEventListener("fullscreenchange", function () {
+            if (!document.fullscreenElement) {
+                alert("You have exited fullscreen mode. The exam will submit!");
+                submitQuiz();
+            }
+        });
+    }
+
+    const enterFullScreen = () => {
+        const docElm = document.documentElement;
+        if (docElm.requestFullscreen) {
+            return docElm.requestFullscreen();
+        } else if (docElm.mozRequestFullScreen) { // Firefox
+            return docElm.mozRequestFullScreen();
+        } else if (docElm.webkitRequestFullscreen) { // Chrome, Safari, Opera
+            return docElm.webkitRequestFullscreen();
+        } else if (docElm.msRequestFullscreen) { // IE/Edge
+            return docElm.msRequestFullscreen();
+        }
+        return Promise.reject('Fullscreen not supported');
+    }
+
+    function enterFullscreenAndStart() {
+        enterFullScreen();
+        document.getElementById('fullscreenPrompt').style.display = 'none';
+        setupExamEnvironment();
+        initQuiz();
+    }
+
+
     //init UI
-    document.addEventListener("DOMContentLoaded", () => {
+    const initQuiz = () => {
         if (${requestScope.questionAttempts[0].examAttempt.type.equalsIgnoreCase("Practice")}) {
-            startCountUp(0);
+            startCountUp(countSecond);
         } else {
-            startCountDown(${requestScope.questionAttempts[0].examAttempt.duration});
+            startCountDown(${requestScope.questionAttempts[0].examAttempt.duration} - countSecond);
         }
         renderButton();
         renderQuestion(currentIndex);
-    });
+        updateQuestionAttemptInterval();
+    };
 
 
 </script>

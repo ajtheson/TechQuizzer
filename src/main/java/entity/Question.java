@@ -10,6 +10,7 @@ public class Question {
     private int questionLevelId;
     private int subjectLessonId;
     private int subjectDimensionId;
+    private String questionFormat;
 
     public int getSubjectDimensionId() {
         return subjectDimensionId;
@@ -73,5 +74,13 @@ public class Question {
 
     public void setDeleted(boolean deleted) {
         isDeleted = deleted;
+    }
+
+    public String getQuestionFormat() {
+        return questionFormat;
+    }
+
+    public void setQuestionFormat(String questionFormat) {
+        this.questionFormat = questionFormat;
     }
 }

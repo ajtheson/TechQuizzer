@@ -12,6 +12,7 @@ public class Quiz {
     private int quizSettingId;
     private int subjectId;
     private int status;
+    private String quizFormat;
 
     public int getTestTypeId() {
         return testTypeId;
@@ -91,5 +92,13 @@ public class Quiz {
 
     public void setStatus(int status) {
         this.status = status;
+    }
+
+    public String getQuizFormat() {
+        return quizFormat;
+    }
+
+    public void setQuizFormat(String quizFormat) {
+        this.quizFormat = quizFormat;
     }
 }
