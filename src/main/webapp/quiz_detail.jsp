@@ -165,7 +165,7 @@
 
             <div class="mb-3">
               <label class="form-label">Duration (minutes)</label>
-              <input type="number" class="form-control" name="duration" value="${quiz.duration}" min="1" required>
+              <input type="number" class="form-control" name="duration" value="${(quiz.duration / 60).intValue()}" min="1" required>
             </div>
 
             <div class="mb-3">

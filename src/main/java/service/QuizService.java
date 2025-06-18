@@ -24,7 +24,7 @@ public class QuizService {
 
         SubjectDAO subjectDAO = new SubjectDAO();
         QuizSettingDAO quizSettingDAO = new QuizSettingDAO();
-        TestTypeDao testTypeDAO = new TestTypeDao();
+        TestTypeDAO testTypeDAO = new TestTypeDAO();
 
         List<Subject> subjects = subjectDAO.findByIds(subjectIds);
         List<QuizSetting> quizSettings = quizSettingDAO.findByIds(quizSettingIds);
@@ -52,7 +52,7 @@ public class QuizService {
     public QuizDTO convertQuizToQuizDTO(Quiz quiz) {
         Subject subject = new SubjectDAO().findById(quiz.getSubjectId());
         QuizSetting quizSetting = new QuizSettingDAO().findById(quiz.getQuizSettingId());
-        TestType testType = new TestTypeDao().findById(quiz.getTestTypeId());
+        TestType testType = new TestTypeDAO().findById(quiz.getTestTypeId());
 
         QuizDTO quizDTO = new QuizDTO();
         quizDTO.setId(quiz.getId());

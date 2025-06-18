@@ -1,7 +1,6 @@
 package dao;
 
 import dal.DBContext;
-import entity.Subject;
 import entity.TestType;
 
 import java.sql.PreparedStatement;
@@ -11,7 +10,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class TestTypeDao extends DBContext {
+public class TestTypeDAO extends DBContext {
     public List<TestType> getAllTestTypes() {
         List<TestType> list = new ArrayList<>();
         String sql = "select * from test_types";

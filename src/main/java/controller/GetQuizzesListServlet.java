@@ -2,7 +2,7 @@ package controller;
 
 import dao.QuizDAO;
 import dao.SubjectDAO;
-import dao.TestTypeDao;
+import dao.TestTypeDAO;
 import dto.QuizDTO;
 import dto.UserDTO;
 import entity.Subject;
@@ -33,7 +33,7 @@ public class GetQuizzesListServlet extends HttpServlet {
         }
 
 
-        TestTypeDao testDao = new TestTypeDao();
+        TestTypeDAO testDao = new TestTypeDAO();
         SubjectDAO subjectDAO = new SubjectDAO();
         List<TestType> testTypes = testDao.getAllTestTypes();
         List<Subject> subjects = subjectDAO.getAllSubjects(user.getId());

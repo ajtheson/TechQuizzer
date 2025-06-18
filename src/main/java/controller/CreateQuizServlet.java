@@ -33,7 +33,7 @@ public class CreateQuizServlet extends HttpServlet {
             SubjectDAO subjectDAO = new SubjectDAO();
             DimensionDAO dimensionDAO = new DimensionDAO();
             LessonDAO lessonDAO = new LessonDAO();
-            TestTypeDao testTypeDAO = new TestTypeDao();
+            TestTypeDAO testTypeDAO = new TestTypeDAO();
             // Load all subjects that user has access to (based on registrations)
             List<Subject> subjects = subjectDAO.getAllSubjects(user.getId());
 
@@ -72,7 +72,7 @@ public class CreateQuizServlet extends HttpServlet {
         SubjectDAO subjectDAO = new SubjectDAO();
         DimensionDAO dimensionDAO = new DimensionDAO();
         LessonDAO lessonDAO = new LessonDAO();
-        TestTypeDao testTypeDAO = new TestTypeDao();
+        TestTypeDAO testTypeDAO = new TestTypeDAO();
         QuizSettingDAO quizSettingDAO = new QuizSettingDAO();
         QuizSettingGroupDAO quizSettingGroupDAO = new QuizSettingGroupDAO();
         QuizDAO quizDAO = new QuizDAO();
@@ -167,7 +167,7 @@ public class CreateQuizServlet extends HttpServlet {
             Quiz quiz = new Quiz();
             quiz.setName(name.trim());
             quiz.setLevel(level);
-            quiz.setDuration(duration);
+            quiz.setDuration(duration*60);
             quiz.setPassRate(passRate);
             quiz.setDescription(description);
             quiz.setStatus(1); // Default active

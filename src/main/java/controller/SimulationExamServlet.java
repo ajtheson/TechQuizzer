@@ -41,7 +41,7 @@ public class SimulationExamServlet extends HttpServlet {
             List<Subject> subjects = registrationDTOs.stream().map(r -> r.getSubject()).toList();
             List<Integer> subjectIds = filter == 0 ? registrationDTOs.stream().map(r -> r.getSubject().getId()).toList()
                     : new ArrayList<>(List.of(filter));
-            TestTypeDao testTypeDao = new TestTypeDao();
+            TestTypeDAO testTypeDao = new TestTypeDAO();
             int testTypeId = testTypeDao.findByName("Simulation").getId();
             List<Quiz> quizzes = quizDAO.findAllByTestTypeIdAndSubjectIdsWithPagination(testTypeId, subjectIds, page, size, search);
             QuizService quizService = new QuizService();

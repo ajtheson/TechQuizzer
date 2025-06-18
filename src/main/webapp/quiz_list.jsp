@@ -189,7 +189,7 @@
                                     <td class="col-1">${quiz.id}</td>
                                     <td class="col-2">${quiz.name}</td>
                                     <td class="col-3">${quiz.level}</td>
-                                    <td class="col-4">${quiz.duration} min</td>
+                                    <td class="col-4">${(quiz.duration / 60).intValue()} min</td>
                                     <td class="col-5">${quiz.quizSetting.numberOfQuestions}</td>
                                     <td class="col-6">${quiz.passRate}%</td>
                                     <td class="col-7">${quiz.subject.name}</td>

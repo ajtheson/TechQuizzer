@@ -392,7 +392,7 @@
         if ((e.target.classList.contains('group-dimension') || e.target.classList.contains('group-lesson'))
             && !subjectSelect.value) {
             e.preventDefault();
-            alert("Vui lòng chọn Subject trước khi chọn Dimension/Lesson");
+            alert("Vui lòng chọn Subject trước khi chọn Dimensi on/Lesson");
             e.target.blur();
         }
     });

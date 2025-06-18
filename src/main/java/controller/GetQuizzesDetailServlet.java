@@ -89,7 +89,7 @@ public class GetQuizzesDetailServlet extends HttpServlet {
                     QuizDTO quiz = quizDAO.findByQuizId(id);
                     String testType = request.getParameter("testTypeId");
                     int testTypeId = Integer.parseInt(testType);
-                    quizDAO.updateQuiz(id, request.getParameter("name"), request.getParameter("level"), duration, passRate,testTypeId);
+                    quizDAO.updateQuiz(id, request.getParameter("name"), request.getParameter("level"), duration*60, passRate,testTypeId);
 
                     QuizSettingDAO quizSettingDAO = new QuizSettingDAO();
                     quizSettingDAO.updateQuizSetting(quiz.getQuizSetting().getId(), numberOfQuestions);
