@@ -92,6 +92,6 @@ public class ManageSubjectServlet extends HttpServlet {
         }
         request.setAttribute("categoryId", categoryId);
         request.setAttribute("ownerId", ownerId);
-        request.getRequestDispatcher("manage_subject.jsp").forward(request, response);
+        request.getRequestDispatcher("manage_subject_list.jsp").forward(request, response);
     }
 }

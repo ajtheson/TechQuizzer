@@ -536,5 +536,29 @@ public class UserDAO extends DBContext {
         return 0;
     }
 
-
+    public ArrayList<User> getAllExpert(){
+        ArrayList<User> users = new ArrayList<>();
+        String sql = """
+        SELECT [id],[email], [name], [gender], [mobile], [address], [status] FROM [users]
+        WHERE [role_id] = 2
+        """;
+        try {
+            PreparedStatement pstm = connection.prepareStatement(sql);
+            ResultSet rs = pstm.executeQuery();
+            while (rs.next()) {
+                User user = new User();
+                user.setId(rs.getInt("id"));
+                user.setName(rs.getString("name"));
+                user.setEmail(rs.getString("email"));
+                user.setGender(rs.getBoolean("gender"));
+                user.setMobile(rs.getString("mobile"));
+                user.setAddress(rs.getString("address"));
+                user.setStatus(rs.getBoolean("status"));
+                users.add(user);
+            }
+        } catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+        return users;
+    }
 }

@@ -33,9 +33,40 @@
                         <%--Filter--%>
                         <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap">
                             <div class="mt-auto">
-                                <a class="btn btn-primary" type="button" href="create-setting">+ Add New Subject</a>
+                                <c:if test="${sessionScope.user.roleName == 'Admin'}">
+                                    <a class="btn btn-primary mb-3" type="button" href="create-subject">+ Add New Subject</a>
+                                </c:if>
+
+                                <%--Items per page--%>
+                                <div class="d-flex align-items-center me-3">
+                                    <label for="size" class="me-2 mb-0">Items per page:</label>
+                                    <input type="number" min="1" name="size" class="form-control-sm me-2" style="width: 80px;"
+                                           value="${requestScope.size != 5 ? requestScope.size : 5}" id="sizeInput">
+                                    <button type="submit" class="btn btn-primary btn-sm" id="sizeBtn">Apply</button>
+                                </div>
                             </div>
                             <div class="d-flex flex-column gap-2">
+                                <!-- Filter selects -->
+                                <div class="d-flex gap-2 px-3">
+                                    <select id="categoryList" class="form-select" style="width: 200px;">
+                                        <option value="0" ${requestScope.categoryId == 0 ? 'selected' : ''}>Subject
+                                            category
+                                        </option>
+                                        <c:forEach items="${requestScope.categories}" var="category">
+                                            <option value="${category.id}"  ${requestScope.categoryId == category.id ? 'selected' : ''}>${category.name}</option>
+                                        </c:forEach>
+                                    </select>
+                                    <select id="statusFilter" class="form-select" style="width: 200px;">
+                                        <option value="" ${requestScope.status == '' ? 'selected' : ''}>Status</option>
+                                        <option value="Published" ${requestScope.status == 'Published' ? 'selected' : ''}>
+                                            Published
+                                        </option>
+                                        <option value="Unpublished" ${requestScope.status == 'Unpublished' ? 'selected' : ''}>
+                                            Unpublished
+                                        </option>
+                                    </select>
+                                </div>
+
                                 <!-- Search bar -->
                                 <div class="p-3">
                                     <div class="input-group rounded shadow-sm">
@@ -44,24 +75,9 @@
                                         <button class="btn btn-primary" type="button" id="searchBtn">Search</button>
                                     </div>
                                 </div>
-
-                                <!-- Filter selects -->
-                                <div class="d-flex gap-2 px-3">
-                                    <select id="categoryList" class="form-select" style="width: 200px;">
-                                        <option value="0" ${requestScope.categoryId == 0 ? 'selected' : ''}>Subject category</option>
-                                        <c:forEach items="${requestScope.categories}" var="category">
-                                            <option value="${category.id}"  ${requestScope.categoryId == category.id ? 'selected' : ''}>${category.name}</option>
-                                        </c:forEach>
-                                    </select>
-                                    <select id="statusFilter" class="form-select" style="width: 200px;">
-                                        <option value="" ${requestScope.status == '' ? 'selected' : ''}>Status</option>
-                                        <option value="Published" ${requestScope.status == 'Published' ? 'selected' : ''}>Published</option>
-                                        <option value="Unpublished" ${requestScope.status == 'Unpublished' ? 'selected' : ''}>Unpublished</option>
-                                    </select>
-                                </div>
                             </div>
                         </div>
-                        <table class="table table-striped">
+                        <table class="table table-bordered">
                             <thead>
                             <tr>
                                 <th>Subject ID</th>
@@ -83,22 +99,15 @@
                                     <td>${subject.ownerName}</td>
                                     <td>${subject.published ? 'Published' : 'Unpublished'}</td>
                                     <td>
-                                        <a class="btn btn-warning text-white" type="button" href="edit-subject">Edit</a>
+                                        <a class="btn btn-warning text-white" type="button"
+                                           href="edit-subject?subject_id=${subject.id}">Edit</a>
                                     </td>
                                 </tr>
                             </c:forEach>
                             </tbody>
                         </table>
                     </div>
-                    <div class="d-flex align-items-center justify-content-between mb-3">
-                        <%--Items per page--%>
-                        <div class="d-flex align-items-center me-3">
-                            <label for="size" class="me-2 mb-0">Items per page:</label>
-                            <input type="number" min="1" name="size" class="form-control me-2" style="width: 80px;"
-                                   value="${requestScope.size != 5 ? requestScope.size : 5}" id="sizeInput">
-                            <button type="submit" class="btn btn-primary btn-sm" id="sizeBtn">Apply</button>
-                        </div>
-
+                    <div class="mb-3 d-flex justify-content-end">
                         <%--Page list--%>
                         <nav>
                             <ul class="pagination mb-0">

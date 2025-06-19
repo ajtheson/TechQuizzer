@@ -21,4 +21,10 @@ public class ImageUploader {
         }
     }
 
+    public static void deleteImage(String targetDirectory, String fileName) {
+        File file = new File(targetDirectory, fileName);
+        if (file.exists()) {
+            file.delete();
+        }
+    }
 }

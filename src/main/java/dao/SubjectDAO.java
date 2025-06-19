@@ -7,6 +7,7 @@ import entity.Subject;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -324,7 +325,7 @@ public class SubjectDAO extends DBContext {
                 subject.setName(rs.getString("name"));
                 subject.setTagLine(rs.getString("tag_line"));
                 subject.setThumbnail(rs.getString("thumbnail"));
-                subject.setLongDescription(rs.getString("detail_description").replace("\\n", "<br>"));
+                subject.setLongDescription(rs.getString("detail_description"));
                 subject.setFeaturedSubject(rs.getBoolean("featured_subject"));
                 subject.setPublished(rs.getBoolean("status"));
                 subject.setCategoryId(rs.getInt("category_id"));
@@ -365,5 +366,29 @@ public class SubjectDAO extends DBContext {
             System.err.println("Error updating subject name: " + e.getMessage());
         }
         return false;
+    }
+
+    public boolean update(Subject subject) {
+        String sql = """
+                UPDATE [subjects]
+                SET [name] = ?,[tag_line] = ?, [thumbnail] = ?, [detail_description] = ?, [featured_subject] = ?, [status] = ?, [category_id] = ?, [owner_id] = ?, [update_date] = ?
+                WHERE [id] = ?
+                """;
+        try (PreparedStatement pstm = connection.prepareStatement(sql)) {
+            pstm.setString(1, subject.getName());
+            pstm.setString(2, subject.getTagLine());
+            pstm.setString(3, subject.getThumbnail());
+            pstm.setString(4, subject.getLongDescription());
+            pstm.setBoolean(5, subject.isFeaturedSubject());
+            pstm.setBoolean(6, subject.isPublished());
+            pstm.setInt(7, subject.getCategoryId());
+            pstm.setInt(8, subject.getOwnerId());
+            pstm.setTimestamp(9, Timestamp.valueOf(subject.getUpdateDate()));
+            pstm.setInt(10, subject.getId());
+            return pstm.executeUpdate() > 0;
+        } catch (SQLException e) {
+            System.out.println("Error: " + e.getMessage());
+            return false;
+        }
     }
 }
