@@ -57,6 +57,20 @@
             </div>
 
             <div class="mb-3">
+                <label class="form-label d-block mb-2">Exam format:</label>
+                <div class="form-check form-check-inline" style="margin-right: 100px">
+                    <label class="form-check-label" for="multiple">Multiple choice</label>
+                    <input class="form-check-input" type="radio" name="examFormat"
+                           id="multiple" value="multiple" checked>
+                </div>
+                <div class="form-check form-check-inline">
+                    <label class="form-check-label" for="essay">Essay</label>
+                    <input class="form-check-input" type="radio" name="examFormat"
+                           id="essay" value="essay">
+                </div>
+            </div>
+
+            <div class="mb-3">
                 <label for="numberOfQuestions" class="form-label">Number of Questions</label>
                 <input type="number" class="form-control" id="numberOfQuestions"
                        name="numberOfQuestions" min="1" placeholder="Enter number of questions" required>

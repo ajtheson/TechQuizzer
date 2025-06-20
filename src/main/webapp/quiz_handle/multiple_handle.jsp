@@ -131,7 +131,7 @@
 
 <div id="fullscreenPrompt" class="fullscreen-prompt">
     <div class="prompt-content">
-        <h3><i class="bi bi-bullseye"></i> Quiz Examination Mode</h3>
+        <h3><i class="bi bi-bullseye"></i> Multiple Choice Mode</h3>
         <p>This exam requires fullscreen mode. Please enter fullscreen to continue.</p>
         <p><strong>Note:</strong> Any unusual action will result in your exam being terminated.</p>
         <button class="prompt-button" onclick="enterFullscreenAndStart()">
@@ -481,7 +481,7 @@
             countSecond++;
             if (timer < 0) {
                 clearInterval(interval);
-                display.textContent = "Time's up!";
+                submitQuiz();
             } else {
                 updateDisplay();
             }

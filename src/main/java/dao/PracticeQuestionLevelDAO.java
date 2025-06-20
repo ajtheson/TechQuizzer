@@ -29,7 +29,7 @@ public class PracticeQuestionLevelDAO extends DBContext {
     }
 
     public List<PracticeQuestionLevelDTO> findAllByPracticeId(int practiceId){
-        List<PracticeQuestionLevelDTO> practiceQuestionLevelDTOs = new ArrayList<PracticeQuestionLevelDTO>();
+        List<PracticeQuestionLevelDTO> practiceQuestionLevelDTOs = new ArrayList<>();
         String sql = "select * from [practice_question_levels] p " +
                 "join [question_levels] q on q.id = p.question_level_id " +
                 "where p.practice_id = ?";
@@ -55,7 +55,7 @@ public class PracticeQuestionLevelDAO extends DBContext {
 
     public List<PracticeQuestionLevelDTO> findAllByPracticeIds(List<Integer> practiceIds){
         List<PracticeQuestionLevelDTO> practiceQuestionLevelDTOs = new ArrayList<>();
-        if(practiceIds == null && practiceIds.isEmpty()){
+        if(practiceIds == null || practiceIds.isEmpty()){
             return practiceQuestionLevelDTOs;
         }
         String inClause = practiceIds.stream().map(id -> "?").collect(Collectors.joining(", "));

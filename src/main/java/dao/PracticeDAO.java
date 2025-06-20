@@ -12,13 +12,14 @@ import java.util.stream.Collectors;
 public class PracticeDAO extends DBContext {
 
     public Practice insert(Practice practice) {
-        String sql = "INSERT INTO [practices] ([name], [number_question], [subject_lesson_id], [subject_dimension_id], [user_id]) VALUES(?,?,?,?,?)";
+        String sql = "INSERT INTO [practices] ([format], [name], [number_question], [subject_lesson_id], [subject_dimension_id], [user_id]) VALUES(?, ?,?,?,?,?)";
         try (PreparedStatement pstm = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
-            pstm.setString(1, practice.getName());
-            pstm.setInt(2, practice.getNumberOfQuestions());
-            pstm.setObject(3, practice.getSubjectLessonId(), Types.INTEGER);
-            pstm.setObject(4, practice.getSubjectDimensionId(), Types.INTEGER);
-            pstm.setInt(5, practice.getUserId());
+            pstm.setString(1, practice.getFormat());
+            pstm.setString(2, practice.getName());
+            pstm.setInt(3, practice.getNumberOfQuestions());
+            pstm.setObject(4, practice.getSubjectLessonId(), Types.INTEGER);
+            pstm.setObject(5, practice.getSubjectDimensionId(), Types.INTEGER);
+            pstm.setInt(6, practice.getUserId());
             int affectedRows = pstm.executeUpdate();
             if (affectedRows > 0) {
                 try (ResultSet generatedKeys = pstm.getGeneratedKeys()) {
@@ -48,6 +49,7 @@ public class PracticeDAO extends DBContext {
                 PracticeDTO practiceDTO = new PracticeDTO();
                 practiceDTO.setId(rs.getInt("id"));
                 practiceDTO.setName(rs.getString("name"));
+                practiceDTO.setFormat(rs.getString("format"));
                 practiceDTO.setNumberOfQuestions(rs.getInt("number_question"));
 
                 ExamAttempt examAttempt = new ExamAttempt();

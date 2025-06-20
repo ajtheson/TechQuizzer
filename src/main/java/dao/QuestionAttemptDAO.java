@@ -55,6 +55,7 @@ public class QuestionAttemptDAO extends DBContext {
                     questionIds.add(question.getId());
                     question.setContent(rs.getString("content"));
                     question.setMedia(rs.getString("media"));
+                    question.setExplaination(rs.getString("explaination"));
                     question.setDeleted(rs.getBoolean("is_deleted"));
                     question.setQuestionLevelId(rs.getInt("question_level_id"));
                     question.setSubjectDimensionId(rs.getInt("subject_dimension_id"));
@@ -95,7 +96,7 @@ public class QuestionAttemptDAO extends DBContext {
         return questionAttempts;
     }
 
-    public boolean updateQuestionAttemptDuringExamAttempt(List<QuestionAttemptDTO> questionAttemptDTOs) {
+    public boolean updateQuestionAttemptsDuringExamAttempt(List<QuestionAttemptDTO> questionAttemptDTOs) {
         if(questionAttemptDTOs == null || questionAttemptDTOs.isEmpty()) {
             return false;
         }

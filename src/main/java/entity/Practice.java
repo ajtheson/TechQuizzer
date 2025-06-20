@@ -10,6 +10,7 @@ public class Practice {
     private Integer subjectDimensionId;
     private Integer subjectLessonId;
     private int userId;
+    private String format;
 
     public int getId() {
         return id;
@@ -57,5 +58,13 @@ public class Practice {
 
     public void setUserId(int userId) {
         this.userId = userId;
+    }
+
+    public String getFormat() {
+        return format;
+    }
+
+    public void setFormat(String format) {
+        this.format = format;
     }
 }

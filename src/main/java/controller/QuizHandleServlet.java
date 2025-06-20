@@ -1,9 +1,12 @@
 package controller;
-import dao.ExamAttemptDAO;
-import dao.QuestionAttemptDAO;
+import dao.*;
+import dto.EssayAttemptDTO;
+import dto.PracticeDTO;
 import dto.QuestionAttemptDTO;
 import entity.ExamAttempt;
+import entity.Practice;
 import entity.QuestionOption;
+import entity.Quiz;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
@@ -25,17 +28,39 @@ public class QuizHandleServlet extends HttpServlet {
             }else{
                 examAttemptDAO.updateIsTaken(true, examAttemptId);
             }
-            List<QuestionAttemptDTO> questionAttemptDTOs = new QuestionAttemptDAO().findAllByExamAttemptId(examAttemptId);
-            for(QuestionAttemptDTO questionAttemptDTO : questionAttemptDTOs){
-                int asciiCharacter = 65;
-                for(QuestionOption questionOption : questionAttemptDTO.getOptions()){
-                    questionOption.setOptionContent((char)asciiCharacter + ". " + questionOption.getOptionContent());
-                    asciiCharacter++;
+
+            //get format
+            String format = "";
+            ExamAttempt examAttempt = examAttemptDAO.findById(examAttemptId);
+            if(examAttempt == null){
+                throw new Exception("Exam attempt not found");
+            }
+            if(examAttempt.getQuizId() != null){
+                Quiz quiz = new QuizDAO().findById(examAttempt.getQuizId());
+                format = quiz.getFormat();
+            }else{
+                PracticeDTO practice = new PracticeDAO().findById(examAttempt.getPracticeId());
+                format = practice.getFormat();
+            }
+            //handle multiple or essay question
+            if(format.equalsIgnoreCase("multiple")){
+                List<QuestionAttemptDTO> questionAttemptDTOs = new QuestionAttemptDAO().findAllByExamAttemptId(examAttemptId);
+                for(QuestionAttemptDTO questionAttemptDTO : questionAttemptDTOs){
+                    int asciiCharacter = 65;
+                    for(QuestionOption questionOption : questionAttemptDTO.getOptions()){
+                        questionOption.setOptionContent((char)asciiCharacter + ". " + questionOption.getOptionContent());
+                        asciiCharacter++;
+                    }
                 }
+                request.setAttribute("questionAttempts", questionAttemptDTOs);
+                request.getRequestDispatcher("/quiz_handle/multiple_handle.jsp").forward(request, response);
+            }else{
+                List<EssayAttemptDTO> essayAttemptDTOs = new EssayAttemptDAO().findAllByExamAttemptId(examAttemptId);
+                request.setAttribute("essayAttempts", essayAttemptDTOs);
+                request.getRequestDispatcher("/quiz_handle/essay_handle.jsp").forward(request, response);
             }
 
-            request.setAttribute("questionAttempts", questionAttemptDTOs);
-            request.getRequestDispatcher("/quiz_handle/quiz_handle.jsp").forward(request, response);
+
         } catch (Exception e) {
             e.printStackTrace();
         }

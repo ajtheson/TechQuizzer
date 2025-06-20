@@ -50,6 +50,7 @@ public class CreatePracticeServlet extends HttpServlet {
         String numberOfQuestionsParam = request.getParameter("numberOfQuestions");
         String subjectDimensionIdParam = request.getParameter("subjectDimensionId");
         String subjectLessonIdParam = request.getParameter("subjectLessonId");
+        String examFormatParam = request.getParameter("examFormat");
         String[] questionLevelIdsParam = request.getParameterValues("questionLevelIds");
 
         try {
@@ -72,6 +73,7 @@ public class CreatePracticeServlet extends HttpServlet {
             Practice practiceObj = new Practice();
             practiceObj.setName(nameParam);
             practiceObj.setNumberOfQuestions(numberOfQuestions);
+            practiceObj.setFormat(examFormatParam);
             if (subjectDimensionIdParam != null) {
                 int subjectDimensionId = Integer.parseInt(subjectDimensionIdParam);
                 practiceObj.setSubjectDimensionId(subjectDimensionId);
@@ -109,7 +111,7 @@ public class CreatePracticeServlet extends HttpServlet {
             int index = 0;
             if(practice.getSubjectDimensionId() != null){
                 for(Integer questionLevelId : questionLevelIds){
-                    List<Question> questionSubList = new QuestionDAO().findAllByDimensionIdAndQuestionLevel(practice.getSubjectDimensionId(), questionLevelId);
+                    List<Question> questionSubList = new QuestionDAO().findAllByDimensionIdAndQuestionLevelAndFormat(practice.getSubjectDimensionId(), questionLevelId, practice.getFormat());
                     Collections.shuffle(questionSubList);
                     int numberToTake = basePerLevel + (index < remainder ? 1 : 0);
                     questions.addAll(questionSubList.subList(0, numberToTake));
@@ -117,7 +119,7 @@ public class CreatePracticeServlet extends HttpServlet {
                 }
             }else{
                 for(Integer questionLevelId : questionLevelIds) {
-                    List<Question> questionSubList = new QuestionDAO().findAllByLessonIdAndQuestionLevel(practice.getSubjectLessonId(), questionLevelId);
+                    List<Question> questionSubList = new QuestionDAO().findAllByLessonIdAndQuestionLevelAndFormat(practice.getSubjectLessonId(), questionLevelId, practice.getFormat());
                     Collections.shuffle(questionSubList);
                     int numberToTake = basePerLevel + (index < remainder ? 1 : 0);
                     questions.addAll(questionSubList.subList(0, numberToTake));
@@ -125,9 +127,16 @@ public class CreatePracticeServlet extends HttpServlet {
                 }
             }
             List<Integer> questionIds = questions.stream().map(q -> q.getId()).toList();
-            if(! new QuestionAttemptDAO().insertAllByExamAttemptIdAndQuestionIds(insertedExamAttemptId, questionIds)){
-                throw new Exception("Question attempt not created");
+            if(examFormatParam.equals("multiple")) {
+                if(! new QuestionAttemptDAO().insertAllByExamAttemptIdAndQuestionIds(insertedExamAttemptId, questionIds)){
+                    throw new Exception("Question attempt not created");
+                }
+            }else{
+                if(! new EssayAttemptDAO().insertAllByExamAttemptIdAndQuestionIds(insertedExamAttemptId, questionIds)){
+                    throw new Exception("Essay attempt not created");
+                }
             }
+
 
             response.sendRedirect(request.getContextPath() + "/quiz-handle?examAttemptId=" + insertedExamAttemptId);
 

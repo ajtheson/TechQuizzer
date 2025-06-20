@@ -16,6 +16,7 @@ public class PracticeDTO {
     private Lesson subjectLesson;
     private Subject subject;
     private List<PracticeQuestionLevelDTO> practiceQuestionLevels;
+    private String format;
 
     public int getId() {
         return id;
@@ -95,5 +96,13 @@ public class PracticeDTO {
 
     public void setLevelString(String levelString) {
         this.levelString = levelString;
+    }
+
+    public String getFormat() {
+        return format;
+    }
+
+    public void setFormat(String format) {
+        this.format = format;
     }
 }

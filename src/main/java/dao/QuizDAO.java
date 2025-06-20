@@ -14,13 +14,14 @@ import java.util.stream.Collectors;
 public class QuizDAO extends DBContext {
 
     public Quiz findById(int id) {
-        String sql = "SELECT [name], [level], [duration], [pass_rate], [description], [test_type_id], [quiz_setting_id], [subject_id] FROM [quizzes] WHERE [id] = ?";
+        String sql = "SELECT [format],  [name], [level], [duration], [pass_rate], [description], [test_type_id], [quiz_setting_id], [subject_id] FROM [quizzes] WHERE [id] = ?";
         try(PreparedStatement pstm = connection.prepareStatement(sql)){
             pstm.setInt(1, id);
             try(ResultSet rs = pstm.executeQuery()){
                 if(rs.next()){
                     Quiz quiz = new Quiz();
                     quiz.setId(id);
+                    quiz.setFormat(rs.getString("format"));
                     quiz.setName(rs.getString("name"));
                     quiz.setLevel(rs.getString("level"));
                     quiz.setDuration(rs.getInt("duration"));

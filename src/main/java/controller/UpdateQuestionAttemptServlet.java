@@ -32,7 +32,7 @@ public class UpdateQuestionAttemptServlet extends HttpServlet {
             int examAttemptId = updateQuestionAttemptDTO.getExamAttemptId();
             List<QuestionAttemptDTO> questionAttemptDTOs = updateQuestionAttemptDTO.getQuestionAttempts();
 
-            boolean isUpdatedQuestionAttempts = new QuestionAttemptDAO().updateQuestionAttemptDuringExamAttempt(questionAttemptDTOs);
+            boolean isUpdatedQuestionAttempts = new QuestionAttemptDAO().updateQuestionAttemptsDuringExamAttempt(questionAttemptDTOs);
             if(!isUpdatedQuestionAttempts){
                 throw new Exception("Question attempt not updated");
             }

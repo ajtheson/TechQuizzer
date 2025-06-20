@@ -43,7 +43,7 @@ public class ExamAttemptDAO extends DBContext {
                     ExamAttempt examAttempt = new ExamAttempt();
                     examAttempt.setId(rs.getInt("id"));
                     examAttempt.setType(rs.getString("type"));
-                    examAttempt.setStartDate(rs.getDate("start_time").toLocalDate());
+                    examAttempt.setStartDate(rs.getDate("start_time") != null ? rs.getDate("start_time").toLocalDate() : null);
                     examAttempt.setDuration(rs.getInt("duration"));
                     examAttempt.setNumberCorrectQuestions(rs.getInt("number_correct_question"));
                     examAttempt.setUserId(rs.getInt("user_id"));
@@ -105,11 +105,12 @@ public class ExamAttemptDAO extends DBContext {
                     ExamAttempt examAttempt = new ExamAttempt();
                     examAttempt.setId(rs.getInt("id"));
                     examAttempt.setType(rs.getString("type"));
-                    examAttempt.setStartDate(rs.getDate("start_time").toLocalDate());
+                    examAttempt.setStartDate(rs.getDate("start_date") != null ? rs.getDate("start_date").toLocalDate() : null);
                     examAttempt.setDuration(rs.getInt("duration"));
                     examAttempt.setNumberCorrectQuestions(rs.getInt("number_correct_question"));
                     examAttempt.setUserId(rs.getInt("user_id"));
-                    examAttempt.setPracticeId(rs.getInt("practice_id"));
+                    examAttempt.setQuizId(rs.getObject("quiz_id", Integer.class));
+                    examAttempt.setPracticeId(rs.getObject("practice_id", Integer.class));
                     return examAttempt;
                 }
             }

@@ -17,7 +17,6 @@ public class SubjectDAO extends DBContext {
                         [name],
                         [tag_line],
                         [thumbnail],
-                        [short_description],
                         [detail_description],
                         [featured_subject],
                         [status],
@@ -36,7 +35,6 @@ public class SubjectDAO extends DBContext {
                 subject.setName(rs.getString("name"));
                 subject.setTagLine(rs.getString("tag_line"));
                 subject.setThumbnail(rs.getString("thumbnail"));
-                subject.setShortDescription(rs.getString("short_description"));
                 subject.setLongDescription(rs.getString("detail_description"));
                 subject.setFeaturedSubject(rs.getBoolean("featured_subject"));
                 subject.setPublished(rs.getBoolean("status"));
@@ -62,7 +60,6 @@ public class SubjectDAO extends DBContext {
                         "[name]," +
                         "[tag_line]," +
                         "[thumbnail]," +
-                        "[short_description]," +
                         "[detail_description]," +
                         "[featured_subject]," +
                         "[status]," +
@@ -81,7 +78,6 @@ public class SubjectDAO extends DBContext {
                 subject.setName(rs.getString("name"));
                 subject.setTagLine(rs.getString("tag_line"));
                 subject.setThumbnail(rs.getString("thumbnail"));
-                subject.setShortDescription(rs.getString("short_description"));
                 subject.setLongDescription(rs.getString("detail_description"));
                 subject.setFeaturedSubject(rs.getBoolean("featured_subject"));
                 subject.setPublished(rs.getBoolean("status"));
