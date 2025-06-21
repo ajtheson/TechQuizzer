@@ -1,7 +1,6 @@
 package controller;
 
 import dao.*;
-import dto.PracticeQuestionLevelDTO;
 import dto.RegistrationDTO;
 import dto.UserDTO;
 import entity.*;
@@ -11,7 +10,6 @@ import jakarta.servlet.annotation.*;
 
 import java.io.IOException;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @WebServlet(name = "CreatePracticeServlet", value = "/practices/create")
 public class CreatePracticeServlet extends HttpServlet {
@@ -51,7 +49,7 @@ public class CreatePracticeServlet extends HttpServlet {
         String subjectDimensionIdParam = request.getParameter("subjectDimensionId");
         String subjectLessonIdParam = request.getParameter("subjectLessonId");
         String examFormatParam = request.getParameter("examFormat");
-        String[] questionLevelIdsParam = request.getParameterValues("questionLevelIds");
+        String questionLevelIdParam = request.getParameter("questionLevelId");
 
         try {
             HttpSession session = request.getSession(false);
@@ -63,10 +61,7 @@ public class CreatePracticeServlet extends HttpServlet {
             UserDTO user = (UserDTO) session.getAttribute("user");
             int subjectId = Integer.parseInt(subjectIdParam);
             int numberOfQuestions = Integer.parseInt(numberOfQuestionsParam);
-            List<Integer> questionLevelIds = new ArrayList<>();
-            for (String questionLevelId : questionLevelIdsParam) {
-                questionLevelIds.add(Integer.parseInt(questionLevelId));
-            }
+            int questionLevelId = Integer.parseInt(questionLevelIdParam);
             int userId = user.getId();
 
             //insert practice
@@ -74,6 +69,7 @@ public class CreatePracticeServlet extends HttpServlet {
             practiceObj.setName(nameParam);
             practiceObj.setNumberOfQuestions(numberOfQuestions);
             practiceObj.setFormat(examFormatParam);
+            practiceObj.setQuestionLevelId(questionLevelId);
             if (subjectDimensionIdParam != null) {
                 int subjectDimensionId = Integer.parseInt(subjectDimensionIdParam);
                 practiceObj.setSubjectDimensionId(subjectDimensionId);
@@ -87,11 +83,6 @@ public class CreatePracticeServlet extends HttpServlet {
                 throw new Exception("Practice not created");
             }
 
-            //insert practice question level
-            if (!new PracticeQuestionLevelDAO().insertByPracticeIdAndQuestionLevelIds(practice.getId(), questionLevelIds)) {
-                throw new Exception("Practice question level not created");
-            }
-
             //insert exam attempt
             ExamAttempt examAttempt = new ExamAttempt();
             examAttempt.setType("Practice");
@@ -100,39 +91,28 @@ public class CreatePracticeServlet extends HttpServlet {
             examAttempt.setUserId(userId);
             examAttempt.setPracticeId(practice.getId());
             int insertedExamAttemptId = new ExamAttemptDAO().insert(examAttempt);
-            if(insertedExamAttemptId == -1) {
+            if (insertedExamAttemptId == -1) {
                 throw new Exception("Exam attempt not created");
             }
 
             //insert question attempt
             List<Question> questions = new ArrayList<>(numberOfQuestions);
-            int basePerLevel = numberOfQuestions / questionLevelIds.size();
-            int remainder = numberOfQuestions % questionLevelIds.size();
-            int index = 0;
-            if(practice.getSubjectDimensionId() != null){
-                for(Integer questionLevelId : questionLevelIds){
-                    List<Question> questionSubList = new QuestionDAO().findAllByDimensionIdAndQuestionLevelAndFormat(practice.getSubjectDimensionId(), questionLevelId, practice.getFormat());
-                    Collections.shuffle(questionSubList);
-                    int numberToTake = basePerLevel + (index < remainder ? 1 : 0);
-                    questions.addAll(questionSubList.subList(0, numberToTake));
-                    index++;
-                }
-            }else{
-                for(Integer questionLevelId : questionLevelIds) {
-                    List<Question> questionSubList = new QuestionDAO().findAllByLessonIdAndQuestionLevelAndFormat(practice.getSubjectLessonId(), questionLevelId, practice.getFormat());
-                    Collections.shuffle(questionSubList);
-                    int numberToTake = basePerLevel + (index < remainder ? 1 : 0);
-                    questions.addAll(questionSubList.subList(0, numberToTake));
-                    index++;
-                }
+            if (practice.getSubjectDimensionId() != null) {
+                List<Question> questionSubList = new QuestionDAO().findAllByDimensionIdAndQuestionLevelAndFormat(practice.getSubjectDimensionId(), questionLevelId, practice.getFormat());
+                Collections.shuffle(questionSubList);
+                questions.addAll(questionSubList.subList(0, numberOfQuestions));
+            } else {
+                List<Question> questionSubList = new QuestionDAO().findAllByLessonIdAndQuestionLevelAndFormat(practice.getSubjectLessonId(), questionLevelId, practice.getFormat());
+                Collections.shuffle(questionSubList);
+                questions.addAll(questionSubList.subList(0, numberOfQuestions));
             }
             List<Integer> questionIds = questions.stream().map(q -> q.getId()).toList();
-            if(examFormatParam.equals("multiple")) {
-                if(! new QuestionAttemptDAO().insertAllByExamAttemptIdAndQuestionIds(insertedExamAttemptId, questionIds)){
+            if (examFormatParam.equals("multiple")) {
+                if (!new QuestionAttemptDAO().insertAllByExamAttemptIdAndQuestionIds(insertedExamAttemptId, questionIds)) {
                     throw new Exception("Question attempt not created");
                 }
-            }else{
-                if(! new EssayAttemptDAO().insertAllByExamAttemptIdAndQuestionIds(insertedExamAttemptId, questionIds)){
+            } else {
+                if (!new EssayAttemptDAO().insertAllByExamAttemptIdAndQuestionIds(insertedExamAttemptId, questionIds)) {
                     throw new Exception("Essay attempt not created");
                 }
             }

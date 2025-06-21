@@ -37,7 +37,6 @@ public class PracticeDetailServlet extends HttpServlet {
 
             request.setAttribute("practice", practiceDTO);
             request.setAttribute("registrationSubjects", subjects);
-            request.setAttribute("questionLevels", practiceDTO.getPracticeQuestionLevels());
             request.getRequestDispatcher("/practice_detail.jsp").forward(request, response);
         }catch (Exception e){
             e.printStackTrace();

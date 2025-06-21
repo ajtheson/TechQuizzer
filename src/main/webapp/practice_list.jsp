@@ -67,7 +67,7 @@
                     </div>
                     <div class="d-flex justify-content-between px-3 py-2">
                         <div>
-                            <span>Level: ${practice.getLevelString()}</span>
+                            <span>Level: ${practice.getQuestionLevel().getName()}</span>
                         </div>
                         <div>
                             <span>Duration - ${practice.getFormattedDuration()}</span>

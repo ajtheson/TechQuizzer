@@ -252,7 +252,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.9);
+            background: rgba(0, 0, 0, 0.9);
             display: flex;
             justify-content: center;
             align-items: center;
@@ -266,7 +266,7 @@
             border-radius: 10px;
             text-align: center;
             max-width: 400px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
         }
 
         .prompt-button {
@@ -320,27 +320,26 @@
     <!--black header-->
     <div class="d-flex justify-content-between align-items-center px-4 py-2 bg-dark text-white mt-2">
         <div id="stt" class="fw-bold">
-            1 )
+            0 )
         </div>
         <div id="qId" class="text-secondary small">
-            Question ID: 123
+            Question ID:
         </div>
     </div>
 
     <!--quiz content-->
     <div class="flex-grow-1 d-flex flex-column justify-content-between" style="padding: 20px 40px;">
-        <%-- PHẦN CHÍNH GIỮA: CÂU HỎI + NỘP BÀI --%>
         <div class="row flex-grow-1" style="padding: 0 100px">
-            <%-- Câu hỏi: 70% --%>
+            <%--question area--%>
             <div class="col-8 mb-3">
                 <div id="qContent">
                     <p>
-
+                        No Content
                     </p>
                 </div>
             </div>
 
-            <%-- Nộp bài: 30% --%>
+            <%--submit file area--%>
             <div class="col-3 ms-auto mb-3">
                 <div class="p-3 border rounded bg-light">
                     <h5 class="mb-3">Submit file</h5>
@@ -348,7 +347,7 @@
 
                     <div>
                         <div id="upload-area" style="max-height: 221px; overflow-y: auto; overflow-x: hidden">
-                            <%--                            <!-- Hard-coded PDF file -->--%>
+                            <%--                            <!-- eg PDF file -->--%>
                             <%--                            <div class="file-item">--%>
                             <%--                                <div class="file-content">--%>
                             <%--                                    <div class="file-icon pdf">--%>
@@ -364,30 +363,7 @@
                             <%--                                </button>--%>
                             <%--                            </div>--%>
 
-                            <%--                            <!-- Hard-coded Word document -->--%>
-                            <%--                            <div class="file-item">--%>
-                            <%--                                <div class="file-content">--%>
-                            <%--                                    <div class="file-icon docx">--%>
-                            <%--                                        <i class="fas fa-file-word"></i>--%>
-                            <%--                                    </div>--%>
-                            <%--                                    <div class="file-info">--%>
-                            <%--                                        <div class="file-name" title="my-essay-assignment.docx">--%>
-                            <%--                                            my-essay-assignment.docx--%>
-                            <%--                                        </div>--%>
-                            <%--                                        <div class="file-size">1.2 MB</div>--%>
-                            <%--                                    </div>--%>
-                            <%--                                </div>--%>
-                            <%--                                <div class="file-actions">--%>
-                            <%--                                    <button class="file-action-btn view" title="Xem file">--%>
-                            <%--                                        <i class="fas fa-eye"></i>--%>
-                            <%--                                    </button>--%>
-                            <%--                                    <button class="file-action-btn remove" title="Xóa file">--%>
-                            <%--                                        <i class="fas fa-times"></i>--%>
-                            <%--                                    </button>--%>
-                            <%--                                </div>--%>
-                            <%--                            </div>--%>
-
-                            <%--                            <!-- Hard-coded Image file -->--%>
+                            <%--                            <!-- eg Image file -->--%>
                             <%--                            <div class="file-item">--%>
                             <%--                                <div class="file-content">--%>
                             <%--                                    <div class="file-preview">--%>
@@ -409,49 +385,6 @@
                             <%--                                </div>--%>
                             <%--                            </div>--%>
 
-                            <%--                            <!-- Hard-coded Excel file -->--%>
-                            <%--                            <div class="file-item">--%>
-                            <%--                                <div class="file-content">--%>
-                            <%--                                    <div class="file-icon xlsx">--%>
-                            <%--                                        <i class="fas fa-file-excel"></i>--%>
-                            <%--                                    </div>--%>
-                            <%--                                    <div class="file-info">--%>
-                            <%--                                        <div class="file-name" title="data-analysis-report.xlsx">--%>
-                            <%--                                            data-analysis-report.xlsx--%>
-                            <%--                                        </div>--%>
-                            <%--                                        <div class="file-size">3.1 MB</div>--%>
-                            <%--                                    </div>--%>
-                            <%--                                </div>--%>
-                            <%--                                <div class="file-actions">--%>
-                            <%--                                    <button class="file-action-btn view" title="Xem file">--%>
-                            <%--                                        <i class="fas fa-eye"></i>--%>
-                            <%--                                    </button>--%>
-                            <%--                                    <button class="file-action-btn remove" title="Xóa file">--%>
-                            <%--                                        <i class="fas fa-times"></i>--%>
-                            <%--                                    </button>--%>
-                            <%--                                </div>--%>
-                            <%--                            </div>--%>
-
-                            <%--                            <!-- Hard-coded Video file -->--%>
-                            <%--                            <div class="file-item">--%>
-                            <%--                                <div class="file-content">--%>
-                            <%--                                    <div class="file-icon video">--%>
-                            <%--                                        <i class="fas fa-file-video"></i>--%>
-                            <%--                                    </div>--%>
-                            <%--                                    <div class="file-info">--%>
-                            <%--                                        <div class="file-name" title="presentation-demo.mp4">presentation-demo.mp4</div>--%>
-                            <%--                                        <div class="file-size">15.7 MB</div>--%>
-                            <%--                                    </div>--%>
-                            <%--                                </div>--%>
-                            <%--                                <div class="file-actions">--%>
-                            <%--                                    <button class="file-action-btn view" title="Xem file">--%>
-                            <%--                                        <i class="fas fa-eye"></i>--%>
-                            <%--                                    </button>--%>
-                            <%--                                    <button class="file-action-btn remove" title="Xóa file">--%>
-                            <%--                                        <i class="fas fa-times"></i>--%>
-                            <%--                                    </button>--%>
-                            <%--                                </div>--%>
-                            <%--                            </div>--%>
                         </div>
                         <label for="fileInput" class="upload-label">
                             <i class="fas fa-cloud-upload-alt"></i>
@@ -465,7 +398,6 @@
             </div>
         </div>
 
-        <%-- NÚT DƯỚI GÓC PHẢI --%>
         <div class="d-flex justify-content-end gap-3 mt-4">
             <button id="markBtn" class="btn"
                     style="border: #64c281 solid 2px; color: #64c281">
@@ -716,7 +648,7 @@
 
     // Create file preview for images
     function createImagePreview(file) {
-        if (file.size > 10 * 1024 * 1024) {
+        if (file.size > 20 * 1024 * 1024) {
             throw new Error('File too large');
         }
         if (!file.type.startsWith('image/')) {
@@ -725,11 +657,11 @@
         return URL.createObjectURL(file);
     }
 
-    // Enhanced renderFile function
+    // create file item for each file in submissions of current essay attempt
     function renderFile(file, index) {
-        const fileDiv = document.createElement("div");
-        fileDiv.className = "file-item";
-        fileDiv.dataset.fileIndex = index;
+        const fileItem = document.createElement("div");
+        fileItem.className = "file-item";
+        fileItem.dataset.fileIndex = index;
 
         const extension = getFileExtension(file.name);
         const fileIconInfo = getFileIcon(extension);
@@ -743,6 +675,7 @@
         const fileIcon = document.createElement("div");
         fileIcon.className = `file-icon \${fileIconInfo.cssClass}`;
 
+        // check extension to define class css
         if (isImageFile(extension)) {
             try {
                 const previewUrl = createImagePreview(file);
@@ -770,14 +703,14 @@
         removeBtn.onclick = (e) => {
             e.stopPropagation();
             allEssayAttemps[currentIndex].submissions = allEssayAttemps[currentIndex].submissions.filter(f => f !== file);
-            fileDiv.remove();
+            fileItem.remove();
         };
 
         fileContent.appendChild(fileIcon);
         fileContent.appendChild(fileInfo);
-        fileDiv.appendChild(fileContent);
-        fileDiv.appendChild(removeBtn);
-        uploadArea.appendChild(fileDiv);
+        fileItem.appendChild(fileContent);
+        fileItem.appendChild(removeBtn);
+        uploadArea.appendChild(fileItem);
     }
 
     // end
@@ -867,18 +800,18 @@
             popupScoreExam.querySelector("p").textContent = "You have not answered any questions. By clicking on the [Exit Exam] button below, " +
                 "you will complete your current exam and be returned to the dashboard.";
             seSubmitBtn.textContent = "Exit Exam";
-        } else if (length === allEssayAttemps.length) {
-            popupScoreExam.querySelector("h5").textContent = "Score Exam?";
-            popupScoreExam.querySelector("p").textContent = "By clicking on the [Score Exam] button below, you will complete your current exam and" +
-                " receive your score. You will not be able to change any answers after this point.";
-            seSubmitBtn.textContent = "Score Exam";
         } else {
             popupScoreExam.querySelector("h5").textContent = "Score Exam?";
-            popupScoreExam.querySelector("p").innerHTML = `
-                <span style='color: red; display: block' class='mb-3'>\${length} of \${allEssayAttemps.length} Questions Answered</span>` +
-                "By clicking on the [Score Exam] button below, you will complete your current exam and" +
-                " receive your score. You will not be able to change any answers after this point.";
             seSubmitBtn.textContent = "Score Exam";
+            if (length === allEssayAttemps.length) {
+                popupScoreExam.querySelector("p").textContent = "By clicking on the [Score Exam] button below, you will complete your current exam and" +
+                    " receive your score. You will not be able to change any answers after this point.";
+            } else if (length < allEssayAttemps.length) {
+                popupScoreExam.querySelector("p").innerHTML = `
+                <span style='color: red; display: block' class='mb-3'>\${length} of \${allEssayAttemps.length} Questions Answered</span>` +
+                    "By clicking on the [Score Exam] button below, you will complete your current exam and" +
+                    " receive your score. You will not be able to change any answers after this point.";
+            }
         }
     });
     // end
@@ -950,7 +883,37 @@
     // end
 
 
-    //download file when user click name
+    const getUploadedFileObject = fileItem => {
+        const fileIndex = parseInt(fileItem.dataset.fileIndex);
+
+        const submissions = allEssayAttemps[currentIndex].submissions;
+        if (submissions[fileIndex]) {
+            return submissions[fileIndex];
+        }
+        return null;
+    }
+
+    //download file
+    const downloadFile = (fileName, fileItem) => {
+        const fileObject = getUploadedFileObject(fileItem);
+        if (fileObject) {
+            const url = URL.createObjectURL(fileObject);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = fileName; //notice browser download file instead of open file in href, assign fileName to set name of downloaded file
+            link.style.display = 'none';
+            document.body.appendChild(link); //click() active when tag a in DOM so need to append
+            link.click();
+            document.body.removeChild(link);
+
+            // Cleanup
+            setTimeout(() => URL.revokeObjectURL(url), 100); //revoke url to prevent leak memory
+        } else {
+            alert('file is not existed');
+        }
+    }
+
+    //add action download file when user click name
     document.addEventListener('click', (e) => {
         const fileItem = e.target.closest('.file-item');
         if (fileItem && !e.target.closest('.file-action-btn')) {
@@ -958,37 +921,7 @@
             downloadFile(fileName, fileItem);
         }
     });
-
-    function downloadFile(fileName, fileItem) {
-        const fileObject = getUploadedFileObject(fileItem);
-
-        if (fileObject) {
-            const url = URL.createObjectURL(fileObject);
-            const link = document.createElement('a');
-            link.href = url;
-            link.download = fileName;
-            link.style.display = 'none';
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-
-            // Cleanup
-            setTimeout(() => URL.revokeObjectURL(url), 100);
-        } else {
-            alert('Không tìm thấy file để tải về');
-        }
-    }
-
-    function getUploadedFileObject(fileItem) {
-        const fileIndex = parseInt(fileItem.dataset.fileIndex);
-
-        const submissions = allEssayAttemps[currentIndex].submissions;
-        if (submissions && submissions[fileIndex]) {
-            return submissions[fileIndex];
-        }
-
-        return null;
-    }
+    //end download file
 
 
     //update essay attempt interval
@@ -999,11 +932,8 @@
         })
             .then(response => response)
             .then(data => {
-                console.log('Server trả về:', data);
-
             })
             .catch(error => {
-                console.error('Lỗi khi fetch:', error);
             });
     }
 
@@ -1060,7 +990,7 @@
         //prevent reload or change url,... (exit page in tab)
         window.onbeforeunload = (e) => {
             e.preventDefault();
-            e.returnValue = ''; // Hiển thị popup
+            e.returnValue = '';
         };
     }
 

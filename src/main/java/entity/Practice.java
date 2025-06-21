@@ -6,6 +6,7 @@ public class Practice {
 
     private int id;
     private String name;
+    private int questionLevelId;
     private int numberOfQuestions;
     private Integer subjectDimensionId;
     private Integer subjectLessonId;
@@ -66,5 +67,13 @@ public class Practice {
 
     public void setFormat(String format) {
         this.format = format;
+    }
+
+    public int getQuestionLevelId() {
+        return questionLevelId;
+    }
+
+    public void setQuestionLevelId(int questionLevelId) {
+        this.questionLevelId = questionLevelId;
     }
 }

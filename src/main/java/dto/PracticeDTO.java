@@ -10,12 +10,11 @@ public class PracticeDTO {
     private String name;
     private int numberOfQuestions;
     private String formattedDuration;
-    private String levelString;
+    private QuestionLevel questionLevel;
     private ExamAttempt examAttempt;
     private Dimension subjectDimension;
     private Lesson subjectLesson;
     private Subject subject;
-    private List<PracticeQuestionLevelDTO> practiceQuestionLevels;
     private String format;
 
     public int getId() {
@@ -74,14 +73,6 @@ public class PracticeDTO {
         this.subject = subject;
     }
 
-    public List<PracticeQuestionLevelDTO> getPracticeQuestionLevels() {
-        return practiceQuestionLevels;
-    }
-
-    public void setPracticeQuestionLevels(List<PracticeQuestionLevelDTO> practiceQuestionLevels) {
-        this.practiceQuestionLevels = practiceQuestionLevels;
-    }
-
     public String getFormattedDuration() {
         return formattedDuration;
     }
@@ -90,19 +81,19 @@ public class PracticeDTO {
         this.formattedDuration = formattedDuration;
     }
 
-    public String getLevelString() {
-        return levelString;
-    }
-
-    public void setLevelString(String levelString) {
-        this.levelString = levelString;
-    }
-
     public String getFormat() {
         return format;
     }
 
     public void setFormat(String format) {
         this.format = format;
+    }
+
+    public QuestionLevel getQuestionLevel() {
+        return questionLevel;
+    }
+
+    public void setQuestionLevel(QuestionLevel questionLevel) {
+        this.questionLevel = questionLevel;
     }
 }

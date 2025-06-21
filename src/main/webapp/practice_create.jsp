@@ -105,9 +105,9 @@
             </div>
 
             <div class="mb-3">
-                <label for="questionLevelIds" class="form-label">Question Level</label>
-                <select class="form-select" id="questionLevelIds" name="questionLevelIds"
-                        data-placeholder="Select question level" multiple required>
+                <label for="questionLevelId" class="form-label">Question Level</label>
+                <select class="form-select" id="questionLevelId" name="questionLevelId" required>
+                    <option value="" selected disabled>Select question level</option>
                     <c:forEach var="level" items="${requestScope.questionLevels}">
                         <option value="${level.getId()}">${level.getName()}</option>
                     </c:forEach>
@@ -173,7 +173,7 @@
     dimensionSelect.addEventListener("click", (e) => {
         if (!subjectSelect.value) {
             e.preventDefault();
-            alert("Vui lòng chọn Subject trước khi chọn Dimension");
+            alert("Please choose subject before choose dimension");
             this.blur();
         }
     });
@@ -182,7 +182,7 @@
     lessonSelect.addEventListener("click", (e) => {
         if (!subjectSelect.value) {
             e.preventDefault();
-            alert("Vui lòng chọn Subject trước khi chọn Lesson");
+            alert("Please choose subject before choose lesson");
             this.blur();
         }
     });
@@ -209,14 +209,6 @@
             opt.text = l.name;
             lessonSelect.appendChild(opt);
         });
-    });
-
-    //init select multiple
-    $('#questionLevelIds').select2({
-        theme: "bootstrap-5",
-        width: '100%',
-        placeholder: 'Select question level',
-        closeOnSelect: false,
     });
 
     //validate name with many spaces

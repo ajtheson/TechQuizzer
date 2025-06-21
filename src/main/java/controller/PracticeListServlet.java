@@ -49,11 +49,7 @@ public class PracticeListServlet extends HttpServlet {
             List<Integer> subjectIds = filter == 0 ? registrationDTOs.stream().map(r -> r.getSubject().getId()).toList()
                     : new ArrayList<>(List.of(filter));
             List<PracticeDTO> practiceDTOs = practiceDAO.findAllByUserIdAndSubjectIdsWithPagination(user.getId(), subjectIds, page, size);
-            practiceDTOs.forEach(p -> {
-                p.setFormattedDuration(formatDuration(p.getExamAttempt().getDuration()));
-                String levelString = p.getPracticeQuestionLevels().stream().map(ql -> ql.getQuestionLevel().getName()).collect(Collectors.joining(", "));
-                p.setLevelString(levelString);
-            });
+            practiceDTOs.forEach(p -> p.setFormattedDuration(formatDuration(p.getExamAttempt().getDuration())));
             //calculate total page
             int totalQuizzes = practiceDAO.countByUserIdAndSubjectIds(user.getId(), subjectIds);
             int totalPages = totalQuizzes / size + (totalQuizzes % size == 0 ? 0 : 1);
