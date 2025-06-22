@@ -292,34 +292,6 @@
             document.getElementById("sizeBtn").click();
         }
     });
-
 </script>
-
-<%--Script to get toastNotification from CreateSettingServlet to show and remove it in session--%>
-<%
-    String toastNotification = (String) session.getAttribute("toastNotification");
-    if (toastNotification != null) {
-        boolean isSuccess = toastNotification.contains("successfully");
-        request.removeAttribute("toastNotification");
-%>
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        const toastElement = document.getElementById('toast');
-        const toastElementBody = toastElement.querySelector('.toast-body');
-
-        toastElementBody.textContent = "<%= toastNotification %>";
-        toastElement.classList.remove('<%= isSuccess ? "text-bg-danger" : "text-bg-success" %>');
-        toastElement.classList.add('<%= isSuccess ? "text-bg-success" : "text-bg-danger" %>');
-
-        const toast = new bootstrap.Toast(toastElement, {
-            autohide: true,
-            delay: 2000
-        });
-        toast.show();
-    });
-</script>
-<%
-    }
-%>
 </body>
 </html>

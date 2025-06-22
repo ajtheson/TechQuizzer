@@ -113,38 +113,49 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <c:forEach items="${requestScope.questions}" var="question">
-                                <tr>
-                                    <td>${question.id}</td>
-                                    <td>${question.content}</td>
-                                    <td>${question.subjectName}</td>
-                                    <td>${question.questionDimensionName}</td>
-                                    <td>${question.subjectLessonName}</td>
-                                    <td>${question.questionLevelName}</td>
-                                    <td>${question.isDeleted ? 'Hide' : 'Show'}</td>
-                                    <td>
-                                        <a class="btn btn-warning text-white" type="button"
-                                           href="edit_question?id=${question.id}">Edit</a>
-                                        <form action="toggle-question-status" method="post" style="display: inline;">
-                                            <input type="hidden" name="id" value="${question.id}" />
-                                            <input type="hidden" name="statusChange" value="${!question.isDeleted}" />
+                            <c:choose>
+                                <c:when test="${requestScope.totalQuestions == 0}">
+                                    <tr>
+                                        <td colspan="8" class="text-center">
+                                            No matching record found
+                                        </td>
+                                    </tr>
+                                </c:when>
+                                <c:otherwise>
+                                    <c:forEach items="${requestScope.questions}" var="question">
+                                        <tr>
+                                            <td>${question.id}</td>
+                                            <td>${question.content}</td>
+                                            <td>${question.subjectName}</td>
+                                            <td>${question.questionDimensionName}</td>
+                                            <td>${question.subjectLessonName}</td>
+                                            <td>${question.questionLevelName}</td>
+                                            <td>${question.isDeleted ? 'Hide' : 'Show'}</td>
+                                            <td>
+                                                <a class="btn btn-warning text-white" type="button"
+                                                   href="edit_question?id=${question.id}">Edit</a>
+                                                <form action="toggle-question-status" method="post" style="display: inline;">
+                                                    <input type="hidden" name="id" value="${question.id}" />
+                                                    <input type="hidden" name="statusChange" value="${!question.isDeleted}" />
 
-                                            <input type="hidden" name="page" value="${requestScope.page}" />
-                                            <input type="hidden" name="size" value="${requestScope.size}" />
-                                            <input type="hidden" name="search" value="${requestScope.search}" />
-                                            <input type="hidden" name="subjectId" value="${requestScope.subjectId}" />
-                                            <input type="hidden" name="dimensionId" value="${requestScope.dimensionId}" />
-                                            <input type="hidden" name="lessonId" value="${requestScope.lessonId}" />
-                                            <input type="hidden" name="levelId" value="${requestScope.levelId}" />
-                                            <input type="hidden" name="status" value="${requestScope.status}" />
+                                                    <input type="hidden" name="page" value="${requestScope.page}" />
+                                                    <input type="hidden" name="size" value="${requestScope.size}" />
+                                                    <input type="hidden" name="search" value="${requestScope.search}" />
+                                                    <input type="hidden" name="subjectId" value="${requestScope.subjectId}" />
+                                                    <input type="hidden" name="dimensionId" value="${requestScope.dimensionId}" />
+                                                    <input type="hidden" name="lessonId" value="${requestScope.lessonId}" />
+                                                    <input type="hidden" name="levelId" value="${requestScope.levelId}" />
+                                                    <input type="hidden" name="status" value="${requestScope.status}" />
 
-                                            <button type="submit" class="btn ${question.isDeleted ? 'btn-secondary' : 'btn-success'}">
-                                                    ${question.isDeleted ? 'Hide' : 'Show'}
-                                            </button>
-                                        </form>
-                                    </td>
-                                </tr>
-                            </c:forEach>
+                                                    <button type="submit" class="btn ${question.isDeleted ? 'btn-secondary' : 'btn-success'}">
+                                                            ${question.isDeleted ? 'Hide' : 'Show'}
+                                                    </button>
+                                                </form>
+                                            </td>
+                                        </tr>
+                                    </c:forEach>
+                                </c:otherwise>
+                            </c:choose>
                             </tbody>
                         </table>
                     </div>
@@ -439,12 +450,6 @@
             url += "&status=" + e.target.value
         }
         window.location.href = url
-    });
-
-    document.getElementById("searchInput").addEventListener("keypress", function (e) {
-        if (e.key === "Enter") {
-            document.getElementById("searchBtn").click();
-        }
     });
 
     document.getElementById("searchInput").addEventListener("keypress", function (e) {
