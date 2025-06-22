@@ -90,27 +90,58 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <c:forEach items="${requestScope.subjects}" var="subject">
-                                <tr>
-                                    <td>${subject.id}</td>
-                                    <td>${subject.name}</td>
-                                    <td>${subject.categoryName}</td>
-                                    <td>${subject.numberOfLesson}</td>
-                                    <td>${subject.ownerName}</td>
-                                    <td>${subject.published ? 'Published' : 'Unpublished'}</td>
-                                    <td>
-                                        <a class="btn btn-warning text-white" type="button"
-                                           href="edit-subject?subject_id=${subject.id}">Edit</a>
-                                    </td>
-                                </tr>
-                            </c:forEach>
+                            <c:choose>
+                                <c:when test="${requestScope.totalSubjects == 0}">
+                                    <tr>
+                                        <td colspan="7" class="text-center">
+                                            No matching record found
+                                        </td>
+                                    </tr>
+                                </c:when>
+                                <c:otherwise>
+                                    <c:forEach items="${requestScope.subjects}" var="subject">
+                                        <tr>
+                                            <td>${subject.id}</td>
+                                            <td>${subject.name}</td>
+                                            <td>${subject.categoryName}</td>
+                                            <td>${subject.numberOfLesson}</td>
+                                            <td>${subject.ownerName}</td>
+                                            <td>${subject.published ? 'Published' : 'Unpublished'}</td>
+                                            <td>
+                                                <a class="btn btn-warning text-white" type="button"
+                                                   href="edit-subject?subject_id=${subject.id}">Edit</a>
+                                            </td>
+                                        </tr>
+                                    </c:forEach>
+                                </c:otherwise>
+                            </c:choose>
                             </tbody>
                         </table>
                     </div>
-                    <div class="mb-3 d-flex justify-content-end">
+                    <div class="mb-3 d-flex align-items-center justify-content-between">
+                        <div>
+                            <p>
+                                <c:if test="${requestScope.totalSubjects == 0}">
+                                    Showing 0 of 0 item</label>
+                                </c:if>
+                                <c:if test="${requestScope.totalSubjects > 0}">
+                                    Showing ${size*(page-1)+1} to ${size * page > totalSubjects ? totalSubjects: size * page} of ${totalSubjects} entries</label>
+                                </c:if>
+                            </p>
+                        </div>
+
                         <%--Page list--%>
                         <nav>
                             <ul class="pagination mb-0">
+                                <c:set var="startPage" value="${page - 2}" />
+                                <c:set var="endPage" value="${page + 2}" />
+                                <c:if test="${startPage < 1}">
+                                    <c:set var="startPage" value="1"/>
+                                </c:if>
+                                <c:if test="${endPage > totalPages}">
+                                    <c:set var="endPage" value="${totalPages}"/>
+                                </c:if>
+
                                 <c:if test="${page > 1}">
                                     <li class="page-item">
                                         <a class="page-link"
@@ -118,7 +149,7 @@
                                     </li>
                                 </c:if>
 
-                                <c:forEach begin="1" end="${totalPages}" var="i">
+                                <c:forEach begin="${startPage}" end="${endPage}" var="i">
                                     <li class="page-item ${i == page ? 'active' : ''}">
                                         <a class="page-link"
                                            href="?page=${i}&size=${requestScope.size}${not empty requestScope.search ? '&search='.concat(requestScope.search) : ''}${requestScope.categoryId != 0 ? '&categoryId='.concat(requestScope.categoryId) : ''}${not empty requestScope.status ? '&status='.concat(requestScope.status) : ''}">${i}</a>
@@ -167,20 +198,41 @@
 
     //Handle change item per page
     document.getElementById("sizeBtn").addEventListener("click", (e) => {
-        let sizeInput = document.getElementById("sizeInput").value.trim()
-        sizeInput = parseInt(sizeInput);
-        sizeInput = isNaN(sizeInput) || sizeInput < 1 ? 5 : sizeInput;
-        let url = "?page=1&size=" + sizeInput
-        if (search.length > 0) {
-            url += "&search=" + search
+        let sizeInput = document.getElementById("sizeInput")
+        const sizeValue = parseInt(sizeInput.value.trim());
+        const clearErrors = () => {
+            const invalidFields = document.querySelectorAll('.is-invalid');
+            invalidFields.forEach(field => field.classList.remove('is-invalid'));
+
+            const errorMessages = document.querySelectorAll('.text-danger.mt-1');
+            errorMessages.forEach(msg => msg.remove());
+        };
+        clearErrors();
+        if(isNaN(sizeValue) || sizeValue < 1 || sizeValue > 50){
+            sizeInput.classList.add("is-invalid");
+            if (!document.getElementById("size-error")) {
+                const errorDiv = document.createElement("div");
+                errorDiv.id = "size-error";
+                errorDiv.classList.add("text-danger", "mt-1");
+                errorDiv.textContent = "Size must be between 1 and 50";
+                sizeInput.parentNode.parentNode.appendChild(errorDiv);
+                sizeInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                sizeInput.focus();
+            }
         }
-        if (categoryId !== 0) {
-            url += "&categoryId=" + categoryId
+        else{
+            let url = "?page=1&size=" + sizeValue;
+            if (search.length > 0) {
+                url += "&search=" + search
+            }
+            if (categoryId !== 0) {
+                url += "&categoryId=" + categoryId
+            }
+            if (status.length > 0) {
+                url += "&status=" + status
+            }
+            window.location.href = url
         }
-        if (status.length > 0) {
-            url += "&status=" + status
-        }
-        window.location.href = url
     });
 
     //Handle search by name
@@ -229,6 +281,17 @@
         window.location.href = url
     });
 
+    document.getElementById("searchInput").addEventListener("keypress", function (e) {
+        if (e.key === "Enter") {
+            document.getElementById("searchBtn").click();
+        }
+    });
+
+    document.getElementById("sizeInput").addEventListener("keypress", function (e) {
+        if (e.key === "Enter") {
+            document.getElementById("sizeBtn").click();
+        }
+    });
 
 </script>
 
