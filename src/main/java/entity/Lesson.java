@@ -1,6 +1,7 @@
 package entity;
 
 public class Lesson {
+
     private int id;
     private String name;
     private String topic;
@@ -26,8 +27,6 @@ public class Lesson {
         this.subjectId = subjectId;
         this.lessonTypeId = lessonTypeId;
     }
-
-
 
     public int getId() {
         return id;
@@ -93,11 +92,11 @@ public class Lesson {
         this.subjectId = subjectId;
     }
 
-    public Integer getLessonTypeId() {
+    public int getLessonTypeId() {
         return lessonTypeId;
     }
 
-    public void setLessonTypeId(Integer lessonTypeId) {
+    public void setLessonTypeId(int lessonTypeId) {
         this.lessonTypeId = lessonTypeId;
     }
 }

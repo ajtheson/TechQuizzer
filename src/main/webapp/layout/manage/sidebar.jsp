@@ -34,7 +34,7 @@
         <li><a class="app-menu__item ${currentPage == 'subject' ? 'active' : ''}" href="manage-subject"><i
                 class="app-menu__icon bi bi-journal-bookmark"></i><span
                 class="app-menu__label">Subject List</span></a></li>
-        <li><a class="app-menu__item ${currentPage == 'question' ? 'active' : ''}" href=""><i
+        <li><a class="app-menu__item ${currentPage == 'question' ? 'active' : ''}" href="questions"><i
                 class="app-menu__icon bi bi-question-circle"></i><span
                 class="app-menu__label">Question List</span></a></li>
         <c:if test="${sessionScope.user.roleName == 'Expert'}">

@@ -1,7 +1,6 @@
 package dao;
 
 import dal.DBContext;
-import entity.Quiz;
 import entity.Subject;
 
 import java.sql.PreparedStatement;
@@ -30,7 +29,7 @@ public class SubjectDAO extends DBContext {
         }
         return null;
     }
-    
+
     public List<Subject> getAllSubjects(int owner_id) {
         List<Subject> list = new ArrayList<>();
         String sql = "SELECT * FROM subjects WHERE status = 1 and owner_id=? ORDER BY name ASC ";
@@ -39,7 +38,6 @@ public class SubjectDAO extends DBContext {
              ) {
             ps.setInt(1, owner_id);
             ResultSet rs = ps.executeQuery();
-
             while (rs.next()) {
                 Subject s = new Subject(
                         rs.getInt("id"),
@@ -59,7 +57,6 @@ public class SubjectDAO extends DBContext {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         return list;
     }
 
@@ -108,13 +105,13 @@ public class SubjectDAO extends DBContext {
                     FROM [subjects]
                     WHERE [status] = 1
                 """);
-        if(categoryId != 0){
+        if (categoryId != 0) {
             sql.append(" AND [category_id] = ?");
         }
-        if(isFeatured){
+        if (isFeatured) {
             sql.append(" AND [featured_subject] = 1");
         }
-        if(searchParam != null && !searchParam.isBlank()){
+        if (searchParam != null && !searchParam.isBlank()) {
             sql.append(" AND [name] LIKE ?");
         }
         sql.append(" ORDER BY [update_date] ").append(isDesc ? "DESC" : "ASC");
@@ -124,7 +121,7 @@ public class SubjectDAO extends DBContext {
             if (categoryId != 0) {
                 pstm.setInt(paramIndex++, categoryId);
             }
-            if(searchParam != null && !searchParam.isBlank()){
+            if (searchParam != null && !searchParam.isBlank()) {
                 pstm.setString(paramIndex++, "%" + searchParam + "%");
             }
             pstm.setInt(paramIndex++, (page - 1) * size);
@@ -153,19 +150,18 @@ public class SubjectDAO extends DBContext {
                     FROM [subjects]
                     WHERE 1 = 1
                 """);
-        if(categoryId != 0){
+        if (categoryId != 0) {
             sql.append(" AND [category_id] = ?");
         }
-        if(searchParam != null && !searchParam.isBlank()){
+        if (searchParam != null && !searchParam.isBlank()) {
             sql.append(" AND [name] LIKE ?");
         }
-        if(!status.isBlank()){
-            if(status.equalsIgnoreCase("Published")){
+        if (!status.isBlank()) {
+            if (status.equalsIgnoreCase("Published")) {
                 sql.append(" AND [status] = 1");
-            }
-            else sql.append(" AND [status] = 0");
+            } else sql.append(" AND [status] = 0");
         }
-        if(ownerId != 0){
+        if (ownerId != 0) {
             sql.append(" AND [owner_id] = ?");
         }
         sql.append(" ORDER BY [id]");
@@ -175,10 +171,10 @@ public class SubjectDAO extends DBContext {
             if (categoryId != 0) {
                 pstm.setInt(paramIndex++, categoryId);
             }
-            if(searchParam != null && !searchParam.isBlank()){
+            if (searchParam != null && !searchParam.isBlank()) {
                 pstm.setString(paramIndex++, "%" + searchParam + "%");
             }
-            if(ownerId != 0){
+            if (ownerId != 0) {
                 pstm.setInt(paramIndex++, ownerId);
             }
             pstm.setInt(paramIndex++, (page - 1) * size);
@@ -242,14 +238,14 @@ public class SubjectDAO extends DBContext {
         StringBuilder sql = new StringBuilder("""
                 SELECT COUNT(*) FROM subjects
                 WHERE [status] = 1
-                """) ;
-        if(categoryId != 0){
+                """);
+        if (categoryId != 0) {
             sql.append(" AND [category_id] = ?");
         }
-        if(isFeatured){
+        if (isFeatured) {
             sql.append(" AND [featured_subject] = 1");
         }
-        if(searchParam != null && !searchParam.isBlank()){
+        if (searchParam != null && !searchParam.isBlank()) {
             sql.append(" AND [name] LIKE ?");
         }
 
@@ -258,7 +254,7 @@ public class SubjectDAO extends DBContext {
             if (categoryId != 0) {
                 pstm.setInt(paramIndex++, categoryId);
             }
-            if(searchParam != null && !searchParam.isBlank()){
+            if (searchParam != null && !searchParam.isBlank()) {
                 pstm.setString(paramIndex++, "%" + searchParam + "%");
             }
             ResultSet rs = pstm.executeQuery();
@@ -276,20 +272,19 @@ public class SubjectDAO extends DBContext {
         StringBuilder sql = new StringBuilder("""
                 SELECT COUNT(*) FROM subjects
                 WHERE 1 = 1
-                """) ;
-        if(categoryId != 0){
+                """);
+        if (categoryId != 0) {
             sql.append(" AND [category_id] = ?");
         }
-        if(searchParam != null && !searchParam.isBlank()){
+        if (searchParam != null && !searchParam.isBlank()) {
             sql.append(" AND [name] LIKE ?");
         }
-        if(!status.isBlank()){
-            if(status.equalsIgnoreCase("Published")){
+        if (!status.isBlank()) {
+            if (status.equalsIgnoreCase("Published")) {
                 sql.append(" AND [status] = 1");
-            }
-            else sql.append(" AND [status] = 0");
+            } else sql.append(" AND [status] = 0");
         }
-        if(ownerId != 0){
+        if (ownerId != 0) {
             sql.append(" AND [owner_id] = ?");
         }
 
@@ -298,10 +293,10 @@ public class SubjectDAO extends DBContext {
             if (categoryId != 0) {
                 pstm.setInt(paramIndex++, categoryId);
             }
-            if(searchParam != null && !searchParam.isBlank()){
+            if (searchParam != null && !searchParam.isBlank()) {
                 pstm.setString(paramIndex++, "%" + searchParam + "%");
             }
-            if(ownerId != 0){
+            if (ownerId != 0) {
                 pstm.setInt(paramIndex++, ownerId);
             }
             ResultSet rs = pstm.executeQuery();
@@ -355,7 +350,7 @@ public class SubjectDAO extends DBContext {
         }
         return null;
     }
-    
+
     public boolean updateSubjectName(int id, String name) {
         String sql = "UPDATE [subjects] SET [name] = ? WHERE [id] = ?";
         try (PreparedStatement pstm = connection.prepareStatement(sql)) {
@@ -390,5 +385,39 @@ public class SubjectDAO extends DBContext {
             System.out.println("Error: " + e.getMessage());
             return false;
         }
+    }
+
+    public List<Subject> getAllSubjectsForQuestionList(int owner_id) {
+        List<Subject> list = new ArrayList<>();
+        StringBuilder sql = new StringBuilder("SELECT * FROM [subjects] WHERE 1=1");
+        if (owner_id != 0) {
+            sql.append(" AND [owner_id] = ?");
+        }
+        sql.append(" ORDER BY name ASC");
+        try (PreparedStatement ps = connection.prepareStatement(sql.toString())) {
+            if (owner_id != 0) {
+                ps.setInt(1, owner_id);
+            }
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Subject s = new Subject(
+                        rs.getInt("id"),
+                        rs.getString("name"),
+                        rs.getString("tag_line"),
+                        rs.getString("thumbnail"),
+                        rs.getString("detail_description"),
+                        rs.getBoolean("featured_subject"),
+                        rs.getBoolean("status"),
+                        rs.getInt("category_id"),
+                        rs.getInt("owner_id"),
+                        rs.getTimestamp("update_date").toLocalDateTime()
+                );
+                list.add(s);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
     }
 }

@@ -19,7 +19,6 @@ public class Dimension {
         this.subjectId = subjectId;
     }
 
-
     public int getId() {
         return id;
     }
