@@ -66,7 +66,7 @@ public class EditSubjectServlet extends HttpServlet {
 
         String name = request.getParameter("subjectName");
         String status = request.getParameter("status");
-        String subjectDescription = request.getParameter("subjectDescription");
+        String subjectDescription = request.getParameter("subjectDescription").replace("\n", "\\n");
         String tagLine = request.getParameter("tagLine");
         boolean isFeatured = request.getParameter("featured") != null;
         Part thumbnailPart = request.getPart("thumbnail");

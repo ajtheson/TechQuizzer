@@ -51,6 +51,22 @@
                         </span>
                     </div>
 
+                    <div class="tile mt-3 pb-3">
+                        <h4 class="fw-bold">Subject Description Images</h4>
+                        <div class="subject-images-container">
+                            <div class="row">
+                                <c:forEach items="${requestScope.subjectDescriptionImages}" var="image">
+                                    <div class="col-md-4 mb-3">
+                                        <img src="assets/images/subject_description/${image.url}"
+                                             alt="Subject Image"
+                                             class="subject-image">
+                                    </div>
+                                </c:forEach>
+                            </div>
+                        </div>
+                    </div>
+
+
                     <div class="tile mt-3 pt-3 pb-3">
                         <h4 class="fw-bold">Price Package</h4>
                         <table class="table table-striped">
@@ -217,5 +233,17 @@
         padding-right: 25px;
     }
 
+    .subject-image {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: transform 0.3s ease;
+    }
+
+    .subject-image:hover {
+        transform: scale(1.05);
+    }
 </style>
 </html>

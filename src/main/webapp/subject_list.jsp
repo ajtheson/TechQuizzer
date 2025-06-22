@@ -249,7 +249,6 @@
                                    href="?page=${requestScope.page + 1}&size=${requestScope.size}&${not empty requestScope.search ? '&search='.concat(requestScope.search) : ''}${requestScope.isFeatured ? '&isFeatured=true' : ''}${requestScope.categoryId != 0 ? '&categoryId='.concat(requestScope.categoryId) : ''}&sortOrder=${requestScope.sortOrder}">Next</a>
                             </li>
                         </c:if>
-
                     </ul>
                 </nav>
             </div>
@@ -285,6 +284,12 @@
         window.location.href = url
     });
 
+    document.getElementById("sizeInput").addEventListener("keypress", function (e) {
+        if (e.key === "Enter") {
+            document.getElementById("sizeBtn").click();
+        }
+    });
+
     //Handle search by name
     document.getElementById("searchBtn").addEventListener("click", (e) => {
         let searchInput = document.getElementById("searchInput").value.trim()
@@ -310,7 +315,7 @@
         }
     });
 
-    //handle Featured subject
+    //Handle Featured subject
     document.getElementById("featuredCheckbox").addEventListener("change", (e) => {
         let url = "?page=1&size=" + size
         if (search.length > 0) {
@@ -425,13 +430,10 @@
         border-radius: 0 !important;
     }
 
-    .subject-media {
+    .subject-thumbnail {
         border: 1px black solid;
         border-radius: 10px;
-    }
-
-    .subject-thumbnail {
-        width: 250px;
+        width: 100%;
         height: 200px;
         margin-left: 10px;
     }

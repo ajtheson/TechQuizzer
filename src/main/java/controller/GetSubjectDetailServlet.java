@@ -3,10 +3,12 @@ package controller;
 import dao.PricePackageDAO;
 import dao.RegistrationDAO;
 import dao.SubjectDAO;
+import dao.SubjectDescriptionImageDAO;
 import dto.SubjectDTO;
 import dto.UserDTO;
 import entity.PricePackage;
 import entity.Subject;
+import entity.SubjectDescriptionImage;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -34,6 +36,7 @@ public class GetSubjectDetailServlet extends HttpServlet {
         SubjectDAO subjectDAO = new SubjectDAO();
         PricePackageDAO pricePackageDAO = new PricePackageDAO();
         RegistrationDAO registrationDAO = new RegistrationDAO();
+        SubjectDescriptionImageDAO subjectDescriptionImageDAO = new SubjectDescriptionImageDAO();
 
         //Get subjectId from request
         int subjectId = Integer.parseInt(request.getParameter("subject_id"));
@@ -48,6 +51,8 @@ public class GetSubjectDetailServlet extends HttpServlet {
         //Get active price packages of this subject to show
         List<PricePackage> pricePackages = pricePackageDAO.getActiveOfSubject(subjectId);
 
+        List<SubjectDescriptionImage> subjectDescriptionImages = subjectDescriptionImageDAO.getAllImageBySubjectId(subjectId);
+
         //Get min list price and sale price to show
         double minListPrice = pricePackageDAO.getMinListPrice(subjectId);
         double minSalePrice = pricePackageDAO.getMinSalePrice(subjectId);
@@ -57,6 +62,7 @@ public class GetSubjectDetailServlet extends HttpServlet {
 
         request.setAttribute("subject", subjectDTO);
         request.setAttribute("pricePackages", pricePackages);
+        request.setAttribute("subjectDescriptionImages", subjectDescriptionImages);
         request.setAttribute("minListPrice", minListPrice);
         request.setAttribute("minSalePrice", minSalePrice);
         request.setAttribute("discount", discount);
