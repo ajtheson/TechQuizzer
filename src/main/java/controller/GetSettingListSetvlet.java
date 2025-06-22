@@ -11,7 +11,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
 
-@WebServlet(name = "GetSettingListSetvlet", urlPatterns = {"/get-setting-list"})
+@WebServlet(name = "GetSettingListSetvlet", urlPatterns = {"/settings"})
 public class GetSettingListSetvlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)

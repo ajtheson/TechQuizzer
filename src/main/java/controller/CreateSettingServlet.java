@@ -80,12 +80,12 @@ public class CreateSettingServlet extends HttpServlet {
             if(settingDAO.add(setting)){
                 //Add toastNotification success to session to show success message in setting_list page
                 session.setAttribute("toastNotification", "Setting has been created successfully.");
-                response.sendRedirect("get-setting-list");
+                response.sendRedirect("settings");
             }
             else{
                 //Add toastNotification failed to session to show failed message in setting_list page
                 session.setAttribute("toastNotification", "Setting has been created failed. Please try again later.");
-                response.sendRedirect("get-setting-list");
+                response.sendRedirect("settings");
             }
         }
     }

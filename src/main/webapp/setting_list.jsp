@@ -39,10 +39,10 @@
                                 <a class="btn btn-primary" type="button" href="create-setting">+ Add New Setting</a>
                             </div>
                             <div class="d-flex align-items-center gap-2">
-                                <select id="typeFilter" class="form-select form-select-sm" style="width: 150px;">
+                                <select id="typeFilter" class="form-select" style="width: 150px;">
                                     <option value="">Type</option>
                                 </select>
-                                <select id="statusFilter" class="form-select form-select-sm" style="width: 150px;">
+                                <select id="statusFilter" class="form-select" style="width: 150px;">
                                     <option value="">Status</option>
                                     <option value="Activated">Activated</option>
                                     <option value="Deactivated">Deactivated</option>
@@ -74,7 +74,7 @@
                                         <form action="toggle-setting-status" method="post" style="display: inline;">
                                             <input type="hidden" name="id" value="${setting.id}" />
                                             <input type="hidden" name="status" value="${!setting.activated}" />
-                                            <button type="submit" class="btn btn-sm ${setting.activated ? 'btn-success' : 'btn-secondary'}" style="padding: 6px 5px;">
+                                            <button type="submit" class="btn ${setting.activated ? 'btn-success' : 'btn-secondary'}" style="padding: 6px 5px;">
                                                     ${setting.activated ? 'Activated' : 'Deactivated'}
                                             </button>
                                         </form>

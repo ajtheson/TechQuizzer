@@ -70,7 +70,7 @@
                     &nbsp;&nbsp;&nbsp;
                     <a class="btn btn-primary" href="create-setting"><i class="bi bi-plus-circle me-2"></i>Create new setting</a>
                     &nbsp;&nbsp;&nbsp;
-                    <a class="btn btn-secondary" href="get-setting-list"><i class="bi bi-x-circle-fill me-2"></i>Cancel</a>
+                    <a class="btn btn-secondary" href="settings"><i class="bi bi-x-circle-fill me-2"></i>Cancel</a>
                 </div>
             </div>
         </div>

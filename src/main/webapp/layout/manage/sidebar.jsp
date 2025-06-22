@@ -27,7 +27,7 @@
             <li><a class="app-menu__item ${currentPage == 'user' ? 'active' : ''}" href="admin"><i
                     class="app-menu__icon bi bi-people-fill"></i><span
                     class="app-menu__label">User List</span></a></li>
-            <li><a class="app-menu__item ${currentPage == 'setting' ? 'active' : ''}" href="get-setting-list"><i
+            <li><a class="app-menu__item ${currentPage == 'setting' ? 'active' : ''}" href="settings"><i
                     class="app-menu__icon bi bi-gear-wide-connected"></i><span
                     class="app-menu__label">Setting List</span></a></li>
         </c:if>

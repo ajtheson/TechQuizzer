@@ -22,10 +22,10 @@ public class ToggleSettingStatusServlet extends HttpServlet {
             dao.updateStatus(id, status);
 
             // Chuyển hướng lại danh sách
-            response.sendRedirect("get-setting-list");
+            response.sendRedirect("settings");
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
-            response.sendRedirect("get-setting-list");
+            response.sendRedirect("settings");
         }
     }
 }

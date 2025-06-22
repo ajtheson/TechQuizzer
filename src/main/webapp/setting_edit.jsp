@@ -70,7 +70,7 @@
                         </div>
                         <p style="text-align: left; color: red">${error}</p>
                         <button class="btn btn-primary"><i class="bi bi-plus-circle me-2"></i>Save edit</button>
-                        <a class="btn btn-secondary" href="get-setting-list"><i class="bi bi-x-circle-fill me-2"></i>Cancel</a>
+                        <a class="btn btn-secondary" href="settings"><i class="bi bi-x-circle-fill me-2"></i>Cancel</a>
                     </form>
                 </div>
             </div>
