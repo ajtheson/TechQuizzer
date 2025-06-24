@@ -85,4 +85,20 @@ public class SubjectDescriptionImageDAO extends DBContext {
             return false;
         }
     }
+    public boolean insert(SubjectDescriptionImage sdi) {
+        String sql = "INSERT INTO subject_description_images (subject_id, url, caption) VALUES (?, ?, ?)";
+
+        try (PreparedStatement pstm = connection.prepareStatement(sql)) {
+            pstm.setInt(1, sdi.getSubjectId());
+            pstm.setString(2, sdi.getUrl());
+            pstm.setString(3, sdi.getCaption());
+
+            int rowsAffected = pstm.executeUpdate();
+            return rowsAffected > 0;
+
+        } catch (SQLException e) {
+            e.printStackTrace(); // or use a logger
+            return false;
+        }
+    }
 }

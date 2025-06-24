@@ -3,10 +3,8 @@ package dao;
 import dal.DBContext;
 import entity.Subject;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Timestamp;
+import java.sql.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -420,4 +418,57 @@ public class SubjectDAO extends DBContext {
         }
         return list;
     }
+    public boolean insertSubject(Subject subject) {
+        String sql = "INSERT INTO subjects " +
+                "(name, tag_line, thumbnail, detail_description, featured_subject, status, category_id, owner_id) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+
+        try (PreparedStatement pstm = connection.prepareStatement(sql)) {
+            pstm.setString(1, subject.getName());
+            pstm.setString(2, subject.getTagLine());
+            pstm.setString(3, subject.getThumbnail());
+            pstm.setString(4, subject.getLongDescription());
+            pstm.setBoolean(5, subject.isFeaturedSubject());
+            pstm.setBoolean(6, subject.isPublished());
+            pstm.setInt(7, subject.getCategoryId());
+            pstm.setInt(8, subject.getOwnerId());
+            int rows = pstm.executeUpdate();
+            return rows > 0;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public Subject getLatestSubjectByNameAndOwner(String name, int ownerId) {
+        String sql = "SELECT TOP 1 * FROM subjects WHERE name = ? AND owner_id = ? ORDER BY id DESC";
+
+        try (PreparedStatement pstm = connection.prepareStatement(sql)) {
+
+            pstm.setString(1, name);
+            pstm.setInt(2, ownerId);
+
+            try (ResultSet rs = pstm.executeQuery()) {
+                if (rs.next()) {
+                    Subject subject = new Subject();
+                    subject.setId(rs.getInt("id"));
+                    subject.setName(rs.getString("name"));
+                    subject.setTagLine(rs.getString("tag_line"));
+                    subject.setThumbnail(rs.getString("thumbnail"));
+                    subject.setLongDescription(rs.getString("detail_description"));
+                    subject.setFeaturedSubject(rs.getBoolean("featured_subject"));
+                    subject.setPublished(rs.getBoolean("status"));
+                    subject.setCategoryId(rs.getObject("category_id") != null ? rs.getInt("category_id") : null);
+                    subject.setOwnerId(rs.getInt("owner_id"));
+                }
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
 }
