@@ -5,35 +5,27 @@ public class Question {
     private int id;
     private String content;
     private String explaination;
-    private boolean status;
+    public boolean status;
     private boolean isDeleted;
-    private int questionLevelId;
-    private int subjectLessonId;
-    private int subjectDimensionId;
+    private Integer questionLevelId;
+    private Integer subjectLessonId;
+    private Integer subjectDimensionId;
     private String questionFormat;
 
-    public int getSubjectDimensionId() {
-        return subjectDimensionId;
+    public int getId() {
+        return id;
     }
 
-    public void setSubjectDimensionId(int subjectDimensionId) {
-        this.subjectDimensionId = subjectDimensionId;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public int getSubjectLessonId() {
-        return subjectLessonId;
+    public String getContent() {
+        return content;
     }
 
-    public void setSubjectLessonId(int subjectLessonId) {
-        this.subjectLessonId = subjectLessonId;
-    }
-
-    public int getQuestionLevelId() {
-        return questionLevelId;
-    }
-
-    public void setQuestionLevelId(int questionLevelId) {
-        this.questionLevelId = questionLevelId;
+    public void setContent(String content) {
+        this.content = content;
     }
 
     public String getExplaination() {
@@ -52,20 +44,44 @@ public class Question {
         this.status = status;
     }
 
-    public String getContent() {
-        return content;
+    public boolean isDeleted() {
+        return isDeleted;
     }
 
-    public void setContent(String content) {
-        this.content = content;
+    public void setDeleted(boolean deleted) {
+        isDeleted = deleted;
     }
 
-    public int getId() {
-        return id;
+    public Integer getQuestionLevelId() {
+        return questionLevelId;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setQuestionLevelId(Integer questionLevelId) {
+        this.questionLevelId = questionLevelId;
+    }
+
+    public Integer getSubjectLessonId() {
+        return subjectLessonId;
+    }
+
+    public void setSubjectLessonId(Integer subjectLessonId) {
+        this.subjectLessonId = subjectLessonId;
+    }
+
+    public Integer getSubjectDimensionId() {
+        return subjectDimensionId;
+    }
+
+    public void setSubjectDimensionId(Integer subjectDimensionId) {
+        this.subjectDimensionId = subjectDimensionId;
+    }
+
+    public String getQuestionFormat() {
+        return questionFormat;
+    }
+
+    public void setQuestionFormat(String questionFormat) {
+        this.questionFormat = questionFormat;
     }
 
     public boolean isDeleted() {
