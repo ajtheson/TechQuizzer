@@ -132,9 +132,10 @@ CREATE TABLE [question_levels](
 
 CREATE TABLE [questions](
 	[id] INT PRIMARY KEY IDENTITY,
-	[content] VARCHAR(MAX) NOT NULL,
-	[media] VARCHAR(MAX),
+	[content] VARCHAR(MAX),
 	[explaination] VARCHAR(MAX),
+	[question_format] VARCHAR(MAX),
+	[status] BIT DEFAULT 1, -- show 1 hide 0
 	[is_deleted] BIT DEFAULT 0,
 	[question_level_id] INT,
 	[subject_lesson_id] INT,
@@ -232,6 +233,15 @@ CREATE TABLE [question_attempts](
 	[exam_attempt_id] INT,
 	FOREIGN KEY ([exam_attempt_id]) REFERENCES [exam_attempts]([id]) ON DELETE CASCADE,
 	FOREIGN KEY ([question_id]) REFERENCES [questions]([id])
+)
+
+CREATE TABLE [question_medias](
+	[id] INT PRIMARY KEY IDENTITY,
+	[type] VARCHAR(MAX), --video, audio, image
+	[link] VARCHAR(MAX),
+	[description] VARCHAR(MAX),
+	[question_id] INT,
+	FOREIGN KEY ([question_id]) REFERENCES [questions]([id]) 
 )
 
 GO
