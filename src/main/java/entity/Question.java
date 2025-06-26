@@ -83,20 +83,4 @@ public class Question {
     public void setQuestionFormat(String questionFormat) {
         this.questionFormat = questionFormat;
     }
-
-    public boolean isDeleted() {
-        return isDeleted;
-    }
-
-    public void setDeleted(boolean deleted) {
-        isDeleted = deleted;
-    }
-
-    public String getQuestionFormat() {
-        return questionFormat;
-    }
-
-    public void setQuestionFormat(String questionFormat) {
-        this.questionFormat = questionFormat;
-    }
 }

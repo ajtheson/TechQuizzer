@@ -22,9 +22,15 @@
 <%--User profile--%>
 <jsp:include page="./user_profile.jsp"/>
 <main class="app-content">
-    <div class="app-title">
-        <div>
-            <h1><i class="bi bi-ui-checks"></i> </h1>
+    <div class="app-title d-flex align-items-center justify-content-between">
+        <h1 class="mb-0">
+            <i class="bi bi-journal-bookmark"></i> Subject details id ${requestScope.p.getSubjectId()}
+        </h1>
+        <div class="btn-group ms-3">
+            <a href="edit-subject?subject_id=${requestScope.p.getSubjectId()}" class="btn btn-outline-primary ">Overview</a>
+            <a href="subject-dimension?id=${requestScope.p.getSubjectId()}" class="btn btn-outline-primary">Dimension</a>
+            <a href="get_price_package?subject_id=${requestScope.p.getSubjectId()}" class="btn btn-outline-primary active fw-bold">Price
+                Package</a>
         </div>
     </div>
     <div class="row">

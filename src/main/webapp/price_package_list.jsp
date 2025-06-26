@@ -19,10 +19,16 @@
 
 <!-- Main content -->
 <main class="app-content">
-    <div class="app-title">
-        <div>
-            <h1><i class="bi bi-gear-wide-connected"></i> Price Package </h1>
-            <p>Table to manage and configure price package efficiently</p>
+    <div class="app-title d-flex align-items-center justify-content-between">
+        <h1 class="mb-0">
+            <i class="bi bi-journal-bookmark"></i> Subject details id ${requestScope.subject_id}
+        </h1>
+        <div class="btn-group ms-3">
+            <a href="edit-subject?subject_id=${requestScope.subject_id}" class="btn btn-outline-primary">Overview</a>
+            <a href="subject-dimension?id=${requestScope.subject_id}" class="btn btn-outline-primary">Dimension</a>
+            <a href="get_price_package?subject_id=${requestScope.subject_id}"
+               class="btn btn-outline-primary active fw-bold">Price
+                Package</a>
         </div>
     </div>
 
@@ -33,29 +39,35 @@
                     <div class="table-responsive">
 
                         <!-- Filter -->
-                        <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap">
-                            <form action="create_price_package" method="get">
-                                <input type="hidden" name="subject_id" value="${requestScope.subject_id}">
-                                <button type="submit" class="btn btn-primary">+ Add New Package</button>
-                            </form>
-                        </div>
-
+                        <c:if test="${sessionScope.user.getRoleId() == 1}">
+                            <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap">
+                                <form action="create_price_package" method="get">
+                                    <input type="hidden" name="subject_id" value="${requestScope.subject_id}">
+                                    <button type="submit" class="btn btn-primary">+ Add New Package</button>
+                                </form>
+                            </div>
+                        </c:if>
                         <!-- Page size + column toggle -->
                         <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap">
                             <div>
                                 <label for="pageLengthInput" class="form-label mb-0">Show</label>
-                                <input type="number" min="1" id="pageLengthInput" class="form-control d-inline-block w-auto ms-2" value="10" />
+                                <input type="number" min="1" id="pageLengthInput"
+                                       class="form-control d-inline-block w-auto ms-2" value="10"/>
                                 <label for="pageLengthInput" class="form-label mb-0">entries</label>
                             </div>
                             <div>
                                 <label class="form-label mb-0">Column:</label>
                                 <div id="columnToggles" class="d-inline-block ms-2">
-                                    <label><input type="checkbox" class="toggle-vis" data-column="1" checked> Package</label>
-                                    <label><input type="checkbox" class="toggle-vis" data-column="2" checked> Duration</label>
+                                    <label><input type="checkbox" class="toggle-vis" data-column="1" checked>
+                                        Package</label>
+                                    <label><input type="checkbox" class="toggle-vis" data-column="2" checked>
+                                        Duration</label>
                                     <label><input type="checkbox" class="toggle-vis" data-column="3" checked> List Price</label>
                                     <label><input type="checkbox" class="toggle-vis" data-column="4" checked> Sale Price</label>
-                                    <label><input type="checkbox" class="toggle-vis" data-column="5" checked> Description</label>
-                                    <label><input type="checkbox" class="toggle-vis" data-column="6" checked> Status</label>
+                                    <label><input type="checkbox" class="toggle-vis" data-column="5" checked>
+                                        Description</label>
+                                    <label><input type="checkbox" class="toggle-vis" data-column="6" checked>
+                                        Status</label>
                                 </div>
                             </div>
                         </div>
@@ -71,7 +83,10 @@
                                 <th style="width: 9%;">Sale Price</th>
                                 <th style="width: 25%;">Description</th>
                                 <th style="width: 10%;">Status</th>
-                                <th style="width: 19%;">Actions</th>
+                                <c:if test="${sessionScope.user.getRoleId() == 1}">
+                                    <th style="width: 19%;">Actions</th>
+                                </c:if>
+
                             </tr>
                             </thead>
                             <tbody>
@@ -84,17 +99,22 @@
                                     <td>${p.salePrice}</td>
                                     <td>${p.description}</td>
                                     <td>${p.status ? 'Activated' : 'Deactivated'}</td>
-                                    <td>
-                                        <a class="btn btn-info text-white" href="price_package_detail?id=${p.id}">View</a>
-                                        <a class="btn btn-warning text-white" href="edit_price_package?id=${p.id}">Edit</a>
-                                        <form action="toggle_price_package_status" method="post" style="display: inline;">
-                                            <input type="hidden" name="id" value="${p.id}"/>
-                                            <input type="hidden" name="status" value="${!p.status}"/>
-                                            <button type="submit" class="btn btn-sm ${p.status ? 'btn-secondary' : 'btn-success'}" style="padding: 6px 5px;">
-                                                    ${p.status ? 'Deactivated' : 'Activated'}
-                                            </button>
-                                        </form>
-                                    </td>
+                                    <c:if test="${sessionScope.user.getRoleId() == 1}">
+                                        <td>
+                                            <a class="btn btn-info text-white" href="price_package_detail?id=${p.id}">View</a>
+                                            <a class="btn btn-warning text-white" href="edit_price_package?id=${p.id}">Edit</a>
+                                            <form action="toggle_price_package_status" method="post"
+                                                  style="display: inline;">
+                                                <input type="hidden" name="id" value="${p.id}"/>
+                                                <input type="hidden" name="status" value="${!p.status}"/>
+                                                <button type="submit"
+                                                        class="btn btn-sm ${p.status ? 'btn-secondary' : 'btn-success'}"
+                                                        style="padding: 6px 5px;">
+                                                        ${p.status ? 'Deactivated' : 'Activated'}
+                                                </button>
+                                            </form>
+                                        </td>
+                                    </c:if>
                                 </tr>
                             </c:forEach>
                             </tbody>
@@ -112,7 +132,8 @@
     <div id="toast" class="toast align-items-center border-0" role="alert" aria-live="assertive" aria-atomic="true">
         <div class="d-flex">
             <div class="toast-body"></div>
-            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
+                    aria-label="Close"></button>
         </div>
     </div>
 </div>
@@ -130,9 +151,6 @@
             lengthChange: false,
             pageLength: 10,
             autoWidth: false,
-            columnDefs: [
-                { orderable: false, targets: [7] }
-            ]
         });
 
         document.getElementById("pageLengthInput").addEventListener("input", function () {
@@ -166,7 +184,7 @@
         toastElementBody.textContent = "<%= toastNotification %>";
         toastElement.classList.remove('<%= isSuccess ? "text-bg-danger" : "text-bg-success" %>');
         toastElement.classList.add('<%= isSuccess ? "text-bg-success" : "text-bg-danger" %>');
-        const toast = new bootstrap.Toast(toastElement, { autohide: true, delay: 2000 });
+        const toast = new bootstrap.Toast(toastElement, {autohide: true, delay: 2000});
         toast.show();
     });
 </script>
