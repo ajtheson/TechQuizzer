@@ -22,7 +22,6 @@ public class QuestionService {
             QuestionDTO questionDTO = new QuestionDTO();
             questionDTO.setId(question.getId());
             questionDTO.setContent(question.getContent());
-            questionDTO.setMedia(question.getMedia());
             questionDTO.setExplaination(question.getExplaination());
             questionDTO.setDeleted(question.isDeleted());
             questionDTO.setQuestionLevelId(question.getQuestionLevelId());

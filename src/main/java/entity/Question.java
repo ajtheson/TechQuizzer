@@ -4,8 +4,8 @@ public class Question {
 
     private int id;
     private String content;
-    private String media;
     private String explaination;
+    private boolean status;
     private boolean isDeleted;
     private int questionLevelId;
     private int subjectLessonId;
@@ -44,12 +44,12 @@ public class Question {
         this.explaination = explaination;
     }
 
-    public String getMedia() {
-        return media;
+    public boolean isStatus() {
+        return status;
     }
 
-    public void setMedia(String media) {
-        this.media = media;
+    public void setStatus(boolean status) {
+        this.status = status;
     }
 
     public String getContent() {

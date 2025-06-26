@@ -24,7 +24,7 @@ import java.util.Collection;
 import java.util.List;
 
 @WebServlet(name = "EditSubjectServlet", urlPatterns = {"/edit-subject"})
-@MultipartConfig(maxFileSize = 5 * 1024 * 1024, maxRequestSize = 20 * 1024 * 1024)
+@MultipartConfig(maxFileSize = 5 * 1024 * 1024, maxRequestSize = 1000 * 1024 * 1024)
 public class EditSubjectServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)

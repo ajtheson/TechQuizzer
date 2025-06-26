@@ -23,7 +23,6 @@ public class QuestionDAO extends DBContext {
                 Question question = new Question();
                 question.setId(rs.getInt("id"));
                 question.setContent(rs.getString("content"));
-                question.setMedia(rs.getString("media"));
                 question.setExplaination(rs.getString("explaination"));
                 question.setQuestionLevelId(rs.getInt("question_level_id"));
                 question.setSubjectLessonId(rs.getInt("subject_lesson_id"));
@@ -36,15 +35,15 @@ public class QuestionDAO extends DBContext {
         return questions;
     }
 
-    public List<QuestionDTO> findQuestionWithPagination(int page, int size, int subjectId, int dimensionId, int lessonId, int levelId, String isDeleted, String search, int ownerId) {
+    public List<QuestionDTO> findQuestionWithPagination(int page, int size, int subjectId, int dimensionId, int lessonId, int levelId, String status, String search, int ownerId) {
         List<QuestionDTO> questions = new ArrayList<>();
         StringBuilder sql = new StringBuilder("""
-                SELECT q.id, q.content, q.explaination, q.is_deleted, q.question_level_id, ql.name AS question_level_name, q.subject_lesson_id, l.name AS subject_lesson_name, q.subject_dimension_id, d.name AS subject_dimension_name, l.subject_id, s.name AS subject_name
+                SELECT q.id, q.content, q.explaination, q.status, q.question_level_id, ql.name AS question_level_name, q.subject_lesson_id, l.name AS subject_lesson_name, q.subject_dimension_id, d.name AS subject_dimension_name, l.subject_id, s.name AS subject_name
                 FROM [questions] q JOIN [lessons] l on q.subject_lesson_id = l.id
                 JOIN [dimensions] d on q.subject_dimension_id = d.id
                 JOIN [question_levels] ql on q.question_level_id = ql.id
                 JOIN [subjects] s on l.subject_id = s.id
-                WHERE 1=1
+                WHERE 1=1 AND q.is_deleted = 0
                 """);
         if (subjectId != 0) {
             sql.append(" AND l.subject_id = ?");
@@ -58,8 +57,8 @@ public class QuestionDAO extends DBContext {
         if (levelId != 0) {
             sql.append(" AND q.question_level_id = ?");
         }
-        if (isDeleted != null && !isDeleted.isEmpty()) {
-            sql.append(" AND q.is_deleted = ").append(isDeleted.equalsIgnoreCase("hide") ? "1" : "0");
+        if (status != null && !status.isEmpty()) {
+            sql.append(" AND q.status = ").append(status.equalsIgnoreCase("Show") ? "1" : "0");
         }
         if (search != null && !search.isEmpty()) {
             sql.append(" AND q.content LIKE ?");
@@ -97,7 +96,7 @@ public class QuestionDAO extends DBContext {
                 question.setId(rs.getInt("id"));
                 question.setContent(rs.getString("content"));
                 question.setExplaination(rs.getString("explaination"));
-                question.setDeleted(rs.getBoolean("is_deleted"));
+                question.setStatus(rs.getBoolean("status"));
                 question.setQuestionLevelId(rs.getInt("question_level_id"));
                 question.setQuestionLevelName(rs.getString("question_level_name"));
                 question.setSubjectLessonId(rs.getInt("subject_lesson_id"));
@@ -114,12 +113,12 @@ public class QuestionDAO extends DBContext {
         return questions;
     }
 
-    public int getTotalQuestion(int subjectId, int dimensionId, int lessonId, int levelId, String isDeleted, String search, int ownerId) {
+    public int getTotalQuestion(int subjectId, int dimensionId, int lessonId, int levelId, String status, String search, int ownerId) {
         StringBuilder sql = new StringBuilder("""
                 SELECT COUNT(*)
                 FROM [questions] q JOIN [lessons] l on q.subject_lesson_id = l.id
                 JOIN [subjects] s on l.subject_id = s.id
-                WHERE 1=1
+                WHERE 1=1 AND q.is_deleted = 0
                 """);
         if (subjectId != 0) {
             sql.append(" AND l.subject_id = ?");
@@ -133,8 +132,8 @@ public class QuestionDAO extends DBContext {
         if (levelId != 0) {
             sql.append(" AND q.question_level_id = ?");
         }
-        if (isDeleted != null && !isDeleted.isEmpty()) {
-            sql.append(" AND q.is_deleted = ").append(isDeleted.equalsIgnoreCase("hide") ? "1" : "0");
+        if (status != null && !status.isEmpty()) {
+            sql.append(" AND q.status = ").append(status.equalsIgnoreCase("Show") ? "1" : "0");
         }
         if (search != null && !search.isEmpty()) {
             sql.append(" AND q.content LIKE ?");
@@ -175,7 +174,7 @@ public class QuestionDAO extends DBContext {
     public boolean updateStatus(int id, boolean status){
         String sql = """
                 UPDATE [questions]
-                SET [is_deleted] = ?
+                SET [status] = ?
                 WHERE [id] = ?
         """;
         try {

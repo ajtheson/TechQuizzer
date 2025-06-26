@@ -163,7 +163,7 @@
     String toastNotification = (String) session.getAttribute("toastNotification");
     if (toastNotification != null) {
         boolean isSuccess = toastNotification.contains("successfully");
-        request.removeAttribute("toastNotification");
+        session.removeAttribute("toastNotification");
 %>
 <script>
     document.addEventListener("DOMContentLoaded", function () {

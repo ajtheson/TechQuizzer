@@ -33,7 +33,7 @@
                         <%--Filter--%>
                         <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap">
                             <div class="d-flex flex-column gap-2 align-items-start">
-                                <a class="btn btn-primary mb-3 w-auto" type="button" href="create-question">+ Add New
+                                <a class="btn btn-primary mb-3 w-auto" type="button" href="create_question">+ Add New
                                     Question</a>
 
                                 <%--Items per page--%>
@@ -74,7 +74,7 @@
                                         <option value="0" selected>Level</option>
                                         <c:forEach items="${requestScope.questionLevels}" var="level">
                                             <option value="${level.id}" ${level.id == requestScope.levelId ? 'selected' : ''}>
-                                                ${level.name}
+                                                    ${level.name}
                                             </option>
                                         </c:forEach>
                                     </select>
@@ -130,25 +130,34 @@
                                             <td>${question.questionDimensionName}</td>
                                             <td>${question.subjectLessonName}</td>
                                             <td>${question.questionLevelName}</td>
-                                            <td>${question.isDeleted ? 'Hide' : 'Show'}</td>
+                                            <td>${question.status ? 'Show' : 'Hide'}</td>
                                             <td>
+                                                <a class="btn btn-info text-white" type="button"
+                                                   href="view_question?id=${question.id}">View</a>
                                                 <a class="btn btn-warning text-white" type="button"
                                                    href="edit_question?id=${question.id}">Edit</a>
-                                                <form action="toggle-question-status" method="post" style="display: inline;">
-                                                    <input type="hidden" name="id" value="${question.id}" />
-                                                    <input type="hidden" name="statusChange" value="${!question.isDeleted}" />
+                                                <form action="toggle_question_status" method="post"
+                                                      style="display: inline;">
+                                                    <input type="hidden" name="id" value="${question.id}"/>
+                                                    <input type="hidden" name="statusChange"
+                                                           value="${!question.status}"/>
 
-                                                    <input type="hidden" name="page" value="${requestScope.page}" />
-                                                    <input type="hidden" name="size" value="${requestScope.size}" />
-                                                    <input type="hidden" name="search" value="${requestScope.search}" />
-                                                    <input type="hidden" name="subjectId" value="${requestScope.subjectId}" />
-                                                    <input type="hidden" name="dimensionId" value="${requestScope.dimensionId}" />
-                                                    <input type="hidden" name="lessonId" value="${requestScope.lessonId}" />
-                                                    <input type="hidden" name="levelId" value="${requestScope.levelId}" />
-                                                    <input type="hidden" name="status" value="${requestScope.status}" />
+                                                    <input type="hidden" name="page" value="${requestScope.page}"/>
+                                                    <input type="hidden" name="size" value="${requestScope.size}"/>
+                                                    <input type="hidden" name="search" value="${requestScope.search}"/>
+                                                    <input type="hidden" name="subjectId"
+                                                           value="${requestScope.subjectId}"/>
+                                                    <input type="hidden" name="dimensionId"
+                                                           value="${requestScope.dimensionId}"/>
+                                                    <input type="hidden" name="lessonId"
+                                                           value="${requestScope.lessonId}"/>
+                                                    <input type="hidden" name="levelId"
+                                                           value="${requestScope.levelId}"/>
+                                                    <input type="hidden" name="status" value="${requestScope.status}"/>
 
-                                                    <button type="submit" class="btn ${question.isDeleted ? 'btn-secondary' : 'btn-success'}">
-                                                            ${question.isDeleted ? 'Hide' : 'Show'}
+                                                    <button type="submit"
+                                                            class="btn ${question.status ? 'btn-success' : 'btn-secondary'}">
+                                                            ${question.status ? 'Show' : 'Hide'}
                                                     </button>
                                                 </form>
                                             </td>
@@ -174,8 +183,8 @@
                         <%--Page list--%>
                         <nav>
                             <ul class="pagination mb-0">
-                                <c:set var="startPage" value="${page - 2}" />
-                                <c:set var="endPage" value="${page + 2}" />
+                                <c:set var="startPage" value="${page - 2}"/>
+                                <c:set var="endPage" value="${page + 2}"/>
                                 <c:if test="${startPage < 1}">
                                     <c:set var="startPage" value="1"/>
                                 </c:if>
@@ -255,7 +264,7 @@
             errorMessages.forEach(msg => msg.remove());
         };
         clearErrors();
-        if(isNaN(sizeValue) || sizeValue < 1 || sizeValue > 50){
+        if (isNaN(sizeValue) || sizeValue < 1 || sizeValue > 50) {
             sizeInput.classList.add("is-invalid");
             if (!document.getElementById("size-error")) {
                 const errorDiv = document.createElement("div");
@@ -263,11 +272,10 @@
                 errorDiv.classList.add("text-danger", "mt-1");
                 errorDiv.textContent = "Size must be between 1 and 50";
                 sizeInput.parentNode.parentNode.appendChild(errorDiv);
-                sizeInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                sizeInput.scrollIntoView({behavior: 'smooth', block: 'center'});
                 sizeInput.focus();
             }
-        }
-        else {
+        } else {
             let url = "?page=1&size=" + sizeValue;
             if (search.length > 0) {
                 url += "&search=" + search
@@ -366,7 +374,7 @@
 
     //Prevent select dimension option when subject hasn't chosen yet
     dimensionFilter.addEventListener("click", (e) => {
-        if(subjectFilter.value.trim() === "0"){
+        if (subjectFilter.value.trim() === "0") {
             alert("Please select subject before select dimension");
             return;
         }
@@ -398,7 +406,7 @@
 
     //Prevent select lesson option when subject hasn't chosen yet
     lessonFilter.addEventListener("click", (e) => {
-        if(subjectFilter.value.trim() === "0"){
+        if (subjectFilter.value.trim() === "0") {
             alert("Please select subject before select lesson");
             return;
         }
@@ -464,5 +472,31 @@
         }
     });
 </script>
+
+<%
+    String toastNotification = (String) session.getAttribute("toastNotification");
+    if (toastNotification != null) {
+        boolean isSuccess = toastNotification.contains("successfully");
+        session.removeAttribute("toastNotification");
+%>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const toastElement = document.getElementById('toast');
+        const toastElementBody = toastElement.querySelector('.toast-body');
+
+        toastElementBody.textContent = "<%= toastNotification %>";
+        toastElement.classList.remove('<%= isSuccess ? "text-bg-danger" : "text-bg-success" %>');
+        toastElement.classList.add('<%= isSuccess ? "text-bg-success" : "text-bg-danger" %>');
+
+        const toast = new bootstrap.Toast(toastElement, {
+            autohide: true,
+            delay: 2000
+        });
+        toast.show();
+    });
+</script>
+<%
+    }
+%>
 </body>
 </html>
