@@ -366,4 +366,71 @@ public class SubjectDAO extends DBContext {
         }
         return false;
     }
+
+    public List<Subject> getAllSubjects() {
+        List<Subject> subjects = new ArrayList<>();
+        String sql = "Select * from [subjects]";
+        try (PreparedStatement pstm = connection.prepareStatement(sql)) {
+            ResultSet rs = pstm.executeQuery();
+            while (rs.next()) {
+                Subject subject = new Subject();
+                subject.setId(rs.getInt("id"));
+                subject.setName(rs.getString("name"));
+                subject.setTagLine(rs.getString("tag_line"));
+                subject.setThumbnail(rs.getString("thumbnail"));
+                subject.setLongDescription(rs.getString("detail_description").replace("\\n", "<br>"));
+                subject.setFeaturedSubject(rs.getBoolean("featured_subject"));
+                subject.setPublished(rs.getBoolean("status"));
+                subject.setCategoryId(rs.getInt("category_id"));
+                subject.setOwnerId(rs.getInt("owner_id"));
+                subject.setUpdateDate(rs.getTimestamp("update_date").toLocalDateTime());
+                subjects.add(subject);
+            }
+        } catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+        return subjects;
+    }
+
+    public List<Subject> getAllSubjectsByOwnerId(int ownerId) {
+        List<Subject> subjects = new ArrayList<>();
+        String sql = "Select * from [subjects] where [owner_id] = ?";
+        try (PreparedStatement pstm = connection.prepareStatement(sql)) {
+            pstm.setInt(1, ownerId);
+            ResultSet rs = pstm.executeQuery();
+            while (rs.next()) {
+                Subject subject = new Subject();
+                subject.setId(rs.getInt("id"));
+                subject.setName(rs.getString("name"));
+                subject.setTagLine(rs.getString("tag_line"));
+                subject.setThumbnail(rs.getString("thumbnail"));
+                subject.setLongDescription(rs.getString("detail_description").replace("\\n", "<br>"));
+                subject.setFeaturedSubject(rs.getBoolean("featured_subject"));
+                subject.setPublished(rs.getBoolean("status"));
+                subject.setCategoryId(rs.getInt("category_id"));
+                subject.setOwnerId(rs.getInt("owner_id"));
+                subject.setUpdateDate(rs.getTimestamp("update_date").toLocalDateTime());
+                subjects.add(subject);
+            }
+        } catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+        return subjects;
+    }
+
+    public boolean isExpertHasSubject(int subjectId, int ownerId) {
+        String sql = "select 1 from subjects where id = ? and owner_id = ?";
+        try {
+            PreparedStatement pstm = connection.prepareStatement(sql);
+            pstm.setInt(1, subjectId);
+            pstm.setInt(2, ownerId);
+            ResultSet rs = pstm.executeQuery();
+            if (rs.next()) {
+                return true;
+            }
+        }catch (SQLException e){
+            System.out.println("Error: " + e.getMessage());
+        }
+        return false;
+    }
 }
