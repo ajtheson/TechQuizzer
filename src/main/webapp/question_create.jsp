@@ -63,7 +63,6 @@
 <div class="container" style="margin-top: 50px; max-width: 800px">
     <div class="form-container">
         <form id="questionForm" method="post" action="create_question" enctype="multipart/form-data">
-            <!-- 5 Dropdowns nằm ngang-->
             <div class="row mb-3" style="display: flex">
                 <div class="form-group" style="flex: 1">
                     <label for="subjectId" class="form-label">Subject</label>
@@ -103,7 +102,7 @@
                 </div>
             </div>
 
-            <!-- Question Content - chiếm toàn dòng -->
+            <!-- Question Content  -->
             <div class="mb-3">
                 <label class="form-label">Question Content</label>
                 <textarea
@@ -114,7 +113,7 @@
                 ></textarea>
             </div>
 
-            <!-- Question Media - nằm dòng mới -->
+            <!-- Question Media -->
             <div class="mb-3">
                 <label class="form-label">Question Media</label>
                 <div class="border rounded p-3 d-flex flex-column justify-content-between">
@@ -134,7 +133,7 @@
             <input type="file" name="media" id="media-hidden" multiple hidden>
 
 
-            <!-- Format chọn Multiple / Essay -->
+
             <div class="mb-3">
                 <label class="form-label">Question Format</label><br/>
                 <div class="form-check form-check-inline">
@@ -226,7 +225,7 @@
             : "none";
     }
 
-    let choiceIndex = 1; // index bắt đầu từ 1 nếu đã có sẵn 1 choice
+    let choiceIndex = 1;
 
     function addChoice() {
         const choice = document.createElement("div");
@@ -280,7 +279,7 @@
             return;
         }
 
-        // 🔴 Chặn file trùng tên
+        // Chặn file trùng tên
         const alreadyExists = mediaFiles.some(f => f.name === file.name);
         if (alreadyExists) {
             alert("This file has already been added.");
@@ -355,7 +354,7 @@
     }
 
 
-    //
+
 
     const dimensionRadioBtn = document.getElementById("byDimension")
     const dimensionSection = document.getElementById("dimensionSection")
@@ -431,7 +430,7 @@
     });
 
 
-    //
+
 
 
     document.getElementById("questionForm").addEventListener("submit", function (e) {

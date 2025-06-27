@@ -71,7 +71,7 @@
     <div class="form-container">
         <form id="questionForm" method="post" action="edit_question" enctype="multipart/form-data">
             <input type="hidden" name="oldid" value="${requestScope.question.id}">
-            <!-- 5 Dropdowns nằm ngang-->
+
             <div class="row mb-3" style="display: flex">
                 <div class="form-group" style="flex: 1">
                     <label for="subjectId" class="form-label">Subject</label>
@@ -141,7 +141,7 @@
                 </div>
             </div>
 
-            <!-- Question Content - chiếm toàn dòng -->
+            <!-- Question Content -->
             <div class="mb-3">
                 <label class="form-label">Question Content</label>
                 <textarea
@@ -182,7 +182,7 @@
                     </div>
                 </div>
             </div>
-            <!-- Question Media - nằm dòng mới -->
+            <!-- Question Media -->
             <div class="mb-3">
                 <label class="form-label">New Media</label>
                 <div class="border rounded p-3 d-flex flex-column justify-content-between">
@@ -202,7 +202,6 @@
             <input type="file" name="media" id="media-hidden" multiple hidden>
 
 
-            <!-- Format chọn Multiple / Essay -->
             <div class="mb-3">
                 <label class="form-label">Question Format</label><br/>
                 <div class="form-check form-check-inline">

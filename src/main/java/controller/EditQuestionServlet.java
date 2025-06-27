@@ -26,17 +26,17 @@ public class EditQuestionServlet extends HttpServlet {
             int questionId = Integer.parseInt(request.getParameter("id"));
 
             QuestionDAO qDAO = new QuestionDAO();
+            SubjectDAO subjectDAO = new SubjectDAO();
+            QuestionLevelDAO levelDAO = new QuestionLevelDAO();
+            QuestionMediaDAO mediaDAO = new QuestionMediaDAO();
+            QuestionOptionDAO optionDAO = new QuestionOptionDAO();
+            DimensionDAO dimensionDAO = new DimensionDAO();
+            LessonDAO lessonDAO = new LessonDAO();
+
             Question question = qDAO.findById(questionId);
             if (question == null) throw new Exception("Question not found");
 
 
-            // Lấy data cho dropdown
-            SubjectDAO subjectDAO = new SubjectDAO();
-            DimensionDAO dimensionDAO = new DimensionDAO();
-            LessonDAO lessonDAO = new LessonDAO();
-            QuestionLevelDAO levelDAO = new QuestionLevelDAO();
-            QuestionMediaDAO mediaDAO = new QuestionMediaDAO();
-            QuestionOptionDAO optionDAO = new QuestionOptionDAO();
 
 
             int subjectID = qDAO.findSubjectIdByQuestionId(questionId);
@@ -46,11 +46,13 @@ public class EditQuestionServlet extends HttpServlet {
                 response.sendRedirect("login.jsp");
                 return;
             }
+
             UserDTO user = (UserDTO)session.getAttribute("user");
             List<Subject> subjects = null;
             if(user.getRoleId() == 1){
                 subjects = subjectDAO.getAllSubjects();
             }
+
             if(user.getRoleId() == 2){
                 if(!subjectDAO.isExpertHasSubject(subjectID, user.getId())){
                     session.invalidate();
@@ -59,13 +61,12 @@ public class EditQuestionServlet extends HttpServlet {
                 }
                 subjects = subjectDAO.getAllSubjectsByOwnerId(user.getId());
             }
+
             List<Integer> subjectIds = subjects.stream().map(s -> s.getId()).toList();
 
-            List<Dimension> dimensions = new DimensionDAO().findAllBySubjectIds(subjectIds);
-            List<Lesson> lessons = new LessonDAO().findAllBySubjectIds(subjectIds);
-
+            List<Dimension> dimensions = dimensionDAO.findAllBySubjectIds(subjectIds);
+            List<Lesson> lessons = lessonDAO.findAllBySubjectIds(subjectIds);
             List<QuestionLevel> levels = levelDAO.findAll();
-
             List<QuestionMedia> medias = mediaDAO.findByQuestionId(questionId);
             List<QuestionOption> options = optionDAO.findByQuestionId(questionId);
 
@@ -96,8 +97,10 @@ public class EditQuestionServlet extends HttpServlet {
             QuestionMediaDAO mediaDAO = new QuestionMediaDAO();
             QuestionOptionDAO optionDAO = new QuestionOptionDAO();
             request.setCharacterEncoding("UTF-8");
+
             int oldQuestionId = Integer.parseInt(request.getParameter("oldid"));
             qDAO.markAsDeleted(oldQuestionId);
+
             // Extract basic question info
             String content = request.getParameter("content");
             String explanation = request.getParameter("explanation");

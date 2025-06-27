@@ -30,12 +30,15 @@ public class CreateQuestionServlet extends HttpServlet {
         try {
             HttpSession session = request.getSession();
             SubjectDAO sDAO = new SubjectDAO();
+
             if(session.getAttribute("user") == null) {
                 session.invalidate();
                 response.sendRedirect("login.jsp");
                 return;
             }
+
             UserDTO user = (UserDTO)session.getAttribute("user");
+
             List<Subject> subjects = null;
             if(user.getRoleId() == 1){
                 subjects = sDAO.getAllSubjects();
@@ -43,6 +46,7 @@ public class CreateQuestionServlet extends HttpServlet {
             if(user.getRoleId() == 2){
                 subjects = sDAO.getAllSubjectsByOwnerId(user.getId());
             }
+
             List<Integer> subjectIds = subjects.stream().map(s -> s.getId()).toList();
 
             List<Dimension> dimensions = new DimensionDAO().findAllBySubjectIds(subjectIds);
