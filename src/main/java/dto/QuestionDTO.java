@@ -6,9 +6,9 @@ public class QuestionDTO {
     private String explaination;
     private boolean status;
     private boolean isDeleted;
-    private int questionLevelId;
-    private int subjectLessonId;
-    private int subjectDimensionId;
+    private Integer questionLevelId;
+    private Integer subjectLessonId;
+    private Integer subjectDimensionId;
     private String questionFormat;
     private int subjectId;
     private String subjectName;
@@ -56,27 +56,27 @@ public class QuestionDTO {
         isDeleted = deleted;
     }
 
-    public int getQuestionLevelId() {
+    public Integer getQuestionLevelId() {
         return questionLevelId;
     }
 
-    public void setQuestionLevelId(int questionLevelId) {
+    public void setQuestionLevelId(Integer questionLevelId) {
         this.questionLevelId = questionLevelId;
     }
 
-    public int getSubjectLessonId() {
+    public Integer getSubjectLessonId() {
         return subjectLessonId;
     }
 
-    public void setSubjectLessonId(int subjectLessonId) {
+    public void setSubjectLessonId(Integer subjectLessonId) {
         this.subjectLessonId = subjectLessonId;
     }
 
-    public int getSubjectDimensionId() {
+    public Integer getSubjectDimensionId() {
         return subjectDimensionId;
     }
 
-    public void setSubjectDimensionId(int subjectDimensionId) {
+    public void setSubjectDimensionId(Integer subjectDimensionId) {
         this.subjectDimensionId = subjectDimensionId;
     }
 

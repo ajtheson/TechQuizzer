@@ -85,7 +85,7 @@ public class GetQuestionListServlet extends HttpServlet {
         List<QuestionDTO> questions = questionDAO.findQuestionWithPagination(page, size, subjectId, dimensionId, lessonId, levelId, status, search, ownerId);
 
         //Get total subjects, total pages and categories to show in subject list page
-        int totalQuestions = questionDAO.getTotalQuestion(subjectId, dimensionId, lessonId, levelId, status, search, ownerId);
+        int totalQuestions = questions.size();
         int totalPages = (int) Math.ceil((double) totalQuestions / size);
 
         List<Subject> subjects = subjectDAO.getAllSubjectsForQuestionList(ownerId);

@@ -127,8 +127,8 @@
                                             <td>${question.id}</td>
                                             <td>${question.content}</td>
                                             <td>${question.subjectName}</td>
-                                            <td>${question.questionDimensionName}</td>
-                                            <td>${question.subjectLessonName}</td>
+                                            <td>${empty question.questionDimensionName ? 'None' : question.questionDimensionName}</td>
+                                            <td>${empty question.subjectLessonName ? 'None' : question.subjectLessonName}</td>
                                             <td>${question.questionLevelName}</td>
                                             <td>${question.status ? 'Show' : 'Hide'}</td>
                                             <td>
