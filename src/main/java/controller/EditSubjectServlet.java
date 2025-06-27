@@ -32,7 +32,7 @@ public class EditSubjectServlet extends HttpServlet {
         //get id from url
         int id = Integer.parseInt(request.getParameter("subject_id"));
 
-        //Get setting by id from database
+        //Init needed DAO
         SubjectDAO subjectDAO = new SubjectDAO();
         CategoryDAO categoryDAO = new CategoryDAO();
         UserDAO userDAO = new UserDAO();
