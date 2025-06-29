@@ -55,7 +55,6 @@ public class LoginToRegisterSubjectServlet extends HttpServlet {
             request.setAttribute("sendError", "Wrong Password");
             request.getRequestDispatcher("login_to_register_subject.jsp").forward(request, response);
         }
-
     }
 
 }

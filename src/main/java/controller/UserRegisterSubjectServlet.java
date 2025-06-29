@@ -28,6 +28,7 @@ public class UserRegisterSubjectServlet extends HttpServlet {
 
 
 
+
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -43,21 +44,23 @@ public class UserRegisterSubjectServlet extends HttpServlet {
         PricePackageDAO pdao = new PricePackageDAO();
         RegistrationDAO rDAO = new RegistrationDAO();
 
+        if(rDAO.isRegistrationExist(user.getId(), subjectID)) {
+            session.setAttribute("toastNotification", "You already have an active or pending course for this subject.");
+            response.sendRedirect("my_registration");
+            return;
+        }
+
         PricePackage p = pdao.get(packageID);
 
         Registration r = new Registration();
 
         r.setTime(LocalDateTime.now());
         r.setTotalCost(p.getSalePrice());
-        r.setStatus("Pending");
+        r.setDuration(p.getDuration());
+        r.setStatus("Pending Confirmation");
         r.setPricePackageId(packageID);
         r.setUserId(user.getId());
 
-        SubjectDAO sDAO = new SubjectDAO();
-        Subject s = sDAO.getForRegister(subjectID);
-        List<PricePackage> packages = pdao.getActiveOfSubject(subjectID);
-        request.setAttribute("subject", s);
-        request.setAttribute("packages", packages);
         if(rDAO.addRegistration(r)){
             session.setAttribute("toastNotification", "Registration has been added successfully.");
             response.sendRedirect("my_registration");

@@ -17,16 +17,17 @@ import entity.Subject;
 
 public class RegistrationDAO extends DBContext {
     public boolean addRegistration(Registration registration) {
-        String sql = "insert into [registrations] ([time], [total_cost], [valid_from], [valid_to], [status], " +
-                "[price_package_id], [user_id]) values (?,?,?,?,?,?,?)";
+        String sql = "insert into [registrations] ([time], [total_cost], [duration], [valid_from], [valid_to], [status], " +
+                "[price_package_id], [user_id]) values (?,?,?,?,?,?,?,?)";
         try (PreparedStatement pstm = connection.prepareStatement(sql)) {
             pstm.setObject(1, registration.getTime());
             pstm.setDouble(2, registration.getTotalCost());
-            pstm.setObject(3, registration.getValidFrom());
-            pstm.setObject(4, registration.getValidTo());
-            pstm.setString(5, registration.getStatus());
-            pstm.setInt(6, registration.getPricePackageId());
-            pstm.setInt(7, registration.getUserId());
+            pstm.setObject(3, registration.getDuration());
+            pstm.setObject(4, registration.getValidFrom());
+            pstm.setObject(5, registration.getValidTo());
+            pstm.setString(6, registration.getStatus());
+            pstm.setInt(7, registration.getPricePackageId());
+            pstm.setInt(8, registration.getUserId());
             return pstm.executeUpdate() > 0;
         } catch (SQLException e) {
             System.out.println("Error: " + e.getMessage());
@@ -36,7 +37,7 @@ public class RegistrationDAO extends DBContext {
 
     public List<RegistrationDTO> getRegistrationListOfUser(int userID) {
         List<RegistrationDTO> list = new ArrayList<>();
-        String sql = "select * from [registrations] where [user_id] = ? order by [status] desc, [time] desc";
+        String sql = "select * from [registrations] where [user_id] = ? order by [time] desc";
         try (PreparedStatement pstm = connection.prepareStatement(sql)) {
             pstm.setInt(1, userID);
             ResultSet rs = pstm.executeQuery();
@@ -53,6 +54,8 @@ public class RegistrationDAO extends DBContext {
                 }
 
                 r.setTotalCost(rs.getDouble("total_cost"));
+
+                r.setDuration(rs.getObject("duration", Integer.class));
 
                 Timestamp validFromTs = rs.getTimestamp("valid_from");
                 if (validFromTs != null) {
@@ -128,13 +131,14 @@ public class RegistrationDAO extends DBContext {
         return -1;
     }
 
-    public boolean userModifyRegistration(LocalDateTime time, double totalCost, int pricePackageId, int id) {
-        String sql = "update [registrations] set [time] = ?, [total_cost] = ?, [price_package_id] = ? where [id] = ?";
+    public boolean userModifyRegistration(LocalDateTime time, double totalCost, Integer duration, int pricePackageId, int id) {
+        String sql = "update [registrations] set [time] = ?, [total_cost] = ?, [duration] = ?, [price_package_id] = ? where [id] = ?";
         try (PreparedStatement pstm = connection.prepareStatement(sql)) {
             pstm.setObject(1, time);
             pstm.setDouble(2, totalCost);
-            pstm.setInt(3, pricePackageId);
-            pstm.setInt(4, id);
+            pstm.setObject(3, duration);
+            pstm.setInt(4, pricePackageId);
+            pstm.setInt(5, id);
             return pstm.executeUpdate() > 0;
         } catch (SQLException e) {
             System.out.println("Error: " + e.getMessage());
@@ -147,7 +151,7 @@ public class RegistrationDAO extends DBContext {
                 SELECT 1
                 FROM registrations r JOIN price_packages p
                 ON r.price_package_id = p.id
-                WHERE r.user_id = ? AND p.subject_id = ? AND r.status IN ('Paid', 'Pending')
+                WHERE r.user_id = ? AND p.subject_id = ? AND r.status IN ('Paid', 'Pending Confirmation', 'Pending Payment')
                 """;
         try (PreparedStatement pstm = connection.prepareStatement(sql)) {
             pstm.setInt(1, userID);

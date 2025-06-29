@@ -2,10 +2,7 @@ package controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import dao.CategoryDAO;
@@ -87,18 +84,10 @@ public class MyRegistrationServlet extends HttpServlet {
             request.setAttribute("emptyList", false);
         }
 
+        Collections.sort(registrations);
         request.setAttribute("registrations", registrations);
         request.setAttribute("categories", categories);
 
         request.getRequestDispatcher("my_registration.jsp").forward(request, response);
-    } 
-
-
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
-
     }
-
-
 }

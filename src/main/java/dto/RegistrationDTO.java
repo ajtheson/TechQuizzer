@@ -5,11 +5,13 @@ import entity.Subject;
 import entity.User;
 
 import java.time.LocalDateTime;
+import java.util.Map;
 
-public class RegistrationDTO {
+public class RegistrationDTO implements Comparable<RegistrationDTO>{
     private int id;
     private String time;
     private double totalCost;
+    private Integer duration;
     private String validFrom;
     private String validTo;
     private String status;
@@ -41,6 +43,14 @@ public class RegistrationDTO {
 
     public void setTotalCost(double totalCost) {
         this.totalCost = totalCost;
+    }
+
+    public Integer getDuration() {
+        return duration;
+    }
+
+    public void setDuration(Integer duration) {
+        this.duration = duration;
     }
 
     public String getValidFrom() {
@@ -105,5 +115,22 @@ public class RegistrationDTO {
 
     public void setSubject(Subject subject) {
         this.subject = subject;
+    }
+
+    private static final Map<String, Integer> STATUS_PRIORITY = Map.of(
+            "Pending Confirmation", 0,
+            "Pending Payment", 1,
+            "Paid", 2,
+            "Expired", 3,
+            "Canceled", 4,
+            "Rejected", 5
+    );
+
+    @Override
+    public int compareTo(RegistrationDTO other) {
+        return Integer.compare(
+                STATUS_PRIORITY.getOrDefault(this.status, Integer.MAX_VALUE),
+                STATUS_PRIORITY.getOrDefault(other.status, Integer.MAX_VALUE)
+        );
     }
 }

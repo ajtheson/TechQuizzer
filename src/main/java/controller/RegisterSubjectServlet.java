@@ -5,7 +5,9 @@ import java.io.PrintWriter;
 import java.util.List;
 
 import dao.PricePackageDAO;
+import dao.RegistrationDAO;
 import dao.SubjectDAO;
+import dto.UserDTO;
 import entity.PricePackage;
 import entity.Subject;
 import jakarta.servlet.ServletException;
@@ -36,11 +38,19 @@ public class RegisterSubjectServlet extends HttpServlet {
         request.setAttribute("packages", packages);
         //Check login
         if(session.getAttribute("user") != null){
+            UserDTO user = (UserDTO) session.getAttribute("user");
+            RegistrationDAO rDAO = new RegistrationDAO();
+            if(rDAO.isRegistrationExist(user.getId(), subjectID)) {
+                session.setAttribute("toastNotification", "You already have an active or pending course for this subject.");
+                response.sendRedirect("my_registration");
+                return;
+            }
             request.getRequestDispatcher("user_register_subject.jsp").forward(request, response);
         }else{
             request.getRequestDispatcher("guest_register_subject.jsp").forward(request, response);
         }
     }
+
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)

@@ -33,10 +33,13 @@
             font-weight: bold;
         }
         .subject-thumbnail {
+            border: 1px black solid;
+            border-radius: 10px;
             width: 100%;
-            aspect-ratio: 1 / 1;
-            object-fit: cover;
+            height: 200px;
+            margin-left: 10px;
         }
+
         .package-price {
             font-size: 18px;
             font-weight: bold;

@@ -23,6 +23,7 @@ import jakarta.servlet.http.HttpSession;
 @WebServlet(name = "UserModifyRegistrationServlet", urlPatterns = {"/user_modify_registration"})
 public class UserModifyRegistrationServlet extends HttpServlet {
 
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -61,7 +62,7 @@ public class UserModifyRegistrationServlet extends HttpServlet {
 
         PricePackage p = pdao.get(packageID);
         HttpSession session = request.getSession();
-        if(rDAO.userModifyRegistration(LocalDateTime.now(), p.getSalePrice(), packageID, registrationID)) {
+        if(rDAO.userModifyRegistration(LocalDateTime.now(), p.getSalePrice(), p.getDuration(), packageID, registrationID)) {
             session.setAttribute("toastNotification", "Registration has been modified successfully.");
             response.sendRedirect("my_registration");
         }else{

@@ -6,6 +6,7 @@ public class Registration {
     private int id;
     private LocalDateTime time;
     private double totalCost;
+    private Integer duration;
     private LocalDateTime validFrom;
     private LocalDateTime validTo;
     private String status;
@@ -36,6 +37,14 @@ public class Registration {
 
     public void setTotalCost(double totalCost) {
         this.totalCost = totalCost;
+    }
+
+    public Integer getDuration() {
+        return duration;
+    }
+
+    public void setDuration(Integer duration) {
+        this.duration = duration;
     }
 
     public LocalDateTime getValidFrom() {

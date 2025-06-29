@@ -88,7 +88,6 @@ public class GuestRegisterSubjectServlet extends HttpServlet {
                 request.setAttribute("packages", packages);
                 request.setAttribute("information", rDTO);
                 request.getRequestDispatcher("guest_register_subject.jsp").forward(request, response);
-                return;
             } else {
                 HttpSession session = request.getSession();
                 session.setAttribute("guestInfo", rDTO);
@@ -100,7 +99,6 @@ public class GuestRegisterSubjectServlet extends HttpServlet {
                 EmailService emailService = new EmailService();
                 emailService.sendOTPForRegisterSubject(email, otp + "", false);
                 response.sendRedirect("activate_register_subject");
-                return;
             }
         } else {
             //Email is already activated
@@ -109,13 +107,11 @@ public class GuestRegisterSubjectServlet extends HttpServlet {
                 session.setAttribute("guestEmail", email);
                 session.setAttribute("guestSubjectID", subjectID);
                 response.sendRedirect("login_to_register_subject");
-                return;
             } else {
                 //Email in the system but is not activated
                 TokenService tokenService = new TokenService();
                 tokenService.handleVerifyToken(request, email, true);
                 response.sendRedirect("activate");
-                return;
             }
         }
     }

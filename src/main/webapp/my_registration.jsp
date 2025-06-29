@@ -53,9 +53,14 @@
                                 <div id="collapseFields" class="accordion-collapse collapse show">
                                     <div class="accordion-body px-3 pt-2 pb-3">
                                         <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" id="pending" name="status" value="Pending" onchange="this.form.submit()"
-                                                   <c:if test="${requestScope.selectedStatuses != null and fn:contains(requestScope.selectedStatuses, 'Pending')}">checked</c:if>>
-                                            <label class="form-check-label" for="pending">Pending</label>
+                                            <input class="form-check-input" type="checkbox" id="pending_confirmation" name="status" value="Pending Confirmation" onchange="this.form.submit()"
+                                                   <c:if test="${requestScope.selectedStatuses != null and fn:contains(requestScope.selectedStatuses, 'Pending Confirmation')}">checked</c:if>>
+                                            <label class="form-check-label" for="pending_confirmation">Pending Confirmation</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="pending_payment" name="status" value="Pending Payment" onchange="this.form.submit()"
+                                                   <c:if test="${requestScope.selectedStatuses != null and fn:contains(requestScope.selectedStatuses, 'Pending Payment')}">checked</c:if>>
+                                            <label class="form-check-label" for="pending_payment">Pending Payment</label>
                                         </div>
                                         <div class="form-check">
                                             <input class="form-check-input" type="checkbox" id="paid" name="status" value="Paid" onchange="this.form.submit()"
@@ -71,6 +76,11 @@
                                             <input class="form-check-input" type="checkbox" id="canceled" name="status" value="Canceled" onchange="this.form.submit()"
                                                    <c:if test="${requestScope.selectedStatuses != null and fn:contains(requestScope.selectedStatuses, 'Canceled')}">checked</c:if>>
                                             <label class="form-check-label" for="canceled">Canceled</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="rejected" name="status" value="Rejected" onchange="this.form.submit()"
+                                                   <c:if test="${requestScope.selectedStatuses != null and fn:contains(requestScope.selectedStatuses, 'Rejected')}">checked</c:if>>
+                                            <label class="form-check-label" for="rejected">Rejected</label>
                                         </div>
                                     </div>
                                 </div>
@@ -167,7 +177,7 @@
                                         <p class="status-label ${r.status}">${r.status}</p>
                                         <div class="total-cost">$${r.totalCost}</div>
                                     </div>
-                                    <c:if test="${r.status == 'Pending'}">
+                                    <c:if test="${r.status == 'Pending Confirmation'}">
                                         <div style="display:flex; gap: 3px">
                                             <button class="btn"
                                                     style="background-color:#374151; color:white; border:none;"
@@ -180,6 +190,16 @@
                                                     type="button"
                                                     onclick="location.href='user_modify_registration?id=${r.id}'"
                                             >Modify
+                                            </button>
+                                        </div>
+                                    </c:if>
+                                    <c:if test="${r.status == 'Pending Payment'}">
+                                        <div style="display:flex; gap: 3px">
+                                            <button class="btn"
+                                                    style="background-color:#374151; color:white; border:none;"
+                                                    type="button"
+                                                    onclick="if(confirm('Are you sure you want to cancel this registration?')) { window.location.href='user_cancel_registration?id=${r.id}'; }"
+                                            >Cancel
                                             </button>
                                         </div>
                                     </c:if>
@@ -246,13 +266,10 @@
         border-radius: 0 !important;
     }
 
-    .subject-media {
+    .subject-thumbnail {
         border: 1px black solid;
         border-radius: 10px;
-    }
-
-    .subject-thumbnail {
-        width: 250px;
+        width: 100%;
         height: 200px;
         margin-left: 10px;
     }
@@ -272,7 +289,7 @@
 
     .status-label {
         display: inline-block;
-        min-width: 80px;
+        min-width: 120px;
         text-align: center;
         padding: 4px 10px;
         border-radius: 12px;
@@ -297,7 +314,7 @@
         color: #991b1b;
     }
 
-    .status-label.Canceled {
+    .status-label.Canceled, .status-label.Rejected {
         background-color: #e5e7eb; /* xám nhạt */
         color: #374151;
     }
