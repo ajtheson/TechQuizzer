@@ -86,7 +86,6 @@ public class GetQuizzesListServlet extends HttpServlet {
                 subjectFilter, testTypeFilter, search, user.getId());
         int totalPages = (int) Math.ceil((double) totalRecords / pageSize);
 
-
         request.setAttribute("quizList", quizList);
         request.setAttribute("subjects", subjects);
         request.setAttribute("testTypes", testTypes);

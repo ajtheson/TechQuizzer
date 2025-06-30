@@ -22,6 +22,11 @@ public class GetQuizzesDetailServlet extends HttpServlet {
         HttpSession session = request.getSession();
         UserDTO user = (UserDTO) session.getAttribute("user");
 
+
+        if (user == null) {
+            response.sendRedirect(request.getContextPath() + "/login");
+            return;
+        }
         if (user == null) {
             response.sendRedirect(request.getContextPath() + "/login");
             return;
@@ -33,11 +38,12 @@ public class GetQuizzesDetailServlet extends HttpServlet {
                 int id = Integer.parseInt(idParam);
                 QuizDAO quizDAO = new QuizDAO();
                 QuizDTO quiz = quizDAO.findByQuizId(id);
+                QuestionLevelDAO questionLevelDAO = new QuestionLevelDAO();
 
                 DimensionDAO dimensionDAO = new DimensionDAO();
                 LessonDAO lessonDAO = new LessonDAO();
                 QuizSettingDAO quizSettingDAO = new QuizSettingDAO(); // Assuming this exists
-
+                List<QuestionLevel> questionLevels = questionLevelDAO.findAll();
                 List<Dimension> dimensions = dimensionDAO.selectAllDimension(quiz.getSubject().getId());
                 List<Lesson> lessons = lessonDAO.selectAllLesson(quiz.getSubject().getId());
 
@@ -59,6 +65,10 @@ public class GetQuizzesDetailServlet extends HttpServlet {
                 } catch (Exception e) {
                     throw new RuntimeException(e);
                 }
+
+                request.setAttribute("selectedLevelId",quiz.getQuestionLevel().getId());
+                request.setAttribute("levels",questionLevels);
+
                 request.setAttribute("hasAttempt", hasAttempt);
                 request.setAttribute("dimensions", dimensions);
                 request.setAttribute("lessons", lessons);
@@ -77,9 +87,19 @@ public class GetQuizzesDetailServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String action = request.getParameter("action");
+        HttpSession session = request.getSession();
+        UserDTO user = (UserDTO) session.getAttribute("user");
+
+        if (user == null) {
+            response.sendRedirect(request.getContextPath() + "/login");
+            return;
+        }
         switch (action) {
             case "update":
                 try {
+                    QuestionLevelDAO questionLevelDAO = new QuestionLevelDAO();
+
+                    List<QuestionLevel> questionLevels = questionLevelDAO.findAll();
                     int id = Integer.parseInt(request.getParameter("id"));
                     int duration = Integer.parseInt(request.getParameter("duration"));
                     int passRate = Integer.parseInt(request.getParameter("passRate"));
@@ -89,7 +109,7 @@ public class GetQuizzesDetailServlet extends HttpServlet {
                     QuizDTO quiz = quizDAO.findByQuizId(id);
                     String testType = request.getParameter("testTypeId");
                     int testTypeId = Integer.parseInt(testType);
-                    quizDAO.updateQuiz(id, request.getParameter("name"), request.getParameter("level"), duration*60, passRate,testTypeId);
+                    quizDAO.updateQuiz(id, request.getParameter("name"), Integer.parseInt(request.getParameter("level")), duration*60, passRate,testTypeId);
 
                     QuizSettingDAO quizSettingDAO = new QuizSettingDAO();
                     quizSettingDAO.updateQuizSetting(quiz.getQuizSetting().getId(), numberOfQuestions);
@@ -99,7 +119,12 @@ public class GetQuizzesDetailServlet extends HttpServlet {
 
                     quiz = quizDAO.findByQuizId(id);
                     request.setAttribute("quiz", quiz);
+                    String selectedLevelId = request.getParameter("level");
+                    request.setAttribute("selectedLevelId",selectedLevelId);
+                    request.setAttribute("levels",questionLevels);
+
                     request.getSession().setAttribute("message", "Update successful.");
+
                     request.getRequestDispatcher("quiz_detail.jsp").forward(request, response);
                 } catch (NumberFormatException e) {
                     request.setAttribute("error", "Invalid number input.");

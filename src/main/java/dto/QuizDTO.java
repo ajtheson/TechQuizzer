@@ -1,5 +1,6 @@
 package dto;
 
+import entity.QuestionLevel;
 import entity.QuizSetting;
 import entity.Subject;
 import entity.TestType;
@@ -9,14 +10,13 @@ public class QuizDTO {
     private int id;
     private String name;
     private Subject subject;
-    private String level;
+    private QuestionLevel questionLevel;
     private QuizSetting quizSetting;
     private TestType testType;
-    private int status;
     private int  duration;
     private int passRate;
-
-
+    private int status;
+    private String format;
     public int getId() {
         return id;
     }
@@ -41,12 +41,21 @@ public class QuizDTO {
         this.subject = subject;
     }
 
-    public String getLevel() {
-        return level;
+    public QuestionLevel getQuestionLevel() {
+        return questionLevel;
     }
 
-    public void setLevel(String level) {
-        this.level = level;
+    public void setQuestionLevel(QuestionLevel questionLevel) {
+        this.questionLevel = questionLevel;
+    }
+
+
+    public QuizSetting getQuizSetting() {
+        return quizSetting;
+    }
+
+    public void setQuizSetting(QuizSetting quizSetting) {
+        this.quizSetting = quizSetting;
     }
 
     public TestType getTestType() {
@@ -57,20 +66,20 @@ public class QuizDTO {
         this.testType = testType;
     }
 
-    public QuizSetting getQuizSetting() {
-        return quizSetting;
-    }
-
-    public void setQuizSetting(QuizSetting quizSetting) {
-        this.quizSetting = quizSetting;
-    }
-
     public int getDuration() {
         return duration;
     }
 
     public void setDuration(int duration) {
         this.duration = duration;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
     }
 
     public int getPassRate() {
@@ -81,11 +90,12 @@ public class QuizDTO {
         this.passRate = passRate;
     }
 
-    public int getStatus() {
-        return status;
+    public String getFormat() {
+        return format;
     }
 
-    public void setStatus(int status) {
-        this.status = status;
+    public void setFormat(String format) {
+        this.format = format;
     }
 }
+

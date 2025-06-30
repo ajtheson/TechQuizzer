@@ -162,7 +162,7 @@
                                     <a style="display: flex; align-items: center; gap: 5px; text-decoration: none; color: inherit;" href="?subject=${subject}&testType=${testType}&search=${search}&sortField=q.name&sortOrder=${sortOrder == 'ASC' ? 'DESC' : 'ASC'}&page=${currentPage}&pageSize=${pageSize}">Name<i class="fa fa-sort"></i></a>
                                 </th>
                                 <th class="col-3">
-                                    <a style="display: flex; align-items: center; gap: 5px; text-decoration: none; color: inherit;" href="?subject=${subject}&testType=${testType}&search=${search}&sortField=q.level&sortOrder=${sortOrder == 'ASC' ? 'DESC' : 'ASC'}&page=${currentPage}&pageSize=${pageSize}">Level<i class="fa fa-sort"></i></a>
+                                    <a style="display: flex; align-items: center; gap: 5px; text-decoration: none; color: inherit;" href="?subject=${subject}&testType=${testType}&search=${search}&sortField=q.question_level_id&sortOrder=${sortOrder == 'ASC' ? 'DESC' : 'ASC'}&page=${currentPage}&pageSize=${pageSize}">Level<i class="fa fa-sort"></i></a>
                                 </th>
                                 <th class="col-4"><a style="display: flex; align-items: center; gap: 5px; text-decoration: none; color: inherit;" href="?subject=${subject}&testType=${testType}&search=${search}&sortField=q.duration&sortOrder=${sortOrder == 'ASC' ? 'DESC' : 'ASC'}&page=${currentPage}&pageSize=${pageSize}">Duration<i class="fa fa-sort"></i></a>
                                 </th>
@@ -188,7 +188,7 @@
                                 <tr>
                                     <td class="col-1">${quiz.id}</td>
                                     <td class="col-2">${quiz.name}</td>
-                                    <td class="col-3">${quiz.level}</td>
+                                    <td class="col-3">${quiz.questionLevel.name}</td>
                                     <td class="col-4">${(quiz.duration / 60).intValue()} min</td>
                                     <td class="col-5">${quiz.quizSetting.numberOfQuestions}</td>
                                     <td class="col-6">${quiz.passRate}%</td>

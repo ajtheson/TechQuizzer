@@ -2,10 +2,7 @@ package dao;
 
 import dal.DBContext;
 import dto.QuizDTO;
-import entity.Quiz;
-import entity.QuizSetting;
-import entity.Subject;
-import entity.TestType;
+import entity.*;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -28,16 +25,17 @@ public class QuizDAO extends DBContext {
             e.printStackTrace();
         }
         return false;
-
     }
+
     public QuizDTO findByQuizId(int id){
-        String sql = "SELECT q.id, q.name as quiz_name, q.subject_id, q.test_type_id, q.quiz_setting_id, " +
-                "s.name as subject_name, q.level, qs.number_question, q.duration, q.pass_rate, " +
+        String sql = "SELECT q.id, q.name as quiz_name, q.subject_id,q.format, q.test_type_id, q.quiz_setting_id, q.question_level_id, " +
+                "s.name as subject_name, ql.name as question_level_name, qs.number_question, q.duration, q.pass_rate, " +
                 "q.status, tt.name as test_type_name " +
                 "FROM [quizzes] q " +
                 "LEFT JOIN [subjects] s ON q.subject_id = s.id " +
                 "LEFT JOIN [test_types] tt ON q.test_type_id = tt.id " +
                 "LEFT JOIN [quiz_settings] qs ON q.quiz_setting_id = qs.id " +
+                "LEFT JOIN [question_levels] ql ON q.question_level_id = ql.id " +
                 "WHERE q.id = ?";
 
         try(PreparedStatement pstm = connection.prepareStatement(sql)){
@@ -47,11 +45,10 @@ public class QuizDAO extends DBContext {
                     QuizDTO quizDTO = new QuizDTO();
                     quizDTO.setId(id);
                     quizDTO.setName(rs.getString("quiz_name"));
-                    quizDTO.setLevel(rs.getString("level"));
                     quizDTO.setDuration(rs.getInt("duration"));
                     quizDTO.setPassRate(rs.getInt("pass_rate"));
                     quizDTO.setStatus(rs.getInt("status"));
-
+                    quizDTO.setFormat(rs.getString("format"));
                     Subject subject = new Subject();
                     subject.setId(rs.getInt("subject_id"));
                     subject.setName(rs.getString("subject_name"));
@@ -67,6 +64,11 @@ public class QuizDAO extends DBContext {
                     quizSetting.setNumberOfQuestions(rs.getInt("number_question"));
                     quizDTO.setQuizSetting(quizSetting);
 
+                    QuestionLevel questionLevel = new QuestionLevel();
+                    questionLevel.setId(rs.getInt("question_level_id"));
+                    questionLevel.setName(rs.getString("question_level_name"));
+                    quizDTO.setQuestionLevel(questionLevel);
+
                     return quizDTO;
                 }
             }
@@ -75,19 +77,22 @@ public class QuizDAO extends DBContext {
         }
         return null;
     }
-public List<QuizDTO> getQuizzesByPage(String subjectName, String testTypeName, String searchText,
+
+    public List<QuizDTO> getQuizzesByPage(String subjectName, String testTypeName, String searchText,
                                           int page, int pageSize, String sortField, String sortOrder, int expertId) {
         List<QuizDTO> quizzes = new ArrayList<>();
         int offset = (page - 1) * pageSize;
 
         StringBuilder sql = new StringBuilder(
-                "SELECT q.id, q.name, q.level, qs.number_question, q.duration, q.pass_rate, q.status, q.quiz_setting_id, " +
+                "SELECT q.id, q.name, q.question_level_id, qs.number_question, q.duration, q.pass_rate, q.status, q.quiz_setting_id, " +
                         "s.id AS subject_id, s.name AS subject_name, " +
-                        "t.id AS test_type_id, t.name AS test_type_name " +
+                        "t.id AS test_type_id, t.name AS test_type_name, " +
+                        "ql.name AS question_level_name " +
                         "FROM quizzes q " +
                         "JOIN subjects s ON q.subject_id = s.id " +
                         "JOIN test_types t ON q.test_type_id = t.id " +
                         "LEFT JOIN quiz_settings qs ON q.quiz_setting_id = qs.id " +
+                        "LEFT JOIN question_levels ql ON q.question_level_id = ql.id " +
                         "WHERE s.owner_id = ?"
         );
 
@@ -101,7 +106,7 @@ public List<QuizDTO> getQuizzesByPage(String subjectName, String testTypeName, S
             sql.append(" AND q.name LIKE ?");
         }
 
-        List<String> validSortFields = Arrays.asList("q.name", "q.level", "q.duration", "q.pass_rate", "q.id", "s.name", "t.name", "qs.number_question");
+        List<String> validSortFields = Arrays.asList("q.name", "q.question_level_id", "q.duration", "q.pass_rate", "q.id", "s.name", "t.name", "qs.number_question");
         if (!validSortFields.contains(sortField)) sortField = "q.id";
         if (!sortOrder.equalsIgnoreCase("ASC") && !sortOrder.equalsIgnoreCase("DESC")) sortOrder = "ASC";
 
@@ -129,7 +134,12 @@ public List<QuizDTO> getQuizzesByPage(String subjectName, String testTypeName, S
                 QuizDTO dto = new QuizDTO();
                 dto.setId(rs.getInt("id"));
                 dto.setName(rs.getString("name"));
-                dto.setLevel(rs.getString("level"));
+
+                QuestionLevel questionLevel = new QuestionLevel();
+                questionLevel.setId(rs.getInt("question_level_id"));
+                questionLevel.setName(rs.getString("question_level_name"));
+                dto.setQuestionLevel(questionLevel);
+
                 dto.setDuration(rs.getInt("duration"));
                 dto.setPassRate(rs.getInt("pass_rate"));
                 dto.setStatus(rs.getInt("status"));
@@ -211,9 +221,8 @@ public List<QuizDTO> getQuizzesByPage(String subjectName, String testTypeName, S
         return false;
     }
 
-    
-public Quiz findById(int id) {
-        String sql = "SELECT [name], [level], [duration], [pass_rate], [description], [test_type_id], [quiz_setting_id], [subject_id] FROM [quizzes] WHERE [id] = ?";
+    public Quiz findById(int id) {
+        String sql = "SELECT [name], [question_level_id], [duration], [pass_rate], [description], [test_type_id], [quiz_setting_id], [subject_id] FROM [quizzes] WHERE [id] = ?";
         try(PreparedStatement pstm = connection.prepareStatement(sql)){
             pstm.setInt(1, id);
             try(ResultSet rs = pstm.executeQuery()){
@@ -221,7 +230,7 @@ public Quiz findById(int id) {
                     Quiz quiz = new Quiz();
                     quiz.setId(id);
                     quiz.setName(rs.getString("name"));
-                    quiz.setLevel(rs.getString("level"));
+                    quiz.setQuestionLevelId(rs.getInt("question_level_id"));
                     quiz.setDuration(rs.getInt("duration"));
                     quiz.setPassRate(rs.getInt("pass_rate"));
                     quiz.setDescription(rs.getString("description"));
@@ -243,7 +252,7 @@ public Quiz findById(int id) {
             return quizzes;
         }
         String inClause = subjectIds.stream().map(id -> "?").collect(Collectors.joining(", "));
-        String sql = "SELECT [id], [name], [level], [duration], [pass_rate], [description], [test_type_id], [quiz_setting_id], [subject_id] "
+        String sql = "SELECT [id], [name], [question_level_id], [duration], [pass_rate], [description], [test_type_id], [quiz_setting_id], [subject_id] "
                 + "FROM [quizzes] "
                 + "WHERE [status] = 1 AND [test_type_id] = ? AND [subject_id] IN (" + inClause + ") AND [name] LIKE ? "
                 + "ORDER BY [id] "
@@ -264,7 +273,7 @@ public Quiz findById(int id) {
                 Quiz quiz = new Quiz();
                 quiz.setId(rs.getInt("id"));
                 quiz.setName(rs.getString("name"));
-                quiz.setLevel(rs.getString("level"));
+                quiz.setQuestionLevelId(rs.getInt("question_level_id"));
                 quiz.setDuration(rs.getInt("duration"));
                 quiz.setPassRate(rs.getInt("pass_rate"));
                 quiz.setDescription(rs.getString("description"));
@@ -302,17 +311,17 @@ public Quiz findById(int id) {
         return 0;
     }
 
-    public boolean updateQuiz(int id, String name, String level, int duration, int pasRate, int test_type_id) {
-        String sql = "UPDATE [quizzes] SET [name] = ?, [level] = ?, [duration] = ?, " +
-                "[pass_rate] = ?,[test_type_id]=? " +
+    public boolean updateQuiz(int id, String name, int questionLevelId, int duration, int passRate, int testTypeId) {
+        String sql = "UPDATE [quizzes] SET [name] = ?, [question_level_id] = ?, [duration] = ?, " +
+                "[pass_rate] = ?, [test_type_id] = ? " +
                 " WHERE [id] = ?";
 
         try (PreparedStatement pstm = connection.prepareStatement(sql)) {
             pstm.setString(1, name);
-            pstm.setString(2, level);
+            pstm.setInt(2, questionLevelId);
             pstm.setInt(3, duration);
-            pstm.setInt(4, pasRate);
-            pstm.setInt(5, test_type_id);
+            pstm.setInt(4, passRate);
+            pstm.setInt(5, testTypeId);
             pstm.setInt(6, id);
             return pstm.executeUpdate() > 0;
         } catch (SQLException e) {
@@ -322,22 +331,22 @@ public Quiz findById(int id) {
     }
 
     public boolean createQuiz(Quiz quiz) throws SQLException {
-        String sql = "INSERT INTO [quizzes] ([name], [level], [duration], [pass_rate], " +
+        String sql = "INSERT INTO [quizzes] ([name],[format], [question_level_id], [duration], [pass_rate], " +
                 "[description], [status], [test_type_id], [subject_id], [quiz_setting_id]) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                "VALUES (?,?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-        try (
-             PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+        try (PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
             ps.setString(1, quiz.getName());
-            ps.setString(2, quiz.getLevel());
-            ps.setInt(3, quiz.getDuration());
-            ps.setInt(4, quiz.getPassRate());
-            ps.setString(5, quiz.getDescription());
-            ps.setInt(6, quiz.getStatus());
-            ps.setInt(7, quiz.getTestTypeId());
-            ps.setInt(8, quiz.getSubjectId());
-            ps.setInt(9, quiz.getQuizSettingId());
+            ps.setString(2, quiz.getFormat());
+            ps.setInt(3, quiz.getQuestionLevelId());
+            ps.setInt(4, quiz.getDuration());
+            ps.setInt(5, quiz.getPassRate());
+            ps.setString(6, quiz.getDescription());
+            ps.setInt(7, quiz.getStatus());
+            ps.setInt(8, quiz.getTestTypeId());
+            ps.setInt(9, quiz.getSubjectId());
+            ps.setInt(10, quiz.getQuizSettingId());
 
             return ps.executeUpdate() > 0;
         } catch (Exception e) {
@@ -345,4 +354,5 @@ public Quiz findById(int id) {
         }
         return false;
     }
+
 }
