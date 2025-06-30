@@ -58,7 +58,7 @@ CREATE TABLE [subjects](
 	[id] INT PRIMARY KEY IDENTITY,
 	[name] VARCHAR(255) NOT NULL,
 	[tag_line] VARCHAR(255) NOT NULL,
-	[thumbnail] VARCHAR(255) NOT NULL,
+	[thumbnail] VARCHAR(255),
 	[detail_description] VARCHAR(MAX) NOT NULL,
 	[featured_subject] BIT NOT NULL, --!!!unknown
 	[status] BIT NOT NULL, -- pulished or unpublished
@@ -67,6 +67,14 @@ CREATE TABLE [subjects](
 	[update_date] DATETIME DEFAULT GETDATE(), 
 	FOREIGN KEY ([category_id]) REFERENCES [subject_categories]([id]) ON DELETE SET NULL,
 	FOREIGN KEY ([owner_id]) REFERENCES [users]([id]) ON DELETE SET NULL
+)
+
+CREATE TABLE [subject_description_images](
+	[id] INT PRIMARY KEY IDENTITY,
+	[subject_id] INT,
+	[url] VARCHAR(255) NOT NULL,
+	[caption] VARCHAR(MAX),
+	FOREIGN KEY ([subject_id]) REFERENCES [subjects]([id]) ON DELETE SET NULL
 )
 
 CREATE TABLE [dimensions](
@@ -113,6 +121,7 @@ CREATE TABLE [registrations](
 	[id] INT PRIMARY KEY IDENTITY,
 	[time] DATETIME, --registration time
 	[total_cost] DECIMAL(18,2) NOT NULL,
+	[duration] INT,
 	[valid_from] DATETIME,
 	[valid_to] DATETIME,
 	[status] VARCHAR(255) NOT NULL,

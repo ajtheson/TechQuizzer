@@ -115,26 +115,10 @@
                                 Sale of ${requestScope.discount}%
                             </span>
                         </div>
-
-                        <c:choose>
-                            <c:when test="${subject.isRegistered}">
-                                <div class="col-md-12 mt-1 mb-3 text-center">
-                                    <button class="btn"
-                                            style="background-color:#e0e0e0; color:black; border:none; width: 100%"
-                                            type="button" disabled>
-                                        Registered
-                                    </button>
-                                    <a href="my_registration">Modify</a>
-                                </div>
-                            </c:when>
-                            <c:otherwise>
-                                <div class="col-md-12 mt-1 mb-3">
-                                    <a class="btn btn-primary btn-lg" style="width: 100%"
-                                       href="register_subject?subject_id=${requestScope.subject.id}">Register</a>
-                                </div>
-                            </c:otherwise>
-                        </c:choose>
-
+                        <div class="col-md-12 mt-1 mb-3">
+                            <a class="btn btn-primary btn-lg" style="width: 100%"
+                               href="register_subject?subject_id=${requestScope.subject.id}">Register</a>
+                        </div>
                         <hr>
 
                         <div class="col-md-12 mt-1 mb-3 brief-description">

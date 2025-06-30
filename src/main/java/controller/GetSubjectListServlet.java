@@ -71,8 +71,6 @@ public class GetSubjectListServlet extends HttpServlet {
         SubjectService subjectService = new SubjectService();
         for (Subject subject : subjectList) {
             SubjectDTO subjectDTO = subjectService.toSubjectDTO(subject);
-            //If the user has already registered for that course, they are not allowed to register again.
-            subjectDTO.setRegistered(registrationDAO.isRegistrationExist(userID, subjectDTO.getId()));
             subjects.add(subjectDTO);
         }
 

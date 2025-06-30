@@ -341,17 +341,22 @@ INSERT INTO [price_packages] ([name], [duration], [list_price], [sale_price], [d
 ('Bronze', 1, 49.99, 29.99, 'Basic access for one month', 1, 29),
 ('Silver', 3, 99.99, 59.99, 'Standard access for three months', 1, 29),
 ('Gold', 6, 199.99, 99.99, 'Full access for six months', 1, 29),
+('Prenimum', null, 300.99, 249.99, 'Full access for every time', 1, 29),
 -- Subject ID 30
 ('Bronze', 1, 49.99, 29.99, 'Basic access for one month', 1, 30),
 ('Silver', 3, 99.99, 59.99, 'Standard access for three months', 1, 30),
-('Gold', 6, 199.99, 99.99, 'Full access for six months', 1, 30);
+('Gold', 6, 199.99, 99.99, 'Full access for six months', 1, 30),
+('Prenimum', null, 300.99, 249.99, 'Full access for every time', 1, 30);
 
-INSERT INTO [registrations] ([time], [total_cost], [valid_from], [valid_to], [status], [price_package_id], [user_id]) VALUES 
-('2025-05-19 08:50:00.000', 29.99, '2025-05-20 09:00:00.000', '2025-06-20 09:00:00.000', 'Paid', 1, 2),
-('2025-06-09 08:50:00.000', 49.99, null, null, 'Pending', 5, 2),
-('2024-06-19 08:50:00.000', 114.99, '2024-06-20 09:00:00.000', '2024-12-20 09:00:00.000', 'Expired', 27, 2),
-('2025-06-05 08:50:00.000', 99.99, null, null, 'Canceled', 24, 2),
-('2025-03-11 08:50:00.000', 114.99, '2025-03-13 09:00:00.000', null, 'Paid', 28, 2);
+INSERT INTO [registrations] ([time], [total_cost], [duration], [valid_from], [valid_to], [status], [price_package_id], [user_id]) VALUES 
+('2025-05-19 08:50:00.000', 29.99, 1,'2025-05-20 09:00:00.000', '2025-06-20 09:00:00.000', 'Paid', 1, 2),
+('2025-06-09 08:50:00.000', 49.99, 3,null, null, 'Pending Confirmation', 5, 2),
+('2025-06-09 08:50:00.000', 49.99, 3,null, null, 'Pending Payment', 8, 2),
+('2024-06-19 08:50:00.000', 114.99, 6,'2024-06-20 09:00:00.000', '2024-12-20 09:00:00.000', 'Expired', 27, 2),
+('2025-06-05 08:50:00.000', 99.99, 6,null, null, 'Canceled', 24, 2),
+('2025-06-05 08:50:00.000', 99.99, 6,null, null, 'Rejected', 21, 2),
+('2025-03-11 08:50:00.000', 249.99, null, null, null, 'Pending Confirmation', 88, 2),
+('2025-03-11 08:50:00.000', 249.99, null,'2025-03-13 09:00:00.000', null, 'Paid', 92, 2);
 
 INSERT INTO [dimensions] ([name], [description], [subject_id]) VALUES
 -- subject_id = 1 (Introduction to Programming)
@@ -1130,3 +1135,9 @@ INSERT INTO [exam_attempts]([type], [duration], [number_correct_question], [user
 ('Practice', 1*60*60 + 123, 15, 2, NULL, 4),
 ('Practice', 1*60*60 + 456, 15, 2, NULL, 5),
 ('Quiz', 50*60, 30, 4, 1, NULL);
+
+INSERT INTO [subject_description_images]([subject_id], [url], [caption])
+VALUES
+(1, 'Test1.jpg', 'This is 1st image'),
+(1, 'Test2.jpg', 'This is 2nd image'),
+(1, 'Test3.jpg', 'This is 3rd image');
