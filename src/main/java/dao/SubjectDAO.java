@@ -418,12 +418,12 @@ public class SubjectDAO extends DBContext {
         }
         return list;
     }
-    public boolean insertSubject(Subject subject) {
+    public int insertSubject(Subject subject) {
         String sql = "INSERT INTO subjects " +
                 "(name, tag_line, thumbnail, detail_description, featured_subject, status, category_id, owner_id) " +
                 "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
-        try (PreparedStatement pstm = connection.prepareStatement(sql)) {
+        try (PreparedStatement pstm = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             pstm.setString(1, subject.getName());
             pstm.setString(2, subject.getTagLine());
             pstm.setString(3, subject.getThumbnail());
@@ -432,12 +432,21 @@ public class SubjectDAO extends DBContext {
             pstm.setBoolean(6, subject.isPublished());
             pstm.setInt(7, subject.getCategoryId());
             pstm.setInt(8, subject.getOwnerId());
-            int rows = pstm.executeUpdate();
-            return rows > 0;
+            int affectedRows = pstm.executeUpdate();
+            if (affectedRows == 0) {
+                throw new SQLException("Creating subject failed, no rows affected.");
+            }
 
+            try (ResultSet generatedKeys = pstm.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    return generatedKeys.getInt(1);
+                } else {
+                    throw new SQLException("Creating subject failed, no ID obtained.");
+                }
+            }
         } catch (SQLException e) {
             e.printStackTrace();
-            return false;
+            throw new RuntimeException(e);
         }
     }
 

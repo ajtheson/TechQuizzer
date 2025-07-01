@@ -123,27 +123,12 @@ public class CreateSubjectServlet extends HttpServlet {
             }
         }
 
-        // Insert the subject and get the generated ID
-        boolean subjectInserted = subjectDAO.insertSubject(subject);
-
-        if (!subjectInserted) {
+        int newSubjectId = subjectDAO.insertSubject(subject);
+        if(newSubjectId==-1){
             request.setAttribute("errorMessage", "Failed to create subject. Please try again.");
             doGet(request, response);
             return;
         }
-
-        // Get the newly created subject ID (you may need to modify insertSubject to return the ID)
-        // For now, we'll get it by querying the latest subject with matching details
-        Subject createdSubject = subjectDAO.getLatestSubjectByNameAndOwner(name.trim(), ownerId);
-        if (createdSubject == null) {
-            System.out.println("Could not retrieve created subject ID");
-            request.setAttribute("errorMessage", "Subject created but could not process description images.");
-            doGet(request, response);
-            return;
-        }
-
-        int newSubjectId = createdSubject.getId();
-
         // Handle subject description images
         SubjectDescriptionImageDAO subjectDescriptionImageDAO = new SubjectDescriptionImageDAO();
         String descriptionImageDirectory = getServletContext().getRealPath("assets/images/subject_description");
@@ -203,7 +188,6 @@ public class CreateSubjectServlet extends HttpServlet {
         // Set success message and redirect
         HttpSession session = request.getSession();
         session.setAttribute("toastNotification", "Subject has been created successfully.");
-
-        response.sendRedirect("manage_subject_list.jsp");
+        response.sendRedirect("create-subject");
     }
 }
