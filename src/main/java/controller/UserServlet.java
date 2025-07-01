@@ -42,6 +42,9 @@ public class UserServlet extends HttpServlet {
             case 3:
                 targetPage = "home";
                 break;
+            case 4:
+                targetPage = "registrations";
+                break;
             default:
                 request.setAttribute("error", "Invalid role");
                 targetPage = "login";

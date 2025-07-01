@@ -561,4 +561,50 @@ public class UserDAO extends DBContext {
         }
         return users;
     }
+
+    public User getForSale(Integer id) {
+        String sql = "select [email], [name], [gender], [mobile], [temp_user] from [users] where [id] = ?";
+        try(PreparedStatement pstm = connection.prepareStatement(sql)){
+            pstm.setInt(1, id);
+            ResultSet rs = pstm.executeQuery();
+            if (rs.next()) {
+                User user = new User();
+                user.setId(id);
+                user.setEmail(rs.getString("email"));
+                user.setName(rs.getString("name"));
+                Boolean gender = rs.getBoolean("gender");
+                if (rs.wasNull()) {
+                    gender = null;
+                }
+                user.setGender(gender);
+                user.setMobile(rs.getString("mobile"));
+                user.setTempUser(rs.getBoolean("temp_user"));
+                return user;
+            }
+        }catch (SQLException e){
+            System.err.println("Error: " + e.getMessage());
+        }
+        return null;
+    }
+
+    public void activateRegistration(Integer id, String password) {
+        String sql = "update [users] set [password] = ?, [temp_user] = 0, [activate] = 1 where [id] = ?";
+        try(PreparedStatement pstm = connection.prepareStatement(sql)){
+            pstm.setString(1, password);
+            pstm.setInt(2, id);
+            pstm.executeUpdate();
+        }catch (SQLException e){
+            System.err.println("Error: " + e.getMessage());
+        }
+    }
+
+    public void deleteTempUser(Integer id) {
+        String sql = "delete from [users] where [id] = ?";
+        try(PreparedStatement pstm = connection.prepareStatement(sql)){
+            pstm.setInt(1, id);
+            pstm.executeUpdate();
+        }catch (SQLException e){
+            System.err.println("Error: " + e.getMessage());
+        }
+    }
 }
