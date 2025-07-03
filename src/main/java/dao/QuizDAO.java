@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 public class QuizDAO extends DBContext {
 
     public Quiz findById(int id) {
-        String sql = "SELECT [format],  [name], [level], [duration], [pass_rate], [description], [test_type_id], [quiz_setting_id], [subject_id] FROM [quizzes] WHERE [id] = ?";
+        String sql = "SELECT [format],  [name], [question_level_id], [duration], [pass_rate], [description], [test_type_id], [quiz_setting_id], [subject_id] FROM [quizzes] WHERE [id] = ?";
         try(PreparedStatement pstm = connection.prepareStatement(sql)){
             pstm.setInt(1, id);
             try(ResultSet rs = pstm.executeQuery()){
@@ -23,7 +23,7 @@ public class QuizDAO extends DBContext {
                     quiz.setId(id);
                     quiz.setFormat(rs.getString("format"));
                     quiz.setName(rs.getString("name"));
-                    quiz.setLevel(rs.getString("level"));
+                    quiz.setQuestionLevelId(rs.getInt("question_level_id"));
                     quiz.setDuration(rs.getInt("duration"));
                     quiz.setPassRate(rs.getInt("pass_rate"));
                     quiz.setDescription(rs.getString("description"));
@@ -45,7 +45,7 @@ public class QuizDAO extends DBContext {
             return quizzes;
         }
         String inClause = subjectIds.stream().map(id -> "?").collect(Collectors.joining(", "));
-        String sql = "SELECT [id], [name], [level], [duration], [pass_rate], [description], [test_type_id], [quiz_setting_id], [subject_id] "
+        String sql = "SELECT [id], [name], [question_level_id], [duration], [pass_rate], [description], [test_type_id], [quiz_setting_id], [subject_id] "
                 + "FROM [quizzes] "
                 + "WHERE [status] = 1 AND [test_type_id] = ? AND [subject_id] IN (" + inClause + ") AND [name] LIKE ? "
                 + "ORDER BY [id] "
@@ -66,7 +66,7 @@ public class QuizDAO extends DBContext {
                 Quiz quiz = new Quiz();
                 quiz.setId(rs.getInt("id"));
                 quiz.setName(rs.getString("name"));
-                quiz.setLevel(rs.getString("level"));
+                quiz.setQuestionLevelId(rs.getInt("question_level_id"));
                 quiz.setDuration(rs.getInt("duration"));
                 quiz.setPassRate(rs.getInt("pass_rate"));
                 quiz.setDescription(rs.getString("description"));

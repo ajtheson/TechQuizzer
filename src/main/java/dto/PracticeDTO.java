@@ -16,6 +16,7 @@ public class PracticeDTO {
     private Lesson subjectLesson;
     private Subject subject;
     private String format;
+    private User user;
 
     public int getId() {
         return id;
@@ -95,5 +96,13 @@ public class PracticeDTO {
 
     public void setQuestionLevel(QuestionLevel questionLevel) {
         this.questionLevel = questionLevel;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

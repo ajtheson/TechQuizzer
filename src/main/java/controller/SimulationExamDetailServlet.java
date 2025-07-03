@@ -1,10 +1,12 @@
 package controller;
 import dao.QuizDAO;
 import dto.QuizDTO;
+import dto.UserDTO;
 import entity.Quiz;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
+import service.ExamAttemptService;
 import service.QuizService;
 
 import java.io.IOException;
@@ -34,6 +36,27 @@ public class SimulationExamDetailServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String quizIdParam = request.getParameter("quizId");
 
+        try{
+            HttpSession session = request.getSession(false);
+            if (session == null || session.getAttribute("user") == null) {
+                throw new Exception("User not logged in");
+            }
+
+            int userId = ((UserDTO)session.getAttribute("user")).getId();
+            int quizId = Integer.parseInt(quizIdParam);
+            QuizDTO quizDTO = new QuizService().convertQuizToQuizDTO(new QuizDAO().findById(quizId));
+
+            int insertedExamAttemptId = new ExamAttemptService().createExamAttemptAndQuestionForExamAttempt(quizDTO, userId);
+
+            if(insertedExamAttemptId == -1){
+                throw new Exception("Exam attempt not created");
+            }
+            response.sendRedirect(request.getContextPath() + "/quiz-handle?examAttemptId=" + insertedExamAttemptId);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

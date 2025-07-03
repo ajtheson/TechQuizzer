@@ -1,12 +1,14 @@
 package controller;
 
 import dao.*;
+import dto.PracticeDTO;
 import dto.RegistrationDTO;
 import dto.UserDTO;
 import entity.*;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
+import service.ExamAttemptService;
 
 import java.io.IOException;
 import java.util.*;
@@ -83,41 +85,11 @@ public class CreatePracticeServlet extends HttpServlet {
                 throw new Exception("Practice not created");
             }
 
-            //insert exam attempt
-            ExamAttempt examAttempt = new ExamAttempt();
-            examAttempt.setType("Practice");
-            examAttempt.setDuration(0);
-            examAttempt.setNumberCorrectQuestions(0);
-            examAttempt.setUserId(userId);
-            examAttempt.setPracticeId(practice.getId());
-            int insertedExamAttemptId = new ExamAttemptDAO().insert(examAttempt);
-            if (insertedExamAttemptId == -1) {
+            int insertedExamAttemptId = new ExamAttemptService().createExamAttemptAndQuestionForExamAttempt(practice, userId);
+
+            if(insertedExamAttemptId == -1){
                 throw new Exception("Exam attempt not created");
             }
-
-            //insert question attempt
-            List<Question> questions = new ArrayList<>(numberOfQuestions);
-            if (practice.getSubjectDimensionId() != null) {
-                List<Question> questionSubList = new QuestionDAO().findAllByDimensionIdAndQuestionLevelAndFormat(practice.getSubjectDimensionId(), questionLevelId, practice.getFormat());
-                Collections.shuffle(questionSubList);
-                questions.addAll(questionSubList.subList(0, numberOfQuestions));
-            } else {
-                List<Question> questionSubList = new QuestionDAO().findAllByLessonIdAndQuestionLevelAndFormat(practice.getSubjectLessonId(), questionLevelId, practice.getFormat());
-                Collections.shuffle(questionSubList);
-                questions.addAll(questionSubList.subList(0, numberOfQuestions));
-            }
-            List<Integer> questionIds = questions.stream().map(q -> q.getId()).toList();
-            if (examFormatParam.equals("multiple")) {
-                if (!new QuestionAttemptDAO().insertAllByExamAttemptIdAndQuestionIds(insertedExamAttemptId, questionIds)) {
-                    throw new Exception("Question attempt not created");
-                }
-            } else {
-                if (!new EssayAttemptDAO().insertAllByExamAttemptIdAndQuestionIds(insertedExamAttemptId, questionIds)) {
-                    throw new Exception("Essay attempt not created");
-                }
-            }
-
-
             response.sendRedirect(request.getContextPath() + "/quiz-handle?examAttemptId=" + insertedExamAttemptId);
 
         } catch (Exception e) {

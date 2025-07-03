@@ -4,7 +4,7 @@ public class Quiz {
 
     private int id;
     private String name;
-    private String level;
+    private int questionLevelId;
     private int  duration;
     private int passRate;
     private String description;
@@ -38,12 +38,12 @@ public class Quiz {
         this.duration = duration;
     }
 
-    public String getLevel() {
-        return level;
+    public int getQuestionLevelId() {
+        return questionLevelId;
     }
 
-    public void setLevel(String level) {
-        this.level = level;
+    public void setQuestionLevelId(int questionLevelId) {
+        this.questionLevelId = questionLevelId;
     }
 
     public int getSubjectId() {

@@ -473,28 +473,24 @@
         timerElement.textContent = hours + ":" + minutes + ":" + seconds;
     }
     //display count down
-    const startCountDown = duration => {
-        let timer = duration;
-        updateDisplay(timer);
+    const startCountDown = () => {
+        updateDisplay(countSecond);
         let interval = setInterval(() => {
-            timer--;
-            countSecond++;
-            if (timer < 0) {
+            countSecond--;
+            if (countSecond < 0) {
                 clearInterval(interval);
                 submitQuiz();
             } else {
-                updateDisplay();
+                updateDisplay(countSecond);
             }
         }, 1000);
     }
     //display count up
-    const startCountUp = duration => {
-        let timer = duration;
-        updateDisplay(timer);
+    const startCountUp = () => {
+        updateDisplay(countSecond);
         let interval = setInterval(() => {
-            timer++;
             countSecond++;
-            updateDisplay(timer);
+            updateDisplay(countSecond);
         }, 1000);
     }
 
@@ -679,7 +675,7 @@
         if (${requestScope.questionAttempts[0].examAttempt.type.equalsIgnoreCase("Practice")}) {
             startCountUp(countSecond);
         } else {
-            startCountDown(${requestScope.questionAttempts[0].examAttempt.duration} - countSecond);
+            startCountDown(${requestScope.questionAttempts[0].examAttempt.duration});
         }
         renderButton();
         renderQuestion(currentIndex);

@@ -1,17 +1,22 @@
 package dto;
 
+import entity.QuestionLevel;
 import entity.QuizSetting;
 import entity.Subject;
+import entity.TestType;
 
 public class QuizDTO {
 
     private int id;
     private String name;
     private Subject subject;
-    private String level;
+    private QuestionLevel questionLevel;
     private QuizSetting quizSetting;
+    private TestType testType;
     private int  duration;
     private int passRate;
+    private int status;
+    private String format;
 
     public int getId() {
         return id;
@@ -37,12 +42,12 @@ public class QuizDTO {
         this.subject = subject;
     }
 
-    public String getLevel() {
-        return level;
+    public QuestionLevel getQuestionLevel() {
+        return questionLevel;
     }
 
-    public void setLevel(String level) {
-        this.level = level;
+    public void setQuestionLevel(QuestionLevel questionLevel) {
+        this.questionLevel = questionLevel;
     }
 
     public QuizSetting getQuizSetting() {
@@ -69,4 +74,27 @@ public class QuizDTO {
         this.passRate = passRate;
     }
 
+    public TestType getTestType() {
+        return testType;
+    }
+
+    public void setTestType(TestType testType) {
+        this.testType = testType;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
+    public String getFormat() {
+        return format;
+    }
+
+    public void setFormat(String format) {
+        this.format = format;
+    }
 }

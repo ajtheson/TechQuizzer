@@ -38,7 +38,7 @@
             </div>
             <div class="col-6 mb-3">
                 <label for="duration" class="form-label">Level</label>
-                <input type="text" class="form-control" value="${requestScope.quiz.getLevel()}" disabled>
+                <input type="text" class="form-control" value="${requestScope.quiz.getQuestionLevel().getName()}" disabled>
             </div>
             <div class="col-6 mb-3">
                 <label for="duration" class="form-label">Duration (minutes)</label>
@@ -53,9 +53,14 @@
                 <label for="duration" class="form-label">Pass rate (%)</label>
                 <input type="text" class="form-control" value="${requestScope.quiz.getPassRate()}" disabled>
             </div>
-            <div class="col-12">
-                <button type="submit" class="btn btn-primary w-100">Start</button>
-            </div>
+
+            <form method="post" action="${pageContext.request.contextPath}/simulation-exam/detail">
+                <input type="hidden" name="quizId" value="${requestScope.quiz.getId()}">
+                <div class="col-12">
+                    <button type="submit" class="btn btn-primary w-100">Start</button>
+                </div>
+            </form>
+
         </div>
     </div>
 </div>
