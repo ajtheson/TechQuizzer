@@ -1,5 +1,6 @@
 package service;
 
+import dto.RegistrationDTO;
 import jakarta.servlet.http.HttpServletRequest;
 import util.EmailSender;
 
@@ -82,4 +83,86 @@ public class EmailService {
         EmailSender.sendEmail(email, subject, content);
     }
 
+    public void sendStatusUpdateEmail(RegistrationDTO registration) {
+        String email = registration.getUser().getEmail();
+        String subjectName = registration.getSubject().getName();
+        String status = registration.getStatus();
+        String time = registration.getTime();
+        String validFrom = registration.getValidFrom();
+        String validTo = registration.getValidTo();
+        String pricePackage = registration.getPricePackage() != null ? registration.getPricePackage().getName() : "N/A";
+        String updatedBy = registration.getLastUpdatedBy() != null ? registration.getLastUpdatedBy().getName() : "our team";
+
+        String title = "[Course Registration Update] Your registration status has been updated";
+        String content;
+
+        switch (status) {
+            case "Pending Payment":
+                title = "[Pending Payment] Please complete your payment to activate your course";
+
+                content = "Hello,\n\n"
+                        + "Thank you for registering for the course: " + subjectName + ".\n\n"
+                        + "Your registration is now in Pending Payment status. Please complete the payment to activate your course access.\n\n"
+                        + "Registration Details:\n"
+                        + "- Registration Time: " + time + "\n"
+                        + "- Price Package: " + pricePackage + "\n"
+                        + "- Total Cost: $" + registration.getTotalCost() + "\n\n"
+                        + "To complete your payment, please transfer the amount to the following account:\n\n"
+                        + "Bank Name: TechBank Vietnam\n"
+                        + "Account Name: TECHQUIZZER JSC\n"
+                        + "Account Number: 123 456 789\n"
+                        + "Payment Note: REG-" + registration.getId() + " - " + registration.getUser().getName() + "\n\n"
+                        + "Once the payment is confirmed, we will activate your course and send a confirmation email.\n"
+                        + "If you have already made the payment, please ignore this message or contact support if your course is not activated within 24 hours.\n\n"
+                        + "Best regards,\n"
+                        + "The TechQuizzer Team";
+                break;
+
+            case "Paid":
+                boolean isTempUser = registration.getUser().isTempUser();
+                String passwordNotice = "";
+
+                if (isTempUser) {
+                    passwordNotice = "\nAs this is your first time registering, a temporary account has been created for you.\n"
+                            + "You can log in using the credentials below:\n\n"
+                            + "Email: " + email + "\n"
+                            + "Password: " + registration.getUser().getPassword() + "\n\n"
+                            + "Please change your password after logging in for security reasons.\n";
+                }
+
+                content = "Hello,\n\n"
+                        + "Great news! Your course registration for " + subjectName + " has been activated.\n\n"
+                        + "Price Package: " + pricePackage + "\n"
+                        + "Registered At: " + time + "\n\n"
+                        + passwordNotice
+                        + "You can now access the course and begin your learning journey.\n\n"
+                        + "Best regards,\n"
+                        + "The TechQuizzer Team";
+                break;
+
+            case "Rejected":
+                content = "Hello,\n\n"
+                        + "We regret to inform you that your registration for the course **" + subjectName + "** has been **rejected** by " + updatedBy + ".\n\n"
+                        + "Registered At: " + time + "\n"
+                        + "Price Package: " + pricePackage + "\n"
+                        + "Reason/Note: " + (registration.getNote() != null ? registration.getNote() : "Not specified") + "\n\n"
+                        + "If you believe this was a mistake, please contact our support team for clarification.\n\n"
+                        + "Best regards,\n"
+                        + "The TechQuizzer Team";
+                break;
+
+            default:
+                content = "Hello,\n\n"
+                        + "Your registration for **" + subjectName + "** has been updated to status: **" + status + "**.\n\n"
+                        + "Please check your account for more details or contact our support team if you have questions.\n\n"
+                        + "Best regards,\n"
+                        + "The TechQuizzer Team";
+                break;
+        }
+
+        EmailSender.sendEmail(email, title, content);
+    }
+
+
 }
+

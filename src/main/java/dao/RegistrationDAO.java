@@ -190,4 +190,171 @@ public class RegistrationDAO extends DBContext {
         return registrations;
     }
 
+    public List<RegistrationDTO> getAllRegistrations() {
+        String sql = "select * from [registrations]";
+        List<RegistrationDTO> registrations = new ArrayList<>();
+        try (PreparedStatement pstm = connection.prepareStatement(sql)) {
+            ResultSet rs = pstm.executeQuery();
+            while (rs.next()) {
+                RegistrationDTO r = new RegistrationDTO();
+                r.setId(rs.getInt("id"));
+
+                Timestamp timeTs = rs.getTimestamp("time");
+                if (timeTs != null) {
+                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm dd-MM-yyyy");
+                    r.setTime(timeTs.toLocalDateTime().format(formatter));
+                } else {
+                    r.setTime(null);
+                }
+
+                r.setTotalCost(rs.getDouble("total_cost"));
+
+                r.setDuration(rs.getObject("duration", Integer.class));
+
+                Timestamp validFromTs = rs.getTimestamp("valid_from");
+                if (validFromTs != null) {
+                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+                    r.setValidFrom(validFromTs.toLocalDateTime().format(formatter));
+                } else {
+                    r.setValidFrom(null);
+                }
+
+                Timestamp validToTs = rs.getTimestamp("valid_to");
+                if (validToTs != null) {
+                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+                    r.setValidTo(validToTs.toLocalDateTime().format(formatter));
+                } else {
+                    r.setValidTo(null);
+                }
+
+                r.setStatus(rs.getString("status"));
+                r.setNote(rs.getString("note"));
+
+                PricePackageDAO pDAO = new PricePackageDAO();
+                PricePackage p = pDAO.get(rs.getInt("price_package_id"));
+                r.setPricePackage(p);
+
+                SubjectDAO sDAO = new SubjectDAO();
+                r.setSubject(sDAO.getForUserRegistration(p.getSubjectId()));
+
+                UserDAO uDAO = new UserDAO();
+                r.setUser(uDAO.getForSale(rs.getInt("user_id")));
+                r.setLastUpdatedBy(uDAO.getForSale(rs.getInt("last_updated_by")));
+
+                registrations.add(r);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return registrations;
+    }
+
+    public RegistrationDTO getById(Integer id) {
+        String sql = "select * from [registrations] where [id] = ?";
+        try (PreparedStatement pstm = connection.prepareStatement(sql)) {
+            pstm.setInt(1, id);
+            ResultSet rs = pstm.executeQuery();
+            if (rs.next()) {
+                RegistrationDTO r = new RegistrationDTO();
+                r.setId(rs.getInt("id"));
+
+                Timestamp timeTs = rs.getTimestamp("time");
+                if (timeTs != null) {
+                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm dd-MM-yyyy");
+                    r.setTime(timeTs.toLocalDateTime().format(formatter));
+                } else {
+                    r.setTime(null);
+                }
+
+                r.setTotalCost(rs.getDouble("total_cost"));
+
+                r.setDuration(rs.getObject("duration", Integer.class));
+
+                Timestamp validFromTs = rs.getTimestamp("valid_from");
+                if (validFromTs != null) {
+                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+                    r.setValidFrom(validFromTs.toLocalDateTime().format(formatter));
+                } else {
+                    r.setValidFrom(null);
+                }
+
+                Timestamp validToTs = rs.getTimestamp("valid_to");
+                if (validToTs != null) {
+                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+                    r.setValidTo(validToTs.toLocalDateTime().format(formatter));
+                } else {
+                    r.setValidTo(null);
+                }
+
+                r.setStatus(rs.getString("status"));
+                r.setNote(rs.getString("note"));
+
+                PricePackageDAO pDAO = new PricePackageDAO();
+                PricePackage p = pDAO.get(rs.getInt("price_package_id"));
+                r.setPricePackage(p);
+
+                SubjectDAO sDAO = new SubjectDAO();
+                r.setSubject(sDAO.getForUserRegistration(p.getSubjectId()));
+
+                UserDAO uDAO = new UserDAO();
+                r.setUser(uDAO.getForSale(rs.getInt("user_id")));
+                r.setLastUpdatedBy(uDAO.getForSale(rs.getInt("last_updated_by")));
+
+                return r;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public boolean updateRegistration(Registration r) {
+        String sql = "update [registrations] set [status] = ?, [valid_from] = ?, [valid_to] = ?, [note] = ?, [last_updated_by] = ? where [id] = ?";
+        try (PreparedStatement pstm = connection.prepareStatement(sql)) {
+            pstm.setString(1, r.getStatus());
+            pstm.setObject(2, r.getValidFrom());
+            pstm.setObject(3, r.getValidTo());
+            pstm.setString(4, r.getNote());
+            pstm.setObject(5, r.getLastUpdatedBy());
+            pstm.setInt(6, r.getId());
+            pstm.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public void deleteTempRegistration(Integer id) {
+        String sql = "delete from [registrations] where [id] = ?";
+        try (PreparedStatement pstm = connection.prepareStatement(sql)) {
+            pstm.setInt(1, id);
+            pstm.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public boolean createRegistrationBySale(Registration registration) {
+        String sql = "insert into [registrations] ([time], [total_cost], [duration], [valid_from], [valid_to], [status], " +
+                "[note], [price_package_id], [user_id], [last_updated_by]) values (?,?,?,?,?,?,?,?,?,?)";
+        try (PreparedStatement pstm = connection.prepareStatement(sql)) {
+            pstm.setObject(1, registration.getTime());
+            pstm.setDouble(2, registration.getTotalCost());
+            pstm.setObject(3, registration.getDuration());
+            pstm.setObject(4, registration.getValidFrom());
+            pstm.setObject(5, registration.getValidTo());
+            pstm.setString(6, registration.getStatus());
+            pstm.setString(7, registration.getNote());
+            pstm.setInt(8, registration.getPricePackageId());
+            pstm.setInt(9, registration.getUserId());
+            pstm.setInt(10, registration.getLastUpdatedBy());
+            return pstm.executeUpdate() > 0;
+        } catch (SQLException e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+        return false;
+
+    }
+
 }

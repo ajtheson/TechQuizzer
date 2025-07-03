@@ -486,4 +486,21 @@ public class SubjectDAO extends DBContext {
         }
         return false;
     }
+
+    public List<Subject> getForCreateRegistration(){
+        List<Subject> subjects = new ArrayList<>();
+        String sql = "select [id], [name] from [subjects] where [status] = 1";
+        try(PreparedStatement pstm = connection.prepareStatement(sql)){
+            ResultSet rs = pstm.executeQuery();
+            while (rs.next()) {
+                Subject subject = new Subject();
+                subject.setId(rs.getInt("id"));
+                subject.setName(rs.getString("name"));
+                subjects.add(subject);
+            }
+        }catch (SQLException e){
+            System.out.println("Error: " + e.getMessage());
+        }
+        return subjects;
+    }
 }

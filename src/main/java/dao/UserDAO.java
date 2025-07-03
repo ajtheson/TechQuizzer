@@ -561,4 +561,67 @@ public class UserDAO extends DBContext {
         }
         return users;
     }
+
+    public User getForSale(Integer id) {
+        String sql = "select [email], [name], [gender], [mobile], [temp_user] from [users] where [id] = ?";
+        try(PreparedStatement pstm = connection.prepareStatement(sql)){
+            pstm.setInt(1, id);
+            ResultSet rs = pstm.executeQuery();
+            if (rs.next()) {
+                User user = new User();
+                user.setId(id);
+                user.setEmail(rs.getString("email"));
+                user.setName(rs.getString("name"));
+                Boolean gender = rs.getBoolean("gender");
+                if (rs.wasNull()) {
+                    gender = null;
+                }
+                user.setGender(gender);
+                user.setMobile(rs.getString("mobile"));
+                user.setTempUser(rs.getBoolean("temp_user"));
+                return user;
+            }
+        }catch (SQLException e){
+            System.err.println("Error: " + e.getMessage());
+        }
+        return null;
+    }
+
+    public void activateRegistration(Integer id, String password) {
+        String sql = "update [users] set [password] = ?, [temp_user] = 0, [activate] = 1 where [id] = ?";
+        try(PreparedStatement pstm = connection.prepareStatement(sql)){
+            pstm.setString(1, password);
+            pstm.setInt(2, id);
+            pstm.executeUpdate();
+        }catch (SQLException e){
+            System.err.println("Error: " + e.getMessage());
+        }
+    }
+
+    public void deleteTempUser(Integer id) {
+        String sql = "delete from [users] where [id] = ?";
+        try(PreparedStatement pstm = connection.prepareStatement(sql)){
+            pstm.setInt(1, id);
+            pstm.executeUpdate();
+        }catch (SQLException e){
+            System.err.println("Error: " + e.getMessage());
+        }
+    }
+
+    public List<User> getForCreateRegistration(){
+        List<User> users = new ArrayList<>();
+        String sql = "select [id], [email] from [users] where [activate] = 1 and [status] = 1 and [role_id] = 3";
+        try(PreparedStatement pstm = connection.prepareStatement(sql)){
+            ResultSet rs = pstm.executeQuery();
+            while (rs.next()) {
+                User user = new User();
+                user.setId(rs.getInt("id"));
+                user.setEmail(rs.getString("email"));
+                users.add(user);
+            }
+        }catch (SQLException e){
+            System.err.println("Error: " + e.getMessage());
+        }
+        return users;
+    }
 }
