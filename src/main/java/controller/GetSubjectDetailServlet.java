@@ -46,7 +46,6 @@ public class GetSubjectDetailServlet extends HttpServlet {
         SubjectService subjectService = new SubjectService();
         SubjectDTO subjectDTO = subjectService.toSubjectDTO(subject);
         subjectDTO.setLongDescription(subject.getLongDescription().replace("\\n", "<br>"));
-        subjectDTO.setRegistered(registrationDAO.isRegistrationExist(userID, subjectDTO.getId()));
 
         //Get active price packages of this subject to show
         List<PricePackage> pricePackages = pricePackageDAO.getActiveOfSubject(subjectId);
