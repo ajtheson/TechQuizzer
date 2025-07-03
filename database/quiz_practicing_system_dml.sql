@@ -7,6 +7,7 @@ VALUES
 ('User Roles', 'Admin', 'System administrator with full access', 1),
 ('User Roles', 'Expert', 'Expert responsible for providing answers and content', 1),
 ('User Roles', 'Customer', 'Regular user with limited permissions', 1),
+('User Roles', 'Sale', 'The sale members of the organization ', 1),
 ('Subject Categories', 'Programming', 'Topics related to programming languages and software development', 1),
 ('Subject Categories', 'Database', 'Subjects covering relational databases and SQL queries', 1),
 ('Subject Categories', 'Network', 'Topics related to computer networks and communication protocols', 1),
@@ -63,7 +64,9 @@ INSERT INTO [users] (
 ('expert3@example.com', '9IvR609uK4oh0w4QpeapLfvPBB37oA5EmVTjpF/liwQ=', N'Caleb Vu', 1, '0920000003', N'66 Tran Hung Dao, District 5, HCM City', 1, 2, NULL, NULL),
 ('expert4@example.com', '9IvR609uK4oh0w4QpeapLfvPBB37oA5EmVTjpF/liwQ=', N'Diana Pham', 0, '0920000004', N'55 Le Van Sy, Phu Nhuan District, HCM City', 1, 2, NULL, NULL),
 ('expert5@example.com', '9IvR609uK4oh0w4QpeapLfvPBB37oA5EmVTjpF/liwQ=', N'Ethan Lam', 1, '0920000005', N'44 Nguyen Van Cu, District 1, HCM City', 1, 2, NULL, NULL),
-('expert6@example.com', '9IvR609uK4oh0w4QpeapLfvPBB37oA5EmVTjpF/liwQ=', N'Faye Ngo', 0, '0920000006', N'33 Phan Xich Long, Phu Nhuan District, HCM City', 1, 2, NULL, NULL);
+('expert6@example.com', '9IvR609uK4oh0w4QpeapLfvPBB37oA5EmVTjpF/liwQ=', N'Faye Ngo', 0, '0920000006', N'33 Phan Xich Long, Phu Nhuan District, HCM City', 1, 2, NULL, NULL),
+('sale1@example.com', '9IvR609uK4oh0w4QpeapLfvPBB37oA5EmVTjpF/liwQ=', N'Faye Ngo', 0, '0920000007', N'33 Phan Xich Long, Phu Nhuan District, HCM City', 1, 4, NULL, NULL),
+('sale2@example.com', '9IvR609uK4oh0w4QpeapLfvPBB37oA5EmVTjpF/liwQ=', N'Faye Ngo', 0, '0920000008', N'33 Phan Xich Long, Phu Nhuan District, HCM City', 1, 4, NULL, NULL);
 
 INSERT INTO [subjects] (
     [name], [tag_line], [thumbnail], 
@@ -341,22 +344,28 @@ INSERT INTO [price_packages] ([name], [duration], [list_price], [sale_price], [d
 ('Bronze', 1, 49.99, 29.99, 'Basic access for one month', 1, 29),
 ('Silver', 3, 99.99, 59.99, 'Standard access for three months', 1, 29),
 ('Gold', 6, 199.99, 99.99, 'Full access for six months', 1, 29),
-('Prenimum', null, 300.99, 249.99, 'Full access for every time', 1, 29),
+('Premium', null, 300.99, 249.99, 'Full access for every time', 1, 29),
 -- Subject ID 30
 ('Bronze', 1, 49.99, 29.99, 'Basic access for one month', 1, 30),
 ('Silver', 3, 99.99, 59.99, 'Standard access for three months', 1, 30),
 ('Gold', 6, 199.99, 99.99, 'Full access for six months', 1, 30),
-('Prenimum', null, 300.99, 249.99, 'Full access for every time', 1, 30);
+('Premium', null, 300.99, 249.99, 'Full access for every time', 1, 30);
 
-INSERT INTO [registrations] ([time], [total_cost], [duration], [valid_from], [valid_to], [status], [price_package_id], [user_id]) VALUES 
-('2025-05-19 08:50:00.000', 29.99, 1,'2025-05-20 09:00:00.000', '2025-06-20 09:00:00.000', 'Paid', 1, 2),
-('2025-06-09 08:50:00.000', 49.99, 3,null, null, 'Pending Confirmation', 5, 2),
-('2025-06-09 08:50:00.000', 49.99, 3,null, null, 'Pending Payment', 8, 2),
-('2024-06-19 08:50:00.000', 114.99, 6,'2024-06-20 09:00:00.000', '2024-12-20 09:00:00.000', 'Expired', 27, 2),
-('2025-06-05 08:50:00.000', 99.99, 6,null, null, 'Canceled', 24, 2),
-('2025-06-05 08:50:00.000', 99.99, 6,null, null, 'Rejected', 21, 2),
-('2025-03-11 08:50:00.000', 249.99, null, null, null, 'Pending Confirmation', 88, 2),
-('2025-03-11 08:50:00.000', 249.99, null,'2025-03-13 09:00:00.000', null, 'Paid', 92, 2);
+INSERT INTO [registrations] ([time], [total_cost], [duration], [valid_from], [valid_to], [status], [price_package_id], [user_id], [last_updated_by]) VALUES 
+('2025-05-19 08:50:00.000', 29.99, 1,'2025-05-20 09:00:00.000', '2025-06-20 09:00:00.000', 'Paid', 1, 2, 28),
+('2025-06-09 08:50:00.000', 49.99, 3,null, null, 'Pending Confirmation', 5, 2, null),
+('2025-06-09 08:50:00.000', 49.99, 3,null, null, 'Pending Payment', 8, 2, 29),
+('2024-06-19 08:50:00.000', 114.99, 6,'2024-06-20 09:00:00.000', '2024-12-20 09:00:00.000', 'Expired', 27, 2, 28),
+('2025-06-05 08:50:00.000', 99.99, 6,null, null, 'Canceled', 24, 2, null),
+('2025-06-05 08:50:00.000', 99.99, 6,null, null, 'Rejected', 21, 2, 29),
+('2025-03-11 08:50:00.000', 249.99, null, null, null, 'Pending Confirmation', 88, 2, null),
+('2025-03-11 08:50:00.000', 249.99, null,'2025-03-13 09:00:00.000', null, 'Paid', 92, 2, 28),
+('2025-05-19 08:50:00.000', 29.99, 1,'2025-05-20 09:00:00.000', '2025-06-20 09:00:00.000', 'Paid', 1, 3, 28),
+('2025-06-09 08:50:00.000', 49.99, 3,null, null, 'Pending Confirmation', 5, 4, null),
+('2025-06-09 08:50:00.000', 49.99, 3,null, null, 'Pending Payment', 8, 5, 29),
+('2024-06-19 08:50:00.000', 114.99, 6,'2024-06-20 09:00:00.000', '2024-12-20 09:00:00.000', 'Expired', 27, 6, 28),
+('2025-06-05 08:50:00.000', 99.99, 6,null, null, 'Canceled', 24, 7, null),
+('2025-06-05 08:50:00.000', 99.99, 6,null, null, 'Rejected', 21, 8, 29);
 
 INSERT INTO [dimensions] ([name], [description], [subject_id]) VALUES
 -- subject_id = 1 (Introduction to Programming)
