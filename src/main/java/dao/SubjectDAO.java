@@ -57,6 +57,34 @@ public class SubjectDAO extends DBContext {
         }
         return list;
     }
+    public List<Subject> getAllSubjectsWithoutID() {
+        List<Subject> list = new ArrayList<>();
+        String sql = "SELECT * FROM subjects";
+        try (
+                PreparedStatement ps = connection.prepareStatement(sql);
+        ) {
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Subject s = new Subject(
+                        rs.getInt("id"),
+                        rs.getString("name"),
+                        rs.getString("tag_line"),
+                        rs.getString("thumbnail"),
+                        rs.getString("detail_description"),
+                        rs.getBoolean("featured_subject"),
+                        rs.getBoolean("status"),
+                        rs.getInt("category_id"),
+                        rs.getInt("owner_id"),
+                        rs.getTimestamp("update_date").toLocalDateTime()
+                );
+                list.add(s);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
 
     public Subject findById(int id) {
         String sql = """

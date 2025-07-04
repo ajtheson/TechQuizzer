@@ -86,9 +86,7 @@
                                 <c:if test="${sessionScope.user.roleName == 'Admin'}">
                                     <div class="mb-3 col-md-6">
                                         <label class="form-label" for="status">Status: <span class="text-danger">*</span></label>
-                                        <select class="form-control" id="status" name="status" required>
-                                            <option value="">--Choose status--</option>
-                                            <option value="Published">Published</option>
+                                        <select class="form-control" id="status" name="status" disabled>
                                             <option value="Unpublished">Unpublished</option>
                                         </select>
                                     </div>

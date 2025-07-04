@@ -1,6 +1,7 @@
 package dao;
 
 import dal.DBContext;
+import dto.LessonDTO;
 import dto.QuizDTO;
 import entity.*;
 
@@ -354,5 +355,128 @@ public class QuizDAO extends DBContext {
         }
         return false;
     }
+
+
+    public List<LessonDTO> getLessonsByPage(String subjectName, String lessonTypeName, String searchText,
+                                            int page, int pageSize, String sortField, String sortOrder, int expertId) {
+        List<LessonDTO> lessons = new ArrayList<>();
+        int offset = (page - 1) * pageSize;
+
+        StringBuilder sql = new StringBuilder(
+                "SELECT l.id, l.name, l.[order], l.video_link, l.content, l.status, " +
+                        "s.id AS subject_id, s.name AS subject_name, " +
+                        "lt.id AS lesson_type_id, lt.name AS lesson_type_name " +
+                        "FROM lessons l " +
+                        "JOIN subjects s ON l.subject_id = s.id " +
+                        "LEFT JOIN lesson_types lt ON l.lesson_type_id = lt.id " +
+                        "WHERE s.owner_id = ?"
+        );
+
+        if (subjectName != null && !subjectName.isEmpty()) {
+            sql.append(" AND s.name LIKE ?");
+        }
+        if (lessonTypeName != null && !lessonTypeName.isEmpty()) {
+            sql.append(" AND lt.name LIKE ?");
+        }
+        if (searchText != null && !searchText.isEmpty()) {
+            sql.append(" AND l.name LIKE ?");
+        }
+
+        List<String> validSortFields = Arrays.asList("l.name", "l.order", "l.id", "s.name", "lt.name");
+        if (!validSortFields.contains(sortField)) sortField = "l.id";
+        if (!sortOrder.equalsIgnoreCase("ASC") && !sortOrder.equalsIgnoreCase("DESC")) sortOrder = "ASC";
+
+        sql.append(" ORDER BY ").append(sortField).append(" ").append(sortOrder);
+        sql.append(" OFFSET ? ROWS FETCH NEXT ? ROWS ONLY");
+
+        try (PreparedStatement ps = connection.prepareStatement(sql.toString())) {
+            ps.setInt(1, expertId);
+            int paramIndex = 2;
+
+            if (subjectName != null && !subjectName.isEmpty())
+                ps.setString(paramIndex++, "%" + subjectName + "%");
+
+            if (lessonTypeName != null && !lessonTypeName.isEmpty())
+                ps.setString(paramIndex++, "%" + lessonTypeName + "%");
+
+            if (searchText != null && !searchText.isEmpty())
+                ps.setString(paramIndex++, "%" + searchText + "%");
+
+            ps.setInt(paramIndex++, offset);
+            ps.setInt(paramIndex, pageSize);
+
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                LessonDTO dto = new LessonDTO();
+                dto.setId(rs.getInt("id"));
+                dto.setName(rs.getString("name"));
+                dto.setOrder(rs.getInt("order"));
+                dto.setVideoLink(rs.getString("video_link"));
+                dto.setContent(rs.getString("content"));
+                dto.setStatus(rs.getBoolean("status"));
+
+                Subject subject = new Subject();
+                subject.setId(rs.getInt("subject_id"));
+                subject.setName(rs.getString("subject_name"));
+                dto.setSubject(subject);
+
+                LessonType lessonType = new LessonType();
+                lessonType.setId(rs.getInt("lesson_type_id"));
+                lessonType.setName(rs.getString("lesson_type_name"));
+                dto.setLessonType(lessonType);
+
+                lessons.add(dto);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return lessons;
+    }
+
+    public int getTotalLessons(String subjectName, String lessonTypeName, String searchText, int expertId) {
+        StringBuilder sql = new StringBuilder(
+                "SELECT COUNT(*) AS total FROM lessons l " +
+                        "JOIN subjects s ON l.subject_id = s.id " +
+                        "LEFT JOIN lesson_types lt ON l.lesson_type_id = lt.id " +
+                        "WHERE s.owner_id = ?"
+        );
+
+        if (subjectName != null && !subjectName.isEmpty()) {
+            sql.append(" AND s.name LIKE ?");
+        }
+        if (lessonTypeName != null && !lessonTypeName.isEmpty()) {
+            sql.append(" AND lt.name LIKE ?");
+        }
+        if (searchText != null && !searchText.isEmpty()) {
+            sql.append(" AND l.name LIKE ?");
+        }
+
+        try (PreparedStatement ps = connection.prepareStatement(sql.toString())) {
+            ps.setInt(1, expertId);
+            int paramIndex = 2;
+
+            if (subjectName != null && !subjectName.isEmpty())
+                ps.setString(paramIndex++, "%" + subjectName + "%");
+
+            if (lessonTypeName != null && !lessonTypeName.isEmpty())
+                ps.setString(paramIndex++, "%" + lessonTypeName + "%");
+
+            if (searchText != null && !searchText.isEmpty())
+                ps.setString(paramIndex++, "%" + searchText + "%");
+
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("total");
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return 0;
+    }
+
 
 }
