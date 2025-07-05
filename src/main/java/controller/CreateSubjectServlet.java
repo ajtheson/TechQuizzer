@@ -27,7 +27,7 @@ import java.util.List;
 @WebServlet(name = "CreateSubjectServlet", urlPatterns = {"/create-subject"})
 @MultipartConfig(
         fileSizeThreshold = 1024 * 1024,         // 1MB (bộ nhớ tạm)
-        maxFileSize = 50 * 1024 * 1024,          // 50MB cho mỗi file
+        maxFileSize = 10 * 1024 * 1024,          // 10MB cho mỗi file
         maxRequestSize = 100 * 1024 * 1024       // 100MB cho toàn bộ form
 )
 public class CreateSubjectServlet extends HttpServlet {
@@ -168,7 +168,7 @@ public class CreateSubjectServlet extends HttpServlet {
                 descriptionImageCaptions.add(caption != null ? caption.trim() : "");
             }
         }
-
+        long MAX_FILE_SIZE = 10 * 1024 * 1024;
         // Process description images
         for (int i = 0; i < descriptionImageParts.size(); i++) {
             Part imagePart = descriptionImageParts.get(i);

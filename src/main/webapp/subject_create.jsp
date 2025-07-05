@@ -151,7 +151,7 @@
                                         <div class="col-md-6">
                                             <label class="form-label">Image:</label>
                                             <input type="file" class="form-control subjectDescriptionImageInput"
-                                                   name="subjectDescriptionImageInput" accept="image/*">
+                                                   name="subjectDescriptionImageInput" id="descImageInput" accept="image/*">
                                             <label class="form-label mt-2">Caption:</label>
                                             <textarea class="form-control subjectDescriptionImageCaption"
                                                       name="subjectDescriptionImageCaption" rows="5"></textarea>
@@ -231,11 +231,24 @@
         const preview = document.getElementById("thumbnailPreview");
         const previewLabel = document.getElementById("thumbnailPreviewLabel");
         const form = document.getElementById("subjectForm");
+        const MAX_SIZE = 10 * 1024 * 1024; // 10MB per file
+        const MAX_TOTAL_SIZE = 30 * 1024 * 1024; // 100MB for entire form
 
         // Show preview thumbnail when upload file
         thumbnail.addEventListener("change", function (e) {
             const files = e.target.files;
             if (files.length > 0) {
+                // Check file size immediately
+                if (files[0].size > MAX_SIZE) {
+                    alert("Thumbnail file exceeds 10MB limit. Please choose a smaller file.");
+                    this.value = ''; // Clear the input
+                    preview.src = "";
+                    preview.style.display = "none";
+                    previewLabel.style.display = "none";
+                    checkTotalFileSize(); // Update total size display
+                    return;
+                }
+
                 const imgURL = URL.createObjectURL(files[0]);
                 preview.src = imgURL;
                 preview.style.display = "block";
@@ -245,22 +258,93 @@
                 preview.style.display = "none";
                 previewLabel.style.display = "none";
             }
+
+            // Update total file size display
+            checkTotalFileSize();
         });
 
         // Form validation
         form.addEventListener('submit', function (e) {
             let isValid = true;
-            let firstInvalidElement = null;
+            let errorMessages = [];
 
             // Clear previous error states
             clearErrorStates();
 
-            // Get form values
+            // Check file sizes before form submission
+            const thumbnailFile = document.getElementById("thumbnail").files[0];
+            let totalSize = 0;
+            let fileCount = 0;
+
+            // Calculate total file size
+            if (thumbnailFile) {
+                totalSize += thumbnailFile.size;
+                fileCount++;
+
+                if (thumbnailFile.size > MAX_SIZE) {
+                    errorMessages.push("Thumbnail file exceeds 10MB limit.");
+                    setFieldError("thumbnail", "File exceeds 10MB limit.");
+                    isValid = false;
+                }
+            }
+
+            // Check description images and add to total size
+            const descriptionPairs = document.querySelectorAll('.description-pair:not(#template)');
+            descriptionPairs.forEach((pair, index) => {
+                const fileInput = pair.querySelector('.subjectDescriptionImageInput');
+                const captionInput = pair.querySelector('.subjectDescriptionImageCaption');
+
+                if (fileInput && captionInput) {
+                    const hasFile = fileInput.files.length > 0;
+                    const hasCaption = captionInput.value.trim() !== '';
+
+                    // Check file size if file exists
+                    if (hasFile) {
+                        const file = fileInput.files[0];
+                        totalSize += file.size;
+                        fileCount++;
+
+                        if (file.size > MAX_SIZE) {
+                            errorMessages.push(`Description image exceeds 10MB limit.`);
+                            fileInput.classList.add('is-invalid');
+
+                            // Add error message below the file input
+                            const errorDiv = document.createElement('div');
+                            errorDiv.classList.add('text-danger', 'mt-1', 'error-message');
+                            errorDiv.textContent = `File exceeds 10MB limit.`;
+                            fileInput.parentNode.appendChild(errorDiv);
+
+                            isValid = false;
+                        }
+                    }
+
+                    // If there's a caption but no image, that's invalid
+                    if (hasCaption && !hasFile) {
+                        errorMessages.push(`Description image: Caption without image is not allowed.`);
+                        captionInput.classList.add('is-invalid');
+                        isValid = false;
+                    }
+
+                    // If there's neither image nor caption, remove the pair
+                    if (!hasFile && !hasCaption) {
+                        pair.remove();
+                    }
+                }
+            });
+
+            // Check total file size
+            if (totalSize > MAX_TOTAL_SIZE) {
+                const totalSizeMB = (totalSize / (1024 * 1024)).toFixed(2);
+                errorMessages.push(`Total file size exceeds 100MB limit. Please reduce file sizes or remove some images.`);
+                isValid = false;
+            }
+
+            // Get form values for other validations
             const subjectName = document.getElementById("subjectName").value.trim();
             const subjectCategory = document.getElementById("subjectCategory").value;
             const subjectDescription = document.getElementById("subjectDescription").value.trim();
             const tagLine = document.getElementById("tagLine").value.trim();
-            const thumbnailFile = document.getElementById("thumbnail").files.length > 0;
+            const thumbnailFileExists = document.getElementById("thumbnail").files.length > 0;
 
             // Check if user is admin
             const isAdmin = ${sessionScope.user.roleName == 'Admin'};
@@ -295,7 +379,7 @@
                 isValid = false;
             }
 
-            if (!thumbnailFile) {
+            if (!thumbnailFileExists) {
                 setFieldError("thumbnail", "Please select a thumbnail image.");
                 isValid = false;
             }
@@ -312,32 +396,14 @@
                 }
             }
 
-            // Validate description images
-            const descriptionPairs = document.querySelectorAll('.description-pair:not(#template)');
-            descriptionPairs.forEach((pair, index) => {
-                const fileInput = pair.querySelector('.subjectDescriptionImageInput');
-                const captionInput = pair.querySelector('.subjectDescriptionImageCaption');
-
-                if (fileInput && captionInput) {
-                    const hasFile = fileInput.files.length > 0;
-                    const hasCaption = captionInput.value.trim() !== '';
-
-                    // If there's a caption but no image, that's invalid
-                    if (hasCaption && !hasFile) {
-                        alert('Description image #' + (index + 1) + ': Caption without image is not allowed. Please add an image or remove the caption.');
-                        isValid = false;
-                        return;
-                    }
-
-                    // If there's neither image nor caption, remove the pair
-                    if (!hasFile && !hasCaption) {
-                        pair.remove();
-                    }
-                }
-            });
-
             if (!isValid) {
                 e.preventDefault();
+
+                // Show error messages
+                if (errorMessages.length > 0) {
+                    alert(errorMessages.join("\n"));
+                }
+
                 // Focus on first invalid field
                 const firstInvalid = document.querySelector('.is-invalid');
                 if (firstInvalid) {
@@ -368,6 +434,33 @@
             }
         }
 
+        function checkTotalFileSize() {
+            let totalSize = 0;
+            let fileCount = 0;
+
+            // Add thumbnail size
+            const thumbnailFile = document.getElementById("thumbnail").files[0];
+            if (thumbnailFile) {
+                totalSize += thumbnailFile.size;
+                fileCount++;
+            }
+
+            // Add description images size
+            const descriptionPairs = document.querySelectorAll('.description-pair:not(#template)');
+            descriptionPairs.forEach((pair) => {
+                const fileInput = pair.querySelector('.subjectDescriptionImageInput');
+                if (fileInput && fileInput.files.length > 0) {
+                    totalSize += fileInput.files[0].size;
+                    fileCount++;
+                }
+            });
+
+            // Update total size display
+            updateTotalSizeDisplay(totalSize, fileCount);
+
+            return totalSize;
+        }
+
         // Add new description image pair
         document.getElementById('addNewSubjectDescriptionImage').addEventListener('click', function() {
             addDescriptionPair();
@@ -385,27 +478,69 @@
                 const confirmed = confirm('Are you sure you want to remove this description image?');
                 if (confirmed) {
                     template.remove();
+                    checkTotalFileSize(); // Update total size after removal
                 }
             });
 
-            // Add image preview functionality
+            // Add image preview functionality with file size validation
             const imageInput = template.querySelector('.subjectDescriptionImageInput');
             const imagePreview = template.querySelector('.description_img_preview');
 
             imageInput.addEventListener('change', function() {
                 const file = this.files[0];
                 if (file) {
+                    // Check file size
+                    if (file.size > MAX_SIZE) {
+                        alert(`Description image exceeds 10MB limit. Please choose a smaller file.`);
+                        this.value = ''; // Clear the input
+                        imagePreview.src = '';
+                        imagePreview.style.display = 'none';
+
+                        // Remove any existing error messages
+                        const existingError = this.parentNode.querySelector('.error-message');
+                        if (existingError) {
+                            existingError.remove();
+                        }
+
+                        // Add error message
+                        const errorDiv = document.createElement('div');
+                        errorDiv.classList.add('text-danger', 'mt-1', 'error-message');
+                        errorDiv.textContent = 'File exceeds 10MB limit.';
+                        this.parentNode.appendChild(errorDiv);
+
+                        this.classList.add('is-invalid');
+                        checkTotalFileSize(); // Update total size display
+                        return;
+                    } else {
+                        // Remove error state if file size is valid
+                        this.classList.remove('is-invalid');
+                        const existingError = this.parentNode.querySelector('.error-message');
+                        if (existingError) {
+                            existingError.remove();
+                        }
+                    }
+
                     imagePreview.src = URL.createObjectURL(file);
                     imagePreview.style.display = 'block';
                 } else {
                     imagePreview.src = '';
                     imagePreview.style.display = 'none';
+                    this.classList.remove('is-invalid');
+                    const existingError = this.parentNode.querySelector('.error-message');
+                    if (existingError) {
+                        existingError.remove();
+                    }
                 }
+
+                // Update total file size display
+                checkTotalFileSize();
             });
 
             container.appendChild(template);
         }
     });
 </script>
+
+
 </body>
 </html>
