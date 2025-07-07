@@ -57,14 +57,6 @@
             <div class="tile">
                 <h3 class="tile-title">CREATE NEW SUBJECT</h3>
                 <div class="tile-body">
-                    <!-- Display error message if any -->
-                    <c:if test="${not empty requestScope.errorMessage}">
-                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                                ${requestScope.errorMessage}
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                        </div>
-                    </c:if>
-
                     <form action="create-subject" method="post" enctype="multipart/form-data" id="subjectForm">
                         <div class="row align-items-start">
                             <div class="row col-md-8">

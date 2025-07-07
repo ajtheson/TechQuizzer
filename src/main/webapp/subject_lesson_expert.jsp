@@ -62,6 +62,7 @@
                             <th><a style="display: flex; align-items: center; gap: 5px; text-decoration: none; color: inherit;" href="?subject=${subject}&lessonType=${lessonType}&search=${search}&sortField=l.id&sortOrder=${sortOrder == 'ASC' ? 'DESC' : 'ASC'}&page=${currentPage}&pageSize=${pageSize}">ID<i class="fa fa-sort"></i></a></th>
                             <th><a style="display: flex; align-items: center; gap: 5px; text-decoration: none; color: inherit;" href="?subject=${subject}&lessonType=${lessonType}&search=${search}&sortField=l.name&sortOrder=${sortOrder == 'ASC' ? 'DESC' : 'ASC'}&page=${currentPage}&pageSize=${pageSize}">Name<i class="fa fa-sort"></i></a></th>
                             <th><a style="display: flex; align-items: center; gap: 5px; text-decoration: none; color: inherit;" href="?subject=${subject}&lessonType=${lessonType}&search=${search}&sortField=l.[order]&sortOrder=${sortOrder == 'ASC' ? 'DESC' : 'ASC'}&page=${currentPage}&pageSize=${pageSize}">Order<i class="fa fa-sort"></i></a></th>
+                            <th><a style="display: flex; align-items: center; gap: 5px; text-decoration: none; color: inherit;" href="?subject=${subject}&lessonType=${lessonType}&search=${search}&sortField=l.topic&sortOrder=${sortOrder == 'ASC' ? 'DESC' : 'ASC'}&page=${currentPage}&pageSize=${pageSize}">Topic<i class="fa fa-sort"></i></a></th>
                             <th><a style="display: flex; align-items: center; gap: 5px; text-decoration: none; color: inherit;"  href="?subject=${subject}&lessonType=${lessonType}&search=${search}&sortField=l.video_link&sortOrder=${sortOrder == 'ASC' ? 'DESC' : 'ASC'}&page=${currentPage}&pageSize=${pageSize}">Video<i class="fa fa-sort"></i></a></th>
                             <th><a style="display: flex; align-items: center; gap: 5px; text-decoration: none; color: inherit;"  href="?subject=${subject}&lessonType=${lessonType}&search=${search}&sortField=s.name&sortOrder=${sortOrder == 'ASC' ? 'DESC' : 'ASC'}&page=${currentPage}&pageSize=${pageSize}">Subject<i class="fa fa-sort"></i></a></th>
                             <th><a style="display: flex; align-items: center; gap: 5px; text-decoration: none; color: inherit;"  href="?subject=${subject}&lessonType=${lessonType}&search=${search}&sortField=lt.name&sortOrder=${sortOrder == 'ASC' ? 'DESC' : 'ASC'}&page=${currentPage}&pageSize=${pageSize}">Lesson Type<i class="fa fa-sort"></i></a></th>
@@ -78,6 +79,7 @@
                                 <td>${lesson.id}</td>
                                 <td>${lesson.name}</td>
                                 <td>${lesson.order}</td>
+                                <td>${lesson.topic}</td>
                                 <td><a href="${lesson.videoLink}" target="_blank">Video</a></td>
                                 <td>${lesson.subject.name}</td>
                                 <td>${lesson.lessonType.name}</td>
@@ -100,7 +102,10 @@
                                     </c:choose>
                                 </td>
                                 <td>
-                                    <a href="lesson-detail?id=${lesson.id}" class="btn btn-info btn-sm">View</a>
+                                    <div class="d-flex justify-content-center gap-2">
+                                        <a style="color: white" href="lesson-detail?id=${lesson.id}" class="btn btn-info btn-sm">View</a>
+                                        <a style="color: white" href="lesson-edit?id=${lesson.id}" class="btn btn-warning btn-sm">Edit</a>
+                                    </div>
                                 </td>
                             </tr>
                         </c:forEach>

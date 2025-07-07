@@ -34,6 +34,58 @@ public class LessonDAO extends DBContext {
         }
         return null;
     }
+    public LessonDTO getLessonDTOById(int id) {
+        LessonDTO lesson = null;
+        String sql = "SELECT l.id, l.name, l.[order],l.topic, l.video_link, l.content, l.status, " +
+                "l.subject_id, s.name AS subject_name, " +
+                "l.lesson_type_id, lt.name AS lesson_type_name,u.name AS owner_name " +
+                "FROM lessons l " +
+                "LEFT JOIN subjects s ON l.subject_id = s.id " +
+                "LEFT JOIN lesson_types lt ON l.lesson_type_id = lt.id " +
+                "LEFT JOIN users u ON s.owner_id = u.id "+
+                "WHERE l.id = ?";
+
+        try (PreparedStatement pstm = connection.prepareStatement(sql)) {
+
+            pstm.setInt(1, id);
+            try (ResultSet rs = pstm.executeQuery()) {
+                if (rs.next()) {
+                    lesson = new LessonDTO();
+                    lesson.setId(rs.getInt("id"));
+                    lesson.setName(rs.getString("name"));
+                    lesson.setOrder(rs.getInt("order"));
+                    lesson.setTopic(rs.getString("topic"));
+                    lesson.setVideoLink(rs.getString("video_link"));
+                    lesson.setContent(rs.getString("content"));
+                    lesson.setStatus(rs.getBoolean("status"));
+
+                    // Subject
+                    Subject subject = new Subject();
+                    subject.setId(rs.getInt("subject_id"));
+                    subject.setName(rs.getString("subject_name"));
+                    lesson.setSubject(subject);
+
+                    // SubjectDTO (nếu cần)
+                    SubjectDTO subjectDTO = new SubjectDTO();
+                    subjectDTO.setId(rs.getInt("subject_id"));
+                    subjectDTO.setName(rs.getString("subject_name"));
+                    subjectDTO.setOwnerName(rs.getString("owner_name"));
+                    lesson.setSubjectDTO(subjectDTO);
+
+                    // LessonType
+                    LessonType lessonType = new LessonType();
+                    lessonType.setId(rs.getInt("lesson_type_id"));
+                    lessonType.setName(rs.getString("lesson_type_name"));
+                    lesson.setLessonType(lessonType);
+                }
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return lesson;
+    }
 
     public List<Lesson> findAllBySubjectIds(List<Integer> subjectIds) {
         List<Lesson> lessons = new ArrayList<>();
@@ -109,7 +161,7 @@ public class LessonDAO extends DBContext {
         int offset = (page - 1) * pageSize;
 
         StringBuilder sql = new StringBuilder(
-                "SELECT l.id, l.name, l.[order], l.video_link, l.content, l.status, " +
+                "SELECT l.id, l.name, l.[order],l.topic, l.video_link, l.content, l.status, " +
                         "s.id AS subject_id, s.owner_id, s.name AS subject_name, " +
                         "u.name AS owner_name, " +
                         "lt.id AS lesson_type_id, lt.name AS lesson_type_name " +
@@ -129,7 +181,7 @@ public class LessonDAO extends DBContext {
             sql.append(" AND l.name LIKE ?");
         }
 
-        List<String> validSortFields = Arrays.asList("l.name", "l.order", "l.id", "s.name", "lt.name");
+        List<String> validSortFields = Arrays.asList("l.name", "l.order","l.video_link","l.topic", "l.id", "s.name", "lt.name");
         if (!validSortFields.contains(sortField)) sortField = "l.id";
         if (!sortOrder.equalsIgnoreCase("ASC") && !sortOrder.equalsIgnoreCase("DESC")) sortOrder = "ASC";
 
@@ -157,6 +209,7 @@ public class LessonDAO extends DBContext {
                 dto.setId(rs.getInt("id"));
                 dto.setName(rs.getString("name"));
                 dto.setOrder(rs.getInt("order"));
+                dto.setTopic(rs.getString("topic"));
                 dto.setVideoLink(rs.getString("video_link"));
                 dto.setContent(rs.getString("content"));
                 dto.setStatus(rs.getBoolean("status"));
@@ -230,7 +283,7 @@ public class LessonDAO extends DBContext {
         int offset = (page - 1) * pageSize;
 
         StringBuilder sql = new StringBuilder(
-                "SELECT l.id, l.name, l.[order], l.video_link, l.content, l.status, " +
+                "SELECT l.id, l.name, l.[order],l.topic, l.video_link, l.content, l.status, " +
                         "s.id AS subject_id, s.name AS subject_name, " +
                         "lt.id AS lesson_type_id, lt.name AS lesson_type_name " +
                         "FROM lessons l " +
@@ -249,7 +302,7 @@ public class LessonDAO extends DBContext {
             sql.append(" AND l.name LIKE ?");
         }
 
-        List<String> validSortFields = Arrays.asList("l.name", "l.order", "l.id", "s.name", "lt.name");
+        List<String> validSortFields = Arrays.asList("l.name", "l.order","l.video_link","l.topic", "l.id", "s.name", "lt.name");
         if (!validSortFields.contains(sortField)) sortField = "l.id";
         if (!sortOrder.equalsIgnoreCase("ASC") && !sortOrder.equalsIgnoreCase("DESC")) sortOrder = "ASC";
 
@@ -278,10 +331,10 @@ public class LessonDAO extends DBContext {
                 dto.setId(rs.getInt("id"));
                 dto.setName(rs.getString("name"));
                 dto.setOrder(rs.getInt("order"));
+                dto.setTopic(rs.getString("topic"));
                 dto.setVideoLink(rs.getString("video_link"));
                 dto.setContent(rs.getString("content"));
                 dto.setStatus(rs.getBoolean("status"));
-
                 Subject subject = new Subject();
                 subject.setId(rs.getInt("subject_id"));
                 subject.setName(rs.getString("subject_name"));
@@ -357,4 +410,40 @@ public class LessonDAO extends DBContext {
         }
         return false;
     }
+    public boolean updateLesson(int id, String name, String topic, String videoLink, int order, String content, int status, int subjectId, int lessonTypeId) {
+        String sql = "UPDATE [lessons] SET name = ?, topic = ?, [order] = ?, video_link = ?, content = ?, status = ?, subject_id = ?, lesson_type_id = ? WHERE id = ?";
+        try (PreparedStatement pstm = connection.prepareStatement(sql)) {
+            pstm.setString(1, name);
+            pstm.setString(2, topic);
+            pstm.setInt(3, order);
+            pstm.setString(4, videoLink);
+            pstm.setString(5, content);
+            pstm.setInt(6, status);
+            pstm.setInt(7, subjectId);
+            pstm.setInt(8, lessonTypeId);
+            pstm.setInt(9, id);
+            return pstm.executeUpdate() > 0;
+        } catch (Exception e) {
+            System.err.println("Error updating lesson: " + e.getMessage());
+        }
+        return false;
+    }
+    public boolean insertLesson(String name, String topic, String videoLink, int order, String content, int status, int subjectId, int lessonTypeId) {
+        String sql = "INSERT INTO [lessons] (name, topic, [order], video_link, content, status, subject_id, lesson_type_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        try (PreparedStatement pstm = connection.prepareStatement(sql)) {
+            pstm.setString(1, name);
+            pstm.setString(2, topic);
+            pstm.setInt(3, order);
+            pstm.setString(4, videoLink);
+            pstm.setString(5, content);
+            pstm.setInt(6, status);
+            pstm.setInt(7, subjectId);
+            pstm.setInt(8, lessonTypeId);
+            return pstm.executeUpdate() > 0;
+        } catch (Exception e) {
+            System.err.println("Error inserting lesson: " + e.getMessage());
+        }
+        return false;
+    }
+
 }

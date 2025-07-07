@@ -5,7 +5,6 @@
   Time: 9:42 SA
   To change this template use File | Settings | File Templates.
 --%>
-
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
@@ -63,6 +62,7 @@
                             <th><a style="display: flex; align-items: center; gap: 5px; text-decoration: none; color: inherit;" href="?subject=${subject}&lessonType=${lessonType}&search=${search}&sortField=l.id&sortOrder=${sortOrder == 'ASC' ? 'DESC' : 'ASC'}&page=${currentPage}&pageSize=${pageSize}">ID<i class="fa fa-sort"></i></a></th>
                             <th><a style="display: flex; align-items: center; gap: 5px; text-decoration: none; color: inherit;" href="?subject=${subject}&lessonType=${lessonType}&search=${search}&sortField=l.name&sortOrder=${sortOrder == 'ASC' ? 'DESC' : 'ASC'}&page=${currentPage}&pageSize=${pageSize}">Name<i class="fa fa-sort"></i></a></th>
                             <th><a style="display: flex; align-items: center; gap: 5px; text-decoration: none; color: inherit;" href="?subject=${subject}&lessonType=${lessonType}&search=${search}&sortField=l.[order]&sortOrder=${sortOrder == 'ASC' ? 'DESC' : 'ASC'}&page=${currentPage}&pageSize=${pageSize}">Order<i class="fa fa-sort"></i></a></th>
+                            <th><a style="display: flex; align-items: center; gap: 5px; text-decoration: none; color: inherit;" href="?subject=${subject}&lessonType=${lessonType}&search=${search}&sortField=l.topic&sortOrder=${sortOrder == 'ASC' ? 'DESC' : 'ASC'}&page=${currentPage}&pageSize=${pageSize}">Topic<i class="fa fa-sort"></i></a></th>
                             <th><a style="display: flex; align-items: center; gap: 5px; text-decoration: none; color: inherit;"  href="?subject=${subject}&lessonType=${lessonType}&search=${search}&sortField=l.video_link&sortOrder=${sortOrder == 'ASC' ? 'DESC' : 'ASC'}&page=${currentPage}&pageSize=${pageSize}">Video<i class="fa fa-sort"></i></a></th>
                             <th><a style="display: flex; align-items: center; gap: 5px; text-decoration: none; color: inherit;"  href="?subject=${subject}&lessonType=${lessonType}&search=${search}&sortField=s.name&sortOrder=${sortOrder == 'ASC' ? 'DESC' : 'ASC'}&page=${currentPage}&pageSize=${pageSize}">Subject<i class="fa fa-sort"></i></a></th>
                             <th><a style="display: flex; align-items: center; gap: 5px; text-decoration: none; color: inherit;"  href="?subject=${subject}&lessonType=${lessonType}&search=${search}&sortField=u.name&sortOrder=${sortOrder == 'ASC' ? 'DESC' : 'ASC'}&page=${currentPage}&pageSize=${pageSize}">Expert<i class="fa fa-sort"></i></a></th>
@@ -81,6 +81,7 @@
                                 <td>${lesson.id}</td>
                                 <td>${lesson.name}</td>
                                 <td>${lesson.order}</td>
+                                <td>${lesson.topic}</td>
                                 <td><a href="${lesson.videoLink}" target="_blank">Video</a></td>
                                 <td>${lesson.subjectDTO.name}</td>
                                 <td>${lesson.subjectDTO.ownerName}</td>
@@ -95,7 +96,7 @@
                                             </a>
                                         </c:when>
                                         <c:otherwise>
-                                            <a href="toggle-lesson-status-admin?action=changeStatusLesson&id=${lesson.id}&status=1"
+                                            <a  href="toggle-lesson-status-admin?action=changeStatusLesson&id=${lesson.id}&status=1"
                                                class="btn btn-danger"
                                                onclick="return confirm('Are you sure you want to activate this quiz?');">
                                                 Inactive
@@ -104,7 +105,10 @@
                                     </c:choose>
                                 </td>
                                 <td>
-                                    <a href="lesson-detail?id=${lesson.id}" class="btn btn-info btn-sm">View</a>
+                                    <div class="d-flex justify-content-center gap-2">
+                                        <a style="color: white" href="lesson-detail?id=${lesson.id}" class="btn btn-info btn-sm">View</a>
+                                        <a style="color: white" href="lesson-edit?id=${lesson.id}" class="btn btn-warning btn-sm">Edit</a>
+                                    </div>
                                 </td>
                             </tr>
                         </c:forEach>
@@ -140,6 +144,31 @@
     </div>
 </main>
 <%@ include file="common/jsload.jsp" %>
+<%
+    String toastNotification = (String) session.getAttribute("toastNotification");
+    if (toastNotification != null) {
+        boolean isSuccess = toastNotification.contains("successfully");
+        session.removeAttribute("toastNotification");
+%>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const toastElement = document.getElementById('toast');
+        const toastElementBody = toastElement.querySelector('.toast-body');
+
+        toastElementBody.textContent = "<%= toastNotification %>";
+        toastElement.classList.remove('<%= isSuccess ? "text-bg-danger" : "text-bg-success" %>');
+        toastElement.classList.add('<%= isSuccess ? "text-bg-success" : "text-bg-danger" %>');
+
+        const toast = new bootstrap.Toast(toastElement, {
+            autohide: true,
+            delay: 2000
+        });
+        toast.show();
+    });
+</script>
+<%
+    }
+%>
 </body>
 </html>
 

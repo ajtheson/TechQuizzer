@@ -412,7 +412,17 @@ public class SubjectDAO extends DBContext {
             return false;
         }
     }
-
+    public boolean updateOwner(int id, int ownerId) {
+        String sql = "UPDATE [subjects] SET [owner_id] = ? WHERE [id] = ? ";
+        try (PreparedStatement pstm = connection.prepareStatement(sql)) {
+            pstm.setInt(1, ownerId);
+            pstm.setInt(2, id);
+            return pstm.executeUpdate() > 0;
+        } catch (SQLException e) {
+            System.out.println("Error: " + e.getMessage());
+            return false;
+        }
+    }
     public List<Subject> getAllSubjectsForQuestionList(int owner_id) {
         List<Subject> list = new ArrayList<>();
         StringBuilder sql = new StringBuilder("SELECT * FROM [subjects] WHERE 1=1");

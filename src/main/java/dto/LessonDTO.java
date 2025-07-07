@@ -10,6 +10,7 @@ public class LessonDTO {
     private String name;
     private int order;
     private String videoLink;
+    private String topic;
     private String content;
     private boolean status;
     private Subject subject;
@@ -63,6 +64,14 @@ public class LessonDTO {
     }
     public void setLessonType(LessonType lessonType) {
         this.lessonType = lessonType;
+    }
+
+    public String getTopic() {
+        return topic;
+    }
+
+    public void setTopic(String topic) {
+        this.topic = topic;
     }
 
     public SubjectDTO getSubjectDTO() {

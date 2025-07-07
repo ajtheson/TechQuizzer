@@ -21,12 +21,6 @@ public class GetQuizzesDetailServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
         UserDTO user = (UserDTO) session.getAttribute("user");
-
-
-        if (user == null) {
-            response.sendRedirect(request.getContextPath() + "/login");
-            return;
-        }
         if (user == null) {
             response.sendRedirect(request.getContextPath() + "/login");
             return;

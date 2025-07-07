@@ -55,6 +55,7 @@ public class CreateSubjectServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        HttpSession session = request.getSession();
         SubjectDAO subjectDAO = new SubjectDAO();
         List<Subject> subjects = subjectDAO.getAllSubjectsWithoutID();
         String categoryIdParam = request.getParameter("subjectCategory");
@@ -83,8 +84,8 @@ public class CreateSubjectServlet extends HttpServlet {
             }
         } catch (NumberFormatException e) {
             System.out.println("Number format exception: " + e.getMessage());
-            request.setAttribute("errorMessage", "Invalid number format in form data.");
-            doGet(request, response);
+            session.setAttribute("toastNotification", "Invalid number format in form data.");
+            response.sendRedirect("create-subject");
             return;
         }
 
@@ -95,14 +96,14 @@ public class CreateSubjectServlet extends HttpServlet {
                 tagLine == null || tagLine.trim().isEmpty() ||
                 thumbnailPart == null || thumbnailPart.getSize() == 0) {
 
-            request.setAttribute("errorMessage", "All required fields must be filled.");
-            doGet(request, response);
+            session.setAttribute("toastNotification", "All required fields must be filled.");
+            response.sendRedirect("create-subject");
             return;
         }
         for(Subject subject: subjects){
             if(subject.getName().equals(name)){
-                request.setAttribute("errorMessage", "Subject name is existed");
-                doGet(request, response);
+                session.setAttribute("toastNotification", "Subject name is existed");
+                response.sendRedirect("create-subject");
                 return;
             }
         }
@@ -133,16 +134,16 @@ public class CreateSubjectServlet extends HttpServlet {
                 subject.setThumbnail(thumbnailName);
             } catch (Exception e) {
                 System.out.println("Error saving thumbnail: " + e.getMessage());
-                request.setAttribute("errorMessage", "Error uploading thumbnail image.");
-                doGet(request, response);
+                session.setAttribute("toastNotification", "Error uploading thumbnail image.");
+                response.sendRedirect("create-subject");
                 return;
             }
         }
 
         int newSubjectId = subjectDAO.insertSubject(subject);
         if(newSubjectId==-1){
-            request.setAttribute("errorMessage", "Failed to create subject. Please try again.");
-            doGet(request, response);
+            session.setAttribute("toastNotification", "Failed to create subject. Please try again.");
+            response.sendRedirect("create-subject");
             return;
         }
         // Handle subject description images
@@ -202,7 +203,7 @@ public class CreateSubjectServlet extends HttpServlet {
         }
 
         // Set success message and redirect
-        HttpSession session = request.getSession();
+
         session.setAttribute("toastNotification", "Subject has been created successfully.");
         response.sendRedirect("create-subject");
     }
