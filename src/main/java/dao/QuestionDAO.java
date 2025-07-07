@@ -40,7 +40,7 @@ public class QuestionDAO extends DBContext {
     public List<QuestionDTO> findQuestionWithPagination(int page, int size, int subjectId, int dimensionId, int lessonId, int levelId, String status, String search, int ownerId) {
         List<QuestionDTO> questions = new ArrayList<>();
         StringBuilder sql = new StringBuilder("""
-                SELECT q.id, q.content, q.explaination, q.status, q.question_level_id, ql.name AS question_level_name, q.subject_lesson_id, l.name AS subject_lesson_name, q.subject_dimension_id, d.name AS subject_dimension_name, l.subject_id, s.name AS subject_name
+                SELECT q.id, q.content, q.explaination, q.status, q.question_level_id, ql.name AS question_level_name, q.subject_lesson_id, l.name AS subject_lesson_name, q.subject_dimension_id, d.name AS subject_dimension_name, s.id AS subject_id, s.name AS subject_name
                 FROM [questions] q
                 LEFT JOIN [lessons] l on q.subject_lesson_id = l.id
                 LEFT JOIN [dimensions] d on q.subject_dimension_id = d.id
@@ -49,7 +49,7 @@ public class QuestionDAO extends DBContext {
                 WHERE q.is_deleted = 0
                 """);
         if (subjectId != 0) {
-            sql.append(" AND l.subject_id = ?");
+            sql.append(" AND s.id = ?");
         }
         if (dimensionId != 0) {
             sql.append(" AND q.subject_dimension_id = ?");
@@ -66,7 +66,7 @@ public class QuestionDAO extends DBContext {
         if (search != null && !search.isEmpty()) {
             sql.append(" AND q.content LIKE ?");
         }
-        if (ownerId != 0) {
+         if (ownerId != 0) {
             sql.append(" AND s.owner_id = ?");
         }
         sql.append(" ORDER BY [id]");
@@ -228,7 +228,7 @@ public class QuestionDAO extends DBContext {
                 WHERE q.is_deleted = 0
                 """);
         if (subjectId != 0) {
-            sql.append(" AND l.subject_id = ?");
+            sql.append(" AND s.id = ?");
         }
         if (dimensionId != 0) {
             sql.append(" AND q.subject_dimension_id = ?");

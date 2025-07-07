@@ -3,14 +3,16 @@ package controller;
 import dao.*;
 import dto.QuestionDTO;
 import dto.UserDTO;
-import entity.*;
+import entity.Dimension;
+import entity.Lesson;
+import entity.QuestionLevel;
+import entity.Subject;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import service.QuestionService;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -76,7 +78,7 @@ public class GetQuestionListServlet extends HttpServlet {
         if (request.getParameter("status") != null) {
             status = request.getParameter("status");
         }
-        if(subjectId ==0){
+        if (subjectId == 0) {
             lessonId = 0;
             dimensionId = 0;
         }
@@ -91,7 +93,7 @@ public class GetQuestionListServlet extends HttpServlet {
         List<Subject> subjects = subjectDAO.getAllSubjectsForQuestionList(ownerId);
         List<Dimension> dimensions = new ArrayList<>();
         List<Lesson> lessons = new ArrayList<>();
-        if(subjectId != 0){
+        if (subjectId != 0) {
             List<Integer> subjectIds = new ArrayList<>();
             subjectIds.add(subjectId);
             dimensions = dimensionDAO.findAllBySubjectIds(subjectIds);
