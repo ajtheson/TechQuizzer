@@ -28,7 +28,7 @@
             <div class="tile">
                 <div class="tile-body">
                     <div class="mb-3 text-start">
-                        <a href="create_lesson" class="btn btn-primary">
+                        <a href="lesson-create" class="btn btn-primary">
                             <i class="bi bi-plus-lg me-1"></i> Add new lesson
                         </a>
                     </div>

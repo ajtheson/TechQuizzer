@@ -6,7 +6,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <html>
 <head>
     <jsp:include page="./common/headload.jsp"/>
@@ -22,7 +22,12 @@
             <h1><i class="bi bi-pencil-square"></i> Edit Lesson</h1>
         </div>
         <ul class="app-breadcrumb breadcrumb">
-            <li class="breadcrumb-item"><a href="lesson-list">Lesson List</a></li>
+            <c:if test="${currentUser != null && currentUser.roleId == 1}">
+                <li class="breadcrumb-item"><a href="subject-lesson">Lesson List</a></li>
+            </c:if>
+            <c:if test="${currentUser != null && currentUser.roleId == 2}">
+                <li class="breadcrumb-item"><a href="subject-lesson-expert">Lesson List</a></li>
+            </c:if>
             <li class="breadcrumb-item active">Edit Lesson</li>
         </ul>
     </div>
@@ -31,7 +36,7 @@
         <div class="col-md-8 offset-md-2">
             <div class="tile">
                 <div class="tile-body">
-                    <form action="lesson-edit" method="post">
+                    <form action="lesson-edit" method="post" enctype="multipart/form-data">
                         <input type="hidden" name="id" value="${lesson.id}">
 
                         <div class="mb-3">
@@ -45,9 +50,53 @@
                         </div>
 
                         <div class="mb-3">
-                            <label>Video Link</label>
-                            <input type="text" class="form-control" name="videoLink" value="${lesson.videoLink}">
+                            <label><strong>Video Source</strong></label>
+
+                            <!-- Radio: YouTube -->
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="videoType" id="videoTypeYoutube" value="youtube"
+                                ${fn:contains(lesson.videoLink, 'youtube') ? 'checked' : ''}>
+                                <label class="form-check-label" for="videoTypeYoutube">YouTube Link</label>
+                            </div>
+                            <input type="text" class="form-control mt-2" name="videoLink" id="youtubeInput"
+                                   value="${fn:contains(lesson.videoLink, 'youtube') ? lesson.videoLink : ''}"
+                                   placeholder="https://www.youtube.com/watch?v=..."
+                            ${fn:contains(lesson.videoLink, 'youtube') ? '' : 'disabled'}>
+
+                            <!-- Radio: Upload file -->
+                            <div class="form-check mt-3">
+                                <input class="form-check-input" type="radio" name="videoType" id="videoTypeUpload" value="upload"
+                                ${fn:endsWith(lesson.videoLink, '.mp4') ? 'checked' : ''}>
+                                <label class="form-check-label" for="videoTypeUpload">Upload MP4 File</label>
+                            </div>
+                            <input type="file" class="form-control mt-2" name="videoFile" id="fileInput"
+                                   accept="video/mp4" ${fn:endsWith(lesson.videoLink, '.mp4') ? '' : 'disabled'}>
+
+                            <!-- Preview video -->
+                            <div class="mt-4">
+                                <p><strong>Current Video Preview:</strong></p>
+                                <c:choose>
+                                    <c:when test="${fn:endsWith(lesson.videoLink, '.mp4')}">
+                                        <video width="100%" height="360" controls style="border: none;">
+                                            <source src="${pageContext.request.contextPath}/${lesson.videoLink}" type="video/mp4">
+                                            Your browser does not support the video tag.
+                                        </video>
+                                    </c:when>
+                                    <c:when test="${fn:contains(lesson.videoLink, 'youtube.com/watch?v=')}">
+                                        <c:set var="embedLink" value="${fn:replace(lesson.videoLink, 'watch?v=', 'embed/')}" />
+                                        <iframe width="100%" height="360"
+                                                src="${embedLink}" frameborder="0"
+                                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                                allowfullscreen>
+                                        </iframe>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <p>No preview available</p>
+                                    </c:otherwise>
+                                </c:choose>
+                            </div>
                         </div>
+
 
                         <div class="mb-3">
                             <label>Order</label>
@@ -78,13 +127,15 @@
                             </c:if>
                             <c:if test="${currentUser != null && currentUser.roleId == 2}">
                                 <label>Expert:</label>
-                                <select class="form-control" id="owner" name="ownerId" disabled>
+                                <select class="form-control" disabled>
                                     <option value="">--Choose owner--</option>
                                     <c:forEach items="${requestScope.experts}" var="expert">
-                                        <option value="${expert.id}" <c:if test="${expert.name eq lesson.subjectDTO.ownerName}">selected</c:if> >${expert.name}</option>
+                                        <option value="${expert.id}" <c:if test="${expert.name eq lesson.subjectDTO.ownerName}">selected</c:if>>
+                                                ${expert.name}
+                                        </option>
                                     </c:forEach>
-                                    <input type="hidden" name="ownerId" value="${lesson.subjectDTO.ownerId}" />
                                 </select>
+                                <input type="hidden" name="ownerId" value="${currentUser.id}" />
                             </c:if>
                         </div>
                         <div class="mb-3">
@@ -158,7 +209,22 @@
 <%
     }
 %>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const ytRadio = document.getElementById("videoTypeYoutube");
+        const upRadio = document.getElementById("videoTypeUpload");
+        const ytInput = document.getElementById("youtubeInput");
+        const fileInput = document.getElementById("fileInput");
 
+        function toggleInput() {
+            ytInput.disabled = !ytRadio.checked;
+            fileInput.disabled = !upRadio.checked;
+        }
+
+        ytRadio.addEventListener("change", toggleInput);
+        upRadio.addEventListener("change", toggleInput);
+    });
+</script>
 </body>
 </html>
 

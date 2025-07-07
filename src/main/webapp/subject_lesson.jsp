@@ -28,7 +28,7 @@
             <div class="tile">
                 <div class="tile-body">
                     <div class="mb-3 text-start">
-                        <a href="create_lesson" class="btn btn-primary">
+                        <a href="lesson-create" class="btn btn-primary">
                             <i class="bi bi-plus-lg me-1"></i> Add new lesson
                         </a>
                     </div>
@@ -143,6 +143,18 @@
         </div>
     </div>
 </main>
+<div class="position-fixed top-0 end-0 p-3" style="z-index: 9999" data-bs-delay="2000">
+    <div id="toast" class="toast align-items-center border-0" role="alert"
+         aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+            <div class="toast-body">
+                <!-- Message will be injected here -->
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
+                    aria-label="Close"></button>
+        </div>
+    </div>
+</div>
 <%@ include file="common/jsload.jsp" %>
 <%
     String toastNotification = (String) session.getAttribute("toastNotification");
