@@ -3,15 +3,15 @@ import dao.*;
 import dto.EssayAttemptDTO;
 import dto.PracticeDTO;
 import dto.QuestionAttemptDTO;
-import entity.ExamAttempt;
-import entity.Practice;
-import entity.QuestionOption;
-import entity.Quiz;
+import entity.*;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
 import java.io.IOException;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @WebServlet(name = "QuizHandleServlet", value = "/quiz-handle")
 public class QuizHandleServlet extends HttpServlet {
@@ -79,15 +79,21 @@ public class QuizHandleServlet extends HttpServlet {
             //calculate number correct question
             int numberCorrectQuestions = 0;
             for(QuestionAttemptDTO questionAttemptDTO : questionAttemptDTOs){
-                if(questionAttemptDTO.getUserChoice() != null){
-                    for(QuestionOption questionOption : questionAttemptDTO.getOptions()){
-                        if(questionAttemptDTO.getUserChoice() == questionOption.getId() && questionOption.isAnswer()){
-                            numberCorrectQuestions++;
-                            break;
-                        }
+                List<Integer> optionIdsSelected = questionAttemptDTO.getUserChoices();
+                if(optionIdsSelected != null && !optionIdsSelected.isEmpty()){
+                    List<QuestionOption> options = questionAttemptDTO.getOptions();
+                    List<Integer> correctOptionIds = options.stream().filter(option -> option.isAnswer())
+                            .map(option -> option.getId())
+                            .collect(Collectors.toList());
+
+                    boolean isExactlyCorrect = optionIdsSelected.equals(correctOptionIds);
+                    if(isExactlyCorrect){
+                        numberCorrectQuestions++;
                     }
                 }
+
             }
+
             boolean isUpdatedExamAttempt = new ExamAttemptDAO().updateNumberCorrectQuestion(numberCorrectQuestions, examAttemptId);
             if(!isUpdatedExamAttempt) {
                 throw new Exception("Exam attempt not updated");

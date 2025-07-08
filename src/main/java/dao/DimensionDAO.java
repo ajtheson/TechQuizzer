@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 public class DimensionDAO extends DBContext {
 
     public Dimension findById(int id) {
-        String sql = "select [id], [name], [subject_id] from [dimensions] where id = ?";
+        String sql = "select [id], [name], [subject_id] from [dimensions] where id = ? and status = 1";
         try(PreparedStatement pstm = connection.prepareStatement(sql)){
             pstm.setInt(1, id);
             ResultSet rs = pstm.executeQuery();
@@ -37,7 +37,7 @@ public class DimensionDAO extends DBContext {
             return dimensions;
         }
         String inClause = subjectIds.stream().map(id -> "?").collect(Collectors.joining(", "));
-        String sql = "SELECT [id], [name], [subject_id] FROM [dimensions] where [subject_id] in (" + inClause + ")";
+        String sql = "SELECT [id], [name], [subject_id] FROM [dimensions] where status = 1 AND [subject_id] in (" + inClause + ")";
         try(PreparedStatement pstm = connection.prepareStatement(sql)){
             int index = 1;
             for(Integer id : subjectIds){

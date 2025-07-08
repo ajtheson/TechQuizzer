@@ -3,9 +3,11 @@ package controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dao.ExamAttemptDAO;
 import dao.QuestionAttemptDAO;
+import dao.UserChoiceDAO;
 import dto.QuestionAttemptDTO;
 import dto.UpdateQuestionAttemptDTO;
 import entity.QuestionAttempt;
+import entity.UserChoice;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
@@ -13,7 +15,11 @@ import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @WebServlet(name = "UpdateQuestionAttemptServlet", value = "/update-question-attempt")
 public class UpdateQuestionAttemptServlet extends HttpServlet {
@@ -39,6 +45,28 @@ public class UpdateQuestionAttemptServlet extends HttpServlet {
             boolean isUpdatedExamAttempt = new ExamAttemptDAO().updateDuration(duration, examAttemptId);
             if(!isUpdatedExamAttempt){
                 throw new Exception("Exam attempt not updated");
+            }
+
+            UserChoiceDAO userChoiceDAO = new UserChoiceDAO();
+            for(QuestionAttemptDTO questionAttemptDTO : questionAttemptDTOs){
+                int questionAttemptId = questionAttemptDTO.getId();
+
+                Set<Integer> optionIdsInDB = new HashSet<>(userChoiceDAO.findAllOptionIdByQuestionAttemptId(questionAttemptId));
+                Set<Integer> optionIdsSelected = new HashSet<>(questionAttemptDTO.getUserChoices());
+
+                Set<Integer> toInsert = new HashSet<>(optionIdsSelected);
+                toInsert.removeAll(optionIdsInDB);
+
+                Set<Integer> toDelete = new HashSet<>(optionIdsInDB);
+                toDelete.removeAll(optionIdsSelected);
+
+                if(!toInsert.isEmpty()){
+                    userChoiceDAO.insert(questionAttemptId, new ArrayList<>(toInsert));
+                }
+                if(!toDelete.isEmpty()){
+                    userChoiceDAO.delete(questionAttemptId, new ArrayList<>(toDelete));
+                }
+
             }
         }catch (Exception e){
             e.printStackTrace();

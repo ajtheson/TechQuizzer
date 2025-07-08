@@ -1,9 +1,6 @@
 package dto;
 
-import entity.ExamAttempt;
-import entity.Question;
-import entity.QuestionMedia;
-import entity.QuestionOption;
+import entity.*;
 
 import java.util.List;
 
@@ -11,7 +8,7 @@ public class QuestionAttemptDTO {
 
     private int id;
     private boolean isMarked;
-    private Integer userChoice;
+    private List<Integer> userChoices;
     private Question question;
     private ExamAttempt examAttempt;
     private List<QuestionOption> options;
@@ -33,12 +30,12 @@ public class QuestionAttemptDTO {
         isMarked = marked;
     }
 
-    public Integer getUserChoice() {
-        return userChoice;
+    public List<Integer> getUserChoices() {
+        return userChoices;
     }
 
-    public void setUserChoice(Integer userChoice) {
-        this.userChoice = userChoice;
+    public void setUserChoices(List<Integer> userChoices) {
+        this.userChoices = userChoices;
     }
 
     public Question getQuestion() {

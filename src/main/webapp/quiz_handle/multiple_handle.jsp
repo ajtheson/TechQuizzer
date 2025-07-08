@@ -18,30 +18,46 @@
             margin-bottom: 12px;
         }
 
-        .option-radio {
-            width: 32px;
-            height: 32px;
+        .option-checkbox {
+            width: 24px;
+            height: 24px;
             background-color: grey;
             display: flex;
             align-items: center;
             justify-content: center;
             margin-right: 12px;
             cursor: pointer;
+            border-radius: 4px; /* Bo góc cho checkbox */
         }
 
-        .option-radio::after {
+        .option-checkbox::after {
             content: '';
             width: 16px;
             height: 16px;
             background-color: white;
-            border-radius: 50%;
+            border-radius: 2px; /* Bo góc nhẹ cho phần bên trong */
             display: block;
-            transition: background-color 0.2s ease;
+            transition: all 0.2s ease;
         }
 
-        .option-item.selected .option-radio::after {
+        .option-item.selected .option-checkbox::after {
             background-color: black;
             border: 3px solid white;
+        }
+
+        /* Alternative: Sử dụng checkmark symbol */
+        .option-checkbox.checkmark-style::after {
+            content: '✓';
+            color: transparent;
+            font-weight: bold;
+            font-size: 18px;
+            background-color: transparent;
+            border: none;
+            transition: color 0.2s ease;
+        }
+
+        .option-item.selected .option-checkbox.checkmark-style::after {
+            color: white;
         }
 
         .markedBtn {
@@ -362,7 +378,11 @@
     <c:forEach var="qa" items="${requestScope.questionAttempts}">
     allQuestions.push({
         id: ${qa.getId()},
-        userChoice: ${qa.getUserChoice() == null ? 'null' : qa.getUserChoice()},
+        userChoices: [
+            <c:forEach var="userChoice" items="${qa.getUserChoices()}" varStatus="loop">
+                ${userChoice} <c:if test="${!loop.last}">, </c:if>
+            </c:forEach>
+        ],
         marked: ${qa.isMarked()},
         question: {
             id: ${qa.getQuestion().getId()},
@@ -497,14 +517,14 @@
         currentQuestionAttempt.options.forEach((option, i) => {
             const li = document.createElement("li");
             li.className = "option-item";
-            if (option.id === currentQuestionAttempt.userChoice) {
+            if (currentQuestionAttempt.userChoices.includes(option.id)) {
                 li.classList.add("selected");
             }
 
             li.innerHTML =
-                `<div class="option-radio" onclick="selectOption(this)"></div>
-                <span id="questionId" class="d-none">\${option.id}</span>
-                <span class="option-text">\${option.optionContent}</span>`;
+                `<div class="option-checkbox" onclick="selectOption(this)"></div>
+                <span id="optionId" class="d-none">\${option.id}</span>
+                <span>\${option.optionContent}</span>`;
 
             optionList.appendChild(li);
         });
@@ -519,12 +539,20 @@
 
 
     //select question option
-    const selectOption = radioElement => {
-        const optionItemElement = radioElement.closest('.option-item');
-        allQuestions[currentIndex].userChoice = Number(optionItemElement.querySelector("#questionId").textContent);
-
-        document.querySelectorAll('.option-item').forEach(item => item.classList.remove('selected'));
-        optionItemElement.classList.add('selected');
+    const selectOption = checkboxElement => {
+        const optionItemElement = checkboxElement.closest('.option-item');
+        const optionId = Number(optionItemElement.querySelector("#optionId").textContent);
+        if (optionItemElement.classList.contains("selected")) {
+            optionItemElement.classList.remove("selected");
+            const index = allQuestions[currentIndex].userChoices.indexOf(optionId);
+            if (index !== -1) {
+                allQuestions[currentIndex].userChoices.splice(index, 1);
+            }
+        }
+        else{
+            optionItemElement.classList.add("selected");
+            allQuestions[currentIndex].userChoices.push(optionId);
+        }
     }
 
 
@@ -565,7 +593,7 @@
 
     //insert content to popup score exam
     popupScoreExam.addEventListener("show.bs.modal", (e) => {
-        const length = allQuestions.filter(q => q.userChoice).length;
+        const length = allQuestions.filter(q => q.userChoices.length > 0).length;
         if (length === 0) {
             popupScoreExam.querySelector("h5").textContent = "Exit Exam?";
             popupScoreExam.querySelector("p").textContent = "You have not answered any questions. By clicking on the [Exit Exam] button below, " +
@@ -597,9 +625,9 @@
                 case "ALL":
                     return true;
                 case "ANSWERED":
-                    return q.userChoice !== null;
+                    return q.userChoices.length > 0;
                 case "UNANSWERED":
-                    return q.userChoice === null;
+                    return q.userChoices.length === 0;
                 case "MARKED":
                     return q.marked;
             }
@@ -610,7 +638,7 @@
 
             const btn = document.createElement("button");
             btn.className = "question-box";
-            if (q.userChoice) {
+            if (q.userChoices.length > 0) {
                 btn.classList.add("answered");
             }
             if (q.marked) {

@@ -32,7 +32,7 @@ public class QuestionAttemptDAO extends DBContext {
 
     public List<QuestionAttemptDTO> findAllByExamAttemptId(int examAttemptId) {
         List<QuestionAttemptDTO> questionAttempts = new ArrayList<>();
-        String sql = "select qa.id, qa.exam_attempt_id, qa.question_id, qa.user_choice, qa.is_marked, e.*, q.* " +
+        String sql = "select qa.id, qa.exam_attempt_id, qa.question_id, qa.is_marked, e.*, q.* " +
                 "from question_attempts qa " +
                 "join exam_attempts e on e.id = qa.exam_attempt_id " +
                 "join questions q on qa.question_id = q.id " +
@@ -44,7 +44,6 @@ public class QuestionAttemptDAO extends DBContext {
                 while (rs.next()) {
                     QuestionAttemptDTO questionAttemptDTO = new QuestionAttemptDTO();
                     questionAttemptDTO.setId(rs.getInt("id"));
-                    questionAttemptDTO.setUserChoice(rs.getObject("user_choice", Integer.class));
                     questionAttemptDTO.setMarked(rs.getBoolean("is_marked"));
 
                     Question question = new Question();
@@ -71,6 +70,9 @@ public class QuestionAttemptDAO extends DBContext {
 
                     List<QuestionMedia> questionMedias = new QuestionMediaDAO().findByQuestionId(question.getId());
                     questionAttemptDTO.setQuestionMedias(questionMedias);
+
+                    List<Integer> userChoiceIds = new UserChoiceDAO().findAllOptionIdByQuestionAttemptId(questionAttemptDTO.getId());
+                    questionAttemptDTO.setUserChoices(userChoiceIds);
 
                     questionAttempts.add(questionAttemptDTO);
                 }
@@ -99,12 +101,11 @@ public class QuestionAttemptDAO extends DBContext {
         if(questionAttemptDTOs == null || questionAttemptDTOs.isEmpty()) {
             return false;
         }
-        String sql = "UPDATE question_attempts SET user_choice = ?, is_marked = ? WHERE id = ?";
+        String sql = "UPDATE question_attempts SET is_marked = ? WHERE id = ?";
         try(PreparedStatement pstm = connection.prepareStatement(sql)){
             for(QuestionAttemptDTO questionAttemptDTO : questionAttemptDTOs) {
-                pstm.setObject(1, questionAttemptDTO.getUserChoice(), Types.INTEGER);
-                pstm.setBoolean(2, questionAttemptDTO.isMarked());
-                pstm.setInt(3, questionAttemptDTO.getId());
+                pstm.setBoolean(1, questionAttemptDTO.isMarked());
+                pstm.setInt(2, questionAttemptDTO.getId());
                 pstm.addBatch();
             }
             pstm.executeBatch();
