@@ -92,7 +92,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.9);
+            background: rgba(0, 0, 0, 0.9);
             display: flex;
             justify-content: center;
             align-items: center;
@@ -106,7 +106,7 @@
             border-radius: 10px;
             text-align: center;
             max-width: 400px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
         }
 
         .prompt-button {
@@ -169,21 +169,32 @@
 
     <!--quiz content-->
     <div class="flex-grow-1 d-flex flex-column" style="padding: 20px 40px">
-        <%--question content--%>
-        <div id="qContent" class="fs-5 mb-4 mx-5">
+        <%--quiz wrapper--%>
+        <div style="max-height: 580px; overflow: auto;">
 
-        </div>
+            <%--question content--%>
+            <div id="qContent" class="fs-5 mb-4 mx-5">
+                <p>
+                    No Content
+                </p>
+            </div>
 
-        <%--question option--%>
-        <div class="mb-4 mx-5">
-            <ul id="qOption" class="list-unstyled m-0 p-0">
-                <li class="option-item">
-                    <div class="option-radio"></div>
-                    <span>
+            <%--question media--%>
+            <div id="qMedia" class="mb-4 mx-5">
+
+            </div>
+
+            <%--question option--%>
+            <div class="mb-4 mx-5">
+                <ul id="qOption" class="list-unstyled m-0 p-0">
+                    <li class="option-item">
+                        <div class="option-radio"></div>
+                        <span>
 
                     </span>
-                </li>
-            </ul>
+                    </li>
+                </ul>
+            </div>
         </div>
 
         <%--right bottom corner button--%>
@@ -226,7 +237,7 @@
     </div>
 
     <form id="quizHandleForm" method="post" action="quiz-handle">
-        <input type="hidden" name="examAttemptId" value="${requestScope.questionAttempts[0].examAttempt.id}" />
+        <input type="hidden" name="examAttemptId" value="${requestScope.questionAttempts[0].examAttempt.id}"/>
     </form>
 
 </div>
@@ -356,9 +367,18 @@
         question: {
             id: ${qa.getQuestion().getId()},
             content: '${fn:escapeXml(qa.getQuestion().getContent())}',
-            media: '${qa.getQuestion().getMedia()}',
             explaination: '${fn:escapeXml(qa.getQuestion().getExplaination())}'
         },
+        questionMedias: [
+            <c:forEach var="media" items="${qa.getQuestionMedias()}" varStatus="loop">
+            {
+                id: ${media.getId()},
+                type: '${media.getType()}',
+                link: '${media.getLink()}',
+                description: '${media.getDescription()}'
+            }<c:if test="${!loop.last}">, </c:if>
+            </c:forEach>
+        ],
         options: [
             <c:forEach var="option" items="${qa.getOptions()}" varStatus="loop">
             {
@@ -377,17 +397,19 @@
     const renderButton = () => {
         //render prev, next, score exam button
         if (currentIndex === 0) {
+            nextBtn.classList.remove("d-none");
             prevButton.classList.add("invisible");
             scoreExamBtn.classList.add("d-none");
-        } else if (currentIndex > 0 && currentIndex < allQuestions.length - 1) {
+        } else if (currentIndex > 0 && currentIndex < allQuestions.length) {
             prevButton.classList.remove("invisible");
-            nextBtn.classList.remove("d-none");
-            scoreExamBtn.classList.add("d-none");
-        } else {
-            nextBtn.classList.add("d-none");
-            scoreExamBtn.classList.remove("d-none");
+            if (currentIndex === allQuestions.length - 1) {
+                nextBtn.classList.add("d-none");
+                scoreExamBtn.classList.remove("d-none");
+            } else {
+                nextBtn.classList.remove("d-none");
+                scoreExamBtn.classList.add("d-none");
+            }
         }
-
         markBtn.classList.remove("markedBtn");
         if (allQuestions[currentIndex].marked) {
             markBtn.classList.add("markedBtn");
@@ -415,21 +437,67 @@
 
     //render question
     const renderQuestion = index => {
-        const question = allQuestions[index];
-        if (!question) return;
+        const currentQuestionAttempt = allQuestions[index];
+        if (!currentQuestionAttempt) return;
 
         document.getElementById("location").textContent = '' + (index + 1) + '/' + allQuestions.length;
         document.getElementById("stt").textContent = '' + (index + 1) + ' )';
-        document.getElementById("qId").textContent = 'Question ID: ' + allQuestions[index].question.id;
-        document.getElementById("qContent").textContent = allQuestions[index].question.content;
+        document.getElementById("qId").textContent = 'Question ID: ' + currentQuestionAttempt.question.id;
+        document.getElementById("qContent").textContent = currentQuestionAttempt.question.content;
+
+        const mediaContainer = document.getElementById("qMedia");
+        mediaContainer.innerHTML = "";
+        if (currentQuestionAttempt.questionMedias && currentQuestionAttempt.questionMedias.length > 0) {
+            currentQuestionAttempt.questionMedias.forEach(media => {
+                const mediaWrapper = document.createElement("div");
+                mediaWrapper.className = "mb-2";
+
+                let mediaElement;
+                switch (media.type) {
+                    case 'image':
+                        mediaElement = document.createElement("img");
+                        mediaElement.src = `assets/files/media/\${currentQuestionAttempt.question.id}/\${media.link}`;
+                        mediaElement.style.maxWidth = "100%";
+                        mediaElement.style.height = "auto";
+                        break;
+
+                    case 'video':
+                        mediaElement = document.createElement("video");
+                        mediaElement.src = `assets/files/media/\${currentQuestionAttempt.question.id}/\${media.link}`;
+                        mediaElement.controls = true;
+                        mediaElement.style.maxWidth = "100%";
+                        break;
+
+                    case 'audio':
+                        mediaElement = document.createElement("audio");
+                        mediaElement.src = `assets/files/media/\${currentQuestionAttempt.question.id}/\${media.link}`;
+                        mediaElement.controls = true;
+                        break;
+                }
+
+                if (mediaElement) {
+                    mediaWrapper.appendChild(mediaElement);
+
+                    // // Add description if exists
+                    // if (media.description && media.description.trim() !== '') {
+                    //     const description = document.createElement("p");
+                    //     description.className = "fst-italic mt-1";
+                    //     description.textContent = media.description;
+                    //     mediaWrapper.appendChild(description);
+                    // }
+
+                    mediaContainer.appendChild(mediaWrapper);
+                }
+            });
+        }
 
         const optionList = document.getElementById("qOption");
         optionList.innerHTML = "";
 
-        question.options.forEach((option, i) => {
+        currentQuestionAttempt.options.forEach((option, i) => {
             const li = document.createElement("li");
             li.className = "option-item";
-            if (option.id === question.userChoice) {
+            if (option.id === currentQuestionAttempt.userChoice) {
                 li.classList.add("selected");
             }
 
@@ -595,7 +663,7 @@
     //update question attempt interval
     const callApiUpdateQuestionAttempt = () => {
         const data = {
-            questionAttempts : allQuestions,
+            questionAttempts: allQuestions,
             duration: countSecond,
             examAttemptId: ${requestScope.questionAttempts[0].examAttempt.id}
         }

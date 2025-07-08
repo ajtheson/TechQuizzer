@@ -2,10 +2,7 @@ package dao;
 
 import dal.DBContext;
 import dto.QuestionAttemptDTO;
-import entity.ExamAttempt;
-import entity.Question;
-import entity.QuestionAttempt;
-import entity.QuestionOption;
+import entity.*;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -54,7 +51,6 @@ public class QuestionAttemptDAO extends DBContext {
                     question.setId(rs.getInt("question_id"));
                     questionIds.add(question.getId());
                     question.setContent(rs.getString("content"));
-                    question.setMedia(rs.getString("media"));
                     question.setExplaination(rs.getString("explaination"));
                     question.setDeleted(rs.getBoolean("is_deleted"));
                     question.setQuestionLevelId(rs.getInt("question_level_id"));
@@ -72,6 +68,9 @@ public class QuestionAttemptDAO extends DBContext {
                     examAttempt.setQuizId(rs.getObject("quiz_id", Integer.class));
                     examAttempt.setPracticeId(rs.getObject("practice_id", Integer.class));
                     questionAttemptDTO.setExamAttempt(examAttempt);
+
+                    List<QuestionMedia> questionMedias = new QuestionMediaDAO().findByQuestionId(question.getId());
+                    questionAttemptDTO.setQuestionMedias(questionMedias);
 
                     questionAttempts.add(questionAttemptDTO);
                 }

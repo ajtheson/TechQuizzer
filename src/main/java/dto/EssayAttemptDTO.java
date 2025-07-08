@@ -3,6 +3,7 @@ package dto;
 import entity.EssaySubmission;
 import entity.ExamAttempt;
 import entity.Question;
+import entity.QuestionMedia;
 
 import java.util.List;
 
@@ -13,6 +14,7 @@ public class EssayAttemptDTO {
     private Question question;
     private ExamAttempt examAttempt;
     private List<EssaySubmission> submissions;
+    private List<QuestionMedia> questionMedias;
 
     public int getId() {
         return id;
@@ -52,5 +54,13 @@ public class EssayAttemptDTO {
 
     public void setSubmissions(List<EssaySubmission> submissions) {
         this.submissions = submissions;
+    }
+
+    public List<QuestionMedia> getQuestionMedias() {
+        return questionMedias;
+    }
+
+    public void setQuestionMedias(List<QuestionMedia> questionMedias) {
+        this.questionMedias = questionMedias;
     }
 }

@@ -12,8 +12,8 @@ public class QuestionDAO extends DBContext {
 
     public List<Question> findAllByDimensionIdAndQuestionLevelAndFormat(int dimensionId, int questionLevelId, String format) {
         List<Question> questions = new ArrayList<>();
-        String sql = "select [id], [content], [media], [explaination], [question_level_id], [subject_lesson_id], [subject_dimension_id] " +
-                "from [questions] where [subject_dimension_id] = ? and [question_level_id] = ? AND [format] = ? and [is_deleted] = 0";
+        String sql = "select [id], [content], [explaination], [question_level_id], [subject_lesson_id], [subject_dimension_id] " +
+                "from [questions] where [subject_dimension_id] = ? and [question_level_id] = ? AND [question_format] = ? and [is_deleted] = 0";
         try(PreparedStatement pstm = connection.prepareStatement(sql)){
             pstm.setInt(1, dimensionId);
             pstm.setInt(2, questionLevelId);
@@ -23,7 +23,6 @@ public class QuestionDAO extends DBContext {
                 Question question = new Question();
                 question.setId(rs.getInt("id"));
                 question.setContent(rs.getString("content"));
-                question.setMedia(rs.getString("media"));
                 question.setExplaination(rs.getString("explaination"));
                 question.setQuestionLevelId(rs.getInt("question_level_id"));
                 question.setSubjectLessonId(rs.getInt("subject_lesson_id"));
@@ -38,8 +37,8 @@ public class QuestionDAO extends DBContext {
 
     public List<Question> findAllByLessonIdAndQuestionLevelAndFormat(int lessonId, int questionLevelId, String format) {
         List<Question> questions = new ArrayList<>();
-        String sql = "select [id], [content], [media], [explaination], [question_level_id], [subject_lesson_id], [subject_dimension_id] " +
-                "from [questions] where [subject_lesson_id] = ? and [question_level_id] = ? and [format] = ? and [is_deleted] = 0";
+        String sql = "select [id], [content], [explaination], [question_level_id], [subject_lesson_id], [subject_dimension_id] " +
+                "from [questions] where [subject_lesson_id] = ? and [question_level_id] = ? and [question_format] = ? and [is_deleted] = 0";
         try(PreparedStatement pstm = connection.prepareStatement(sql)){
             pstm.setInt(1, lessonId);
             pstm.setInt(2, questionLevelId);
@@ -49,7 +48,6 @@ public class QuestionDAO extends DBContext {
                 Question question = new Question();
                 question.setId(rs.getInt("id"));
                 question.setContent(rs.getString("content"));
-                question.setMedia(rs.getString("media"));
                 question.setExplaination(rs.getString("explaination"));
                 question.setQuestionLevelId(rs.getInt("question_level_id"));
                 question.setSubjectLessonId(rs.getInt("subject_lesson_id"));

@@ -331,11 +331,17 @@
     <div class="flex-grow-1 d-flex flex-column justify-content-between" style="padding: 20px 40px;">
         <div class="row flex-grow-1" style="padding: 0 100px">
             <%--question area--%>
-            <div class="col-8 mb-3">
-                <div id="qContent">
+            <div class="col-8 mb-3" style="max-height: 440px; overflow-y:auto">
+                <%--question content--%>
+                <div id="qContent" class="fs-5 mb-4 mx-5">
                     <p>
                         No Content
                     </p>
+                </div>
+
+                <%--question media--%>
+                <div id="qMedia" class="mb-4 mx-5">
+
                 </div>
             </div>
 
@@ -398,7 +404,7 @@
             </div>
         </div>
 
-        <div class="d-flex justify-content-end gap-3 mt-4">
+        <div class="d-flex justify-content-end gap-3">
             <button id="markBtn" class="btn"
                     style="border: #64c281 solid 2px; color: #64c281">
                 <i class="bi bi-bookmark"></i> Mark for review
@@ -542,9 +548,18 @@
         question: {
             id: ${ea.getQuestion().getId()},
             content: '${fn:escapeXml(ea.getQuestion().getContent())}',
-            media: '${ea.getQuestion().getMedia()}',
             explaination: '${fn:escapeXml(ea.getQuestion().getExplaination())}'
         },
+        questionMedias: [
+            <c:forEach var="media" items="${ea.getQuestionMedias()}" varStatus="loop">
+            {
+                id: ${media.getId()},
+                type: '${media.getType()}',
+                link: '${media.getLink()}',
+                description: '${media.getDescription()}'
+            }<c:if test="${!loop.last}">, </c:if>
+            </c:forEach>
+        ],
         submissions: []
     });
     </c:forEach>
@@ -555,17 +570,19 @@
     const renderButton = () => {
         //render prev, next, score exam button
         if (currentIndex === 0) {
+            nextBtn.classList.remove("d-none");
             prevButton.classList.add("invisible");
             scoreExamBtn.classList.add("d-none");
-        } else if (currentIndex > 0 && currentIndex < allEssayAttemps.length - 1) {
+        } else if (currentIndex > 0 && currentIndex < allEssayAttemps.length) {
             prevButton.classList.remove("invisible");
-            nextBtn.classList.remove("d-none");
-            scoreExamBtn.classList.add("d-none");
-        } else {
-            nextBtn.classList.add("d-none");
-            scoreExamBtn.classList.remove("d-none");
+            if (currentIndex === allEssayAttemps.length - 1) {
+                nextBtn.classList.add("d-none");
+                scoreExamBtn.classList.remove("d-none");
+            } else {
+                nextBtn.classList.remove("d-none");
+                scoreExamBtn.classList.add("d-none");
+            }
         }
-
         markBtn.classList.remove("markedBtn");
         if (allEssayAttemps[currentIndex].marked) {
             markBtn.classList.add("markedBtn");
@@ -591,8 +608,6 @@
     });
     markBtn.addEventListener("click", () => {
         allEssayAttemps[currentIndex].marked = !allEssayAttemps[currentIndex].marked;
-        console.log("✅ Marked =", allEssayAttemps[currentIndex].marked);
-
         renderButton();
     });
     // end
@@ -733,12 +748,59 @@
 
     // render question
     const renderQuestion = (index) => {
-        if (!allEssayAttemps[index]) return;
+        const currentQuestionAttempt = allEssayAttemps[index];
+        if (!currentQuestionAttempt) return;
 
         document.getElementById("location").textContent = '' + (index + 1) + '/' + allEssayAttemps.length;
         document.getElementById("stt").textContent = '' + (index + 1) + ' )';
-        document.getElementById("qId").textContent = 'Question ID: ' + allEssayAttemps[index].question.id;
-        document.getElementById("qContent").textContent = allEssayAttemps[index].question.content;
+        document.getElementById("qId").textContent = 'Question ID: ' + currentQuestionAttempt.question.id;
+        document.getElementById("qContent").textContent = currentQuestionAttempt.question.content;
+
+        const mediaContainer = document.getElementById("qMedia");
+        mediaContainer.innerHTML = "";
+        if (currentQuestionAttempt.questionMedias && currentQuestionAttempt.questionMedias.length > 0) {
+            currentQuestionAttempt.questionMedias.forEach(media => {
+                const mediaWrapper = document.createElement("div");
+                mediaWrapper.className = "mb-2";
+
+                let mediaElement;
+                switch (media.type) {
+                    case 'image':
+                        mediaElement = document.createElement("img");
+                        mediaElement.src = `assets/files/media/\${currentQuestionAttempt.question.id}/\${media.link}`;
+                        mediaElement.style.maxWidth = "100%";
+                        mediaElement.style.height = "auto";
+                        break;
+
+                    case 'video':
+                        mediaElement = document.createElement("video");
+                        mediaElement.src = `assets/files/media/\${currentQuestionAttempt.question.id}/\${media.link}`;
+                        mediaElement.controls = true;
+                        mediaElement.style.maxWidth = "100%";
+                        break;
+
+                    case 'audio':
+                        mediaElement = document.createElement("audio");
+                        mediaElement.src = `assets/files/media/\${currentQuestionAttempt.question.id}/\${media.link}`;
+                        mediaElement.controls = true;
+                        break;
+                }
+
+                if (mediaElement) {
+                    mediaWrapper.appendChild(mediaElement);
+
+                    // // Add description if exists
+                    // if (media.description && media.description.trim() !== '') {
+                    //     const description = document.createElement("p");
+                    //     description.className = "fst-italic mt-1";
+                    //     description.textContent = media.description;
+                    //     mediaWrapper.appendChild(description);
+                    // }
+
+                    mediaContainer.appendChild(mediaWrapper);
+                }
+            });
+        }
 
         // Clear upload area
         uploadArea.innerHTML = "";
@@ -765,28 +827,24 @@
         timerElement.textContent = hours + ":" + minutes + ":" + seconds;
     }
     //display count down
-    const startCountDown = duration => {
-        let timer = duration;
-        updateDisplay(timer);
+    const startCountDown = () => {
+        updateDisplay(countSecond);
         let interval = setInterval(() => {
-            timer--;
-            countSecond++;
-            if (timer < 0) {
+            countSecond--;
+            if (countSecond < 0) {
                 clearInterval(interval);
-                display.textContent = "Time's up!";
+                submitQuiz();
             } else {
-                updateDisplay();
+                updateDisplay(countSecond);
             }
         }, 1000);
     }
     //display count up
-    const startCountUp = duration => {
-        let timer = duration;
-        updateDisplay(timer);
-        setInterval(() => {
-            timer++;
+    const startCountUp = () => {
+        updateDisplay(countSecond);
+        let interval = setInterval(() => {
             countSecond++;
-            updateDisplay(timer);
+            updateDisplay(countSecond);
         }, 1000);
     }
     // end start timer

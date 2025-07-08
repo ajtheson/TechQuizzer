@@ -2,6 +2,7 @@ package dto;
 
 import entity.ExamAttempt;
 import entity.Question;
+import entity.QuestionMedia;
 import entity.QuestionOption;
 
 import java.util.List;
@@ -14,6 +15,7 @@ public class QuestionAttemptDTO {
     private Question question;
     private ExamAttempt examAttempt;
     private List<QuestionOption> options;
+    private List<QuestionMedia> questionMedias;
 
     public int getId() {
         return id;
@@ -61,5 +63,13 @@ public class QuestionAttemptDTO {
 
     public void setOptions(List<QuestionOption> options) {
         this.options = options;
+    }
+
+    public List<QuestionMedia> getQuestionMedias() {
+        return questionMedias;
+    }
+
+    public void setQuestionMedias(List<QuestionMedia> questionMedias) {
+        this.questionMedias = questionMedias;
     }
 }
