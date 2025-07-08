@@ -6,14 +6,10 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import javax.security.auth.Subject;
 
 import dao.*;
 import dto.QuizDTO;
-import entity.QuestionLevel;
-import entity.Quiz;
-import entity.QuizSetting;
-import entity.TestType;
+import entity.*;
 
 public class QuizService {
 

@@ -1,9 +1,9 @@
 package dto;
 
-import javax.security.auth.Subject;
 
 import entity.QuestionLevel;
 import entity.QuizSetting;
+import entity.Subject;
 import entity.TestType;
 
 public class QuizDTO {

@@ -166,7 +166,6 @@ public class CreateQuizServlet extends HttpServlet {
 
             Quiz quiz = new Quiz();
             quiz.setName(name.trim());
-            quiz.setLevel(level);
             quiz.setDuration(duration*60);
             quiz.setPassRate(passRate);
             quiz.setDescription(description);
@@ -175,7 +174,7 @@ public class CreateQuizServlet extends HttpServlet {
             quiz.setSubjectId(subjectId);
             quiz.setQuizSettingId(quizSettingId);
 
-            quizDAO.createQuiz(quiz);
+//            quizDAO.createQuiz(quiz);
 
             // Success - redirect to quiz list or quiz detail
             session.setAttribute("successMessage", "Quiz created successfully!");

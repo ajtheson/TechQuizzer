@@ -9,12 +9,12 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import javax.security.auth.Subject;
 
 import dal.DBContext;
 import dto.QuizDTO;
 import entity.Quiz;
 import entity.QuizSetting;
+import entity.Subject;
 import entity.TestType;
 
 public class QuizDAO extends DBContext {
@@ -48,7 +48,6 @@ public class QuizDAO extends DBContext {
                     QuizDTO quizDTO = new QuizDTO();
                     quizDTO.setId(id);
                     quizDTO.setName(rs.getString("quiz_name"));
-                    quizDTO.setLevel(rs.getString("level"));
                     quizDTO.setDuration(rs.getInt("duration"));
                     quizDTO.setPassRate(rs.getInt("pass_rate"));
                     quizDTO.setStatus(rs.getInt("status"));
@@ -134,7 +133,6 @@ public class QuizDAO extends DBContext {
                 QuizDTO dto = new QuizDTO();
                 dto.setId(rs.getInt("id"));
                 dto.setName(rs.getString("name"));
-                dto.setLevel(rs.getString("level"));
                 dto.setDuration(rs.getInt("duration"));
                 dto.setPassRate(rs.getInt("pass_rate"));
                 dto.setStatus(rs.getInt("status"));
@@ -216,10 +214,11 @@ public class QuizDAO extends DBContext {
     }
 
     public Quiz findById(int id) {
-        try (PreparedStatement pstm = connection.prepareStatement(sql)) {
+        String sql = "SELECT [format],  [name], [question_level_id], [duration], [pass_rate], [description], [test_type_id], [quiz_setting_id], [subject_id] FROM [quizzes] WHERE [id] = ?";
+        try(PreparedStatement pstm = connection.prepareStatement(sql)){
             pstm.setInt(1, id);
-            try (ResultSet rs = pstm.executeQuery()) {
-                if (rs.next()) {
+            try(ResultSet rs = pstm.executeQuery()){
+                if(rs.next()){
                     Quiz quiz = new Quiz();
                     quiz.setId(id);
                     quiz.setFormat(rs.getString("format"));
@@ -327,28 +326,28 @@ public class QuizDAO extends DBContext {
         return false;
     }
 
-    public boolean createQuiz(Quiz quiz) throws SQLException {
-        String sql = "INSERT INTO [quizzes] ([name], [level], [duration], [pass_rate], " +
-                "[description], [status], [test_type_id], [subject_id], [quiz_setting_id]) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
-
-        try (
-                PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
-
-            ps.setString(1, quiz.getName());
-            ps.setString(2, quiz.getLevel());
-            ps.setInt(3, quiz.getDuration());
-            ps.setInt(4, quiz.getPassRate());
-            ps.setString(5, quiz.getDescription());
-            ps.setInt(6, quiz.getStatus());
-            ps.setInt(7, quiz.getTestTypeId());
-            ps.setInt(8, quiz.getSubjectId());
-            ps.setInt(9, quiz.getQuizSettingId());
-
-            return ps.executeUpdate() > 0;
-        } catch (Exception e) {
-            System.out.println("Error: " + e.getMessage());
-        }
-        return false;
-    }
+//    public boolean createQuiz(Quiz quiz) throws SQLException {
+//        String sql = "INSERT INTO [quizzes] ([name], [level], [duration], [pass_rate], " +
+//                "[description], [status], [test_type_id], [subject_id], [quiz_setting_id]) " +
+//                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+//
+//        try (
+//                PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+//
+//            ps.setString(1, quiz.getName());
+//            ps.setString(2, quiz.getLevel());
+//            ps.setInt(3, quiz.getDuration());
+//            ps.setInt(4, quiz.getPassRate());
+//            ps.setString(5, quiz.getDescription());
+//            ps.setInt(6, quiz.getStatus());
+//            ps.setInt(7, quiz.getTestTypeId());
+//            ps.setInt(8, quiz.getSubjectId());
+//            ps.setInt(9, quiz.getQuizSettingId());
+//
+//            return ps.executeUpdate() > 0;
+//        } catch (Exception e) {
+//            System.out.println("Error: " + e.getMessage());
+//        }
+//        return false;
+//    }
 }
