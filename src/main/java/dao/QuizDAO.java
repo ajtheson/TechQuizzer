@@ -9,8 +9,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import javax.security.auth.Subject;
-
 import dal.DBContext;
 import dto.LessonDTO;
 import dto.QuizDTO;

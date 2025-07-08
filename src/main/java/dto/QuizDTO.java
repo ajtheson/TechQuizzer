@@ -1,9 +1,9 @@
 package dto;
 
-import javax.security.auth.Subject;
 
 import entity.QuestionLevel;
 import entity.QuizSetting;
+import entity.Subject;
 import entity.TestType;
 
 public class QuizDTO {
@@ -85,10 +85,6 @@ public class QuizDTO {
 
     public TestType getTestType() {
         return testType;
-    }
-
-    public void setTestType(TestType testType) {
-        this.testType = testType;
     }
 
     public int getStatus() {
