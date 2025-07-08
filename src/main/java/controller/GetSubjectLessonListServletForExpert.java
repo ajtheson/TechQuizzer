@@ -1,12 +1,12 @@
 package controller;
 
-import dao.QuizDAO;
+import dao.LessonDAO;
 import dao.SubjectDAO;
-import dao.TestTypeDAO;
-import dto.QuizDTO;
+import dao.LessonTypeDAO;
+import dto.LessonDTO;
 import dto.UserDTO;
 import entity.Subject;
-import entity.TestType;
+import entity.LessonType;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -17,9 +17,8 @@ import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet(name = "GetQuizzesListServlet", urlPatterns = {"/quizzeslist"})
-public class GetQuizzesListServlet extends HttpServlet {
-
+@WebServlet(name = "GetSubjectLessonListServletExpert", urlPatterns = {"/subject-lesson-expert"})
+public class GetSubjectLessonListServletForExpert extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -32,21 +31,20 @@ public class GetQuizzesListServlet extends HttpServlet {
             return;
         }
 
-
-        TestTypeDAO testDao = new TestTypeDAO();
         SubjectDAO subjectDAO = new SubjectDAO();
-        List<TestType> testTypes = testDao.getAllTestTypes();
-        List<Subject> subjects = subjectDAO.getAllSubjects(user.getId());
+        LessonTypeDAO lessonTypeDAO = new LessonTypeDAO();
 
+        List<Subject> subjects = subjectDAO.getAllSubjects(user.getId());
+        List<LessonType> lessonTypes = lessonTypeDAO.getAllLessonTypes();
 
         String subjectFilter = request.getParameter("subject");
-        String testTypeFilter = request.getParameter("testType");
         String subjectSelected = request.getParameter("subject");
-        String testTypeSelected = request.getParameter("testType");
+
+        String lessonTypeFilter = request.getParameter("lessonType");
+        String selectedLessonType = request.getParameter("lessonType");
         String search = request.getParameter("search");
         String sortField = request.getParameter("sortField");
         String sortOrder = request.getParameter("sortOrder");
-
 
         int page = 1;
         int pageSize = 10;
@@ -62,46 +60,42 @@ public class GetQuizzesListServlet extends HttpServlet {
                     pageSize = tmp;
                 } else {
                     session.setAttribute("error", "Page size must be greater than 0.");
-                    response.sendRedirect("quizzeslist");
+                    response.sendRedirect("subject-lesson");
                     return;
                 }
             }
         } catch (NumberFormatException e) {
             session.setAttribute("error", "Invalid pagination input.");
-            response.sendRedirect("quizzeslist");
+            response.sendRedirect("subject-lesson");
             return;
         }
 
-
-        if (sortField == null || sortField.isEmpty()) sortField = "q.id";
+        if (sortField == null || sortField.isEmpty()) sortField = "l.id";
         if (sortOrder == null || sortOrder.isEmpty()) sortOrder = "ASC";
 
+        LessonDAO lessonDAO = new LessonDAO();
+        List<LessonDTO> lessonList = lessonDAO.getLessonsByPageForExpert(
+                subjectFilter, lessonTypeFilter, search,
+                page, pageSize, sortField, sortOrder, user.getId()
+        );
 
-        QuizDAO quizDAO = new QuizDAO();
-        List<QuizDTO> quizList = quizDAO.getQuizzesByPage(
-                subjectFilter, testTypeFilter, search,
-                page, pageSize, sortField, sortOrder, user.getId());
-
-        int totalRecords = quizDAO.getTotalQuizzes(
-                subjectFilter, testTypeFilter, search, user.getId());
+        int totalRecords = lessonDAO.getTotalLessonsForExpert(subjectFilter, lessonTypeFilter, search, user.getId());
         int totalPages = (int) Math.ceil((double) totalRecords / pageSize);
 
-        request.setAttribute("quizList", quizList);
+        request.setAttribute("lessonList", lessonList);
         request.setAttribute("subjects", subjects);
-        request.setAttribute("testTypes", testTypes);
-        request.setAttribute("currentPage", page);
-        request.setAttribute("pageSize", pageSize);
-        request.setAttribute("totalPages", totalPages);
-        request.setAttribute("subjects", subjects);
+        request.setAttribute("lessonTypes", lessonTypes);
         request.setAttribute("subject", subjectFilter);
         request.setAttribute("selectedSubject", subjectSelected);
-        request.setAttribute("testType", testTypeFilter);
-        request.setAttribute("testTypes", testTypes);
-        request.setAttribute("selectedTestType", testTypeSelected);
+        request.setAttribute("selectedLessonType", selectedLessonType);
+        request.setAttribute("lessonType", lessonTypeFilter);
         request.setAttribute("search", search);
         request.setAttribute("sortField", sortField);
         request.setAttribute("sortOrder", sortOrder);
+        request.setAttribute("currentPage", page);
+        request.setAttribute("pageSize", pageSize);
+        request.setAttribute("totalPages", totalPages);
 
-        request.getRequestDispatcher("quiz_list.jsp").forward(request, response);
+        request.getRequestDispatcher("subject_lesson_expert.jsp").forward(request, response);
     }
 }

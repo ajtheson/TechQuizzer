@@ -6,7 +6,7 @@
   Time: 10:00 AM
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
     <jsp:include page="./common/headload.jsp"/>
@@ -32,12 +32,14 @@
             padding-left: 15px;
             margin: 20px 0;
         }
+
         .form-container {
             background: #f8f9fa;
             padding: 30px;
             border-radius: 10px;
-            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
         }
+
         .quiz-setting-group {
             border: 1px solid #dee2e6;
             border-radius: 8px;
@@ -45,6 +47,7 @@
             margin-bottom: 15px;
             background: white;
         }
+
         .remove-group-btn {
             position: absolute;
             top: 10px;
@@ -94,10 +97,10 @@
                     <div class="col-md-4 mb-3">
                         <label for="level" class="form-label">Quiz Level</label>
                         <select class="form-select" id="level" name="level" required>
-                            <option value="" selected disabled>Select level</option>
-                            <option value="Easy">Easy</option>
-                            <option value="Medium">Medium</option>
-                            <option value="Hard">Hard</option>
+                            <option value="" selected disabled>Select subject</option>
+                            <c:forEach var="level" items="${requestScope.levels}">
+                                <option value="${level.getId()}">${level.getName()}</option>
+                            </c:forEach>
                         </select>
                     </div>
 
@@ -113,7 +116,14 @@
                                min="1" max="100" placeholder="Enter pass rate" required>
                     </div>
                 </div>
-
+                <div class="mb-3">
+                    <label for="testTypeId" class="form-label">Quiz Format</label>
+                    <select class="form-select" id="format" name="format" required>
+                        <option value="" selected disabled>Select format</option>
+                        <option value="Multiple">Multiple</option>
+                        <option value="Essay">Essay</option>
+                    </select>
+                </div>
                 <div class="mb-3">
                     <label for="testTypeId" class="form-label">Test Type</label>
                     <select class="form-select" id="testTypeId" name="testTypeId" required>
@@ -189,7 +199,8 @@
                 </div>
 
                 <div class="mb-3">
-                    <label class="form-label">Total Questions: <span id="totalQuestions" class="text-primary">0</span></label>
+                    <label class="form-label">Total Questions: <span id="totalQuestions"
+                                                                     class="text-primary">0</span></label>
                 </div>
             </div>
 
@@ -452,4 +463,6 @@
     });
 </script>
 </body>
+<%@ include file="common/jsload.jsp" %>
+
 </html>

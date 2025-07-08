@@ -1,9 +1,9 @@
 package dto;
 
+import javax.security.auth.Subject;
 
 import entity.QuestionLevel;
 import entity.QuizSetting;
-import entity.Subject;
 import entity.TestType;
 
 public class QuizDTO {
@@ -59,12 +59,20 @@ public class QuizDTO {
         this.quizSetting = quizSetting;
     }
 
+    public void setTestType(TestType testType) {
+        this.testType = testType;
+    }
+
     public int getDuration() {
         return duration;
     }
 
     public void setDuration(int duration) {
         this.duration = duration;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
     }
 
     public int getPassRate() {
@@ -85,10 +93,6 @@ public class QuizDTO {
 
     public int getStatus() {
         return status;
-    }
-
-    public void setStatus(int status) {
-        this.status = status;
     }
 
     public String getFormat() {

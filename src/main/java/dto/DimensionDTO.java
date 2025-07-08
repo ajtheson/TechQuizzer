@@ -1,25 +1,14 @@
-package entity;
+package dto;
 
-public class Dimension {
+import entity.Subject;
+
+public class DimensionDTO {
     private int id;
     private String type;
     private String name;
     private String description;
-    private int subjectId;
+    private SubjectDTO subjectDTO;
     private boolean status;
-
-    public Dimension() {
-        this.type = "Domain";
-    }
-
-    public Dimension(int id, String type, String name, String description, int subjectId) {
-        this.id = id;
-        this.type = type;
-        this.name = name;
-        this.description = description;
-        this.subjectId = subjectId;
-    }
-
     public int getId() {
         return id;
     }
@@ -52,12 +41,12 @@ public class Dimension {
         this.description = description;
     }
 
-    public int getSubjectId() {
-        return subjectId;
+    public SubjectDTO getSubjectDTO() {
+        return subjectDTO;
     }
 
-    public void setSubjectId(int subjectId) {
-        this.subjectId = subjectId;
+    public void setSubjectDTO(SubjectDTO subjectDTO) {
+        this.subjectDTO = subjectDTO;
     }
 
     public boolean isStatus() {

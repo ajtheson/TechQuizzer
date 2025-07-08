@@ -3,14 +3,15 @@ package dao;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.security.auth.Subject;
 
 import dal.DBContext;
-import entity.Subject;
 
 public class SubjectDAO extends DBContext {
     public Subject getForRegister(int subjectId) {
@@ -37,6 +38,33 @@ public class SubjectDAO extends DBContext {
         try (
                 PreparedStatement ps = connection.prepareStatement(sql);) {
             ps.setInt(1, owner_id);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Subject s = new Subject(
+                        rs.getInt("id"),
+                        rs.getString("name"),
+                        rs.getString("tag_line"),
+                        rs.getString("thumbnail"),
+                        rs.getString("detail_description"),
+                        rs.getBoolean("featured_subject"),
+                        rs.getBoolean("status"),
+                        rs.getInt("category_id"),
+                        rs.getInt("owner_id"),
+                        rs.getTimestamp("update_date").toLocalDateTime());
+                list.add(s);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    public List<Subject> getAllSubjectsWithoutID() {
+        List<Subject> list = new ArrayList<>();
+        String sql = "SELECT * FROM subjects";
+        try (
+                PreparedStatement ps = connection.prepareStatement(sql);) {
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 Subject s = new Subject(
@@ -391,6 +419,18 @@ public class SubjectDAO extends DBContext {
         }
     }
 
+    public boolean updateOwner(int id, int ownerId) {
+        String sql = "UPDATE [subjects] SET [owner_id] = ? WHERE [id] = ? ";
+        try (PreparedStatement pstm = connection.prepareStatement(sql)) {
+            pstm.setInt(1, ownerId);
+            pstm.setInt(2, id);
+            return pstm.executeUpdate() > 0;
+        } catch (SQLException e) {
+            System.out.println("Error: " + e.getMessage());
+            return false;
+        }
+    }
+
     public List<Subject> getAllSubjectsForQuestionList(int owner_id) {
         List<Subject> list = new ArrayList<>();
         StringBuilder sql = new StringBuilder("SELECT * FROM [subjects] WHERE 1=1");
@@ -507,4 +547,67 @@ public class SubjectDAO extends DBContext {
         }
         return subjects;
     }
+
+    public int insertSubject(Subject subject) {
+        String sql = "INSERT INTO subjects " +
+                "(name, tag_line, thumbnail, detail_description, featured_subject, status, category_id, owner_id) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+
+        try (PreparedStatement pstm = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+            pstm.setString(1, subject.getName());
+            pstm.setString(2, subject.getTagLine());
+            pstm.setString(3, subject.getThumbnail());
+            pstm.setString(4, subject.getLongDescription());
+            pstm.setBoolean(5, subject.isFeaturedSubject());
+            pstm.setBoolean(6, subject.isPublished());
+            pstm.setInt(7, subject.getCategoryId());
+            pstm.setInt(8, subject.getOwnerId());
+            int affectedRows = pstm.executeUpdate();
+            if (affectedRows == 0) {
+                throw new SQLException("Creating subject failed, no rows affected.");
+            }
+
+            try (ResultSet generatedKeys = pstm.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    return generatedKeys.getInt(1);
+                } else {
+                    throw new SQLException("Creating subject failed, no ID obtained.");
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
+    }
+
+    public Subject getLatestSubjectByNameAndOwner(String name, int ownerId) {
+        String sql = "SELECT TOP 1 * FROM subjects WHERE name = ? AND owner_id = ? ORDER BY id DESC";
+
+        try (PreparedStatement pstm = connection.prepareStatement(sql)) {
+
+            pstm.setString(1, name);
+            pstm.setInt(2, ownerId);
+
+            try (ResultSet rs = pstm.executeQuery()) {
+                if (rs.next()) {
+                    Subject subject = new Subject();
+                    subject.setId(rs.getInt("id"));
+                    subject.setName(rs.getString("name"));
+                    subject.setTagLine(rs.getString("tag_line"));
+                    subject.setThumbnail(rs.getString("thumbnail"));
+                    subject.setLongDescription(rs.getString("detail_description"));
+                    subject.setFeaturedSubject(rs.getBoolean("featured_subject"));
+                    subject.setPublished(rs.getBoolean("status"));
+                    subject.setCategoryId(rs.getObject("category_id") != null ? rs.getInt("category_id") : null);
+                    subject.setOwnerId(rs.getInt("owner_id"));
+                }
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
 }

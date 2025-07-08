@@ -30,17 +30,25 @@
             <li><a class="app-menu__item ${currentPage == 'setting' ? 'active' : ''}" href="settings"><i
                     class="app-menu__icon bi bi-gear-wide-connected"></i><span
                     class="app-menu__label">Setting List</span></a></li>
+            <li><a class="app-menu__item ${currentPage == 'subject' ? 'active' : ''}" href="subject-lesson"><i
+                    class="app-menu__icon bi bi-journal"></i><span
+                    class="app-menu__label">Subject Lesson</span></a></li>
         </c:if>
         <li><a class="app-menu__item ${currentPage == 'subject' ? 'active' : ''}" href="manage-subject"><i
                 class="app-menu__icon bi bi-journal-bookmark"></i><span
                 class="app-menu__label">Subject List</span></a></li>
+
         <li><a class="app-menu__item ${currentPage == 'question' ? 'active' : ''}" href="questions"><i
                 class="app-menu__icon bi bi-question-circle"></i><span
                 class="app-menu__label">Question List</span></a></li>
+
         <c:if test="${sessionScope.user.roleName == 'Expert'}">
             <li><a class="app-menu__item ${currentPage == 'quiz' ? 'active' : ''}" href="quizzeslist"><i
                     class="app-menu__icon bi bi-card-checklist"></i><span
                     class="app-menu__label">Quiz List</span></a></li>
+            <li><a class="app-menu__item ${currentPage == 'subject' ? 'active' : ''}" href="subject-lesson-expert"><i
+                    class="app-menu__icon bi bi-journal"></i><span
+                    class="app-menu__label">Subject Lesson</span></a></li>
         </c:if>
     </ul>
 </aside>

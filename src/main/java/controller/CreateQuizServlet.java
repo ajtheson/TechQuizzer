@@ -1,5 +1,12 @@
 package controller;
 
+import java.io.IOException;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.security.auth.Subject;
+
 import dao.*;
 import dto.UserDTO;
 import entity.*;
@@ -10,12 +17,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
-import java.io.IOException;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-
-@WebServlet(name = "CreateQuizServlet", urlPatterns = {"/create_quiz"})
+@WebServlet(name = "CreateQuizServlet", urlPatterns = { "/create_quiz" })
 public class CreateQuizServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -31,13 +33,12 @@ public class CreateQuizServlet extends HttpServlet {
         System.out.println("email: " + user.getEmail());
         try {
             SubjectDAO subjectDAO = new SubjectDAO();
+            QuestionLevelDAO questionLevelDAO = new QuestionLevelDAO();
             DimensionDAO dimensionDAO = new DimensionDAO();
             LessonDAO lessonDAO = new LessonDAO();
             TestTypeDAO testTypeDAO = new TestTypeDAO();
-            // Load all subjects that user has access to (based on registrations)
             List<Subject> subjects = subjectDAO.getAllSubjects(user.getId());
-
-            // Load all dimensions for all subjects (will be filtered by JavaScript)
+            List<QuestionLevel> questionLevels = questionLevelDAO.findAll();
             List<Dimension> dimensions = new ArrayList<>();
             List<Lesson> lessons = new ArrayList<>();
 
@@ -50,6 +51,7 @@ public class CreateQuizServlet extends HttpServlet {
             List<TestType> testTypes = testTypeDAO.getAllTestTypes();
 
             // Set attributes for JSP
+            request.setAttribute("levels", questionLevels);
             request.setAttribute("subjects", subjects);
             request.setAttribute("dimensions", dimensions);
             request.setAttribute("lessons", lessons);
@@ -69,10 +71,6 @@ public class CreateQuizServlet extends HttpServlet {
 
         HttpSession session = request.getSession();
         UserDTO user = (UserDTO) session.getAttribute("user");
-        SubjectDAO subjectDAO = new SubjectDAO();
-        DimensionDAO dimensionDAO = new DimensionDAO();
-        LessonDAO lessonDAO = new LessonDAO();
-        TestTypeDAO testTypeDAO = new TestTypeDAO();
         QuizSettingDAO quizSettingDAO = new QuizSettingDAO();
         QuizSettingGroupDAO quizSettingGroupDAO = new QuizSettingGroupDAO();
         QuizDAO quizDAO = new QuizDAO();
@@ -85,7 +83,9 @@ public class CreateQuizServlet extends HttpServlet {
             // Get basic quiz information
             String name = request.getParameter("name");
             int subjectId = Integer.parseInt(request.getParameter("subjectId"));
-            String level = request.getParameter("level");
+            String levelParam = request.getParameter("level");
+            int level = Integer.parseInt(levelParam);
+            String format = request.getParameter("format");
             int duration = Integer.parseInt(request.getParameter("duration"));
             int passRate = Integer.parseInt(request.getParameter("passRate"));
             int testTypeId = Integer.parseInt(request.getParameter("testTypeId"));
@@ -166,7 +166,9 @@ public class CreateQuizServlet extends HttpServlet {
 
             Quiz quiz = new Quiz();
             quiz.setName(name.trim());
-            quiz.setDuration(duration*60);
+            quiz.setQuestionLevelId(level);
+            quiz.setFormat(format);
+            quiz.setDuration(duration * 60);
             quiz.setPassRate(passRate);
             quiz.setDescription(description);
             quiz.setStatus(1); // Default active
@@ -174,7 +176,7 @@ public class CreateQuizServlet extends HttpServlet {
             quiz.setSubjectId(subjectId);
             quiz.setQuizSettingId(quizSettingId);
 
-//            quizDAO.createQuiz(quiz);
+            quizDAO.createQuiz(quiz);
 
             // Success - redirect to quiz list or quiz detail
             session.setAttribute("successMessage", "Quiz created successfully!");

@@ -143,16 +143,22 @@
             </div>
             <div class="mb-3">
               <label class="form-label">Subject</label>
-              <input type="text" class="form-control" name="subject" value="${quiz.subject.name}" readonly>
+              <input type="text" class="form-control" name="subject" value="${quiz.subject.name}" disabled>
               <input type="hidden" name="subjectId" value="${quiz.subject.id}">
             </div>
-
+            <div class="mb-3">
+              <label class="form-label">Format</label>
+              <input type="text" class="form-control" name="subject" value="${quiz.format}" disabled>
+            </div>
             <div class="mb-3">
               <label class="form-label">Level</label>
-              <select class="form-control" name="level" required>
-                <option value="Easy" ${quiz.level == 'Easy' ? 'selected' : ''}>Easy</option>
-                <option value="Medium" ${quiz.level == 'Medium' ? 'selected' : ''}>Medium</option>
-                <option value="Hard" ${quiz.level == 'Hard' ? 'selected' : ''}>Hard</option>
+              <select class="form-select" id="level" name="level" required>
+                <option value="" disabled <c:if test="${empty selectedLevelId}">selected</c:if>>Select level</option>
+                <c:forEach var="level" items="${requestScope.levels}">
+                  <option value="${level.getId()}" <c:if test="${level.getId() == selectedLevelId}">selected</c:if>>
+                      ${level.getName()}
+                  </option>
+                </c:forEach>
               </select>
             </div>
 
