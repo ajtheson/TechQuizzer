@@ -1,8 +1,5 @@
 package dao;
 
-import dal.DBContext;
-import entity.Subject;
-
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -10,6 +7,10 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import javax.security.auth.Subject;
+
+import dal.DBContext;
 
 public class SubjectDAO extends DBContext {
     public Subject getForRegister(int subjectId) {
@@ -34,8 +35,7 @@ public class SubjectDAO extends DBContext {
         List<Subject> list = new ArrayList<>();
         String sql = "SELECT * FROM subjects WHERE status = 1 and owner_id=? ORDER BY name ASC ";
         try (
-                PreparedStatement ps = connection.prepareStatement(sql);
-             ) {
+                PreparedStatement ps = connection.prepareStatement(sql);) {
             ps.setInt(1, owner_id);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
@@ -49,8 +49,7 @@ public class SubjectDAO extends DBContext {
                         rs.getBoolean("status"),
                         rs.getInt("category_id"),
                         rs.getInt("owner_id"),
-                        rs.getTimestamp("update_date").toLocalDateTime()
-                );
+                        rs.getTimestamp("update_date").toLocalDateTime());
                 list.add(s);
             }
 
@@ -97,14 +96,16 @@ public class SubjectDAO extends DBContext {
         return null;
     }
 
-    //Just get subjects is publish
-    public List<Subject> getAllPublishSubjectsWithPagination(int page, int size, int categoryId, boolean isDesc, boolean isFeatured, String searchParam) {
+    // Just get subjects is publish
+    public List<Subject> getAllPublishSubjectsWithPagination(int page, int size, int categoryId, boolean isDesc,
+            boolean isFeatured, String searchParam) {
         List<Subject> subjects = new ArrayList<>();
-        StringBuilder sql = new StringBuilder("""
-                    SELECT [id], [name], [tag_line], [thumbnail], [featured_subject], [category_id], [update_date], [owner_id]
-                    FROM [subjects]
-                    WHERE [status] = 1
-                """);
+        StringBuilder sql = new StringBuilder(
+                """
+                            SELECT [id], [name], [tag_line], [thumbnail], [featured_subject], [category_id], [update_date], [owner_id]
+                            FROM [subjects]
+                            WHERE [status] = 1
+                        """);
         if (categoryId != 0) {
             sql.append(" AND [category_id] = ?");
         }
@@ -142,8 +143,9 @@ public class SubjectDAO extends DBContext {
         return subjects;
     }
 
-    //Get all subject with all status, if admin the ownerId = 0
-    public List<Subject> getAllSubjectsWithPagination(int page, int size, int categoryId, String searchParam, String status, int ownerId) {
+    // Get all subject with all status, if admin the ownerId = 0
+    public List<Subject> getAllSubjectsWithPagination(int page, int size, int categoryId, String searchParam,
+            String status, int ownerId) {
         List<Subject> subjects = new ArrayList<>();
         StringBuilder sql = new StringBuilder("""
                     SELECT [id], [name], [category_id], [status], [owner_id]
@@ -159,7 +161,8 @@ public class SubjectDAO extends DBContext {
         if (!status.isBlank()) {
             if (status.equalsIgnoreCase("Published")) {
                 sql.append(" AND [status] = 1");
-            } else sql.append(" AND [status] = 0");
+            } else
+                sql.append(" AND [status] = 0");
         }
         if (ownerId != 0) {
             sql.append(" AND [owner_id] = ?");
@@ -233,7 +236,7 @@ public class SubjectDAO extends DBContext {
         return subjects;
     }
 
-    //Get total number of Publish subjects
+    // Get total number of Publish subjects
     public int getTotalPublishSubjects(int categoryId, boolean isFeatured, String searchParam) {
         StringBuilder sql = new StringBuilder("""
                 SELECT COUNT(*) FROM subjects
@@ -267,7 +270,7 @@ public class SubjectDAO extends DBContext {
         return 0;
     }
 
-    //Get total number of subjects
+    // Get total number of subjects
     public int getTotalSubjects(int categoryId, String searchParam, String status, int ownerId) {
         StringBuilder sql = new StringBuilder("""
                 SELECT COUNT(*) FROM subjects
@@ -282,7 +285,8 @@ public class SubjectDAO extends DBContext {
         if (!status.isBlank()) {
             if (status.equalsIgnoreCase("Published")) {
                 sql.append(" AND [status] = 1");
-            } else sql.append(" AND [status] = 0");
+            } else
+                sql.append(" AND [status] = 0");
         }
         if (ownerId != 0) {
             sql.append(" AND [owner_id] = ?");
@@ -410,8 +414,7 @@ public class SubjectDAO extends DBContext {
                         rs.getBoolean("status"),
                         rs.getInt("category_id"),
                         rs.getInt("owner_id"),
-                        rs.getTimestamp("update_date").toLocalDateTime()
-                );
+                        rs.getTimestamp("update_date").toLocalDateTime());
                 list.add(s);
             }
 
@@ -420,6 +423,7 @@ public class SubjectDAO extends DBContext {
         }
         return list;
     }
+
     public List<Subject> getAllSubjects() {
         List<Subject> subjects = new ArrayList<>();
         String sql = "Select * from [subjects]";
@@ -481,16 +485,16 @@ public class SubjectDAO extends DBContext {
             if (rs.next()) {
                 return true;
             }
-        }catch (SQLException e){
+        } catch (SQLException e) {
             System.out.println("Error: " + e.getMessage());
         }
         return false;
     }
 
-    public List<Subject> getForCreateRegistration(){
+    public List<Subject> getForCreateRegistration() {
         List<Subject> subjects = new ArrayList<>();
         String sql = "select [id], [name] from [subjects] where [status] = 1";
-        try(PreparedStatement pstm = connection.prepareStatement(sql)){
+        try (PreparedStatement pstm = connection.prepareStatement(sql)) {
             ResultSet rs = pstm.executeQuery();
             while (rs.next()) {
                 Subject subject = new Subject();
@@ -498,7 +502,7 @@ public class SubjectDAO extends DBContext {
                 subject.setName(rs.getString("name"));
                 subjects.add(subject);
             }
-        }catch (SQLException e){
+        } catch (SQLException e) {
             System.out.println("Error: " + e.getMessage());
         }
         return subjects;

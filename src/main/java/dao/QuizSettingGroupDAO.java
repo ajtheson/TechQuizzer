@@ -1,11 +1,15 @@
 package dao;
 
-import dal.DBContext;
-import entity.QuizSettingGroup;
-
-import java.sql.*;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
+
+import dal.DBContext;
+import entity.QuizSettingGroup;
 
 public class QuizSettingGroupDAO extends DBContext {
     public void deleteByQuizSettingIdAndType(int quizSettingId, String type) {
@@ -13,14 +17,14 @@ public class QuizSettingGroupDAO extends DBContext {
 
         if ("lesson".equals(type)) {
             sql = """
-            DELETE FROM quiz_setting_groups 
-            WHERE quiz_setting_id = ? AND subject_lesson_id IS NOT NULL
-            """;
+                    DELETE FROM quiz_setting_groups
+                    WHERE quiz_setting_id = ? AND subject_lesson_id IS NOT NULL
+                    """;
         } else {
             sql = """
-            DELETE FROM quiz_setting_groups 
-            WHERE quiz_setting_id = ? AND subject_dimension_id IS NOT NULL
-            """;
+                    DELETE FROM quiz_setting_groups
+                    WHERE quiz_setting_id = ? AND subject_dimension_id IS NOT NULL
+                    """;
         }
 
         try (PreparedStatement pstm = connection.prepareStatement(sql)) {
@@ -33,10 +37,10 @@ public class QuizSettingGroupDAO extends DBContext {
 
     public void insertQuizSettingGroup(QuizSettingGroup group) {
         String sql = """
-        INSERT INTO quiz_setting_groups 
-        (number_question, subject_lesson_id, subject_dimension_id, quiz_setting_id) 
-        VALUES (?, ?, ?, ?)
-        """;
+                INSERT INTO quiz_setting_groups
+                (number_question, subject_lesson_id, subject_dimension_id, quiz_setting_id)
+                VALUES (?, ?, ?, ?)
+                """;
 
         try (PreparedStatement pstm = connection.prepareStatement(sql)) {
             pstm.setInt(1, group.getNumberQuestion());
@@ -61,13 +65,12 @@ public class QuizSettingGroupDAO extends DBContext {
         }
     }
 
-
     public void updateQuizSettingGroup(QuizSettingGroup group) {
         String sql = """
-        UPDATE quiz_setting_groups 
-        SET number_question = ?, subject_lesson_id = ?, subject_dimension_id = ?
-        WHERE id = ?
-        """;
+                UPDATE quiz_setting_groups
+                SET number_question = ?, subject_lesson_id = ?, subject_dimension_id = ?
+                WHERE id = ?
+                """;
 
         try (PreparedStatement pstm = connection.prepareStatement(sql)) {
             pstm.setInt(1, group.getNumberQuestion());
@@ -91,6 +94,7 @@ public class QuizSettingGroupDAO extends DBContext {
             System.out.println("Error updateQuizSettingGroup: " + e.getMessage());
         }
     }
+
     public boolean deleteByQuizSettingIdAndLessonId(int quizSettingId, int lessonId) {
         String sql = "DELETE FROM quiz_setting_group WHERE quiz_setting_id = ? AND subject_lesson_id = ?";
 
@@ -107,7 +111,6 @@ public class QuizSettingGroupDAO extends DBContext {
             return false;
         }
     }
-
 
     public boolean deleteByQuizSettingIdAndDimensionId(int quizSettingId, int dimensionId) {
         String sql = "DELETE FROM quiz_setting_group WHERE quiz_setting_id = ? AND subject_dimension_id = ?";
@@ -131,9 +134,9 @@ public class QuizSettingGroupDAO extends DBContext {
         String sql;
 
         if ("lesson".equals(type)) {
-            sql = "SELECT * FROM quiz_setting_group WHERE quiz_setting_id = ? AND subject_lesson_id IS NOT NULL";
+            sql = "SELECT * FROM quiz_setting_groups WHERE quiz_setting_id = ? AND subject_lesson_id IS NOT NULL";
         } else if ("dimension".equals(type)) {
-            sql = "SELECT * FROM quiz_setting_group WHERE quiz_setting_id = ? AND subject_dimension_id IS NOT NULL";
+            sql = "SELECT * FROM quiz_setting_groups WHERE quiz_setting_id = ? AND subject_dimension_id IS NOT NULL";
         } else {
             return groups; // Return empty list for invalid type
         }
@@ -191,8 +194,7 @@ public class QuizSettingGroupDAO extends DBContext {
 
             return ps.executeUpdate() > 0;
 
-
-        }catch(Exception e) {
+        } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
         }
         return false;

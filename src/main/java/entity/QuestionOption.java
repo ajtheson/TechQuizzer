@@ -39,4 +39,3 @@ public class QuestionOption {
         this.questionId = questionId;
     }
 }
-

@@ -58,6 +58,22 @@
             </div>
 
             <div class="mb-3">
+                <label class="form-label d-block mb-2">Exam format:</label>
+                <div class="form-check form-check-inline" style="margin-right: 100px">
+                    <label class="form-check-label" for="multiple">Multiple choice</label>
+                    <input class="form-check-input" type="radio" name="examFormat"
+                           id="multiple" value="multiple" disabled
+                    ${requestScope.practice.format.equalsIgnoreCase("multiple") ? 'checked' : '' }>
+                </div>
+                <div class="form-check form-check-inline">
+                    <label class="form-check-label" for="essay">Essay</label>
+                    <input class="form-check-input" type="radio" name="examFormat"
+                           id="essay" value="essay" disabled
+                    ${requestScope.practice.format.equalsIgnoreCase("essay") ? 'checked' : '' }>
+                </div>
+            </div>
+
+            <div class="mb-3">
                 <label for="numberOfQuestions" class="form-label">Number of Questions</label>
                 <input type="number" class="form-control" id="numberOfQuestions"
                        name="numberOfQuestions" value="${requestScope.practice.getNumberOfQuestions()}" disabled>
@@ -96,12 +112,9 @@
             </c:if>
 
             <div class="mb-3">
-                <label for="questionLevelIds" class="form-label">Question Level</label>
-                <select class="form-select" id="questionLevelIds" name="questionLevelIds"
-                        data-placeholder="Select question level" multiple disabled>
-                    <c:forEach var="level" items="${requestScope.questionLevels}">
-                        <option selected value="${level.getId()}">${level.getQuestionLevel().getName()}</option>
-                    </c:forEach>
+                <label for="questionLevelId" class="form-label">Question Level</label>
+                <select class="form-select" id="questionLevelId" name="questionLevelId" disabled>
+                    <option selected value="${requestScope.practice.getQuestionLevel().getId()}">${requestScope.practice.getQuestionLevel().getName()}</option>
                 </select>
             </div>
 
@@ -112,15 +125,5 @@
     </div>
 </div>
 
-<script>
-
-    $('#questionLevelIds').select2({
-        theme: "bootstrap-5",
-        width: '100%',
-        placeholder: 'Select question level',
-        closeOnSelect: false,
-    });
-
-</script>
 </body>
 </html>

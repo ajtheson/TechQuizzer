@@ -57,6 +57,20 @@
             </div>
 
             <div class="mb-3">
+                <label class="form-label d-block mb-2">Exam format:</label>
+                <div class="form-check form-check-inline" style="margin-right: 100px">
+                    <label class="form-check-label" for="multiple">Multiple choice</label>
+                    <input class="form-check-input" type="radio" name="examFormat"
+                           id="multiple" value="multiple" checked>
+                </div>
+                <div class="form-check form-check-inline">
+                    <label class="form-check-label" for="essay">Essay</label>
+                    <input class="form-check-input" type="radio" name="examFormat"
+                           id="essay" value="essay">
+                </div>
+            </div>
+
+            <div class="mb-3">
                 <label for="numberOfQuestions" class="form-label">Number of Questions</label>
                 <input type="number" class="form-control" id="numberOfQuestions"
                        name="numberOfQuestions" min="1" placeholder="Enter number of questions" required>
@@ -91,9 +105,9 @@
             </div>
 
             <div class="mb-3">
-                <label for="questionLevelIds" class="form-label">Question Level</label>
-                <select class="form-select" id="questionLevelIds" name="questionLevelIds"
-                        data-placeholder="Select question level" multiple required>
+                <label for="questionLevelId" class="form-label">Question Level</label>
+                <select class="form-select" id="questionLevelId" name="questionLevelId" required>
+                    <option value="" selected disabled>Select question level</option>
                     <c:forEach var="level" items="${requestScope.questionLevels}">
                         <option value="${level.getId()}">${level.getName()}</option>
                     </c:forEach>
@@ -159,7 +173,7 @@
     dimensionSelect.addEventListener("click", (e) => {
         if (!subjectSelect.value) {
             e.preventDefault();
-            alert("Vui lòng chọn Subject trước khi chọn Dimension");
+            alert("Please choose subject before choose dimension");
             this.blur();
         }
     });
@@ -168,7 +182,7 @@
     lessonSelect.addEventListener("click", (e) => {
         if (!subjectSelect.value) {
             e.preventDefault();
-            alert("Vui lòng chọn Subject trước khi chọn Lesson");
+            alert("Please choose subject before choose lesson");
             this.blur();
         }
     });
@@ -195,14 +209,6 @@
             opt.text = l.name;
             lessonSelect.appendChild(opt);
         });
-    });
-
-    //init select multiple
-    $('#questionLevelIds').select2({
-        theme: "bootstrap-5",
-        width: '100%',
-        placeholder: 'Select question level',
-        closeOnSelect: false,
     });
 
     //validate name with many spaces

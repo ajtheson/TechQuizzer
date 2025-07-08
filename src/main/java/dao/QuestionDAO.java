@@ -1,9 +1,5 @@
 package dao;
 
-import dal.DBContext;
-import dto.QuestionDTO;
-import entity.Question;
-
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -11,15 +7,22 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import dal.DBContext;
+import dto.QuestionDTO;
+import entity.Question;
+
 public class QuestionDAO extends DBContext {
 
-    public List<Question> findAllByDimensionIdAndQuestionLevel(int dimensionId, int questionLevel) {
-        List<Question> questions = new ArrayList<Question>();
-        String sql = "select [id], [content], [explaination], [question_level_id], [subject_lesson_id], [subject_dimension_id] " +
-                "from [questions] where [subject_dimension_id] = ? and [question_level_id] = ?";
+    public List<Question> findAllByDimensionIdAndQuestionLevelAndFormat(int dimensionId, int questionLevelId,
+            String format) {
+        List<Question> questions = new ArrayList<>();
+        String sql = "select [id], [content], [explaination], [question_level_id], [subject_lesson_id], [subject_dimension_id] "
+                +
+                "from [questions] where [subject_dimension_id] = ? and [question_level_id] = ? AND [question_format] = ? and [is_deleted] = 0";
         try (PreparedStatement pstm = connection.prepareStatement(sql)) {
             pstm.setInt(1, dimensionId);
-            pstm.setInt(2, questionLevel);
+            pstm.setInt(2, questionLevelId);
+            pstm.setString(3, format);
             ResultSet rs = pstm.executeQuery();
             while (rs.next()) {
                 Question question = new Question();
@@ -37,17 +40,19 @@ public class QuestionDAO extends DBContext {
         return questions;
     }
 
-    public List<QuestionDTO> findQuestionWithPagination(int page, int size, int subjectId, int dimensionId, int lessonId, int levelId, String status, String search, int ownerId) {
+    public List<QuestionDTO> findQuestionWithPagination(int page, int size, int subjectId, int dimensionId,
+            int lessonId, int levelId, String status, String search, int ownerId) {
         List<QuestionDTO> questions = new ArrayList<>();
-        StringBuilder sql = new StringBuilder("""
-                SELECT q.id, q.content, q.explaination, q.status, q.question_level_id, ql.name AS question_level_name, q.subject_lesson_id, l.name AS subject_lesson_name, q.subject_dimension_id, d.name AS subject_dimension_name, s.id AS subject_id, s.name AS subject_name
-                FROM [questions] q
-                LEFT JOIN [lessons] l on q.subject_lesson_id = l.id
-                LEFT JOIN [dimensions] d on q.subject_dimension_id = d.id
-                JOIN [question_levels] ql on q.question_level_id = ql.id
-                LEFT JOIN [subjects] s ON s.id = COALESCE(l.subject_id, d.subject_id)
-                WHERE q.is_deleted = 0
-                """);
+        StringBuilder sql = new StringBuilder(
+                """
+                        SELECT q.id, q.content, q.explaination, q.status, q.question_level_id, ql.name AS question_level_name, q.subject_lesson_id, l.name AS subject_lesson_name, q.subject_dimension_id, d.name AS subject_dimension_name, s.id AS subject_id, s.name AS subject_name
+                        FROM [questions] q
+                        LEFT JOIN [lessons] l on q.subject_lesson_id = l.id
+                        LEFT JOIN [dimensions] d on q.subject_dimension_id = d.id
+                        JOIN [question_levels] ql on q.question_level_id = ql.id
+                        LEFT JOIN [subjects] s ON s.id = COALESCE(l.subject_id, d.subject_id)
+                        WHERE q.is_deleted = 0
+                        """);
         if (subjectId != 0) {
             sql.append(" AND s.id = ?");
         }
@@ -66,7 +71,7 @@ public class QuestionDAO extends DBContext {
         if (search != null && !search.isEmpty()) {
             sql.append(" AND q.content LIKE ?");
         }
-         if (ownerId != 0) {
+        if (ownerId != 0) {
             sql.append(" AND s.owner_id = ?");
         }
         sql.append(" ORDER BY [id]");
@@ -102,9 +107,9 @@ public class QuestionDAO extends DBContext {
                 question.setStatus(rs.getBoolean("status"));
                 question.setQuestionLevelId(rs.getInt("question_level_id"));
                 question.setQuestionLevelName(rs.getString("question_level_name"));
-                question.setSubjectLessonId((Integer)rs.getObject("subject_lesson_id"));
+                question.setSubjectLessonId((Integer) rs.getObject("subject_lesson_id"));
                 question.setSubjectLessonName(rs.getString("subject_lesson_name"));
-                question.setSubjectDimensionId((Integer)rs.getObject("subject_dimension_id"));
+                question.setSubjectDimensionId((Integer) rs.getObject("subject_dimension_id"));
                 question.setQuestionDimensionName(rs.getString("subject_dimension_name"));
                 question.setSubjectId(rs.getInt("subject_id"));
                 question.setSubjectName(rs.getString("subject_name"));
@@ -115,6 +120,7 @@ public class QuestionDAO extends DBContext {
         }
         return questions;
     }
+
     public int create(Question q) throws Exception {
         String sql = "INSERT INTO questions (content, explaination, question_format, question_level_id, subject_lesson_id, subject_dimension_id, status) VALUES (?, ?, ?, ?, ?, ?, ?)";
         try (PreparedStatement stm = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
@@ -122,7 +128,6 @@ public class QuestionDAO extends DBContext {
             stm.setString(2, q.getExplaination());
             stm.setString(3, q.getQuestionFormat());
             stm.setInt(4, q.getQuestionLevelId());
-
             if (q.getSubjectLessonId() == null || q.getSubjectLessonId() == 0) {
                 stm.setNull(5, java.sql.Types.INTEGER);
             } else {
@@ -140,10 +145,37 @@ public class QuestionDAO extends DBContext {
             stm.executeUpdate();
 
             try (var rs = stm.getGeneratedKeys()) {
-                if (rs.next()) return rs.getInt(1);
+                if (rs.next())
+                    return rs.getInt(1);
             }
         }
         return -1;
+    }
+
+    public List<Question> findAllByLessonIdAndQuestionLevelAndFormat(int lessonId, int questionLevelId, String format) {
+        List<Question> questions = new ArrayList<>();
+        String sql = "select [id], [content], [explaination], [question_level_id], [subject_lesson_id], [subject_dimension_id] "
+                +
+                "from [questions] where [subject_lesson_id] = ? and [question_level_id] = ? and [question_format] = ? and [is_deleted] = 0";
+        try (PreparedStatement pstm = connection.prepareStatement(sql)) {
+            pstm.setInt(1, lessonId);
+            pstm.setInt(2, questionLevelId);
+            pstm.setString(3, format);
+            ResultSet rs = pstm.executeQuery();
+            while (rs.next()) {
+                Question question = new Question();
+                question.setId(rs.getInt("id"));
+                question.setContent(rs.getString("content"));
+                question.setExplaination(rs.getString("explaination"));
+                question.setQuestionLevelId(rs.getInt("question_level_id"));
+                question.setSubjectLessonId(rs.getInt("subject_lesson_id"));
+                question.setSubjectDimensionId(rs.getInt("subject_dimension_id"));
+                questions.add(question);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return questions;
     }
 
     public Question findById(int id) throws Exception {
@@ -164,7 +196,7 @@ public class QuestionDAO extends DBContext {
                     q.setSubjectDimensionId((Integer) rs.getObject("subject_dimension_id"));
                     return q;
                 }
-            }catch (SQLException e){
+            } catch (SQLException e) {
                 System.out.println(e.getMessage());
             }
         }
@@ -178,7 +210,7 @@ public class QuestionDAO extends DBContext {
             stm.setInt(2, id);
             stm.executeUpdate();
             return true;
-        }catch (SQLException e){
+        } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
         return false;
@@ -194,16 +226,16 @@ public class QuestionDAO extends DBContext {
 
     public Integer findSubjectIdByQuestionId(int questionId) {
         String query = """
-        SELECT 
-            COALESCE(l.subject_id, d.subject_id) AS subject_id
-        FROM questions q
-        LEFT JOIN lessons l ON q.subject_lesson_id = l.id
-        LEFT JOIN dimensions d ON q.subject_dimension_id = d.id
-        WHERE q.id = ?
-    """;
+                    SELECT
+                        COALESCE(l.subject_id, d.subject_id) AS subject_id
+                    FROM questions q
+                    LEFT JOIN lessons l ON q.subject_lesson_id = l.id
+                    LEFT JOIN dimensions d ON q.subject_dimension_id = d.id
+                    WHERE q.id = ?
+                """;
 
         try (
-             PreparedStatement ps = connection.prepareStatement(query)) {
+                PreparedStatement ps = connection.prepareStatement(query)) {
             ps.setInt(1, questionId);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
@@ -217,7 +249,8 @@ public class QuestionDAO extends DBContext {
         return null;
     }
 
-    public int getTotalQuestion(int subjectId, int dimensionId, int lessonId, int levelId, String status, String search, int ownerId) {
+    public int getTotalQuestion(int subjectId, int dimensionId, int lessonId, int levelId, String status, String search,
+            int ownerId) {
         StringBuilder sql = new StringBuilder("""
                 SELECT COUNT(*)
                 FROM [questions] q
@@ -278,18 +311,19 @@ public class QuestionDAO extends DBContext {
         return 0;
     }
 
-    public boolean updateStatus(int id, boolean status){
+    public boolean updateStatus(int id, boolean status) {
         String sql = """
-                UPDATE [questions]
-                SET [status] = ?
-                WHERE [id] = ?
-        """;
+                        UPDATE [questions]
+                        SET [status] = ?
+                        WHERE [id] = ?
+                """;
         try {
             PreparedStatement pstm = connection.prepareStatement(sql);
             pstm.setInt(1, status ? 1 : 0);
             pstm.setInt(2, id);
             return pstm.executeUpdate() > 0;
-        } catch (Exception e) {}
+        } catch (Exception e) {
+        }
         return false;
     }
 }

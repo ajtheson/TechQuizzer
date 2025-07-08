@@ -58,7 +58,7 @@
                             <span>${practice.getNumberOfQuestions()} Questions</span>
                         </div>
                         <div class="col-2 py-3" style="border-right: 1px solid #dee2e6;">
-                            <span>50%</span><br>
+                            <span><fmt:formatNumber value="${practice.getExamAttempt().getNumberCorrectQuestions() * 100 / practice.getNumberOfQuestions()}" type="number" maxFractionDigits="0"/>%</span><br/>
                             <span>Correct</span>
                         </div>
                         <div class="col-2 py-3">
@@ -67,7 +67,7 @@
                     </div>
                     <div class="d-flex justify-content-between px-3 py-2">
                         <div>
-                            <span>Level: ${practice.getLevelString()}</span>
+                            <span>Level: ${practice.getQuestionLevel().getName()}</span>
                         </div>
                         <div>
                             <span>Duration - ${practice.getFormattedDuration()}</span>

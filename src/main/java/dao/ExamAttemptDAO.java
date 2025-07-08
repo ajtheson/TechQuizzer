@@ -43,7 +43,7 @@ public class ExamAttemptDAO extends DBContext {
                     ExamAttempt examAttempt = new ExamAttempt();
                     examAttempt.setId(rs.getInt("id"));
                     examAttempt.setType(rs.getString("type"));
-                    examAttempt.setStartDate(rs.getDate("start_time").toLocalDate());
+                    examAttempt.setStartDate(rs.getDate("start_time") != null ? rs.getDate("start_time").toLocalDate() : null);
                     examAttempt.setDuration(rs.getInt("duration"));
                     examAttempt.setNumberCorrectQuestions(rs.getInt("number_correct_question"));
                     examAttempt.setUserId(rs.getInt("user_id"));
@@ -55,6 +55,84 @@ public class ExamAttemptDAO extends DBContext {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public boolean updateNumberCorrectQuestion(int numberCorrectQuestions, int id) {
+        String sql = "UPDATE [exam_attempts] SET [number_correct_question] = ? WHERE [id] = ?";
+        try(PreparedStatement pstm = connection.prepareStatement(sql)){
+            pstm.setInt(1, numberCorrectQuestions);
+            pstm.setInt(2, id);
+            pstm.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
+    public boolean updateDuration(int duration, int id) {
+        String sql = "UPDATE [exam_attempts] SET [duration] = ? WHERE [id] = ?";
+        try(PreparedStatement pstm = connection.prepareStatement(sql)){
+            pstm.setInt(1, duration);
+            pstm.setInt(2, id);
+            pstm.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
+    public boolean updateIsTaken(boolean isTaken, int id) {
+        String sql = "UPDATE [exam_attempts] SET [is_taken] = ? WHERE [id] = ?";
+        try(PreparedStatement pstm = connection.prepareStatement(sql)){
+            pstm.setBoolean(1, isTaken);
+            pstm.setInt(2, id);
+            pstm.executeUpdate();
+        }catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
+    public ExamAttempt findById(int id) {
+        String sql = "SELECT * FROM [exam_attempts] WHERE [id] = ?";
+        try(PreparedStatement pstm = connection.prepareStatement(sql)){
+            pstm.setInt(1, id);
+            try(ResultSet rs = pstm.executeQuery()){
+                if(rs.next()){
+                    ExamAttempt examAttempt = new ExamAttempt();
+                    examAttempt.setId(rs.getInt("id"));
+                    examAttempt.setType(rs.getString("type"));
+                    examAttempt.setStartDate(rs.getDate("start_date") != null ? rs.getDate("start_date").toLocalDate() : null);
+                    examAttempt.setDuration(rs.getInt("duration"));
+                    examAttempt.setNumberCorrectQuestions(rs.getInt("number_correct_question"));
+                    examAttempt.setUserId(rs.getInt("user_id"));
+                    examAttempt.setQuizId(rs.getObject("quiz_id", Integer.class));
+                    examAttempt.setPracticeId(rs.getObject("practice_id", Integer.class));
+                    return examAttempt;
+                }
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public boolean isTakenExamAttempt(int id) {
+        String sql = "SELECT 1 FROM [exam_attempts] WHERE [id] = ? AND [is_taken] = 1";
+        try(PreparedStatement pstm = connection.prepareStatement(sql)){
+            pstm.setInt(1, id);
+            try(ResultSet rs = pstm.executeQuery()){
+                if(rs.next()){
+                    return true;
+                }
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return false;
     }
 
 }

@@ -3,8 +3,8 @@ package entity;
 public class QuizSettingGroup {
     private int id;
     private int numberQuestion;
-    private Integer subjectLessonId;        // có thể null -> dùng Integer
-    private Integer subjectDimensionId;     // có thể null -> dùng Integer
+    private Integer subjectLessonId;
+    private Integer subjectDimensionId;
     private int quizSettingId;
 
     // Constructor mặc định
@@ -12,7 +12,8 @@ public class QuizSettingGroup {
     }
 
     // Constructor đầy đủ
-    public QuizSettingGroup(int id, int numberQuestion, Integer subjectLessonId, Integer subjectDimensionId, int quizSettingId) {
+    public QuizSettingGroup(int id, int numberQuestion, Integer subjectLessonId, Integer subjectDimensionId,
+            int quizSettingId) {
         this.id = id;
         this.numberQuestion = numberQuestion;
         this.subjectLessonId = subjectLessonId;
@@ -61,4 +62,3 @@ public class QuizSettingGroup {
         this.quizSettingId = quizSettingId;
     }
 }
-

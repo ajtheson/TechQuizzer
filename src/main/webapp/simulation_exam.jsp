@@ -100,7 +100,7 @@
                         <th id="row_id" scope="row">${quiz.getId()}</th>
                         <td id="row_subject">${quiz.getSubject().getName()}</td>
                         <td id="row_name">${quiz.getName()}</td>
-                        <td id="row_level">${quiz.getLevel()}</td>
+                        <td id="row_level">${quiz.getQuestionLevel().getName()}</td>
                         <td id="row_question">${quiz.getQuizSetting().getNumberOfQuestions()}</td>
                         <td id="row_duration">${quiz.getDuration()}</td>
                         <td id="row_passRate">${quiz.getPassRate()}</td>

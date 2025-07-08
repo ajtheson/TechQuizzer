@@ -72,6 +72,8 @@ public class UpdateProfileServlet extends HttpServlet {
                 String extension = originalFileName.substring(originalFileName.lastIndexOf('.'));
                 String fileName = userDTO.getEmail() + "_" + Instant.now().toEpochMilli() + extension;
 
+                ImageUploader.saveImage(uploadDirectory, fileName, fileUpload);
+
                 user.setAvatar(fileName);
 
                 boolean isUpdated = new UserDAO().updateUserInfo(user);
@@ -79,7 +81,6 @@ public class UpdateProfileServlet extends HttpServlet {
                     throw new Exception("Failed to update user in database");
                 }
                 userDTO.setAvatar(fileName);
-                ImageUploader.saveImage(uploadDirectory, fileName, fileUpload);
             }else{
                 boolean isUpdated = new UserDAO().updateUserInfo(user);
                 if (!isUpdated) {

@@ -1,17 +1,17 @@
 package controller;
 
 import dao.*;
+import dto.PracticeDTO;
 import dto.RegistrationDTO;
 import dto.UserDTO;
 import entity.*;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
+import service.ExamAttemptService;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 @WebServlet(name = "CreatePracticeServlet", value = "/practices/create")
 public class CreatePracticeServlet extends HttpServlet {
@@ -50,7 +50,8 @@ public class CreatePracticeServlet extends HttpServlet {
         String numberOfQuestionsParam = request.getParameter("numberOfQuestions");
         String subjectDimensionIdParam = request.getParameter("subjectDimensionId");
         String subjectLessonIdParam = request.getParameter("subjectLessonId");
-        String[] questionLevelIdsParam = request.getParameterValues("questionLevelIds");
+        String examFormatParam = request.getParameter("examFormat");
+        String questionLevelIdParam = request.getParameter("questionLevelId");
 
         try {
             HttpSession session = request.getSession(false);
@@ -62,16 +63,15 @@ public class CreatePracticeServlet extends HttpServlet {
             UserDTO user = (UserDTO) session.getAttribute("user");
             int subjectId = Integer.parseInt(subjectIdParam);
             int numberOfQuestions = Integer.parseInt(numberOfQuestionsParam);
-            List<Integer> questionLevelIds = new ArrayList<>();
-            for (String questionLevelId : questionLevelIdsParam) {
-                questionLevelIds.add(Integer.parseInt(questionLevelId));
-            }
+            int questionLevelId = Integer.parseInt(questionLevelIdParam);
             int userId = user.getId();
 
             //insert practice
             Practice practiceObj = new Practice();
             practiceObj.setName(nameParam);
             practiceObj.setNumberOfQuestions(numberOfQuestions);
+            practiceObj.setFormat(examFormatParam);
+            practiceObj.setQuestionLevelId(questionLevelId);
             if (subjectDimensionIdParam != null) {
                 int subjectDimensionId = Integer.parseInt(subjectDimensionIdParam);
                 practiceObj.setSubjectDimensionId(subjectDimensionId);
@@ -85,26 +85,12 @@ public class CreatePracticeServlet extends HttpServlet {
                 throw new Exception("Practice not created");
             }
 
-            //insert practice question level
-            if (!new PracticeQuestionLevelDAO().insertByPracticeIdAndQuestionLevelIds(practice.getId(), questionLevelIds)) {
-                throw new Exception("Practice question level not created");
-            }
+            int insertedExamAttemptId = new ExamAttemptService().createExamAttemptAndQuestionForExamAttempt(practice, userId);
 
-            //insert exam attempt
-            ExamAttempt examAttempt = new ExamAttempt();
-            examAttempt.setType("Practice");
-            examAttempt.setDuration(0);
-            examAttempt.setNumberCorrectQuestions(0);
-            examAttempt.setUserId(userId);
-            examAttempt.setPracticeId(practice.getId());
-            int insertedExamAttemptId = new ExamAttemptDAO().insert(examAttempt);
-            if(insertedExamAttemptId == -1) {
+            if(insertedExamAttemptId == -1){
                 throw new Exception("Exam attempt not created");
             }
-
-
-
-            response.sendRedirect(request.getContextPath() + "/practices");
+            response.sendRedirect(request.getContextPath() + "/quiz-handle?examAttemptId=" + insertedExamAttemptId);
 
         } catch (Exception e) {
             e.printStackTrace();
