@@ -22,7 +22,12 @@ public class ToggleLessonStatusServlet extends HttpServlet {
             int status = Integer.parseInt(request.getParameter("status"));
 
             LessonDAO dao = new LessonDAO();
-            dao.changeLessonStatus(id, status);
+             boolean success= dao.changeLessonStatus(id, status);
+            if (success) {
+                request.getSession().setAttribute("toastNotification", "Status updated successfully.");
+            } else {
+                request.getSession().setAttribute("toastNotification", "Failed to update status.");
+            }
             response.sendRedirect("subject-lesson");
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
