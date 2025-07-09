@@ -43,11 +43,35 @@ public class ExamAttemptDAO extends DBContext {
                     ExamAttempt examAttempt = new ExamAttempt();
                     examAttempt.setId(rs.getInt("id"));
                     examAttempt.setType(rs.getString("type"));
-                    examAttempt.setStartDate(rs.getDate("start_time") != null ? rs.getDate("start_time").toLocalDate() : null);
+                    examAttempt.setStartDate(rs.getDate("start_date") != null ? rs.getDate("start_date").toLocalDate() : null);
                     examAttempt.setDuration(rs.getInt("duration"));
                     examAttempt.setNumberCorrectQuestions(rs.getInt("number_correct_question"));
                     examAttempt.setUserId(rs.getInt("user_id"));
                     examAttempt.setPracticeId(practiceId);
+                    return examAttempt;
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public ExamAttempt findByQuizIdAndUserId(int quizId, int userId){
+        String sql = "SELECT * FROM [exam_attempts] WHERE [quiz_id] = ? AND [user_id] = ?";
+        try(PreparedStatement pstm = connection.prepareStatement(sql)){
+            pstm.setInt(1, quizId);
+            pstm.setInt(2, userId);
+            try(ResultSet rs = pstm.executeQuery()){
+                if(rs.next()){
+                    ExamAttempt examAttempt = new ExamAttempt();
+                    examAttempt.setId(rs.getInt("id"));
+                    examAttempt.setType(rs.getString("type"));
+                    examAttempt.setStartDate(rs.getDate("start_date") != null ? rs.getDate("start_date").toLocalDate() : null);
+                    examAttempt.setDuration(rs.getInt("duration"));
+                    examAttempt.setNumberCorrectQuestions(rs.getInt("number_correct_question"));
+                    examAttempt.setUserId(rs.getInt("user_id"));
+                    examAttempt.setQuizId(quizId);
                     return examAttempt;
                 }
             }

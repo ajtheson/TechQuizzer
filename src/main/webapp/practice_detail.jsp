@@ -39,7 +39,9 @@
     <div class="form-container">
         <h2 class="text-center mb-2">Practice Detail #${requestScope.practice.getId()}</h2>
 
-        <form id="practiceForm" method="POST" action="${pageContext.request.contextPath}/practices/create">
+        <form id="practiceForm" method="POST" action="${pageContext.request.contextPath}/practice/detail">
+            <input type="hidden" name="practiceId" value="${requestScope.practice.getId()}">
+
             <div class="mb-3">
                 <label for="name" class="form-label">Practice Name</label>
                 <input type="text" class="form-control" id="name" name="name" value="${requestScope.practice.getName()}" disabled>

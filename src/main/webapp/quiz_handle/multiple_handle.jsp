@@ -27,7 +27,7 @@
             justify-content: center;
             margin-right: 12px;
             cursor: pointer;
-            border-radius: 4px; /* Bo góc cho checkbox */
+            border-radius: 4px;
         }
 
         .option-checkbox::after {
@@ -35,7 +35,7 @@
             width: 16px;
             height: 16px;
             background-color: white;
-            border-radius: 2px; /* Bo góc nhẹ cho phần bên trong */
+            border-radius: 2px;
             display: block;
             transition: all 0.2s ease;
         }
@@ -43,21 +43,6 @@
         .option-item.selected .option-checkbox::after {
             background-color: black;
             border: 3px solid white;
-        }
-
-        /* Alternative: Sử dụng checkmark symbol */
-        .option-checkbox.checkmark-style::after {
-            content: '✓';
-            color: transparent;
-            font-weight: bold;
-            font-size: 18px;
-            background-color: transparent;
-            border: none;
-            transition: color 0.2s ease;
-        }
-
-        .option-item.selected .option-checkbox.checkmark-style::after {
-            color: white;
         }
 
         .markedBtn {
@@ -77,6 +62,7 @@
             color: black;
             background: white;
             border: grey solid 2px;
+            position: relative;
         }
 
         .question-box:hover {
@@ -90,10 +76,12 @@
             color: black;
         }
 
-        .question-box.marked {
-            border: 2px solid orange;
-            background: orange;
-            color: black;
+        .mark-flag {
+            position: absolute;
+            top: -8px;
+            right: 1px;
+            color: orangered;
+            font-size: 14px;
         }
 
         .btn.selected {
@@ -139,6 +127,12 @@
 
         .prompt-button:hover {
             background: #5a6fd8;
+        }
+
+        .note-text {
+            font-style: italic;
+            font-size: 0.9rem;
+            color: #555;
         }
 
     </style>
@@ -198,6 +192,11 @@
             <%--question media--%>
             <div id="qMedia" class="mb-4 mx-5">
 
+            </div>
+
+            <%--number of correct answer    --%>
+            <div id="numberAnswer" class="mb-1 mx-5">
+                <span class="note-text"></span>
             </div>
 
             <%--question option--%>
@@ -307,7 +306,7 @@
                         </button>
                         <button id="rpMarkedBtn" class="btn fw-semibold" style="border: grey solid 2px; color: grey"
                                 onclick="selectFilterButton(this)">
-                            <i class="bi bi-bookmark-fill" style="color: orange;"></i> MARKED
+                            <i class="bi bi-bookmark-fill" style="color: orangered;"></i> MARKED
                         </button>
                         <button id="rpAnsweredBtn" class="btn fw-semibold" style="border: grey solid 2px; color: grey"
                                 onclick="selectFilterButton(this)">
@@ -380,7 +379,7 @@
         id: ${qa.getId()},
         userChoices: [
             <c:forEach var="userChoice" items="${qa.getUserChoices()}" varStatus="loop">
-                ${userChoice} <c:if test="${!loop.last}">, </c:if>
+            ${userChoice} <c:if test="${!loop.last}">, </c:if>
             </c:forEach>
         ],
         marked: ${qa.isMarked()},
@@ -434,6 +433,11 @@
         if (allQuestions[currentIndex].marked) {
             markBtn.classList.add("markedBtn");
         }
+        if(allQuestions[currentIndex].question.explaination && allQuestions[currentIndex].question.explaination.trim() !== '') {
+            document.getElementById("peekBtn").classList.remove("invisible");
+        } else {
+            document.getElementById("peekBtn").classList.add("invisible");
+        }
     }
 
 
@@ -464,6 +468,7 @@
         document.getElementById("stt").textContent = '' + (index + 1) + ' )';
         document.getElementById("qId").textContent = 'Question ID: ' + currentQuestionAttempt.question.id;
         document.getElementById("qContent").textContent = currentQuestionAttempt.question.content;
+        document.querySelector("#numberAnswer span").textContent = "Choose " + currentQuestionAttempt.options.filter(o => o.answer).length + " answer(s)";
 
         const mediaContainer = document.getElementById("qMedia");
         mediaContainer.innerHTML = "";
@@ -548,8 +553,7 @@
             if (index !== -1) {
                 allQuestions[currentIndex].userChoices.splice(index, 1);
             }
-        }
-        else{
+        } else {
             optionItemElement.classList.add("selected");
             allQuestions[currentIndex].userChoices.push(optionId);
         }
@@ -645,7 +649,10 @@
                 btn.classList.add("marked");
             }
             btn.id = `questionBox\${index}`;
-            btn.innerText = index + 1;
+            btn.innerHTML = `
+                <span>\${index + 1}</span>
+                \${q.marked ? '<i class="bi bi-bookmark-fill mark-flag"></i>' : ''}
+            `;
             btn.onclick = () => clickQuestionBoxInPopup(index);
 
             container.appendChild(btn);
@@ -682,7 +689,7 @@
 
     //insert content to popup Peek at Answer
     popupPeekAtAnswer.addEventListener("show.bs.modal", (e) => {
-        const answerLetter = allQuestions[currentIndex].options.find(op => op.answer).optionContent.charAt(0);
+        const answerLetter = allQuestions[currentIndex].options.filter(op => op.answer).map(op => op.optionContent.charAt(0)).join(', ');
         popupPeekAtAnswer.querySelector("#explainContainer span").textContent = `The correct answer is \${answerLetter}`;
         popupPeekAtAnswer.querySelector("#explainContainer p").textContent = allQuestions[currentIndex].question.explaination;
     })
