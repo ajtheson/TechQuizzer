@@ -23,11 +23,11 @@ public class QuizHandleServlet extends HttpServlet {
         try{
             ExamAttemptDAO examAttemptDAO = new ExamAttemptDAO();
             int examAttemptId = Integer.parseInt(examAttemptIdParam);
-//            if(examAttemptDAO.isTakenExamAttempt(examAttemptId)){
-//                throw new Exception("Exam attempt is taken");
-//            }else{
-//                examAttemptDAO.updateIsTaken(true, examAttemptId);
-//            }
+            if(examAttemptDAO.isTakenExamAttempt(examAttemptId)){
+                throw new Exception("Exam attempt is taken");
+            }else{
+                examAttemptDAO.updateIsTaken(true, examAttemptId);
+            }
 
             //get format
             String format = "";

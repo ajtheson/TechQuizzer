@@ -22,9 +22,10 @@ public class QuizReviewServlet extends HttpServlet {
         try{
             ExamAttemptDAO examAttemptDAO = new ExamAttemptDAO();
             int examAttemptId = Integer.parseInt(examAttemptIdParam);
-//            if(!examAttemptDAO.isTakenExamAttempt(examAttemptId)){
-//                throw new Exception("Exam attempt is not taken");
-//            }
+            if(!examAttemptDAO.isTakenExamAttempt(examAttemptId)){
+                throw new Exception("Exam attempt is not taken");
+            }
+            
             //get format
             String format = "";
             ExamAttempt examAttempt = examAttemptDAO.findById(examAttemptId);
@@ -56,7 +57,7 @@ public class QuizReviewServlet extends HttpServlet {
             }else{
                 List<EssayAttemptDTO> essayAttemptDTOs = new EssayAttemptDAO().findAllByExamAttemptId(examAttemptId);
                 request.setAttribute("essayAttempts", essayAttemptDTOs);
-                request.getRequestDispatcher("/quiz_handle/essay_handle.jsp").forward(request, response);
+                request.getRequestDispatcher("/quiz_handle/essay_review.jsp").forward(request, response);
             }
 
         }catch (Exception e){

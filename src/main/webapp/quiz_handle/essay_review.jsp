@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Quiz Handle</title>
+    <title>Quiz Review</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet"/>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
     <link rel="stylesheet" type="text/css"
@@ -30,6 +30,7 @@
             color: black;
             background: white;
             border: grey solid 2px;
+            position: relative;
         }
 
         .question-box:hover {
@@ -43,10 +44,12 @@
             color: black;
         }
 
-        .question-box.marked {
-            border: 2px solid orange;
-            background: orange;
-            color: black;
+        .mark-flag {
+            position: absolute;
+            top: -8px;
+            right: 1px;
+            color: orangered;
+            font-size: 14px;
         }
 
         .btn.selected {
@@ -64,7 +67,7 @@
             margin-bottom: 10px;
         }
 
-        /* CSS file item upload */
+        /*file item upload */
         .file-item {
             display: flex;
             align-items: center;
@@ -78,13 +81,13 @@
             box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
             position: relative;
             min-height: 60px;
-            cursor: pointer; /* THÊM */
+            cursor: pointer;
         }
 
         .file-item:hover {
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
             border-color: #1a73e8;
-            background-color: #f8f9fa; /* THÊM */
+            background-color: #f8f9fa;
         }
 
         .file-content {
@@ -165,7 +168,6 @@
             transition: color 0.2s ease; /* THÊM */
         }
 
-        /* THÊM class mới */
         .file-item:hover .file-name {
             color: #1a73e8;
             text-decoration: underline;
@@ -246,28 +248,19 @@
             font-size: 16px;
         }
 
-
-
     </style>
 </head>
-<body>
-
-<div id="fullscreenPrompt" class="fullscreen-prompt">
-    <div class="prompt-content">
-        <h3><i class="bi bi-bullseye"></i> Essay Mode</h3>
-        <p>User can submit files by click "Add file(s)" button.</p>
-        <p><strong>Note:</strong> Any unusual action will result in your exam being terminated.</p>
-        <button class="prompt-button" onclick="start()">
-            <i class="bi bi-tv"></i> Start Quiz
-        </button>
-    </div>
-</div>
+<body onload="initQuiz()">
 
 <%--quiz--%>
 <div class="d-flex flex-column" style="min-height: 100vh;">
     <%--quiz header--%>
     <!--location + timer-->
-    <div class="d-flex justify-content-end px-2 pt-2">
+    <div class="d-flex justify-content-between px-2 pt-2">
+        <button onclick="window.history.back(); return false;" class="btn btn-outline-secondary mx-3 px-4">
+            <i class="bi bi-arrow-left"></i> Exit Review
+        </button>
+
         <div class="d-flex align-items-center gap-4 px-4">
             <div class="d-flex align-items-center text-secondary fs-5">
                 <i class="bi bi-geo-alt me-2 fa-lg"></i>
@@ -294,7 +287,7 @@
     <div class="flex-grow-1 d-flex flex-column justify-content-between" style="padding: 20px 40px;">
         <div class="row flex-grow-1" style="padding: 0 100px">
             <%--question area--%>
-            <div class="col-8 mb-3" style="max-height: 440px; overflow-y:auto">
+            <div class="col-8" style="max-height: 490px; overflow-y:auto">
                 <%--question content--%>
                 <div id="qContent" class="fs-5 mb-4 mx-5">
                     <p>
@@ -355,23 +348,11 @@
                             <%--                            </div>--%>
 
                         </div>
-                        <label for="fileInput" class="upload-label">
-                            <i class="fas fa-cloud-upload-alt"></i>
-                            Add file(s)
-                        </label>
-                        <input type="file" id="fileInput" multiple hidden>
                     </div>
                     <hr/>
                     <p class="text-muted small mb-0">You can submit many files like PDF, Word, Image, Video,...</p>
                 </div>
             </div>
-        </div>
-
-        <div class="d-flex justify-content-end gap-3">
-            <button id="markBtn" class="btn"
-                    style="border: #64c281 solid 2px; color: #64c281">
-                <i class="bi bi-bookmark"></i> Mark for review
-            </button>
         </div>
     </div>
 
@@ -381,7 +362,7 @@
          style="background-color: #64c281;">
         <button class="btn text-white" data-bs-toggle="modal" data-bs-target="#popupReviewProgress"
                 style="background-color: transparent; width: 180px; border: white solid 2px">
-            Review progress
+            Review Result
         </button>
         <div class="d-flex gap-2">
             <button id="prevBtn" class="btn text-white"
@@ -393,11 +374,6 @@
                     style="background-color: transparent; width: 150px; border: white solid 2px">
                 Next <i class="bi bi-arrow-right"></i>
             </button>
-
-            <button id="scoreExamBtn" class="btn text-white" data-bs-toggle="modal" data-bs-target="#popupScoreExam"
-                    style="background-color: transparent; width: 150px; border: white solid 2px">
-                Score Exam
-            </button>
         </div>
     </div>
 
@@ -405,30 +381,6 @@
         <input type="hidden" name="examAttemptId" value="${requestScope.essayAttempts[0].examAttempt.id}"/>
     </form>
 
-</div>
-
-<%--popup confirm score exam--%>
-<div class="modal fade" id="popupScoreExam" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-     aria-labelledby="staticBackdropLabel" aria-hidden="true">
-    <div class="modal-dialog" style="max-width: 700px;">
-        <div class="modal-content">
-            <div class="modal-body p-4">
-                <h5 class="mb-3 fw-bold">...</h5>
-                <p>
-                    ...
-                </p>
-                <div class="d-flex justify-content-end gap-3 mt-4">
-                    <button class="btn" style="border: grey solid 2px; color: grey" data-bs-dismiss="modal">
-                        <i class="bi bi-arrow-left"></i> Back
-                    </button>
-                    <button id="seSubmitBtn" class="btn" onclick="submitQuiz()"
-                            style="width: 150px; border: #64c281 solid 2px; color: #64c281">
-                        ...
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
 </div>
 
 <%--popup review progress--%>
@@ -439,12 +391,12 @@
             <div class="modal-body p-4">
 
                 <div class="d-flex justify-content-between">
-                    <h5 class="mb-4 fw-bold">Review Progress</h5>
+                    <h5 class="mb-4 fw-bold">Review Results</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
 
                 <div class="mb-3">
-                    <span>Review before scoring exam.</span>
+                    <span>Review specific question below.</span>
                 </div>
 
                 <%--line of 5 buttons--%>
@@ -468,12 +420,6 @@
                             ALL QUESTIONS
                         </button>
                     </div>
-                    <div>
-                        <button id="rpScoreExamBtn" class="btn fw-semibold" style="border: grey solid 2px; color: grey"
-                                data-bs-toggle="modal" data-bs-target="#popupScoreExam">
-                            SCORE EXAM NOW
-                        </button>
-                    </div>
                 </div>
             </div>
 
@@ -489,23 +435,20 @@
 <script>
 
     let currentIndex = 0;
-    let allEssayAttemps = [];
+    let allEssayAttempts = [];
     const timerElement = document.getElementById("timer");
     const prevButton = document.getElementById("prevBtn");
     const nextBtn = document.getElementById("nextBtn");
-    const scoreExamBtn = document.getElementById("scoreExamBtn");
-    const markBtn = document.getElementById("markBtn");
-    const popupScoreExam = document.getElementById("popupScoreExam");
     const popupReviewProgress = document.getElementById("popupReviewProgress");
-    const seSubmitBtn = document.getElementById("seSubmitBtn"); //score exam submit button
-    const popupPeekAtAnswer = document.getElementById("popupPeekAtAnswer");
     let countSecond = ${requestScope.essayAttempts[0].examAttempt.duration};
     const fileInput = document.getElementById("fileInput");
     const uploadArea = document.getElementById("upload-area");
+    const contextPath = '${pageContext.request.contextPath}';
+
 
     //init question array
     <c:forEach var="ea" items="${requestScope.essayAttempts}">
-    allEssayAttemps.push({
+    allEssayAttempts.push({
         id: ${ea.getId()},
         marked: ${ea.isMarked()},
         question: {
@@ -523,7 +466,11 @@
             }<c:if test="${!loop.last}">, </c:if>
             </c:forEach>
         ],
-        submissions: []
+        submissions: [
+            <c:forEach var="submission" items="${ea.getSubmissions()}" varStatus="loop">
+            '${submission.fileName}' <c:if test="${!loop.last}">, </c:if>
+            </c:forEach>
+        ]
     });
     </c:forEach>
     // end
@@ -531,30 +478,23 @@
 
     //render button
     const renderButton = () => {
-        //render prev, next, score exam button
+        //render prev, next
         if (currentIndex === 0) {
-            nextBtn.classList.remove("d-none");
+            nextBtn.classList.remove("invisible");
             prevButton.classList.add("invisible");
-            scoreExamBtn.classList.add("d-none");
-        } else if (currentIndex > 0 && currentIndex < allEssayAttemps.length) {
+        } else if (currentIndex > 0 && currentIndex < allEssayAttempts.length) {
             prevButton.classList.remove("invisible");
-            if (currentIndex === allEssayAttemps.length - 1) {
-                nextBtn.classList.add("d-none");
-                scoreExamBtn.classList.remove("d-none");
+            if (currentIndex === allEssayAttempts.length - 1) {
+                nextBtn.classList.add("invisible");
             } else {
-                nextBtn.classList.remove("d-none");
-                scoreExamBtn.classList.add("d-none");
+                nextBtn.classList.remove("invisible");
             }
         }
-        markBtn.classList.remove("markedBtn");
-        if (allEssayAttemps[currentIndex].marked) {
-            markBtn.classList.add("markedBtn");
-        }
     }
-    // end
+    //end render button
 
 
-    //action on prev, next btn, mark btn
+    //action on prev, next btn
     prevButton.addEventListener("click", (e) => {
         if (currentIndex > 0) {
             currentIndex--;
@@ -563,15 +503,11 @@
         }
     });
     nextBtn.addEventListener("click", (e) => {
-        if (currentIndex < allEssayAttemps.length - 1) {
+        if (currentIndex < allEssayAttempts.length - 1) {
             currentIndex++;
             renderButton();
             renderQuestion(currentIndex);
         }
-    });
-    markBtn.addEventListener("click", () => {
-        allEssayAttemps[currentIndex].marked = !allEssayAttemps[currentIndex].marked;
-        renderButton();
     });
     // end
 
@@ -636,14 +572,15 @@
     }
 
     // create file item for each file in submissions of current essay attempt
-    function renderFile(file, index) {
+    function renderFile(fileName, index) {
         const fileItem = document.createElement("div");
         fileItem.className = "file-item";
         fileItem.dataset.fileIndex = index;
 
-        const extension = getFileExtension(file.name);
+        const extension = getFileExtension(fileName);
         const fileIconInfo = getFileIcon(extension);
-        const fileSize = formatFileSize(file.size);
+
+        // const fileSize = formatFileSize(file.size);
 
         // Create file content
         const fileContent = document.createElement("div");
@@ -656,8 +593,8 @@
         // check extension to define class css
         if (isImageFile(extension)) {
             try {
-                const previewUrl = createImagePreview(file);
-                fileIcon.innerHTML = `<img src="\${previewUrl}" alt="\${file.name}" style="width: 100%; height: 100%; object-fit: cover; border-radius: 4px;">`;
+                const essayAttemptId = allEssayAttempts[currentIndex].id;
+                fileIcon.innerHTML = `<img src="\${contextPath}/assets/files/essay/\${essayAttemptId}/\${fileName}" alt="\${fileName}" style="width: 100%; height: 100%; object-fit: cover; border-radius: 4px;">`;
                 fileIcon.className = "file-preview";
             } catch (error) {
                 fileIcon.innerHTML = `<i class="\${fileIconInfo.icon}"></i>`;
@@ -670,51 +607,25 @@
         const fileInfo = document.createElement("div");
         fileInfo.className = "file-info";
         fileInfo.innerHTML = `
-        <div class="file-name" title="\${file.name}">\${file.name}</div>
-        <div class="file-size">\${fileSize}</div>`;
+        <div class="file-name" title="\${fileName}">\${fileName}</div>`;
 
-        // Remove button
-        const removeBtn = document.createElement("button");
-        removeBtn.className = "file-action-btn remove";
-        removeBtn.innerHTML = '<i class="fas fa-times"></i>';
-        removeBtn.title = "Delete file";
-        removeBtn.onclick = (e) => {
-            e.stopPropagation();
-            allEssayAttemps[currentIndex].submissions = allEssayAttemps[currentIndex].submissions.filter(f => f !== file);
-            fileItem.remove();
-        };
+        // <div class="file-size">\${fileSize}</div>`;
 
         fileContent.appendChild(fileIcon);
         fileContent.appendChild(fileInfo);
         fileItem.appendChild(fileContent);
-        fileItem.appendChild(removeBtn);
         uploadArea.appendChild(fileItem);
     }
 
-    // end
-
-
-    // listen event on file input to push into submissions
-    fileInput.addEventListener("change", (e) => {
-        const files = Array.from(e.target.files);
-
-        for (let i = 0; i < files.length; i++) {
-            const file = files[i];
-            allEssayAttemps[currentIndex].submissions.push(file);
-            renderFile(file, allEssayAttemps[currentIndex].submissions.length - 1);
-        }
-
-        fileInput.value = ""; // reset input
-    });
-    // end action on file input
+    // end create file item
 
 
     // render question
     const renderQuestion = (index) => {
-        const currentQuestionAttempt = allEssayAttemps[index];
+        const currentQuestionAttempt = allEssayAttempts[index];
         if (!currentQuestionAttempt) return;
 
-        document.getElementById("location").textContent = '' + (index + 1) + '/' + allEssayAttemps.length;
+        document.getElementById("location").textContent = '' + (index + 1) + '/' + allEssayAttempts.length;
         document.getElementById("stt").textContent = '' + (index + 1) + ' )';
         document.getElementById("qId").textContent = 'Question ID: ' + currentQuestionAttempt.question.id;
         document.getElementById("qContent").textContent = currentQuestionAttempt.question.content;
@@ -769,7 +680,7 @@
         uploadArea.innerHTML = "";
 
         // Render existing files
-        const submissions = allEssayAttemps[index].submissions;
+        const submissions = allEssayAttempts[index].submissions;
         for (let i = 0; i < submissions.length; i++) {
             renderFile(submissions[i], i);
         }
@@ -777,73 +688,12 @@
     // end render question
 
 
-    //start timer
-    const updateDisplay = (timer) => {
-        let hours = Math.floor(timer / 3600);
-        let minutes = Math.floor((timer % 3600) / 60);
-        let seconds = timer % 60;
-
-        hours = hours.toString().padStart(2, '0');
-        minutes = minutes.toString().padStart(2, '0');
-        seconds = seconds.toString().padStart(2, '0');
-
-        timerElement.textContent = hours + ":" + minutes + ":" + seconds;
-    }
-    //display count down
-    const startCountDown = () => {
-        updateDisplay(countSecond);
-        let interval = setInterval(() => {
-            countSecond--;
-            if (countSecond < 0) {
-                clearInterval(interval);
-                submitQuiz();
-            } else {
-                updateDisplay(countSecond);
-            }
-        }, 1000);
-    }
-    //display count up
-    const startCountUp = () => {
-        updateDisplay(countSecond);
-        let interval = setInterval(() => {
-            countSecond++;
-            updateDisplay(countSecond);
-        }, 1000);
-    }
-    // end start timer
-
-
-    //insert content to popup score exam
-    popupScoreExam.addEventListener("show.bs.modal", (e) => {
-        const length = allEssayAttemps.filter(ea => ea.submissions.length > 0).length;
-        if (length === 0) {
-            popupScoreExam.querySelector("h5").textContent = "Exit Exam?";
-            popupScoreExam.querySelector("p").textContent = "You have not answered any questions. By clicking on the [Exit Exam] button below, " +
-                "you will complete your current exam and be returned to the dashboard.";
-            seSubmitBtn.textContent = "Exit Exam";
-        } else {
-            popupScoreExam.querySelector("h5").textContent = "Score Exam?";
-            seSubmitBtn.textContent = "Score Exam";
-            if (length === allEssayAttemps.length) {
-                popupScoreExam.querySelector("p").textContent = "By clicking on the [Score Exam] button below, you will complete your current exam and" +
-                    " receive your score. You will not be able to change any answers after this point.";
-            } else if (length < allEssayAttemps.length) {
-                popupScoreExam.querySelector("p").innerHTML = `
-                <span style='color: red; display: block' class='mb-3'>\${length} of \${allEssayAttemps.length} Questions Answered</span>` +
-                    "By clicking on the [Score Exam] button below, you will complete your current exam and" +
-                    " receive your score. You will not be able to change any answers after this point.";
-            }
-        }
-    });
-    // end
-
-
     //insert content to popup review progress
     const renderQuestionBoxes = (filterType) => {
         const container = document.getElementById("questionBoxContainer");
         container.innerHTML = "";
 
-        const filteredQuestions = allEssayAttemps.filter((ea) => {
+        const filteredQuestions = allEssayAttempts.filter((ea) => {
             switch (filterType) {
                 case "ALL":
                     return true;
@@ -857,7 +707,7 @@
         });
 
         filteredQuestions.forEach((ea) => {
-            const index = allEssayAttemps.indexOf(ea);
+            const index = allEssayAttempts.indexOf(ea);
 
             const btn = document.createElement("button");
             btn.className = "question-box";
@@ -868,7 +718,10 @@
                 btn.classList.add("marked");
             }
             btn.id = `questionBox\${index}`;
-            btn.innerText = index + 1;
+            btn.innerHTML = `
+                <span>\${index + 1}</span>
+                \${ea.marked ? '<i class="bi bi-bookmark-fill mark-flag"></i>' : ''}
+            `;
             btn.onclick = () => clickQuestionBoxInPopup(index);
 
             container.appendChild(btn);
@@ -901,37 +754,20 @@
     popupReviewProgress.addEventListener("show.bs.modal", () => {
         selectFilterButton(document.getElementById("rpAllQuestionsBtn"));
     });
-    // end
+    //end insert content to popup review progress
 
-
-    const getUploadedFileObject = fileItem => {
-        const fileIndex = parseInt(fileItem.dataset.fileIndex);
-
-        const submissions = allEssayAttemps[currentIndex].submissions;
-        if (submissions[fileIndex]) {
-            return submissions[fileIndex];
-        }
-        return null;
-    }
 
     //download file
-    const downloadFile = (fileName, fileItem) => {
-        const fileObject = getUploadedFileObject(fileItem);
-        if (fileObject) {
-            const url = URL.createObjectURL(fileObject);
-            const link = document.createElement('a');
-            link.href = url;
-            link.download = fileName; //notice browser download file instead of open file in href, assign fileName to set name of downloaded file
-            link.style.display = 'none';
-            document.body.appendChild(link); //click() active when tag a in DOM so need to append
-            link.click();
-            document.body.removeChild(link);
-
-            // Cleanup
-            setTimeout(() => URL.revokeObjectURL(url), 100); //revoke url to prevent leak memory
-        } else {
-            alert('file is not existed');
-        }
+    const downloadFile = (fileName) => {
+        const essayAttemptId = allEssayAttempts[currentIndex].id;
+        const downloadUrl = `\${contextPath}/assets/files/essay/\${essayAttemptId}/\${fileName}`;
+        const link = document.createElement('a');
+        link.href = downloadUrl;
+        link.download = fileName; //notice browser download file instead of open file in href, assign fileName to set name of downloaded file
+        link.style.display = 'none';
+        document.body.appendChild(link); //click() active when tag a in DOM so need to append
+        link.click();
+        document.body.removeChild(link);
     }
 
     //add action download file when user click name
@@ -939,99 +775,32 @@
         const fileItem = e.target.closest('.file-item');
         if (fileItem && !e.target.closest('.file-action-btn')) {
             const fileName = fileItem.querySelector('.file-name').getAttribute('title') || fileItem.querySelector('.file-name').textContent;
-            downloadFile(fileName, fileItem);
+            downloadFile(fileName);
         }
     });
     //end download file
 
 
-    //update essay attempt interval
-    const callApiUpdateEssayAttempt = (formData) => {
-        fetch('update-essay-attempt', {
-            method: 'POST',
-            body: formData
-        })
-            .then(response => response)
-            .then(data => {
-            })
-            .catch(error => {
-            });
+    //render timer
+    const renderTimer = () => {
+        let hours = Math.floor(countSecond / 3600);
+        let minutes = Math.floor((countSecond % 3600) / 60);
+        let seconds = countSecond % 60;
+
+        hours = hours.toString().padStart(2, '0');
+        minutes = minutes.toString().padStart(2, '0');
+        seconds = seconds.toString().padStart(2, '0');
+
+        timerElement.textContent = hours + ":" + minutes + ":" + seconds;
     }
 
-    // call api update question attempt every 10s
-    const updateEssaySubmissionInterval = () => {
-        setInterval(() => {
-            const formData = new FormData();
-            formData.append("duration", countSecond);
-            formData.append("examAttemptId", ${requestScope.essayAttempts[0].examAttempt.id});
-            allEssayAttemps.forEach(ea => {
-                formData.append(`mark\${ea.id}`, ea.marked);
-                console.log("DEBUG gửi:", `mark\${ea.id}`, typeof ea.marked, ea.marked);
-            });
-
-            callApiUpdateEssayAttempt(formData);
-        }, 10 * 1000);
-    }
-
-
-    // submit to end quiz
-    const submitQuiz = async () => {
-        window.onbeforeunload = null;
-
-        const formData = new FormData();
-        formData.append("duration", countSecond);
-        formData.append("examAttemptId", ${requestScope.essayAttempts[0].examAttempt.id});
-        allEssayAttemps.forEach(ea => {
-            formData.append(`mark\${ea.id}`, ea.marked);
-            ea.submissions.forEach((f, i) => {
-                formData.append(`essayAttempt\${ea.id}.submission\${i}`, f)
-            });
-        });
-        await callApiUpdateEssayAttempt(formData);
-        document.getElementById('quizHandleForm').submit();
-        return false;
-    }
-
-    //set up environment
-    let backCount = 0;
-    const setupExamEnvironment = () => {
-        //prevent F5 and Ctrl + R
-        document.addEventListener("keydown", (e) => {
-            if ((e.key === "F5") || (e.ctrlKey && e.key.toLowerCase() === "r")) {
-                e.preventDefault();
-                alert("You cannot reload in this page. Please submit exam to do");
-            }
-        });
-        //prevent click back
-        history.pushState(null, null, location.href);
-        window.addEventListener('popstate', () => {
-            alert("You are not allowed to go back during the exam!");
-            history.pushState(null, null, location.href);
-        });
-        //prevent reload or change url,... (exit page in tab)
-        window.onbeforeunload = (e) => {
-            e.preventDefault();
-            e.returnValue = '';
-        };
-    }
 
     //init UI
     const initQuiz = () => {
-        if (${requestScope.essayAttempts[0].examAttempt.type.equalsIgnoreCase("Practice")}) {
-            startCountUp(countSecond);
-        } else {
-            startCountDown(${requestScope.essayAttempts[0].examAttempt.duration} -countSecond);
-        }
         renderButton();
         renderQuestion(currentIndex);
-        updateEssaySubmissionInterval();
+        renderTimer();
     };
-
-    const start = () => {
-        setupExamEnvironment();
-        initQuiz();
-        document.getElementById('fullscreenPrompt').style.display = 'none';
-    }
 
 
 </script>
