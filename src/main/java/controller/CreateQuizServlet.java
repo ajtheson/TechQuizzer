@@ -176,7 +176,7 @@ public class CreateQuizServlet extends HttpServlet {
             quizDAO.createQuiz(quiz);
 
             // Success - redirect to quiz list or quiz detail
-            session.setAttribute("successMessage", "Quiz created successfully!");
+            session.setAttribute("toastNotification", "Quiz created successfully!");
             response.sendRedirect(request.getContextPath() + "/quizzeslist");
 
         } catch (NumberFormatException e) {

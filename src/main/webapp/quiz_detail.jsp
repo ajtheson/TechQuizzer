@@ -116,34 +116,18 @@
               This quiz has already been attempted and cannot be edited.
             </div>
           </c:if>
-          <c:if test="${not empty sessionScope.message}">
-            <div class="alert alert-success" role="alert">
-                ${sessionScope.message}
-            </div>
-            <c:remove var="message" scope="session"/>
-          </c:if>
-          <c:if test="${not empty sessionScope.settingMessage}">
-            <div class="alert alert-success" role="alert">
-                ${sessionScope.settingMessage}
-            </div>
-            <c:remove var="settingMessage" scope="session"/>
-          </c:if>
-          <c:if test="${not empty sessionScope.settingErrorMessage}">
-            <div class="alert alert-warning" role="alert">
-                ${sessionScope.settingErrorMessage}
-            </div>
-            <c:remove var="settingErrorMessage" scope="session"/>
-          </c:if>
           <form action="get-quiz-detail" method="post">
+
             <input type="hidden" name="action" value="update">
             <input type="hidden" name="id" value="${quiz.id}">
             <div class="mb-3">
               <label class="form-label">Name</label>
-              <input type="text" class="form-control" name="name" value="${quiz.name}" required>
+              <input type="text" class="form-control" name="quizName" value="${quiz.name}" required>
             </div>
             <div class="mb-3">
               <label class="form-label">Subject</label>
-              <input type="text" class="form-control" name="subject" value="${quiz.subject.name}" disabled>
+              <input type="text" class="form-control" value="${quiz.subject.name}" disabled>
+              <input type="hidden" class="form-control" name="subject" value="${quiz.subject.name}">
               <input type="hidden" name="subjectId" value="${quiz.subject.id}">
             </div>
             <div class="mb-3">
@@ -618,6 +602,43 @@
   });
 </script>
 
-<%@include file="common/jsload.jsp" %>
+<div class="position-fixed top-0 end-0 p-3" style="z-index: 9999" data-bs-delay="2000">
+  <div id="toast" class="toast align-items-center border-0" role="alert"
+       aria-live="assertive" aria-atomic="true">
+    <div class="d-flex">
+      <div class="toast-body">
+        <!-- Message will be injected here -->
+      </div>
+      <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
+              aria-label="Close"></button>
+    </div>
+  </div>
+</div>
+<%@ include file="common/jsload.jsp" %>
+<%
+  String toastNotification = (String) session.getAttribute("toastNotification");
+  if (toastNotification != null) {
+    boolean isSuccess = toastNotification.contains("successfully");
+    session.removeAttribute("toastNotification");
+%>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const toastElement = document.getElementById('toast');
+    const toastElementBody = toastElement.querySelector('.toast-body');
+
+    toastElementBody.textContent = "<%= toastNotification %>";
+    toastElement.classList.remove('<%= isSuccess ? "text-bg-danger" : "text-bg-success" %>');
+    toastElement.classList.add('<%= isSuccess ? "text-bg-success" : "text-bg-danger" %>');
+
+    const toast = new bootstrap.Toast(toastElement, {
+      autohide: true,
+      delay: 2000
+    });
+    toast.show();
+  });
+</script>
+<%
+  }
+%>
 </body>
 </html>

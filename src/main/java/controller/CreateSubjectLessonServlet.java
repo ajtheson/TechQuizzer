@@ -101,7 +101,12 @@ public class CreateSubjectLessonServlet extends HttpServlet {
         } else {
             session.setAttribute("toastNotification", "Failed to create lesson.");
         }
+        UserDTO user = (UserDTO) session.getAttribute("user");
+        if(user.getRoleId() ==1){
+            response.sendRedirect("subject-lesson");
+        } else if (user.getRoleId()==2) {
+            response.sendRedirect("subject-lesson-expert");
+        }
 
-        response.sendRedirect("subject-lesson");
     }
 }

@@ -42,12 +42,6 @@
                                 <i class="bi bi-plus-lg me-1"></i> Add new quizz
                             </a>
                         </div>
-                        <c:if test="${not empty sessionScope.successMessage}">
-                            <div class="alert alert-success" role="alert">
-                                    ${sessionScope.successMessage}
-                            </div>
-                            <c:remove var="successMessage" scope="session"/>
-                        </c:if>
                         <form method="get" action="quizzeslist" class="d-flex align-items-center gap-3 mb-3">
                             <select name="subject" class="form-select" style="width: 250px;" onchange="this.form.submit()">
                                 <option value="">All Subjects</option>
@@ -308,7 +302,61 @@
 
 
 <!-- Essential javascripts for application to work-->
-<%@include file="common/jsload.jsp" %>
+<div class="position-fixed top-0 end-0 p-3" style="z-index: 9999" data-bs-delay="2000">
+    <div id="toast" class="toast align-items-center border-0" role="alert"
+         aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+            <div class="toast-body">
+                <!-- Message will be injected here -->
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
+                    aria-label="Close"></button>
+        </div>
+    </div>
+</div>
+<%@ include file="common/jsload.jsp" %>
+<%
+    String toastNotification = (String) session.getAttribute("toastNotification");
+    if (toastNotification != null) {
+        boolean isSuccess = toastNotification.contains("successfully");
+        session.removeAttribute("toastNotification");
+%>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const toastElement = document.getElementById('toast');
+        const toastElementBody = toastElement.querySelector('.toast-body');
+
+        toastElementBody.textContent = "<%= toastNotification %>";
+        toastElement.classList.remove('<%= isSuccess ? "text-bg-danger" : "text-bg-success" %>');
+        toastElement.classList.add('<%= isSuccess ? "text-bg-success" : "text-bg-danger" %>');
+
+        const toast = new bootstrap.Toast(toastElement, {
+            autohide: true,
+            delay: 2000
+        });
+        toast.show();
+    });
+</script>
+<%
+    }
+%>
+<script>
+    // Enable/disable fields based on radio selection
+    document.addEventListener("DOMContentLoaded", () => {
+        const ytOption = document.getElementById("youtubeOption");
+        const uploadOption = document.getElementById("uploadOption");
+        const ytInput = document.getElementById("youtubeLink");
+        const fileInput = document.getElementById("videoFileInput");
+
+        function toggleInputs() {
+            ytInput.disabled = !ytOption.checked;
+            fileInput.disabled = !uploadOption.checked;
+        }
+
+        ytOption.addEventListener("change", toggleInputs);
+        uploadOption.addEventListener("change", toggleInputs);
+    });
+</script>
 <!-- Page specific javascripts-->
 <link rel="stylesheet" href="https://cdn.datatables.net/v/bs5/dt-1.13.4/datatables.min.css">
 </body>

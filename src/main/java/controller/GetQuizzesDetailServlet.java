@@ -98,12 +98,12 @@ public class GetQuizzesDetailServlet extends HttpServlet {
                     int duration = Integer.parseInt(request.getParameter("duration"));
                     int passRate = Integer.parseInt(request.getParameter("passRate"));
                     int numberOfQuestions = Integer.parseInt(request.getParameter("numberOfQuestions"));
-
+                    String name = request.getParameter("quizName");
                     QuizDAO quizDAO = new QuizDAO();
                     QuizDTO quiz = quizDAO.findByQuizId(id);
                     String testType = request.getParameter("testTypeId");
                     int testTypeId = Integer.parseInt(testType);
-                    quizDAO.updateQuiz(id, request.getParameter("name"), Integer.parseInt(request.getParameter("level")), duration*60, passRate,testTypeId);
+                    quizDAO.updateQuiz(id, name, Integer.parseInt(request.getParameter("level")), duration*60, passRate,testTypeId);
 
                     QuizSettingDAO quizSettingDAO = new QuizSettingDAO();
                     quizSettingDAO.updateQuizSetting(quiz.getQuizSetting().getId(), numberOfQuestions);
@@ -117,9 +117,8 @@ public class GetQuizzesDetailServlet extends HttpServlet {
                     request.setAttribute("selectedLevelId",selectedLevelId);
                     request.setAttribute("levels",questionLevels);
 
-                    request.getSession().setAttribute("message", "Update successful.");
-
-                    request.getRequestDispatcher("quiz_detail.jsp").forward(request, response);
+                    session.setAttribute("toastNotification", "Update successfully.");
+                    response.sendRedirect("get-quiz-detail?action=view&id=" + id + "&tab=setting");
                 } catch (NumberFormatException e) {
                     request.setAttribute("error", "Invalid number input.");
                     request.getRequestDispatcher("quiz_detail.jsp").forward(request, response);

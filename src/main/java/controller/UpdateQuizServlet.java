@@ -106,7 +106,7 @@ public class UpdateQuizServlet extends HttpServlet {
             // Validate input
             if (questionCountsParam == null || questionGroups == null ||
                     questionCountsParam.length != questionGroups.length) {
-                session.setAttribute("settingErrorMessage", "Invalid input data. Please check your form.");
+                session.setAttribute("toastNotification", "Invalid input data. Please check your form.");
                 response.sendRedirect("get-quiz-detail?action=view&id=" + quizId + "&tab=setting");
                 return;
             }
@@ -124,7 +124,7 @@ public class UpdateQuizServlet extends HttpServlet {
 
                     // Validate question count is positive
                     if (questionCount <= 0) {
-                        session.setAttribute("settingMessage", "Question count must be greater than 0.");
+                        session.setAttribute("toastNotification", "Question count must be greater than 0.");
                         response.sendRedirect("get-quiz-detail?action=view&id=" + quizId + "&tab=setting");
                         return;
                     }
@@ -149,7 +149,7 @@ public class UpdateQuizServlet extends HttpServlet {
 
             // Validate that we have at least one group
             if (newGroups.isEmpty()) {
-                session.setAttribute("settingMessage", "At least one question group is required.");
+                session.setAttribute("toastNotification", "At least one question group is required.");
                 response.sendRedirect("get-quiz-detail?action=view&id=" + quizId + "&tab=setting");
                 return;
             }
@@ -160,7 +160,7 @@ public class UpdateQuizServlet extends HttpServlet {
                         "Total questions in groups (%d) must equal total quiz questions (%d). Please adjust your settings.",
                         totalGroupQuestions, totalQuestions
                 );
-                session.setAttribute("settingErrorMessage", message);
+                session.setAttribute("toastNotification", message);
                 response.sendRedirect("get-quiz-detail?action=view&id=" + quizId + "&tab=setting");
                 return;
             }
@@ -186,15 +186,15 @@ public class UpdateQuizServlet extends HttpServlet {
             // Update quiz setting
             quizSettingDAO.updateQuizSetting(quizSettingId, totalQuestions);
 
-            session.setAttribute("settingMessage", "Quiz settings updated successfully!");
+            session.setAttribute("toastNotification", "Quiz settings updated successfully!");
             response.sendRedirect("get-quiz-detail?action=view&id=" + quizId + "&tab=setting");
 
         } catch (NumberFormatException e) {
-            session.setAttribute("settingErrorMessage", "Invalid number format. Please check your input.");
+            session.setAttribute("toastNotification", "Invalid number format. Please check your input.");
             response.sendRedirect("get-quiz-detail?action=view&id=" +
                     Integer.parseInt(request.getParameter("id")) + "&tab=setting");
         } catch (Exception e) {
-            session.setAttribute("settingErrorMessage", "An error occurred: " + e.getMessage());
+            session.setAttribute("toastNotification", "An error occurred: " + e.getMessage());
             response.sendRedirect("get-quiz-detail?action=view&id=" +
                     Integer.parseInt(request.getParameter("id")) + "&tab=setting");
         }
