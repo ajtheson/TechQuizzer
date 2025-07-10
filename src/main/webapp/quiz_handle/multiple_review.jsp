@@ -203,7 +203,7 @@
          style="background-color: #64c281;">
         <button class="btn text-white" data-bs-toggle="modal" data-bs-target="#popupReviewProgress"
                 style="background-color: transparent; width: 180px; border: white solid 2px">
-            Review progress
+            Review Result
         </button>
         <div class="d-flex gap-2">
             <button id="explanationBtn" class="btn text-white" data-bs-toggle="modal" data-bs-target="#popupExplanation"

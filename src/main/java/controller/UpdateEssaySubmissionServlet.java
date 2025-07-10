@@ -34,13 +34,26 @@ public class UpdateEssaySubmissionServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         //get parameter
-        String durationParam = request.getParameter("duration");
-        String examAttemptIdParam = request.getParameter("examAttemptId");
         List<EssaySubmission> submissions = new ArrayList<>();
         List<EssayAttemptDTO> attemptDTOs = new ArrayList<>();
         try{
-            int duration = Integer.parseInt(durationParam);
-            int examAttemptId = Integer.parseInt(examAttemptIdParam);
+            boolean isMultipart = request.getContentType() != null && request.getContentType().toLowerCase().startsWith("multipart/"); //check headers type
+            int duration = 0;
+            int examAttemptId = 0;
+            if (!isMultipart) {
+                String durationParam = request.getParameter("duration");
+                String examAttemptIdParam = request.getParameter("examAttemptId");
+                duration = Integer.parseInt(durationParam);
+                examAttemptId = Integer.parseInt(examAttemptIdParam);
+            }else {
+                Part durationParam = request.getPart("duration");
+                Part examAttemptIdParam = request.getPart("examAttemptId");
+                String durationString = new String(durationParam.getInputStream().readAllBytes());
+                String examAttemptIdString = new String(examAttemptIdParam.getInputStream().readAllBytes());
+                duration = Integer.parseInt(durationString);
+                examAttemptId = Integer.parseInt(examAttemptIdString);
+            }
+
             boolean isUpdatedExamAttempt = new ExamAttemptDAO().updateDuration(duration, examAttemptId);
             if(!isUpdatedExamAttempt){
                 throw new Exception("exam attempt not updated");

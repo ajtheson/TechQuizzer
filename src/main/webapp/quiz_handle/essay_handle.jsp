@@ -555,6 +555,8 @@
     const fileInput = document.getElementById("fileInput");
     const uploadArea = document.getElementById("upload-area");
     const MAX_FILE_SIZE = 20 * 1024 * 1024;
+    const toastElement = document.getElementById('toast');
+    const toastElementBody = toastElement.querySelector('.toast-body');
 
     //init question array
     <c:forEach var="ea" items="${requestScope.essayAttempts}">
@@ -769,13 +771,8 @@
         }
         if(errorFileName.length > 0) {
             errorFileName = errorFileName.slice(0, -2);
-            let errorMsg = errorFileName + " too large. Please upload file less than 20MB.";
-
-            const toastElement = document.getElementById('toast');
-            const toastElementBody = toastElement.querySelector('.toast-body');
-            toastElementBody.textContent = errorMsg;
+            toastElementBody.textContent = errorFileName + " too large. Please upload file less than 20MB.";
             toastElement.classList.add('text-bg-danger');
-
             const toast = bootstrap.Toast.getOrCreateInstance(toastElement);
             toast.show();
         }
@@ -1042,10 +1039,9 @@
         setInterval(() => {
             const formData = new FormData();
             formData.append("duration", countSecond);
-            formData.append("examAttemptId", ${requestScope.essayAttempts[0].examAttempt.id});
+            formData.append("examAttemptId", '${requestScope.essayAttempts[0].examAttempt.id}');
             allEssayAttempts.forEach(ea => {
                 formData.append(`mark\${ea.id}`, ea.marked);
-                console.log("DEBUG gửi:", `mark\${ea.id}`, typeof ea.marked, ea.marked);
             });
 
             callApiUpdateEssayAttempt(formData);
@@ -1055,11 +1051,23 @@
 
     // submit to end quiz
     const submitQuiz = async () => {
+        //check total file size
+        let totalFileSize = 0;
+        allEssayAttempts.forEach(ea => ea.submissions.forEach(file => totalFileSize += file.size));
+        if(totalFileSize > 100 * 1024 * 1024) {
+            toastElementBody.textContent = "Total file size (" + formatFileSize(totalFileSize) + ") is too large . Please upload files such that total file size is less than 100MB.";
+            toastElement.classList.add('text-bg-danger');
+            const toast = bootstrap.Toast.getOrCreateInstance(toastElement);
+            toast.show();
+            return;
+        }
+
+        //submit quiz
         window.onbeforeunload = null;
 
         const formData = new FormData();
         formData.append("duration", countSecond);
-        formData.append("examAttemptId", ${requestScope.essayAttempts[0].examAttempt.id});
+        formData.append("examAttemptId", '${requestScope.essayAttempts[0].examAttempt.id}');
         allEssayAttempts.forEach(ea => {
             formData.append(`mark\${ea.id}`, ea.marked);
             ea.submissions.forEach((f, i) => {
@@ -1072,7 +1080,6 @@
     }
 
     //set up environment
-    let backCount = 0;
     const setupExamEnvironment = () => {
         //prevent F5 and Ctrl + R
         document.addEventListener("keydown", (e) => {
