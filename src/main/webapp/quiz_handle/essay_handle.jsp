@@ -523,6 +523,20 @@
     </div>
 </div>
 
+<%--notification--%>
+<div class="position-fixed top-0 end-0 p-3" style="z-index: 9999" data-bs-delay="2000">
+    <div id="toast" class="toast align-items-center border-0" role="alert"
+         aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+            <div class="toast-body">
+
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
+                    aria-label="Close"></button>
+        </div>
+    </div>
+</div>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
 <script>
 
@@ -540,6 +554,7 @@
     let countSecond = ${requestScope.essayAttempts[0].examAttempt.duration};
     const fileInput = document.getElementById("fileInput");
     const uploadArea = document.getElementById("upload-area");
+    const MAX_FILE_SIZE = 20 * 1024 * 1024;
 
     //init question array
     <c:forEach var="ea" items="${requestScope.essayAttempts}">
@@ -720,6 +735,11 @@
             e.stopPropagation();
             allEssayAttempts[currentIndex].submissions = allEssayAttempts[currentIndex].submissions.filter(f => f !== file);
             fileItem.remove();
+
+            const fileItems = document.querySelectorAll(".file-item");
+            fileItems.forEach((item, newIndex) => {
+                item.dataset.fileIndex = newIndex;
+            });
         };
 
         fileContent.appendChild(fileIcon);
@@ -735,11 +755,29 @@
     // listen event on file input to push into submissions
     fileInput.addEventListener("change", (e) => {
         const files = Array.from(e.target.files);
+        let errorFileName = "";
 
         for (let i = 0; i < files.length; i++) {
             const file = files[i];
-            allEssayAttempts[currentIndex].submissions.push(file);
-            renderFile(file, allEssayAttempts[currentIndex].submissions.length - 1);
+            if(file.size > MAX_FILE_SIZE) {
+                errorFileName += file.name + ", ";
+            }
+            else {
+                allEssayAttempts[currentIndex].submissions.push(file);
+                renderFile(file, allEssayAttempts[currentIndex].submissions.length - 1);
+            }
+        }
+        if(errorFileName.length > 0) {
+            errorFileName = errorFileName.slice(0, -2);
+            let errorMsg = errorFileName + " too large. Please upload file less than 20MB.";
+
+            const toastElement = document.getElementById('toast');
+            const toastElementBody = toastElement.querySelector('.toast-body');
+            toastElementBody.textContent = errorMsg;
+            toastElement.classList.add('text-bg-danger');
+
+            const toast = bootstrap.Toast.getOrCreateInstance(toastElement);
+            toast.show();
         }
 
         fileInput.value = ""; // reset input
