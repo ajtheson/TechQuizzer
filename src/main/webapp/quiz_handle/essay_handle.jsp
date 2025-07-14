@@ -12,7 +12,6 @@
           href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 
     <style>
-
         .markedBtn {
             background-color: orange !important;
             color: white !important;
@@ -30,6 +29,7 @@
             color: black;
             background: white;
             border: grey solid 2px;
+            position: relative;
         }
 
         .question-box:hover {
@@ -43,10 +43,12 @@
             color: black;
         }
 
-        .question-box.marked {
-            border: 2px solid orange;
-            background: orange;
-            color: black;
+        .mark-flag {
+            position: absolute;
+            top: -8px;
+            right: 1px;
+            color: orangered;
+            font-size: 14px;
         }
 
         .btn.selected {
@@ -64,7 +66,7 @@
             margin-bottom: 10px;
         }
 
-        /* CSS file item upload */
+        /*file item upload */
         .file-item {
             display: flex;
             align-items: center;
@@ -78,13 +80,13 @@
             box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
             position: relative;
             min-height: 60px;
-            cursor: pointer; /* THÊM */
+            cursor: pointer;
         }
 
         .file-item:hover {
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
             border-color: #1a73e8;
-            background-color: #f8f9fa; /* THÊM */
+            background-color: #f8f9fa;
         }
 
         .file-content {
@@ -162,10 +164,9 @@
             overflow: hidden;
             text-overflow: ellipsis;
             line-height: 1.4;
-            transition: color 0.2s ease; /* THÊM */
+            transition: color 0.2s ease;
         }
 
-        /* THÊM class mới */
         .file-item:hover .file-name {
             color: #1a73e8;
             text-decoration: underline;
@@ -522,11 +523,25 @@
     </div>
 </div>
 
+<%--notification--%>
+<div class="position-fixed top-0 end-0 p-3" style="z-index: 9999" data-bs-delay="2000">
+    <div id="toast" class="toast align-items-center border-0" role="alert"
+         aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+            <div class="toast-body">
+
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
+                    aria-label="Close"></button>
+        </div>
+    </div>
+</div>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
 <script>
 
     let currentIndex = 0;
-    let allEssayAttemps = [];
+    let allEssayAttempts = [];
     const timerElement = document.getElementById("timer");
     const prevButton = document.getElementById("prevBtn");
     const nextBtn = document.getElementById("nextBtn");
@@ -539,10 +554,13 @@
     let countSecond = ${requestScope.essayAttempts[0].examAttempt.duration};
     const fileInput = document.getElementById("fileInput");
     const uploadArea = document.getElementById("upload-area");
+    const MAX_FILE_SIZE = 20 * 1024 * 1024;
+    const toastElement = document.getElementById('toast');
+    const toastElementBody = toastElement.querySelector('.toast-body');
 
     //init question array
     <c:forEach var="ea" items="${requestScope.essayAttempts}">
-    allEssayAttemps.push({
+    allEssayAttempts.push({
         id: ${ea.getId()},
         marked: ${ea.isMarked()},
         question: {
@@ -573,9 +591,9 @@
             nextBtn.classList.remove("d-none");
             prevButton.classList.add("invisible");
             scoreExamBtn.classList.add("d-none");
-        } else if (currentIndex > 0 && currentIndex < allEssayAttemps.length) {
+        } else if (currentIndex > 0 && currentIndex < allEssayAttempts.length) {
             prevButton.classList.remove("invisible");
-            if (currentIndex === allEssayAttemps.length - 1) {
+            if (currentIndex === allEssayAttempts.length - 1) {
                 nextBtn.classList.add("d-none");
                 scoreExamBtn.classList.remove("d-none");
             } else {
@@ -584,7 +602,7 @@
             }
         }
         markBtn.classList.remove("markedBtn");
-        if (allEssayAttemps[currentIndex].marked) {
+        if (allEssayAttempts[currentIndex].marked) {
             markBtn.classList.add("markedBtn");
         }
     }
@@ -600,14 +618,14 @@
         }
     });
     nextBtn.addEventListener("click", (e) => {
-        if (currentIndex < allEssayAttemps.length - 1) {
+        if (currentIndex < allEssayAttempts.length - 1) {
             currentIndex++;
             renderButton();
             renderQuestion(currentIndex);
         }
     });
     markBtn.addEventListener("click", () => {
-        allEssayAttemps[currentIndex].marked = !allEssayAttemps[currentIndex].marked;
+        allEssayAttempts[currentIndex].marked = !allEssayAttempts[currentIndex].marked;
         renderButton();
     });
     // end
@@ -717,8 +735,13 @@
         removeBtn.title = "Delete file";
         removeBtn.onclick = (e) => {
             e.stopPropagation();
-            allEssayAttemps[currentIndex].submissions = allEssayAttemps[currentIndex].submissions.filter(f => f !== file);
+            allEssayAttempts[currentIndex].submissions = allEssayAttempts[currentIndex].submissions.filter(f => f !== file);
             fileItem.remove();
+
+            const fileItems = document.querySelectorAll(".file-item");
+            fileItems.forEach((item, newIndex) => {
+                item.dataset.fileIndex = newIndex;
+            });
         };
 
         fileContent.appendChild(fileIcon);
@@ -734,11 +757,24 @@
     // listen event on file input to push into submissions
     fileInput.addEventListener("change", (e) => {
         const files = Array.from(e.target.files);
+        let errorFileName = "";
 
         for (let i = 0; i < files.length; i++) {
             const file = files[i];
-            allEssayAttemps[currentIndex].submissions.push(file);
-            renderFile(file, allEssayAttemps[currentIndex].submissions.length - 1);
+            if(file.size > MAX_FILE_SIZE) {
+                errorFileName += file.name + ", ";
+            }
+            else {
+                allEssayAttempts[currentIndex].submissions.push(file);
+                renderFile(file, allEssayAttempts[currentIndex].submissions.length - 1);
+            }
+        }
+        if(errorFileName.length > 0) {
+            errorFileName = errorFileName.slice(0, -2);
+            toastElementBody.textContent = errorFileName + " too large. Please upload file less than 20MB.";
+            toastElement.classList.add('text-bg-danger');
+            const toast = bootstrap.Toast.getOrCreateInstance(toastElement);
+            toast.show();
         }
 
         fileInput.value = ""; // reset input
@@ -748,10 +784,10 @@
 
     // render question
     const renderQuestion = (index) => {
-        const currentQuestionAttempt = allEssayAttemps[index];
+        const currentQuestionAttempt = allEssayAttempts[index];
         if (!currentQuestionAttempt) return;
 
-        document.getElementById("location").textContent = '' + (index + 1) + '/' + allEssayAttemps.length;
+        document.getElementById("location").textContent = '' + (index + 1) + '/' + allEssayAttempts.length;
         document.getElementById("stt").textContent = '' + (index + 1) + ' )';
         document.getElementById("qId").textContent = 'Question ID: ' + currentQuestionAttempt.question.id;
         document.getElementById("qContent").textContent = currentQuestionAttempt.question.content;
@@ -806,7 +842,7 @@
         uploadArea.innerHTML = "";
 
         // Render existing files
-        const submissions = allEssayAttemps[index].submissions;
+        const submissions = allEssayAttempts[index].submissions;
         for (let i = 0; i < submissions.length; i++) {
             renderFile(submissions[i], i);
         }
@@ -852,7 +888,7 @@
 
     //insert content to popup score exam
     popupScoreExam.addEventListener("show.bs.modal", (e) => {
-        const length = allEssayAttemps.filter(ea => ea.submissions.length > 0).length;
+        const length = allEssayAttempts.filter(ea => ea.submissions.length > 0).length;
         if (length === 0) {
             popupScoreExam.querySelector("h5").textContent = "Exit Exam?";
             popupScoreExam.querySelector("p").textContent = "You have not answered any questions. By clicking on the [Exit Exam] button below, " +
@@ -861,12 +897,12 @@
         } else {
             popupScoreExam.querySelector("h5").textContent = "Score Exam?";
             seSubmitBtn.textContent = "Score Exam";
-            if (length === allEssayAttemps.length) {
+            if (length === allEssayAttempts.length) {
                 popupScoreExam.querySelector("p").textContent = "By clicking on the [Score Exam] button below, you will complete your current exam and" +
                     " receive your score. You will not be able to change any answers after this point.";
-            } else if (length < allEssayAttemps.length) {
+            } else if (length < allEssayAttempts.length) {
                 popupScoreExam.querySelector("p").innerHTML = `
-                <span style='color: red; display: block' class='mb-3'>\${length} of \${allEssayAttemps.length} Questions Answered</span>` +
+                <span style='color: red; display: block' class='mb-3'>\${length} of \${allEssayAttempts.length} Questions Answered</span>` +
                     "By clicking on the [Score Exam] button below, you will complete your current exam and" +
                     " receive your score. You will not be able to change any answers after this point.";
             }
@@ -880,7 +916,7 @@
         const container = document.getElementById("questionBoxContainer");
         container.innerHTML = "";
 
-        const filteredQuestions = allEssayAttemps.filter((ea) => {
+        const filteredQuestions = allEssayAttempts.filter((ea) => {
             switch (filterType) {
                 case "ALL":
                     return true;
@@ -894,7 +930,7 @@
         });
 
         filteredQuestions.forEach((ea) => {
-            const index = allEssayAttemps.indexOf(ea);
+            const index = allEssayAttempts.indexOf(ea);
 
             const btn = document.createElement("button");
             btn.className = "question-box";
@@ -905,7 +941,10 @@
                 btn.classList.add("marked");
             }
             btn.id = `questionBox\${index}`;
-            btn.innerText = index + 1;
+            btn.innerHTML = `
+                <span>\${index + 1}</span>
+                \${ea.marked ? '<i class="bi bi-bookmark-fill mark-flag"></i>' : ''}
+            `;
             btn.onclick = () => clickQuestionBoxInPopup(index);
 
             container.appendChild(btn);
@@ -944,7 +983,7 @@
     const getUploadedFileObject = fileItem => {
         const fileIndex = parseInt(fileItem.dataset.fileIndex);
 
-        const submissions = allEssayAttemps[currentIndex].submissions;
+        const submissions = allEssayAttempts[currentIndex].submissions;
         if (submissions[fileIndex]) {
             return submissions[fileIndex];
         }
@@ -1000,10 +1039,9 @@
         setInterval(() => {
             const formData = new FormData();
             formData.append("duration", countSecond);
-            formData.append("examAttemptId", ${requestScope.essayAttempts[0].examAttempt.id});
-            allEssayAttemps.forEach(ea => {
+            formData.append("examAttemptId", '${requestScope.essayAttempts[0].examAttempt.id}');
+            allEssayAttempts.forEach(ea => {
                 formData.append(`mark\${ea.id}`, ea.marked);
-                console.log("DEBUG gửi:", `mark\${ea.id}`, typeof ea.marked, ea.marked);
             });
 
             callApiUpdateEssayAttempt(formData);
@@ -1013,12 +1051,24 @@
 
     // submit to end quiz
     const submitQuiz = async () => {
+        //check total file size
+        let totalFileSize = 0;
+        allEssayAttempts.forEach(ea => ea.submissions.forEach(file => totalFileSize += file.size));
+        if(totalFileSize > 100 * 1024 * 1024) {
+            toastElementBody.textContent = "Total file size (" + formatFileSize(totalFileSize) + ") is too large . Please upload files such that total file size is less than 100MB.";
+            toastElement.classList.add('text-bg-danger');
+            const toast = bootstrap.Toast.getOrCreateInstance(toastElement);
+            toast.show();
+            return;
+        }
+
+        //submit quiz
         window.onbeforeunload = null;
 
         const formData = new FormData();
         formData.append("duration", countSecond);
-        formData.append("examAttemptId", ${requestScope.essayAttempts[0].examAttempt.id});
-        allEssayAttemps.forEach(ea => {
+        formData.append("examAttemptId", '${requestScope.essayAttempts[0].examAttempt.id}');
+        allEssayAttempts.forEach(ea => {
             formData.append(`mark\${ea.id}`, ea.marked);
             ea.submissions.forEach((f, i) => {
                 formData.append(`essayAttempt\${ea.id}.submission\${i}`, f)
@@ -1030,7 +1080,6 @@
     }
 
     //set up environment
-    let backCount = 0;
     const setupExamEnvironment = () => {
         //prevent F5 and Ctrl + R
         document.addEventListener("keydown", (e) => {

@@ -13,10 +13,9 @@ import jakarta.servlet.annotation.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @WebServlet(name = "PracticeListServlet", value = "/practices")
-public class PracticeListServlet extends HttpServlet {
+public class GetPracticeListServlet extends HttpServlet {
 
     private String formatDuration(int duration) {
         int hours = duration / 3600;
