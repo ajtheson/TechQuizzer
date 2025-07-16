@@ -31,7 +31,7 @@
 <jsp:include page="./common/headload.jsp"/>
 <jsp:include page="./common/jsload.jsp"/>
 <jsp:include page="./layout/header.jsp"/>
-<jsp:include page="./user_profile.jsp"/>
+<jsp:include page="./user/user_profile.jsp"/>
 
 <%--slider--%>
 <div style="height: 600px; width: 100%">

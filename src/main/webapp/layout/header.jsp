@@ -66,7 +66,7 @@
                 </li>
             </c:when>
             <c:otherwise>
-                <a class="nav-link text-white d-flex align-items-center" href="${pageContext.request.contextPath}/login" style="padding: 5px 0 5px 0;">
+                <a class="nav-link text-white d-flex align-items-center" href="${pageContext.request.contextPath}/account/login" style="padding: 5px 0 5px 0;">
                     <h5 style="margin: 0">Login</h5>
                 </a>
             </c:otherwise>
