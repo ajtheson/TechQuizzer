@@ -30,7 +30,7 @@
             <div class="tile" style="background-color: rgb(55, 63, 73);">
                 <div class="row justify-content-center">
                     <div class="col-md-6">
-                        <a class="back_to_subjects_btn" href="subjects"><h5 class="fw-bold"><i
+                        <a class="back_to_subjects_btn" href="${pageContext.request.contextPath}/subject/list"><h5 class="fw-bold"><i
                                 class="bi bi-chevron-left"></i>Back to subjects</h5></a>
                         <h1 class="page-header fw-bold">${requestScope.subject.name}</h1>
                         <h5 class="tagline">${requestScope.subject.tagLine}</h5>

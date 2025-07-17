@@ -17,7 +17,7 @@
     <%--left side--%>
     <ul class="nav nav-underline mx-3">
         <li class="nav-item" style="padding-left: 20px">
-            <a class="nav-link text-white d-flex align-items-center gap-2" href="subjects" style="padding: 14px 0 5px 0;">
+            <a class="nav-link text-white d-flex align-items-center gap-2" href="${pageContext.request.contextPath}/subject/list" style="padding: 14px 0 5px 0;">
                 <i class="bi bi-book"></i>
                 <h5 style="margin: 0">Subject</h5>
             </a>
@@ -53,12 +53,12 @@
                             </a>
                         </li>
                         <li>
-                            <a class="dropdown-item" href="${pageContext.request.contextPath}/change-password">
+                            <a class="dropdown-item" href="${pageContext.request.contextPath}/user/change-password">
                                 <i class="bi bi-gear me-2 fs-5"></i> Change password
                             </a>
                         </li>
                         <li>
-                            <a class="dropdown-item" href="${pageContext.request.contextPath}/logout">
+                            <a class="dropdown-item" href="${pageContext.request.contextPath}/account/logout">
                                 <i class="bi bi-box-arrow-right me-2 fs-5"></i> Logout
                             </a>
                         </li>

@@ -49,7 +49,7 @@
             <i class="bi bi-journal-bookmark"></i> Subject details id ${requestScope.subject.id}
         </h1>
         <div class="btn-group ms-3">
-            <a href="edit-subject?subject_id=${requestScope.subject.id}" class="btn btn-outline-primary active fw-bold">Overview</a>
+            <a href="${pageContext.request.contextPath}/management/subject/edit?subject_id=${requestScope.subject.id}" class="btn btn-outline-primary active fw-bold">Overview</a>
             <a href="/TechQuizzer/dimension/subject-dimension?id=${requestScope.subject.id}" class="btn btn-outline-primary">Dimension</a>
             <a href="get_price_package?subject_id=${requestScope.subject.id}" class="btn btn-outline-primary">Price
                 Package</a>
@@ -60,7 +60,7 @@
             <div class="tile">
                 <h3 class="tile-title">Overview</h3>
                 <div class="tile-body">
-                    <form action="edit-subject" method="post" enctype="multipart/form-data" id="subjectForm">
+                    <form action="${pageContext.request.contextPath}/management/subject/edit" method="post" enctype="multipart/form-data" id="subjectForm">
                         <div class="row align-items-start">
                             <div class="row col-md-8">
                                 <div class="mb-3" hidden>
@@ -223,7 +223,7 @@
 
                             <div class="mt-3 d-grid gap-2 d-md-flex justify-content-md-start">
                                 <button class="btn btn-primary" type="submit">Save</button>
-                                <a href="manage-subject" class="btn btn-secondary">Cancel</a>
+                                <a href="${pageContext.request.contextPath}/management/subject/list" class="btn btn-secondary">Cancel</a>
                             </div>
                         </div>
                     </form>

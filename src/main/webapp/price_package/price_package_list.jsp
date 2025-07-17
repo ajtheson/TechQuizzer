@@ -24,7 +24,7 @@
             <i class="bi bi-journal-bookmark"></i> Subject details id ${requestScope.subject_id}
         </h1>
         <div class="btn-group ms-3">
-            <a href="edit-subject?subject_id=${requestScope.subject_id}" class="btn btn-outline-primary">Overview</a>
+            <a href="${pageContext.request.contextPath}/management/subject/edit?subject_id=${requestScope.subject_id}" class="btn btn-outline-primary">Overview</a>
             <a href="subject-dimension?id=${requestScope.subject_id}" class="btn btn-outline-primary">Dimension</a>
             <a href="get_price_package?subject_id=${requestScope.subject_id}"
                class="btn btn-outline-primary active fw-bold">Price

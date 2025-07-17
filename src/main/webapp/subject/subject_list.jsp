@@ -180,9 +180,9 @@
                                 <div class="timeline-post">
                                     <div class="row">
                                         <div class="subject-media col-md-4">
-                                            <a href="get-subject-detail?subject_id=${subject.id}">
+                                            <a href="detail?subject_id=${subject.id}">
                                                 <img class="subject-thumbnail"
-                                                     src="assets/images/thumbnail/subject/${subject.thumbnail}"
+                                                     src="${pageContext.request.contextPath}/assets/images/thumbnail/subject/${subject.thumbnail}"
                                                      alt="Subject_Thumbnail">
                                             </a>
                                         </div>

@@ -12,7 +12,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
-@WebServlet(name = "ToggleQuestionStatusServlet", urlPatterns = {"/toggle_question_status"})
+@WebServlet(name = "ToggleQuestionStatusServlet", urlPatterns = {"/management/question/toggle_question_status"})
 public class ToggleQuestionStatusServlet extends HttpServlet {
 
     @Override
@@ -54,7 +54,7 @@ public class ToggleQuestionStatusServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession session = request.getSession();
-        StringBuilder redirectUrl = new StringBuilder("questions?");
+        StringBuilder redirectUrl = new StringBuilder("list?");
 
         // Thêm các tham số vào URL
         String page = request.getParameter("page");

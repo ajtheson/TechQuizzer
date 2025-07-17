@@ -36,7 +36,7 @@
                         <%--Filter--%>
                         <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap">
                             <div>
-                                <a class="btn btn-primary" type="button" href="create-setting">+ Add New Setting</a>
+                                <a class="btn btn-primary" type="button" href="${pageContext.request.contextPath}/admin/setting/create">+ Add New Setting</a>
                             </div>
                             <div class="d-flex align-items-center gap-2">
                                 <select id="typeFilter" class="form-select" style="width: 150px;">
@@ -69,9 +69,9 @@
                                     <td>${setting.order}</td>
                                     <td>${setting.activated ? 'Activated' : 'Deactivated'}</td>
                                     <td>
-                                        <a class="btn btn-info text-white" type="button" href="get-setting-detail?id=${setting.id}">View</a>
-                                        <a class="btn btn-warning text-white" type="button" href="edit-setting?id=${setting.id}">Edit</a>
-                                        <form action="toggle-setting-status" method="post" style="display: inline;">
+                                        <a class="btn btn-info text-white" type="button" href="${pageContext.request.contextPath}/admin/setting/detail?id=${setting.id}">View</a>
+                                        <a class="btn btn-warning text-white" type="button" href="${pageContext.request.contextPath}/admin/setting/edit?id=${setting.id}">Edit</a>
+                                        <form action="${pageContext.request.contextPath}/admin/setting/toggle-setting-status" method="post" style="display: inline;">
                                             <input type="hidden" name="id" value="${setting.id}" />
                                             <input type="hidden" name="status" value="${!setting.activated}" />
                                             <button type="submit" class="btn ${setting.activated ? 'btn-success' : 'btn-secondary'}" style="padding: 6px 5px;">

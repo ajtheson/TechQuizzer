@@ -20,7 +20,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-@WebServlet(name = "ManageSubjectServlet", urlPatterns = {"/subject/manage-subject"})
+@WebServlet(name = "ManageSubjectServlet", urlPatterns = {"/management/subject/list"})
 public class ManageSubjectServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -92,6 +92,6 @@ public class ManageSubjectServlet extends HttpServlet {
         }
         request.setAttribute("categoryId", categoryId);
         request.setAttribute("ownerId", ownerId);
-        request.getRequestDispatcher("manage_subject_list.jsp").forward(request, response);
+        request.getRequestDispatcher("/subject/manage_subject_list.jsp").forward(request, response);
     }
 }

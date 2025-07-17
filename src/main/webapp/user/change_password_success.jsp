@@ -23,7 +23,7 @@
         <form class="login-form" action="change-password" method="post">
             <h3 class="login-head text-center" style="margin-top: 80px;">Your password has been changed successfully</h3>
             <div class="text-center mt-4">
-                <a class="btn btn-primary" href="login">
+                <a class="btn btn-primary" href="${pageContext.request.contextPath}/account/login">
                     <i class="bi bi-box-arrow-left me-2 fs-5"></i> Back to Login
                 </a>
             </div>

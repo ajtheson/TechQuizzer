@@ -34,7 +34,7 @@
                         <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap">
                             <div class="mt-auto">
                                 <c:if test="${sessionScope.user.roleName == 'Admin'}">
-                                    <a class="btn btn-primary mb-3" type="button" href="create-subject">+ Add New Subject</a>
+                                    <a class="btn btn-primary mb-3" type="button" href="${pageContext.request.contextPath}/management/subject/create">+ Create New Subject</a>
                                 </c:if>
 
                                 <%--Items per page--%>
@@ -109,7 +109,7 @@
                                             <td>${subject.published ? 'Published' : 'Unpublished'}</td>
                                             <td>
                                                 <a class="btn btn-warning text-white" type="button"
-                                                   href="edit-subject?subject_id=${subject.id}">Edit</a>
+                                                   href="edit?subject_id=${subject.id}">Edit</a>
                                             </td>
                                         </tr>
                                     </c:forEach>

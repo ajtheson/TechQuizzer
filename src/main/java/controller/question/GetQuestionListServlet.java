@@ -18,7 +18,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-@WebServlet(name = "GetQuestionListServlet", urlPatterns = {"/questions"})
+@WebServlet(name = "GetQuestionListServlet", urlPatterns = {"/management/question/list"})
 public class GetQuestionListServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -119,6 +119,6 @@ public class GetQuestionListServlet extends HttpServlet {
             request.setAttribute("status", status);
         }
         request.setAttribute("ownerId", ownerId);
-        request.getRequestDispatcher("question_list.jsp").forward(request, response);
+        request.getRequestDispatcher("/question/question_list.jsp").forward(request, response);
     }
 }

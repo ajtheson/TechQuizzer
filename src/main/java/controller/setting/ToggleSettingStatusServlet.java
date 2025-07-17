@@ -9,7 +9,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 
-@WebServlet(name = "ToggleSettingStatusServlet", urlPatterns = {"/toggle-setting-status"})
+@WebServlet(name = "ToggleSettingStatusServlet", urlPatterns = {"/admin/setting/toggle-setting-status"})
 public class ToggleSettingStatusServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -22,10 +22,10 @@ public class ToggleSettingStatusServlet extends HttpServlet {
             dao.updateStatus(id, status);
 
             // Chuyển hướng lại danh sách
-            response.sendRedirect("settings");
+            response.sendRedirect(request.getContextPath() + "/admin/setting/list");
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
-            response.sendRedirect("settings");
+            response.sendRedirect(request.getContextPath() + "/admin/setting/list");
         }
     }
 }

@@ -11,7 +11,7 @@
 </head>
 <body>
 <!-- Navbar-->
-<header class="app-header"><a class="app-header__logo" href="home">TechQuizzer</a>
+<header class="app-header"><a class="app-header__logo" href="${pageContext.request.contextPath}/account/user">TechQuizzer</a>
     <!-- Sidebar toggle button--><a class="app-sidebar__toggle" href="home" data-toggle="sidebar"
                                     aria-label="Hide Sidebar"></a>
     <!-- Navbar Right Menu-->
@@ -25,10 +25,10 @@
                            style="cursor: pointer"><i class="bi bi-person me-2 fs-5"></i> User profile
                      </span>
                 </li>
-                <li><a class="dropdown-item" href="change-password"><i class="bi bi-person me-2 fs-5"></i> Change
+                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/user/change-password"><i class="bi bi-person me-2 fs-5"></i> Change
                     Password</a>
                 </li>
-                <li><a class="dropdown-item" href="logout"><i class="bi bi-box-arrow-right me-2 fs-5"></i>
+                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/account/logout"><i class="bi bi-box-arrow-right me-2 fs-5"></i>
                     Logout</a></li>
             </ul>
         </li>

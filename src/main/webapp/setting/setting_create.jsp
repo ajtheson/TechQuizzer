@@ -32,7 +32,7 @@
             <div class="tile">
                 <h3 class="tile-title">Create new setting</h3>
                 <div class="tile-body">
-                    <form action="create-setting" method="post">
+                    <form action="${pageContext.request.contextPath}/admin/setting/create" method="post">
                         <div class="mb-3">
                             <label class="form-label" for="type">Type</label>
                             <select class="form-control" id="type" name="type" required>
@@ -82,7 +82,7 @@
                         </div>
                         <p style="text-align: left; color: red">${error}</p>
                         <button class="btn btn-primary"><i class="bi bi-plus-circle me-2"></i>Create</button>
-                        <a class="btn btn-secondary" href="settings"><i class="bi bi-x-circle-fill me-2"></i>Cancel</a>
+                        <a class="btn btn-secondary" href="${pageContext.request.contextPath}/admin/setting/list"><i class="bi bi-x-circle-fill me-2"></i>Cancel</a>
                     </form>
                 </div>
             </div>

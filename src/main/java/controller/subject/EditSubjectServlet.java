@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-@WebServlet(name = "EditSubjectServlet", urlPatterns = {"/subject/edit-subject"})
+@WebServlet(name = "EditSubjectServlet", urlPatterns = {"/management/subject/edit"})
 @MultipartConfig(maxFileSize = 5 * 1024 * 1024, maxRequestSize = 1000 * 1024 * 1024)
 public class EditSubjectServlet extends HttpServlet {
     @Override
@@ -53,7 +53,7 @@ public class EditSubjectServlet extends HttpServlet {
             request.setAttribute("subjectDescriptionImages", subjectDescriptionImages);
         }
         request.setAttribute("experts", experts);
-        request.getRequestDispatcher("manage_subject_detail.jsp").forward(request, response);
+        request.getRequestDispatcher("/subject/manage_subject_detail.jsp").forward(request, response);
     }
 
     @Override
@@ -236,6 +236,6 @@ public class EditSubjectServlet extends HttpServlet {
         HttpSession session = request.getSession();
         session.setAttribute("toastNotification", "Subject has been updated successfully.");
         // Redirect về trang detail
-        response.sendRedirect("edit-subject?subject_id=" + subjectId);
+        response.sendRedirect("edit?subject_id=" + subjectId);
     }
 }

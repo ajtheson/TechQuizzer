@@ -20,7 +20,7 @@ import service.SubjectService;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet(name = "GetSubjectDetailServlet", urlPatterns = {"/get-subject-detail"})
+@WebServlet(name = "GetSubjectDetailServlet", urlPatterns = {"/subject/detail"})
 public class GetSubjectDetailServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)

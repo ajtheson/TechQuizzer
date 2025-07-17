@@ -15,14 +15,14 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-@WebServlet(name = "ChangePasswordServlet", urlPatterns = {"/change-password"})
+@WebServlet(name = "ChangePasswordServlet", urlPatterns = {"/user/change-password"})
 public class ChangePasswordServlet extends HttpServlet {
 
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.getRequestDispatcher("change_password.jsp").forward(request, response);
+        request.getRequestDispatcher("/user/change_password.jsp").forward(request, response);
     }
 
     @Override
@@ -83,7 +83,7 @@ public class ChangePasswordServlet extends HttpServlet {
                 //If the password change is successful, redirect to change password success page and remove session user
                 request.setAttribute("success", "Your password has been changed successfully");
                 session.invalidate();
-                request.getRequestDispatcher("change_password_success.jsp").forward(request, response);
+                request.getRequestDispatcher("/user/change_password_success.jsp").forward(request, response);
                 return;
             }
             else{
@@ -97,6 +97,6 @@ public class ChangePasswordServlet extends HttpServlet {
         request.setAttribute("confirmPassword", confirmPassword);
         request.setAttribute("error", error);
 
-        request.getRequestDispatcher("change_password.jsp").forward(request, response);
+        request.getRequestDispatcher("/user/change_password.jsp").forward(request, response);
     }
 }

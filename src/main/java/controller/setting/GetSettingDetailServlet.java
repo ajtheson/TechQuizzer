@@ -10,7 +10,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 
-@WebServlet(name = "GetSettingDetailServlet", urlPatterns = {"/get-setting-detail"})
+@WebServlet(name = "GetSettingDetailServlet", urlPatterns = {"/admin/setting/detail"})
 public class GetSettingDetailServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -19,12 +19,6 @@ public class GetSettingDetailServlet extends HttpServlet {
         SettingDAO settingDAO = new SettingDAO();
         Setting setting = settingDAO.getSettingById(id);
         request.setAttribute("setting", setting);
-        request.getRequestDispatcher("setting_detail.jsp").forward(request, response);
-    }
-
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-
+        request.getRequestDispatcher("/setting/setting_detail.jsp").forward(request, response);
     }
 }

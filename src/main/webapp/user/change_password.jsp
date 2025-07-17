@@ -20,7 +20,7 @@
         <h1>TechQuizzer</h1>
     </div>
     <div class="login-box" style="min-height: 480px; min-width: 800px;">
-        <form class="login-form" action="change-password" method="post">
+        <form class="login-form" action="${pageContext.request.contextPath}/user/change-password" method="post">
             <h3 class="login-head"><i class="bi bi-person-lock me-2"></i>   CHANGE PASSWORD</h3>
             <div class="mb-3">
                 <label class="form-label">Current Pasword</label>
@@ -45,7 +45,7 @@
                         <button class="btn btn-primary">
                             <i class="bi bi-box-arrow-in-right me-2 fs-5"></i> Change password
                         </button>
-                        <a class="btn btn-light border border-secondary text-dark" href="user">
+                        <a class="btn btn-light border border-secondary text-dark" href="${pageContext.request.contextPath}/account/user">
                             Cancel
                         </a>
                     </div>

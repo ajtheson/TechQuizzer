@@ -32,7 +32,7 @@
             <div class="tile">
                 <h3 class="tile-title">Edit setting #${id}</h3>
                 <div class="tile-body">
-                    <form action="edit-setting" method="post">
+                    <form action="${pageContext.request.contextPath}/admin/setting/edit" method="post">
                         <div class="mb-3" hidden>
                             <label class="col-form-label" for="id">Id</label>
                             <input class="form-control" id="id" type="text" value="${empty id ? '' : id}" name="id">
@@ -70,7 +70,7 @@
                         </div>
                         <p style="text-align: left; color: red">${error}</p>
                         <button class="btn btn-primary"><i class="bi bi-plus-circle me-2"></i>Save edit</button>
-                        <a class="btn btn-secondary" href="settings"><i class="bi bi-x-circle-fill me-2"></i>Cancel</a>
+                        <a class="btn btn-secondary" href="${pageContext.request.contextPath}/admin/setting/list"><i class="bi bi-x-circle-fill me-2"></i>Cancel</a>
                     </form>
                 </div>
             </div>

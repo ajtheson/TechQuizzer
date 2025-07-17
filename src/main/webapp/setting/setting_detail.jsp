@@ -66,11 +66,11 @@
                     </form>
                 </div>
                 <div class="tile-footer">
-                    <a class="btn btn-primary" href="edit-setting?id=${setting.id}"><i class="bi bi-plus-circle me-2"></i>Edit</a>
+                    <a class="btn btn-primary" href="${pageContext.request.contextPath}/admin/setting/edit?id=${setting.id}"><i class="bi bi-plus-circle me-2"></i>Edit</a>
                     &nbsp;&nbsp;&nbsp;
-                    <a class="btn btn-primary" href="create-setting"><i class="bi bi-plus-circle me-2"></i>Create new setting</a>
+                    <a class="btn btn-primary" href="${pageContext.request.contextPath}/admin/setting/create"><i class="bi bi-plus-circle me-2"></i>Create new setting</a>
                     &nbsp;&nbsp;&nbsp;
-                    <a class="btn btn-secondary" href="settings"><i class="bi bi-x-circle-fill me-2"></i>Cancel</a>
+                    <a class="btn btn-secondary" href="${pageContext.request.contextPath}/admin/setting/list"><i class="bi bi-x-circle-fill me-2"></i>Cancel</a>
                 </div>
             </div>
         </div>
