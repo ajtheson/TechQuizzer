@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-@WebServlet(name = "CreateSubjectServlet", urlPatterns = {"/create-subject"})
+@WebServlet(name = "CreateSubjectServlet", urlPatterns = {"/subject/create-subject"})
 @MultipartConfig(
         fileSizeThreshold = 1024 * 1024,         // 1MB (bộ nhớ tạm)
         maxFileSize = 10 * 1024 * 1024,          // 10MB cho mỗi file
@@ -36,7 +36,7 @@ public class CreateSubjectServlet extends HttpServlet {
         UserDTO user = (UserDTO) session.getAttribute("user");
 
         if (user == null) {
-            response.sendRedirect(request.getContextPath() + "/login");
+            response.sendRedirect(request.getContextPath() + "/account/login");
             return;
         }
         CategoryDAO categoryDAO = new CategoryDAO();

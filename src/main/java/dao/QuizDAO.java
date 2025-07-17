@@ -12,6 +12,7 @@ import java.util.stream.Collectors;
 import dal.DBContext;
 import dto.LessonDTO;
 import dto.QuizDTO;
+import dto.SubjectDTO;
 import entity.*;
 
 public class QuizDAO extends DBContext {
@@ -82,12 +83,12 @@ public class QuizDAO extends DBContext {
     }
 
     public List<QuizDTO> getQuizzesByPage(String subjectName, String testTypeName, String searchText,
-            int page, int pageSize, String sortField, String sortOrder, int expertId) {
+            int page, int pageSize, String sortField, String sortOrder, Integer expertId) {
         List<QuizDTO> quizzes = new ArrayList<>();
         int offset = (page - 1) * pageSize;
 
         StringBuilder sql = new StringBuilder(
-                "SELECT q.id, q.name, q.question_level_id, qs.number_question, q.duration, q.pass_rate, q.status, q.quiz_setting_id, "
+                "SELECT q.id, q.name, q.question_level_id, qs.number_question, q.duration, q.pass_rate, q.status, q.quiz_setting_id,u.name AS expert_name, "
                         +
                         "s.id AS subject_id, s.name AS subject_name, " +
                         "t.id AS test_type_id, t.name AS test_type_name, " +
@@ -97,16 +98,19 @@ public class QuizDAO extends DBContext {
                         "JOIN test_types t ON q.test_type_id = t.id " +
                         "LEFT JOIN quiz_settings qs ON q.quiz_setting_id = qs.id " +
                         "LEFT JOIN question_levels ql ON q.question_level_id = ql.id " +
-                        "WHERE s.owner_id = ?");
-
+                        "LEFT JOIN users u ON s.owner_id = u.id "+
+                        "WHERE 1=1");
         if (subjectName != null && !subjectName.isEmpty()) {
-            sql.append(" AND s.name LIKE ?");
+            sql.append(" AND s.name LIKE ? ");
         }
         if (testTypeName != null && !testTypeName.isEmpty()) {
-            sql.append(" AND t.name LIKE ?");
+            sql.append(" AND t.name LIKE ? ");
         }
         if (searchText != null && !searchText.isEmpty()) {
-            sql.append(" AND q.name LIKE ?");
+            sql.append(" AND q.name LIKE ? ");
+        }
+        if (expertId != null) {
+            sql.append(" AND s.owner_id = ? ");
         }
 
         List<String> validSortFields = Arrays.asList("q.name", "q.question_level_id", "q.duration", "q.pass_rate",
@@ -120,8 +124,7 @@ public class QuizDAO extends DBContext {
         sql.append(" OFFSET ? ROWS FETCH NEXT ? ROWS ONLY");
 
         try (PreparedStatement pstm = connection.prepareStatement(sql.toString())) {
-            pstm.setInt(1, expertId);
-            int paramIndex = 2;
+            int paramIndex = 1;
 
             if (subjectName != null && !subjectName.isEmpty())
                 pstm.setString(paramIndex++, "%" + subjectName + "%");
@@ -131,6 +134,9 @@ public class QuizDAO extends DBContext {
 
             if (searchText != null && !searchText.isEmpty())
                 pstm.setString(paramIndex++, "%" + searchText + "%");
+
+            if (expertId != null)
+                pstm.setInt(paramIndex++, expertId);
 
             pstm.setInt(paramIndex++, offset);
             pstm.setInt(paramIndex, pageSize);
@@ -155,6 +161,12 @@ public class QuizDAO extends DBContext {
                 subject.setName(rs.getString("subject_name"));
                 dto.setSubject(subject);
 
+                SubjectDTO subjectDTO = new SubjectDTO();
+                subjectDTO.setId(rs.getInt("subject_id"));
+                subjectDTO.setName(rs.getString("subject_name"));
+                subjectDTO.setOwnerName(rs.getString("expert_name"));
+                dto.setSubjectDTO(subjectDTO);
+
                 TestType testType = new TestType();
                 testType.setId(rs.getInt("test_type_id"));
                 testType.setName(rs.getString("test_type_name"));
@@ -173,27 +185,30 @@ public class QuizDAO extends DBContext {
         return quizzes;
     }
 
-    public int getTotalQuizzes(String subjectName, String testTypeName, String searchText, int expertId) {
+    public int getTotalQuizzes(String subjectName, String testTypeName, String searchText, Integer expertId) {
         StringBuilder sql = new StringBuilder(
                 "SELECT COUNT(*) AS total FROM quizzes q " +
                         "JOIN subjects s ON q.subject_id = s.id " +
                         "JOIN test_types t ON q.test_type_id = t.id " +
                         "LEFT JOIN quiz_settings qs ON q.quiz_setting_id = qs.id " +
-                        "WHERE s.owner_id = ?");
+                        "WHERE 1=1");
 
         if (subjectName != null && !subjectName.isEmpty()) {
-            sql.append(" AND s.name LIKE ?");
+            sql.append(" AND s.name LIKE ? ");
         }
         if (testTypeName != null && !testTypeName.isEmpty()) {
-            sql.append(" AND t.name LIKE ?");
+            sql.append(" AND t.name LIKE ? ");
         }
         if (searchText != null && !searchText.isEmpty()) {
-            sql.append(" AND q.name LIKE ?");
+            sql.append(" AND q.name LIKE ? ");
+        }
+        if (expertId != null) {
+            sql.append(" AND s.owner_id = ? ");
         }
 
+
         try (PreparedStatement pstm = connection.prepareStatement(sql.toString())) {
-            pstm.setInt(1, expertId);
-            int paramIndex = 2;
+            int paramIndex = 1;
 
             if (subjectName != null && !subjectName.isEmpty())
                 pstm.setString(paramIndex++, "%" + subjectName + "%");
@@ -203,6 +218,9 @@ public class QuizDAO extends DBContext {
 
             if (searchText != null && !searchText.isEmpty())
                 pstm.setString(paramIndex++, "%" + searchText + "%");
+
+            if (expertId != null)
+                pstm.setInt(paramIndex++, expertId);
 
             ResultSet rs = pstm.executeQuery();
             if (rs.next()) {

@@ -20,7 +20,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
-@WebServlet(name = "CreateSubjectLessonServlet", urlPatterns = {"/lesson-create"})
+@WebServlet(name = "CreateSubjectLessonServlet", urlPatterns = {"/lesson/lesson-create"})
 @MultipartConfig
 public class CreateSubjectLessonServlet extends HttpServlet {
     @Override

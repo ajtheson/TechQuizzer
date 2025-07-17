@@ -14,7 +14,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
-@WebServlet(name = "CreateQuizServlet", urlPatterns = { "/create_quiz" })
+@WebServlet(name = "CreateQuizServlet", urlPatterns = { "/quiz/create_quiz" })
 public class CreateQuizServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -24,10 +24,9 @@ public class CreateQuizServlet extends HttpServlet {
         UserDTO user = (UserDTO) session.getAttribute("user");
 
         if (user == null) {
-            response.sendRedirect(request.getContextPath() + "/login");
+            response.sendRedirect(request.getContextPath() + "/account/login");
             return;
         }
-        System.out.println("email: " + user.getEmail());
         try {
             SubjectDAO subjectDAO = new SubjectDAO();
             QuestionLevelDAO questionLevelDAO = new QuestionLevelDAO();
@@ -177,7 +176,7 @@ public class CreateQuizServlet extends HttpServlet {
 
             // Success - redirect to quiz list or quiz detail
             session.setAttribute("toastNotification", "Quiz created successfully!");
-            response.sendRedirect(request.getContextPath() + "/quizzeslist");
+            response.sendRedirect("quizzeslist");
 
         } catch (NumberFormatException e) {
             request.setAttribute("errorMessage", "Invalid number format: " + e.getMessage());

@@ -144,6 +144,10 @@
                                     <input class="form-check-input toggle-column" type="checkbox" data-column="10" id="col10" checked>
                                     <label class="form-check-label" for="col10">Action</label>
                                 </div>
+                                <div class="form-check">
+                                <input class="form-check-input toggle-column" type="checkbox" data-column="11" id="col11" checked>
+                                <label class="form-check-label" for="col11">Expert</label>
+                            </div>
                             </div>
                         </div>
 
@@ -169,6 +173,12 @@
                                 <th class="col-7">
                                     <a style="display: flex; align-items: center; gap: 5px; text-decoration: none; color: inherit;" href="?subject=${subject}&testType=${testType}&search=${search}&sortField=s.name&sortOrder=${sortOrder == 'ASC' ? 'DESC' : 'ASC'}&page=${currentPage}&pageSize=${pageSize}">Subject<i class="fa fa-sort"></i></a>
                                 </th>
+                                <c:if test="${sessionScope.user.roleId==1}">
+                                    <th class="col-11">
+                                        Expert
+                                    </th>
+                                </c:if>
+
                                 <th class="col-8"><a style="display: flex; align-items: center; gap: 5px; text-decoration: none; color: inherit;" href="?subject=${subject}&testType=${testType}&search=${search}&sortField=t.name&sortOrder=${sortOrder == 'ASC' ? 'DESC' : 'ASC'}&page=${currentPage}&pageSize=${pageSize}">Test Type<i class="fa fa-sort"></i>
                                 </a></th>
                                 <th class="col-9">Status</th>
@@ -188,8 +198,12 @@
                                     <td class="col-5">${quiz.quizSetting.numberOfQuestions}</td>
                                     <td class="col-6">${quiz.passRate}%</td>
                                     <td class="col-7">${quiz.subject.name}</td>
+                                    <c:if test="${sessionScope.user.roleId==1}">
+                                        <td class="col-11">${quiz.subjectDTO.ownerName}</td>
+                                    </c:if>
+
                                     <td class="col-8">${quiz.testType.name}</td>
-                                    <td class="col-9">
+                                    <td class="col-">
                                         <c:choose>
                                             <c:when test="${quiz.status==1}">
                                                 <a href="toggle-quiz-status?action=changeStatus&id=${quiz.id}&status=0"

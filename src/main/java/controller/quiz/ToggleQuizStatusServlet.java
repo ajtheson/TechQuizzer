@@ -9,7 +9,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 
-@WebServlet(name = "ToggleQuizStatusServlet", urlPatterns = {"/toggle-quiz-status"})
+@WebServlet(name = "ToggleQuizStatusServlet", urlPatterns = {"/quiz/toggle-quiz-status"})
 public class  ToggleQuizStatusServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)

@@ -14,7 +14,7 @@ import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet(name = "GetQuizzesDetailServlet", urlPatterns = {"/get-quiz-detail"})
+@WebServlet(name = "GetQuizzesDetailServlet", urlPatterns = {"/quiz/get-quiz-detail"})
 public class GetQuizzesDetailServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
@@ -83,7 +83,7 @@ public class GetQuizzesDetailServlet extends HttpServlet {
         UserDTO user = (UserDTO) session.getAttribute("user");
 
         if (user == null) {
-            response.sendRedirect(request.getContextPath() + "/login");
+            response.sendRedirect(request.getContextPath() + "/account/login");
             return;
         }
         switch (action) {

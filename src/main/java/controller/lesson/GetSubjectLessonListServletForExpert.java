@@ -17,7 +17,7 @@ import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet(name = "GetSubjectLessonListServletExpert", urlPatterns = {"/subject-lesson-expert"})
+@WebServlet(name = "GetSubjectLessonListServletExpert", urlPatterns = {"/lesson/subject-lesson-expert"})
 public class GetSubjectLessonListServletForExpert extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)

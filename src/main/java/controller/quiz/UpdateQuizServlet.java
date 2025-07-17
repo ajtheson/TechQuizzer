@@ -2,6 +2,7 @@ package controller.quiz;
 
 import dao.QuizSettingDAO;
 import dao.QuizSettingGroupDAO;
+import dto.UserDTO;
 import entity.QuizSettingGroup;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -14,13 +15,19 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-@WebServlet(name = "UpdateQuizServlet", urlPatterns = {"/quiz-setting"})
+@WebServlet(name = "UpdateQuizServlet", urlPatterns = {"/quiz/quiz-setting"})
 public class UpdateQuizServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        UserDTO user = (UserDTO) session.getAttribute("user");
 
+        if (user == null) {
+            response.sendRedirect(request.getContextPath() + "/account/login");
+            return;
+        }
         String action = request.getParameter("action");
 
         if ("updateSetting".equals(action)) {

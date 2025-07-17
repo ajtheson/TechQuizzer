@@ -11,6 +11,7 @@ public class QuizDTO {
     private int id;
     private String name;
     private Subject subject;
+    private SubjectDTO subjectDTO;
     private QuestionLevel questionLevel;
     private QuizSetting quizSetting;
     private TestType testType;
@@ -97,5 +98,13 @@ public class QuizDTO {
 
     public void setFormat(String format) {
         this.format = format;
+    }
+
+    public SubjectDTO getSubjectDTO() {
+        return subjectDTO;
+    }
+
+    public void setSubjectDTO(SubjectDTO subjectDTO) {
+        this.subjectDTO = subjectDTO;
     }
 }

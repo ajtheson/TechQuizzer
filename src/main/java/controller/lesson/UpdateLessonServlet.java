@@ -21,7 +21,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
-@WebServlet(name = "UpdateLessonServlet", urlPatterns = {"/lesson-edit"})
+@WebServlet(name = "UpdateLessonServlet", urlPatterns = {"/lesson/lesson-edit"})
 @MultipartConfig
 public class UpdateLessonServlet extends HttpServlet {
     @Override

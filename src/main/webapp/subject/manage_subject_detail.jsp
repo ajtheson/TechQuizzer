@@ -50,7 +50,7 @@
         </h1>
         <div class="btn-group ms-3">
             <a href="edit-subject?subject_id=${requestScope.subject.id}" class="btn btn-outline-primary active fw-bold">Overview</a>
-            <a href="subject-dimension?id=${requestScope.subject.id}" class="btn btn-outline-primary">Dimension</a>
+            <a href="/TechQuizzer/dimension/subject-dimension?id=${requestScope.subject.id}" class="btn btn-outline-primary">Dimension</a>
             <a href="get_price_package?subject_id=${requestScope.subject.id}" class="btn btn-outline-primary">Price
                 Package</a>
         </div>

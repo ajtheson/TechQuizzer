@@ -17,7 +17,7 @@ import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet(name = "GetSubjectLessonListServlet", urlPatterns = {"/subject-lesson"})
+@WebServlet(name = "GetSubjectLessonListServlet", urlPatterns = {"/lesson/subject-lesson"})
 public class GetSubjectLessonListServlet extends HttpServlet {
 
     @Override

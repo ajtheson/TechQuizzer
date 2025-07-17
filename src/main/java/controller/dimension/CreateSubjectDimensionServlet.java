@@ -3,6 +3,7 @@ package controller.dimension;
 import dao.DimensionDAO;
 import dao.SubjectDAO;
 import dto.SubjectDTO;
+import dto.UserDTO;
 import entity.Dimension;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -12,12 +13,19 @@ import service.SubjectService;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet(name = "CreateSubjectDimensionServlet", urlPatterns = {"/dimension-create"})
+@WebServlet(name = "CreateSubjectDimensionServlet", urlPatterns = {"/dimension/dimension-create"})
 public class CreateSubjectDimensionServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        UserDTO user = (UserDTO) session.getAttribute("user");
+
+        if (user == null) {
+            response.sendRedirect(request.getContextPath() + "/account/login");
+            return;
+        }
         int id = Integer.parseInt(request.getParameter("id"));
         SubjectDAO subjectDAO = new SubjectDAO();
         SubjectService subjectService = new SubjectService();
@@ -30,6 +38,12 @@ public class CreateSubjectDimensionServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession session = request.getSession();
+        UserDTO user = (UserDTO) session.getAttribute("user");
+
+        if (user == null) {
+            response.sendRedirect(request.getContextPath() + "/account/login");
+            return;
+        }
         try {
             String name = request.getParameter("name");
             String type = request.getParameter("type");
@@ -44,7 +58,11 @@ public class CreateSubjectDimensionServlet extends HttpServlet {
                     return;
                 }
             }
-
+            if(type.length()>6){
+                session.setAttribute("toastNotification", "Type too long, 6 characters allowed.");
+                response.sendRedirect("dimension-create?id=" + subjectId);
+                return;
+            }
             boolean success = new DimensionDAO().insertDimension(name, type, description, subjectId);
             if (success) {
                 session.setAttribute("toastNotification", "Created successfully");

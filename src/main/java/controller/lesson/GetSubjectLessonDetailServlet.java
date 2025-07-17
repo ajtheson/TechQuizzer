@@ -12,7 +12,7 @@ import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
 
-@WebServlet(name = "GetSubjectLessonDetailServlet", urlPatterns = {"/lesson-detail"})
+@WebServlet(name = "GetSubjectLessonDetailServlet", urlPatterns = {"/lesson/lesson-detail"})
 public class GetSubjectLessonDetailServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)

@@ -20,7 +20,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-@WebServlet(name = "ManageSubjectServlet", urlPatterns = {"/manage-subject"})
+@WebServlet(name = "ManageSubjectServlet", urlPatterns = {"/subject/manage-subject"})
 public class ManageSubjectServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)

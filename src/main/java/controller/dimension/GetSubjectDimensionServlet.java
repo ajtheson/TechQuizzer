@@ -4,6 +4,7 @@ import dao.DimensionDAO;
 import dao.SubjectDAO;
 import dto.DimensionDTO;
 import dto.SubjectDTO;
+import dto.UserDTO;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -15,12 +16,19 @@ import service.SubjectService;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet(name = "GetSubjectDimensionServlet", urlPatterns = {"/subject-dimension"})
+@WebServlet(name = "GetSubjectDimensionServlet", urlPatterns = {"/dimension/subject-dimension"})
 public class GetSubjectDimensionServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
         HttpSession session = request.getSession();
+        UserDTO user = (UserDTO) session.getAttribute("user");
+
+        if (user == null) {
+            response.sendRedirect(request.getContextPath() + "/account/login");
+            return;
+        }
         DimensionDAO dimensionDAO = new DimensionDAO();
         int subjectId = Integer.parseInt(request.getParameter("id"));
         String search = request.getParameter("search");

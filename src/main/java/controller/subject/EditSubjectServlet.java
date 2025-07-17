@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-@WebServlet(name = "EditSubjectServlet", urlPatterns = {"/edit-subject"})
+@WebServlet(name = "EditSubjectServlet", urlPatterns = {"/subject/edit-subject"})
 @MultipartConfig(maxFileSize = 5 * 1024 * 1024, maxRequestSize = 1000 * 1024 * 1024)
 public class EditSubjectServlet extends HttpServlet {
     @Override

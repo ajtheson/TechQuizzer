@@ -14,7 +14,7 @@ import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet(name = "EditSubjectDimensionServlet", urlPatterns = {"/dimension-edit"})
+@WebServlet(name = "EditSubjectDimensionServlet", urlPatterns = {"/dimension/dimension-edit"})
 public class EditSubjectDimensionServlet extends HttpServlet {
 
     @Override
@@ -38,6 +38,11 @@ public class EditSubjectDimensionServlet extends HttpServlet {
         HttpSession session = request.getSession(false);
         UserDTO currentUser = (session != null) ? (UserDTO) session.getAttribute("user") : null;
 
+
+        if (currentUser == null) {
+            response.sendRedirect(request.getContextPath() + "/account/login");
+            return;
+        }
         request.setAttribute("dimension", dimension);
         request.setAttribute("currentUser", currentUser);
         request.getRequestDispatcher("subject_dimension_edit.jsp").forward(request, response);

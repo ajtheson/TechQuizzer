@@ -17,7 +17,7 @@ import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet(name = "GetQuizzesListServlet", urlPatterns = {"/quizzeslist"})
+@WebServlet(name = "GetQuizzesListServlet", urlPatterns = {"/quiz/quizzeslist"})
 public class GetQuizzesListServlet extends HttpServlet {
 
     @Override
@@ -28,7 +28,7 @@ public class GetQuizzesListServlet extends HttpServlet {
         UserDTO user = (UserDTO) session.getAttribute("user");
 
         if (user == null) {
-            response.sendRedirect(request.getContextPath() + "/login");
+            response.sendRedirect(request.getContextPath() + "/account/login");
             return;
         }
 
@@ -75,33 +75,59 @@ public class GetQuizzesListServlet extends HttpServlet {
 
         if (sortField == null || sortField.isEmpty()) sortField = "q.id";
         if (sortOrder == null || sortOrder.isEmpty()) sortOrder = "ASC";
-
-
         QuizDAO quizDAO = new QuizDAO();
-        List<QuizDTO> quizList = quizDAO.getQuizzesByPage(
-                subjectFilter, testTypeFilter, search,
-                page, pageSize, sortField, sortOrder, user.getId());
+        if (user.getRoleId()==1){
+            List<QuizDTO> quizList = quizDAO.getQuizzesByPage(
+                    subjectFilter, testTypeFilter, search,
+                    page, pageSize, sortField, sortOrder, null);
+            int totalRecords = quizDAO.getTotalQuizzes(
+                    subjectFilter, testTypeFilter, search, user.getId());
+            int totalPages = (int) Math.ceil((double) totalRecords / pageSize);
 
-        int totalRecords = quizDAO.getTotalQuizzes(
-                subjectFilter, testTypeFilter, search, user.getId());
-        int totalPages = (int) Math.ceil((double) totalRecords / pageSize);
+            request.setAttribute("quizList", quizList);
+            request.setAttribute("subjects", subjects);
+            request.setAttribute("testTypes", testTypes);
+            request.setAttribute("currentPage", page);
+            request.setAttribute("pageSize", pageSize);
+            request.setAttribute("totalPages", totalPages);
+            request.setAttribute("subjects", subjects);
+            request.setAttribute("subject", subjectFilter);
+            request.setAttribute("selectedSubject", subjectSelected);
+            request.setAttribute("testType", testTypeFilter);
+            request.setAttribute("testTypes", testTypes);
+            request.setAttribute("selectedTestType", testTypeSelected);
+            request.setAttribute("search", search);
+            request.setAttribute("sortField", sortField);
+            request.setAttribute("sortOrder", sortOrder);
 
-        request.setAttribute("quizList", quizList);
-        request.setAttribute("subjects", subjects);
-        request.setAttribute("testTypes", testTypes);
-        request.setAttribute("currentPage", page);
-        request.setAttribute("pageSize", pageSize);
-        request.setAttribute("totalPages", totalPages);
-        request.setAttribute("subjects", subjects);
-        request.setAttribute("subject", subjectFilter);
-        request.setAttribute("selectedSubject", subjectSelected);
-        request.setAttribute("testType", testTypeFilter);
-        request.setAttribute("testTypes", testTypes);
-        request.setAttribute("selectedTestType", testTypeSelected);
-        request.setAttribute("search", search);
-        request.setAttribute("sortField", sortField);
-        request.setAttribute("sortOrder", sortOrder);
+            request.getRequestDispatcher("quiz_list.jsp").forward(request, response);
+        }
+        else {
+            List<QuizDTO> quizList = quizDAO.getQuizzesByPage(
+                    subjectFilter, testTypeFilter, search,
+                    page, pageSize, sortField, sortOrder, user.getId());
 
-        request.getRequestDispatcher("quiz_list.jsp").forward(request, response);
+            int totalRecords = quizDAO.getTotalQuizzes(
+                    subjectFilter, testTypeFilter, search, user.getId());
+            int totalPages = (int) Math.ceil((double) totalRecords / pageSize);
+
+            request.setAttribute("quizList", quizList);
+            request.setAttribute("subjects", subjects);
+            request.setAttribute("testTypes", testTypes);
+            request.setAttribute("currentPage", page);
+            request.setAttribute("pageSize", pageSize);
+            request.setAttribute("totalPages", totalPages);
+            request.setAttribute("subjects", subjects);
+            request.setAttribute("subject", subjectFilter);
+            request.setAttribute("selectedSubject", subjectSelected);
+            request.setAttribute("testType", testTypeFilter);
+            request.setAttribute("testTypes", testTypes);
+            request.setAttribute("selectedTestType", testTypeSelected);
+            request.setAttribute("search", search);
+            request.setAttribute("sortField", sortField);
+            request.setAttribute("sortOrder", sortOrder);
+
+            request.getRequestDispatcher("quiz_list.jsp").forward(request, response);
+        }
     }
 }

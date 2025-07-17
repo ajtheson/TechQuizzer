@@ -105,7 +105,7 @@
                     <div class="d-flex justify-content-end mt-3">
                         <nav aria-label="Page navigation">
                             <ul class="pagination">
-                                <c:set var="urlBase" value="subject-dimension?subject=${subject}&search=${search}&sortField=${sortField}&sortOrder=${sortOrder}&pageSize=${pageSize}" />
+                                <c:set var="urlBase" value="subject-dimension?id=${requestScope.subject.id}&search=${search}&sortField=${sortField}&sortOrder=${sortOrder}&pageSize=${pageSize}" />
                                 <c:if test="${currentPage > 1}">
                                     <li class="page-item">
                                         <a class="page-link" href="${urlBase}&page=${currentPage - 1}">Previous</a>

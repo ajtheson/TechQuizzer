@@ -12,11 +12,12 @@ import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
 
-@WebServlet(name = "GetSubjectDimensionDetailServlet", urlPatterns = "/dimension-detail")
+@WebServlet(name = "GetSubjectDimensionDetailServlet", urlPatterns = "/dimension/dimension-detail")
 public class GetSubjectDimensionDetailServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
         int dimensionId = Integer.parseInt(request.getParameter("id"));
         DimensionDAO dao = new DimensionDAO();
         DimensionDTO dimension = dao.getDimensionDTOById(dimensionId);
@@ -25,6 +26,10 @@ public class GetSubjectDimensionDetailServlet extends HttpServlet {
         HttpSession session = request.getSession(false);
         UserDTO currentUser = (session != null) ? (UserDTO) session.getAttribute("user") : null;
 
+        if (currentUser == null) {
+            response.sendRedirect(request.getContextPath() + "/account/login");
+            return;
+        }
         request.setAttribute("dimension", dimension);
         request.setAttribute("currentUser", currentUser);
         request.getRequestDispatcher("subject_dimension_detail.jsp").forward(request, response);

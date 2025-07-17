@@ -27,7 +27,6 @@ public class QuizService {
 		Map<Integer, Subject> subjectMap = subjects.stream().collect(Collectors.toMap(s -> s.getId(), s -> s));
 		Map<Integer, QuizSetting> quizSettingMap = quizSettings.stream()
 				.collect(Collectors.toMap(qs -> qs.getId(), q -> q));
-
 		List<QuestionLevel> questionLevels = new QuestionLevelDAO().findAll();
 
 		for (Quiz quiz : quizzes) {
