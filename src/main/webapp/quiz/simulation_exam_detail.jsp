@@ -54,7 +54,7 @@
                 <input type="text" class="form-control" value="${requestScope.quiz.getPassRate()}" disabled>
             </div>
 
-            <form method="post" action="${pageContext.request.contextPath}/simulation-exam/detail">
+            <form method="post" action="${pageContext.request.contextPath}/simulation/detail">
                 <input type="hidden" name="quizId" value="${requestScope.quiz.getId()}">
                 <div class="col-12">
                     <button type="submit" class="btn btn-primary w-100">Start</button>

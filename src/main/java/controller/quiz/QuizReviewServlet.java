@@ -12,7 +12,7 @@ import jakarta.servlet.annotation.*;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet(name = "QuizReviewServlet", value = "/quiz-review")
+@WebServlet(name = "QuizReviewServlet", value = "/quiz/review")
 public class QuizReviewServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -53,11 +53,11 @@ public class QuizReviewServlet extends HttpServlet {
                     }
                 }
                 request.setAttribute("questionAttempts", questionAttemptDTOs);
-                request.getRequestDispatcher("/quiz_handle/multiple_review.jsp").forward(request, response);
+                request.getRequestDispatcher("multiple_review.jsp").forward(request, response);
             }else{
                 List<EssayAttemptDTO> essayAttemptDTOs = new EssayAttemptDAO().findAllByExamAttemptId(examAttemptId);
                 request.setAttribute("essayAttempts", essayAttemptDTOs);
-                request.getRequestDispatcher("/quiz_handle/essay_review.jsp").forward(request, response);
+                request.getRequestDispatcher("essay_review.jsp").forward(request, response);
             }
 
         }catch (Exception e){

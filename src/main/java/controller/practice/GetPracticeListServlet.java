@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-@WebServlet(name = "PracticeListServlet", value = "/practices")
+@WebServlet(name = "PracticeListServlet", value = "/practice/list")
 public class GetPracticeListServlet extends HttpServlet {
 
     private String formatDuration(int duration) {

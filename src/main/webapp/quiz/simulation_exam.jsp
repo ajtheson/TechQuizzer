@@ -105,7 +105,7 @@
                         <td id="row_duration">${quiz.getDuration()}</td>
                         <td id="row_passRate">${quiz.getPassRate()}</td>
                         <td>
-                            <a href="simulation-exam/detail?id=${quiz.getId()}"
+                            <a href="${pageContext.request.contextPath}/simulation/detail?id=${quiz.getId()}"
                                class="btn btn-outline-secondary">Take</a>
                         </td>
                     </tr>

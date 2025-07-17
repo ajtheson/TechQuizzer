@@ -421,21 +421,21 @@
                 switch (media.type) {
                     case 'image':
                         mediaElement = document.createElement("img");
-                        mediaElement.src = `assets/files/media/\${currentQuestionAttempt.question.id}/\${media.link}`;
+                        mediaElement.src = `../assets/files/media/\${currentQuestionAttempt.question.id}/\${media.link}`;
                         mediaElement.style.maxWidth = "100%";
                         mediaElement.style.height = "auto";
                         break;
 
                     case 'video':
                         mediaElement = document.createElement("video");
-                        mediaElement.src = `assets/files/media/\${currentQuestionAttempt.question.id}/\${media.link}`;
+                        mediaElement.src = `../assets/files/media/\${currentQuestionAttempt.question.id}/\${media.link}`;
                         mediaElement.controls = true;
                         mediaElement.style.maxWidth = "100%";
                         break;
 
                     case 'audio':
                         mediaElement = document.createElement("audio");
-                        mediaElement.src = `assets/files/media/\${currentQuestionAttempt.question.id}/\${media.link}`;
+                        mediaElement.src = `../assets/files/media/\${currentQuestionAttempt.question.id}/\${media.link}`;
                         mediaElement.controls = true;
                         break;
                 }

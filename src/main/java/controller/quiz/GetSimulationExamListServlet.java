@@ -14,8 +14,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-@WebServlet(name = "SimulationExamServlet", value = "/simulation-exam")
-public class SimulationExamServlet extends HttpServlet {
+@WebServlet(name = "SimulationExamServlet", value = "/simulation/list")
+public class GetSimulationExamListServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         //get parameter
@@ -58,7 +58,7 @@ public class SimulationExamServlet extends HttpServlet {
             request.setAttribute("size", size);
             request.setAttribute("filter", filter);
             request.setAttribute("search", search);
-            request.getRequestDispatcher("simulation_exam.jsp").forward(request, response);
+            request.getRequestDispatcher("/quiz/simulation_exam.jsp").forward(request, response);
 
         } catch (Exception e) {
             e.printStackTrace();

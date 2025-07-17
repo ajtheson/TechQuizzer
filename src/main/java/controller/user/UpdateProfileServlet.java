@@ -12,7 +12,7 @@ import util.ImageUploader;
 import java.io.IOException;
 import java.time.Instant;
 
-@WebServlet(name = "UpdateProfileServlet", value = "/update-profile")
+@WebServlet(name = "UpdateProfileServlet", value = "/user/profile/edit")
 @MultipartConfig(maxFileSize = 5 * 1024 * 1024, maxRequestSize = 5 * 1024 * 1024)
 public class UpdateProfileServlet extends HttpServlet {
     @Override

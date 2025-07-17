@@ -10,7 +10,7 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 
-@WebServlet(name = "GetUserDetailServlet", value = "/user-detail")
+@WebServlet(name = "GetUserDetailServlet", value = "/user/detail")
 public class GetUserDetailServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

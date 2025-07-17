@@ -11,7 +11,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@WebServlet(name = "QuizHandleServlet", value = "/quiz-handle")
+@WebServlet(name = "QuizHandleServlet", value = "/quiz/handle")
 public class QuizHandleServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -54,11 +54,11 @@ public class QuizHandleServlet extends HttpServlet {
                     }
                 }
                 request.setAttribute("questionAttempts", questionAttemptDTOs);
-                request.getRequestDispatcher("/quiz_handle/multiple_handle.jsp").forward(request, response);
+                request.getRequestDispatcher("multiple_handle.jsp").forward(request, response);
             }else{
                 List<EssayAttemptDTO> essayAttemptDTOs = new EssayAttemptDAO().findAllByExamAttemptId(examAttemptId);
                 request.setAttribute("essayAttempts", essayAttemptDTOs);
-                request.getRequestDispatcher("/quiz_handle/essay_handle.jsp").forward(request, response);
+                request.getRequestDispatcher("essay_handle.jsp").forward(request, response);
             }
 
 
@@ -92,14 +92,21 @@ public class QuizHandleServlet extends HttpServlet {
                         numberCorrectQuestions++;
                     }
                 }
-
             }
 
             boolean isUpdatedExamAttempt = new ExamAttemptDAO().updateNumberCorrectQuestion(numberCorrectQuestions, examAttemptId);
             if(!isUpdatedExamAttempt) {
                 throw new Exception("Exam attempt not updated");
             }
-            response.sendRedirect(request.getContextPath() + "/practices");
+
+            String previousURL = (String) request.getSession().getAttribute("previousURL");
+            if(previousURL.contains("practice/create")){
+                previousURL = previousURL.replace("practice/create", "practice/list?page=1&size=3");
+            }
+            else if(previousURL.contains("simulation/detail")){
+                previousURL = previousURL.replace("simulation/detail", "simulation/list?page=1&size=10");
+            }
+            response.sendRedirect(previousURL);
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -34,8 +34,8 @@
             </select>
         </div>
         <div class="d-flex gap-2">
-            <a href="${pageContext.request.contextPath}/practices/create" class="btn btn-primary">New Practice</a>
-            <a href="${pageContext.request.contextPath}/simulation-exam" class="btn btn-outline-secondary">Simulation Exam</a>
+            <a href="${pageContext.request.contextPath}/practice/create" class="btn btn-primary">New Practice</a>
+            <a href="${pageContext.request.contextPath}/simulation/list" class="btn btn-outline-secondary">Simulation Exam</a>
         </div>
     </div>
 

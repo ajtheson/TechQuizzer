@@ -24,7 +24,7 @@
         </li>
         <c:if test="${sessionScope.user != null}">
             <li class="nav-item" style="padding-left: 20px">
-                <a class="nav-link text-white d-flex align-items-center gap-2" href="${pageContext.request.contextPath}/practices"
+                <a class="nav-link text-white d-flex align-items-center gap-2" href="${pageContext.request.contextPath}/practice/list"
                    style="padding: 14px 0 5px 0;">
                     <i class="bi bi-pencil-square"></i>
                     <h5 style="margin: 0">Practice</h5></a>

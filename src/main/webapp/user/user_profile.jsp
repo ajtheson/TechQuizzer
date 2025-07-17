@@ -19,7 +19,7 @@
                 <h1 class="modal-title fs-5" id="exampleModalLabel">User Profile</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form class="modal-body row" id="form_update_profile" action="update-profile" method="post"
+            <form class="modal-body row" id="form_update_profile" action="/user/profile/edit" method="post"
                   enctype="multipart/form-data">
                 <div class="col-5 mt-3">
                     <div style="width: 170px; height: 200px; margin: auto;">
@@ -106,7 +106,7 @@
     const userProfileModal = document.getElementById('userProfile');
 
     userProfileModal.addEventListener('show.bs.modal', function () {
-        fetch('user-detail', {
+        fetch('${pageContext.request.contextPath}/user/detail', {
             method: 'GET'
         })
             .then(response => response.json())
@@ -141,7 +141,7 @@
         const form = document.getElementById("form_update_profile")
         const formData = new FormData(form);
 
-        fetch("update-profile", {
+        fetch("${pageContext.request.contextPath}/user/profile/edit", {
             method: "POST",
             body: formData
         })

@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-@WebServlet(name = "UpdateEssaySubmissionServlet", value = "/update-essay-attempt")
+@WebServlet(name = "UpdateEssaySubmissionServlet", value = "/quiz/update-essay-attempt")
 @MultipartConfig(
         fileSizeThreshold = 1024 * 1024,      // Kích thước file tạm trên RAM (1MB)
         maxFileSize = 1024 * 1024 * 20,       // Kích thước tối đa của 1 file (10MB)

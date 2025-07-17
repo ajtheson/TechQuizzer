@@ -11,8 +11,8 @@ import service.QuizService;
 
 import java.io.IOException;
 
-@WebServlet(name = "SimulationExamDetailServlet", value = "/simulation-exam/detail")
-public class SimulationExamDetailServlet extends HttpServlet {
+@WebServlet(name = "SimulationExamDetailServlet", value = "/simulation/detail")
+public class GetSimulationExamDetailServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         //get parameter
@@ -24,7 +24,7 @@ public class SimulationExamDetailServlet extends HttpServlet {
             if (quiz != null) {
                 QuizDTO quizDTO = new QuizService().convertQuizToQuizDTO(quiz);
                 request.setAttribute("quiz", quizDTO);
-                request.getRequestDispatcher("/simulation_exam_detail.jsp").forward(request, response);
+                request.getRequestDispatcher("/quiz/simulation_exam_detail.jsp").forward(request, response);
             }else{
                 throw new ServletException("Quiz not found");
             }
@@ -53,7 +53,12 @@ public class SimulationExamDetailServlet extends HttpServlet {
             if(insertedExamAttemptId == -1){
                 throw new Exception("Exam attempt not created");
             }
-            response.sendRedirect(request.getContextPath() + "/quiz-handle?examAttemptId=" + insertedExamAttemptId);
+
+            //get previous url before click quiz handle
+            String referer = request.getHeader("Referer");
+            session.setAttribute("previousURL", referer);
+
+            response.sendRedirect(request.getContextPath() + "/quiz/handle?examAttemptId=" + insertedExamAttemptId);
 
         } catch (Exception e) {
             e.printStackTrace();

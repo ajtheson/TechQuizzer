@@ -12,7 +12,7 @@ import service.ExamAttemptService;
 import java.io.IOException;
 import java.util.*;
 
-@WebServlet(name = "CreatePracticeServlet", value = "/practices/create")
+@WebServlet(name = "CreatePracticeServlet", value = "/practice/create")
 public class CreatePracticeServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -35,7 +35,7 @@ public class CreatePracticeServlet extends HttpServlet {
             request.setAttribute("dimensions", dimensions);
             request.setAttribute("lessons", lessons);
             request.setAttribute("questionLevels", questionLevels);
-            request.getRequestDispatcher("/practice_create.jsp").forward(request, response);
+            request.getRequestDispatcher("practice_create.jsp").forward(request, response);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -89,7 +89,12 @@ public class CreatePracticeServlet extends HttpServlet {
             if(insertedExamAttemptId == -1){
                 throw new Exception("Exam attempt not created");
             }
-            response.sendRedirect(request.getContextPath() + "/quiz-handle?examAttemptId=" + insertedExamAttemptId);
+
+            //get previous url before click quiz handle
+            String referer = request.getHeader("Referer");
+            session.setAttribute("previousURL", referer);
+
+            response.sendRedirect(request.getContextPath() + "/quiz/handle?examAttemptId=" + insertedExamAttemptId);
 
         } catch (Exception e) {
             e.printStackTrace();

@@ -35,7 +35,7 @@ public class GetPracticeDetailServlet extends HttpServlet {
 
             request.setAttribute("practice", practiceDTO);
             request.setAttribute("registrationSubjects", subjects);
-            request.getRequestDispatcher("/practice_detail.jsp").forward(request, response);
+            request.getRequestDispatcher("practice_detail.jsp").forward(request, response);
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -50,7 +50,7 @@ public class GetPracticeDetailServlet extends HttpServlet {
             if(examAttempt == null){
                 throw new Exception("Exam attempt not found");
             }
-            response.sendRedirect(request.getContextPath() + "/quiz-review?examAttemptId=" + examAttempt.getId());
+            response.sendRedirect(request.getContextPath() + "/quiz/review?examAttemptId=" + examAttempt.getId());
         } catch (Exception e) {
             e.printStackTrace();
         }

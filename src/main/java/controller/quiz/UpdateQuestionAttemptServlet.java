@@ -16,7 +16,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-@WebServlet(name = "UpdateQuestionAttemptServlet", value = "/update-question-attempt")
+@WebServlet(name = "UpdateQuestionAttemptServlet", value = "/quiz/update-question-attempt")
 public class UpdateQuestionAttemptServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
