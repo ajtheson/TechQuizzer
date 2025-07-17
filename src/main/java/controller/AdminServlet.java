@@ -14,14 +14,14 @@ import util.PasswordEncoder;
 import java.io.IOException;
 import java.util.ArrayList;
 
-@WebServlet(name = "AdminServlet", urlPatterns = {"/admin"})
+@WebServlet(name = "AdminServlet", urlPatterns = {"/user/manage"})
 public class AdminServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private UserDAO userDAO;
 
     @Override
     public void init() throws ServletException {
-        userDAO = new UserDAO(); // Khởi tạo DAO
+        userDAO = new UserDAO();
     }
 
     @Override
@@ -31,7 +31,7 @@ public class AdminServlet extends HttpServlet {
         UserDTO user = (UserDTO) session.getAttribute("user");
 
         if (user == null) {
-            response.sendRedirect(request.getContextPath() + "/login");
+            response.sendRedirect(request.getContextPath() + "/account/login");
             return;
         }
 
@@ -58,44 +58,43 @@ public class AdminServlet extends HttpServlet {
                     toggleStatus(request, response, idParam);
                     break;
                 default:
-                    response.sendRedirect("login");
+                    response.sendRedirect(request.getContextPath() + "/login");
             }
         } catch (Exception e) {
             throw new ServletException(e);
         }
     }
+
     private void showAddForm(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         request.getRequestDispatcher("user_add.jsp").forward(request, response);
     }
+
     private void listUsers(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String roleParam = request.getParameter("role");
         String statusParam = request.getParameter("status");
         String genderParam = request.getParameter("gender");
         String searchText = request.getParameter("searchText");
+
         Integer roleId = (roleParam != null && !roleParam.isEmpty()) ? Integer.parseInt(roleParam) : null;
         Integer status = (statusParam != null && !statusParam.isEmpty()) ? Integer.parseInt(statusParam) : null;
         Integer gender = (genderParam != null && !genderParam.isEmpty()) ? Integer.parseInt(genderParam) : null;
 
-
         int page = 1;
         int pageSize = 10;
 
-        String pageParam = request.getParameter("page");
-        if (pageParam != null) {
-            try {
+        try {
+            String pageParam = request.getParameter("page");
+            if (pageParam != null) {
                 page = Integer.parseInt(pageParam);
-            } catch (NumberFormatException ignored) {}
-        }
-
-        String pageSizeParam = request.getParameter("pageSize");
-        if (pageSizeParam != null) {
-            try {
+            }
+            String pageSizeParam = request.getParameter("pageSize");
+            if (pageSizeParam != null) {
                 pageSize = Integer.parseInt(pageSizeParam);
-            } catch (NumberFormatException ignored) {}
+            }
+        } catch (NumberFormatException ignored) {
         }
-
 
         String sortField = request.getParameter("sortField");
         String sortOrder = request.getParameter("sortOrder");
@@ -103,7 +102,7 @@ public class AdminServlet extends HttpServlet {
         if (sortField == null || sortField.isEmpty()) sortField = "id";
         if (sortOrder == null || sortOrder.isEmpty()) sortOrder = "asc";
 
-        ArrayList<User> users = userDAO.getUsersByPage(roleId, gender, status, searchText,page, pageSize, sortField, sortOrder);
+        ArrayList<User> users = userDAO.getUsersByPage(roleId, gender, status, searchText, page, pageSize, sortField, sortOrder);
         int totalUsers = userDAO.getTotalUsers(roleId, gender, status, searchText);
         int totalPages = (int) Math.ceil((double) totalUsers / pageSize);
 
@@ -121,7 +120,6 @@ public class AdminServlet extends HttpServlet {
 
         request.getRequestDispatcher("user_list.jsp").forward(request, response);
     }
-
 
     private void viewUser(HttpServletRequest request, HttpServletResponse response, String idParam)
             throws ServletException, IOException {
@@ -147,23 +145,36 @@ public class AdminServlet extends HttpServlet {
             boolean newStatus = !user.getStatus();
             userDAO.changeUserStatus(id, newStatus);
         }
-        response.sendRedirect("admin");
+        String role = request.getParameter("role");
+        String status = request.getParameter("status");
+        String gender = request.getParameter("gender");
+        String sortField = request.getParameter("sortField");
+        String sortOrder = request.getParameter("sortOrder");
+        String page = request.getParameter("page");
+        String pageSize = request.getParameter("pageSize");
+
+        String redirectURL = String.format(
+                "manage?role=%s&status=%s&gender=%s&sortField=%s&sortOrder=%s&page=%s&pageSize=%s",
+                role, status, gender, sortField, sortOrder, page, pageSize
+        );
+        request.getSession().setAttribute("toastNotification", "Status updated successfully.");
+        response.sendRedirect(redirectURL);
     }
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
         String action = request.getParameter("action");
 
         if ("edit".equals(action)) {
             updateUser(request, response);
-        }
-        else if("add".equals(action)){
+        } else if ("add".equals(action)) {
             insertUser(request, response);
-        }
-        else {
-            response.sendRedirect("admin");
+        } else {
+            response.sendRedirect("manage");
         }
     }
+
     private void updateUser(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
@@ -185,19 +196,19 @@ public class AdminServlet extends HttpServlet {
                 existingUser.setStatus(status);
 
                 userDAO.updateUser(existingUser);
-            }
 
-            response.sendRedirect("admin?action=view&id=" + id);
+            }
+            request.getSession().setAttribute("toastNotification", "User updated successfully.");
+            response.sendRedirect("manage?action=view&id=" + id);
         } catch (Exception e) {
             throw new ServletException("Update failed", e);
         }
     }
+
     private void insertUser(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-
             String email = request.getParameter("email");
-            String password = request.getParameter("password");
             String name = request.getParameter("name");
             int roleId = Integer.parseInt(request.getParameter("roleId"));
             boolean gender = Boolean.parseBoolean(request.getParameter("gender"));
@@ -205,14 +216,30 @@ public class AdminServlet extends HttpServlet {
             String address = request.getParameter("address");
             double balance = Double.parseDouble(request.getParameter("balance"));
             boolean status = Boolean.parseBoolean(request.getParameter("status"));
-            if(userDAO.checkExistByEmailAndMobile(email, mobile)){
-                request.setAttribute("error", "Duplicate email or mobile");
-                request.getRequestDispatcher("user_add.jsp").forward(request, response);
+            if (email == null || email.trim().isEmpty()
+                    || name == null || name.trim().isEmpty()
+                    || mobile == null || mobile.trim().isEmpty()
+                    || address == null || address.trim().isEmpty()) {
+                request.getSession().setAttribute("toastNotification", "Please input fields");
+                response.sendRedirect("manage?action=add");
+
                 return;
             }
+            if (userDAO.checkExistByEmailAndMobile(email, mobile)) {
+                request.getSession().setAttribute("toastNotification", "Duplicate email address or mobile");
+                response.sendRedirect("manage?action=add");
+                return;
+            }
+            if (mobile.matches(".*[a-zA-Z].*")) {
+                request.getSession().setAttribute("toastNotification", "Wrong format of mobile");
+                response.sendRedirect("manage?action=add");
+                return;
+            }
+
+
             User newUser = new User();
             newUser.setEmail(email);
-            newUser.setPassword(PasswordEncoder.encode(password));
+            newUser.setPassword(PasswordEncoder.encode("Pass123@"));
             newUser.setName(name);
             newUser.setRoleId(roleId);
             newUser.setGender(gender);
@@ -222,11 +249,10 @@ public class AdminServlet extends HttpServlet {
             newUser.setStatus(status);
 
             userDAO.insertUser(newUser);
-            request.getSession().setAttribute("success", "Add user successfully");
-            response.sendRedirect("admin");
+            request.getSession().setAttribute("toastNotification", "Add user successfully");
+            response.sendRedirect("manage");
         } catch (Exception e) {
             throw new ServletException("Insert failed", e);
         }
     }
-
 }

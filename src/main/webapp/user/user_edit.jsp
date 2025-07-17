@@ -27,7 +27,7 @@
             <h1><i class="bi bi-pencil-square"></i> Edit User</h1>
         </div>
         <ul class="app-breadcrumb breadcrumb">
-            <li class="breadcrumb-item"><a href="admin">User List</a></li>
+            <li class="breadcrumb-item"><a href="manage">User List</a></li>
             <li class="breadcrumb-item active">Edit User</li>
         </ul>
     </div>
@@ -36,7 +36,7 @@
         <div class="col-md-8 offset-md-2">
             <div class="tile">
                 <div class="tile-body">
-                    <form action="admin" method="post">
+                    <form action="manage" method="post">
                         <input type="hidden" name="action" value="edit">
                         <input type="hidden" name="id" value="${user.id}">
 
@@ -63,6 +63,8 @@
                                 <option value="1" ${user.roleId == 1 ? 'selected' : ''}>Admin</option>
                                 <option value="2" ${user.roleId == 2 ? 'selected' : ''}>Expert</option>
                                 <option value="3" ${user.roleId == 3 ? 'selected' : ''}>Customer</option>
+                                <option value="4" ${user.roleId == 4 ? 'selected' : ''}>Sale</option>
+
                             </select>
                         </div>
 
@@ -102,7 +104,7 @@
                         </div>
 
                         <div class="mt-3">
-                            <a href="admin" class="btn btn-secondary">Cancel</a>
+                            <a href="manage" class="btn btn-secondary">Cancel</a>
                             <button type="submit" class="btn btn-primary">Save Changes</button>
                         </div>
                     </form>
@@ -112,7 +114,8 @@
     </div>
 </main>
 
-<%@include file="../common/jsload.jsp" %>
+<%@ include file="../common/jsload.jsp" %>
+
 </body>
 </html>
 

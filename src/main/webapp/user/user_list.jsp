@@ -33,26 +33,29 @@
                 <div class="tile-body">
                     <div class="table-responsive">
                         <div class="mb-3 text-start">
-                            <a href="admin?action=add" class="btn btn-primary">
+                            <a href="manage?action=add" class="btn btn-primary">
                                 <i class="bi bi-plus-lg me-1"></i> Add New User
                             </a>
                         </div>
-                        <form action="admin" method="get" class="d-flex align-items-center gap-3 mb-3">
+                        <form action="manage" method="get" class="d-flex align-items-center gap-3 mb-3">
                             <select name="role" class="form-select" style="width: 150px;" onchange="this.form.submit()">
                                 <option value="">Role</option>
                                 <option value="1" ${selectedRole == '1' ? 'selected' : ''}>Admin</option>
                                 <option value="2" ${selectedRole == '2' ? 'selected' : ''}>Expert</option>
                                 <option value="3" ${selectedRole == '3' ? 'selected' : ''}>Customer</option>
+                                <option value="4" ${selectedRole == '4' ? 'selected' : ''}>Sale</option>
 
                             </select>
 
-                            <select name="status" class="form-select" style="width: 150px;" onchange="this.form.submit()">
+                            <select name="status" class="form-select" style="width: 150px;"
+                                    onchange="this.form.submit()">
                                 <option value="">Status</option>
                                 <option value="1" ${selectedStatus == '1' ? 'selected' : ''}>Active</option>
                                 <option value="0" ${selectedStatus == '0' ? 'selected' : ''}>Inactive</option>
                             </select>
 
-                            <select name="gender" class="form-select" style="width: 150px;" onchange="this.form.submit()">
+                            <select name="gender" class="form-select" style="width: 150px;"
+                                    onchange="this.form.submit()">
                                 <option value="">Gender</option>
                                 <option value="1" ${selectedGender == '1' ? 'selected' : ''}>Male</option>
                                 <option value="0" ${selectedGender == '0' ? 'selected' : ''}>Female</option>
@@ -63,7 +66,7 @@
                             <input type="hidden" name="page" value="1">
                             <input type="hidden" name="pageSize" value="${pageSize}">
                         </form>
-                        <form method="get" action="admin" id="pageSizeForm">
+                        <form method="get" action="manage" id="pageSizeForm">
                             <input type="hidden" name="page" value="${currentPage}"/>
                             <div class="d-flex align-items-center" style="height: 25px; margin-bottom: 20px;">
                                 <span style="margin-right: 5px;">Show</span>
@@ -78,8 +81,9 @@
                                 <span>entries</span>
                             </div>
                         </form>
-                        <form action="admin" method="get" class="d-flex mb-3" role="search">
-                            <input type="text" name="searchText" class="form-control me-2" placeholder="Search name/email/mobile" value="${searchText}">
+                        <form action="manage" method="get" class="d-flex mb-3" role="search">
+                            <input type="text" name="searchText" class="form-control me-2"
+                                   placeholder="Search name/email/mobile" value="${searchText}">
                             <input type="hidden" name="role" value="${selectedRole}">
                             <input type="hidden" name="gender" value="${selectedGender}">
                             <input type="hidden" name="status" value="${selectedStatus}">
@@ -88,14 +92,6 @@
                             <input type="hidden" name="pageSize" value="${pageSize}">
                             <button class="btn btn-outline-success" type="submit">Search</button>
                         </form>
-                        <c:if test="${not empty sessionScope.success}">
-                            <div class="alert alert-success" role="alert">
-                                    ${sessionScope.success}
-                            </div>
-                            <c:remove var="success" scope="session"/>
-                        </c:if>
-
-
                         <c:set var="users" value="${requestScope.users}"/>
 
                         <c:set var="currentPage"
@@ -105,7 +101,7 @@
                             <thead>
                             <tr>
                                 <th>
-                                    <a href="admin?role=${selectedRole}&status=${selectedStatus}&gender=${selectedGender}&sortField=id&sortOrder=${sortField eq 'id' and sortOrder eq 'asc' ? 'desc' : 'asc'}&page=${currentPage}&pageSize=${pageSize}"
+                                    <a href="manage?role=${selectedRole}&status=${selectedStatus}&gender=${selectedGender}&sortField=id&sortOrder=${sortField eq 'id' and sortOrder eq 'asc' ? 'desc' : 'asc'}&page=${currentPage}&pageSize=${pageSize}"
                                        style="display: flex; align-items: center; gap: 5px; text-decoration: none; color: inherit;">
                                         ID
 
@@ -114,7 +110,7 @@
                                     </a>
                                 </th>
                                 <th>
-                                    <a href="admin?role=${selectedRole}&status=${selectedStatus}&gender=${selectedGender}&sortField=email&sortOrder=${sortField eq 'email' and sortOrder eq 'asc' ? 'desc' : 'asc'}&page=${currentPage}&pageSize=${pageSize}"
+                                    <a href="manage?role=${selectedRole}&status=${selectedStatus}&gender=${selectedGender}&sortField=email&sortOrder=${sortField eq 'email' and sortOrder eq 'asc' ? 'desc' : 'asc'}&page=${currentPage}&pageSize=${pageSize}"
                                        style="display: flex; align-items: center; gap: 5px; text-decoration: none; color: inherit;">
                                         Email
 
@@ -123,7 +119,7 @@
                                     </a>
                                 </th>
                                 <th>
-                                    <a href="admin?role=${selectedRole}&status=${selectedStatus}&gender=${selectedGender}&sortField=name&sortOrder=${sortField eq 'name' and sortOrder eq 'asc' ? 'desc' : 'asc'}&page=${currentPage}&pageSize=${pageSize}"
+                                    <a href="manage?role=${selectedRole}&status=${selectedStatus}&gender=${selectedGender}&sortField=name&sortOrder=${sortField eq 'name' and sortOrder eq 'asc' ? 'desc' : 'asc'}&page=${currentPage}&pageSize=${pageSize}"
                                        style="display: flex; align-items: center; gap: 5px; text-decoration: none; color: inherit;">
                                         Name
 
@@ -132,7 +128,7 @@
                                     </a>
                                 </th>
                                 <th>
-                                    <a href="admin?role=${selectedRole}&status=${selectedStatus}&gender=${selectedGender}&sortField=role&sortOrder=${sortField eq 'role' and sortOrder eq 'asc' ? 'desc' : 'asc'}&page=${currentPage}&pageSize=${pageSize}"
+                                    <a href="manage?role=${selectedRole}&status=${selectedStatus}&gender=${selectedGender}&sortField=role&sortOrder=${sortField eq 'role' and sortOrder eq 'asc' ? 'desc' : 'asc'}&page=${currentPage}&pageSize=${pageSize}"
                                        style="display: flex; align-items: center; gap: 5px; text-decoration: none; color: inherit;">
                                         Role
 
@@ -141,7 +137,7 @@
                                     </a>
                                 </th>
                                 <th>
-                                    <a href="admin?role=${selectedRole}&status=${selectedStatus}&gender=${selectedGender}&sortField=gender&sortOrder=${sortField eq 'gender' and sortOrder eq 'asc' ? 'desc' : 'asc'}&page=${currentPage}&pageSize=${pageSize}"
+                                    <a href="manage?role=${selectedRole}&status=${selectedStatus}&gender=${selectedGender}&sortField=gender&sortOrder=${sortField eq 'gender' and sortOrder eq 'asc' ? 'desc' : 'asc'}&page=${currentPage}&pageSize=${pageSize}"
                                        style="display: flex; align-items: center; gap: 5px; text-decoration: none; color: inherit;">
                                         Gender
 
@@ -150,7 +146,7 @@
                                     </a>
                                 </th>
                                 <th>
-                                    <a href="admin?role=${selectedRole}&status=${selectedStatus}&gender=${selectedGender}&sortField=mobile&sortOrder=${sortField eq 'mobile' and sortOrder eq 'asc' ? 'desc' : 'asc'}&page=${currentPage}&pageSize=${pageSize}"
+                                    <a href="manage?role=${selectedRole}&status=${selectedStatus}&gender=${selectedGender}&sortField=mobile&sortOrder=${sortField eq 'mobile' and sortOrder eq 'asc' ? 'desc' : 'asc'}&page=${currentPage}&pageSize=${pageSize}"
                                        style="display: flex; align-items: center; gap: 5px; text-decoration: none; color: inherit;">
                                         Mobile
 
@@ -159,7 +155,7 @@
                                     </a>
                                 </th>
                                 <th>
-                                    <a href="admin?role=${selectedRole}&status=${selectedStatus}&gender=${selectedGender}&sortField=address&sortOrder=${sortField eq 'address' and sortOrder eq 'asc' ? 'desc' : 'asc'}&page=${currentPage}&pageSize=${pageSize}"
+                                    <a href="manage?role=${selectedRole}&status=${selectedStatus}&gender=${selectedGender}&sortField=address&sortOrder=${sortField eq 'address' and sortOrder eq 'asc' ? 'desc' : 'asc'}&page=${currentPage}&pageSize=${pageSize}"
                                        style="display: flex; align-items: center; gap: 5px; text-decoration: none; color: inherit;">
                                         Address
 
@@ -168,14 +164,14 @@
                                     </a>
                                 </th>
                                 <th>
-                                    <a href="admin?role=${selectedRole}&status=${selectedStatus}&gender=${selectedGender}&sortField=balance&sortOrder=${sortField eq 'balance' and sortOrder eq 'asc' ? 'desc' : 'asc'}&page=${currentPage}&pageSize=${pageSize}"
+                                    <a href="manage?role=${selectedRole}&status=${selectedStatus}&gender=${selectedGender}&sortField=balance&sortOrder=${sortField eq 'balance' and sortOrder eq 'asc' ? 'desc' : 'asc'}&page=${currentPage}&pageSize=${pageSize}"
                                        style="display: flex; align-items: center; gap: 5px; text-decoration: none; color: inherit;">
                                         Balance
                                         <i class="fa fa-sort"></i>
                                     </a>
                                 </th>
                                 <th>
-                                    <a href="admin?role=${selectedRole}&status=${selectedStatus}&gender=${selectedGender}&sortField=status&sortOrder=${sortField eq 'status' and sortOrder eq 'asc' ? 'desc' : 'asc'}&page=${currentPage}&pageSize=${pageSize}"
+                                    <a href="manage?role=${selectedRole}&status=${selectedStatus}&gender=${selectedGender}&sortField=status&sortOrder=${sortField eq 'status' and sortOrder eq 'asc' ? 'desc' : 'asc'}&page=${currentPage}&pageSize=${pageSize}"
                                        style="display: flex; align-items: center; gap: 5px; text-decoration: none; color: inherit;">
                                         Status
                                         <i class="fa fa-sort"></i>
@@ -206,6 +202,9 @@
                                             <c:when test="${user.roleId == 3}">
                                                 Customer
                                             </c:when>
+                                            <c:when test="${user.roleId == 4}">
+                                                Sale
+                                            </c:when>
                                             <c:otherwise>
                                                 Unknown
                                             </c:otherwise>
@@ -218,14 +217,14 @@
                                     <td>
                                         <c:choose>
                                             <c:when test="${user.status}">
-                                                <a href="admin?action=changeStatus&id=${user.id}"
+                                                <a href="manage?action=changeStatus&id=${user.id}&role=${selectedRole}&status=${selectedStatus}&gender=${selectedGender}&sortField=${sortField}&sortOrder=${sortOrder}&page=${currentPage}&pageSize=${pageSize}"
                                                    class="btn btn-success"
                                                    onclick="return confirm('Are you sure you want to deactivate this account?');">
                                                     Active
                                                 </a>
                                             </c:when>
                                             <c:otherwise>
-                                                <a href="admin?action=changeStatus&id=${user.id}"
+                                                <a href="manage?action=changeStatus&id=${user.id}&role=${selectedRole}&status=${selectedStatus}&gender=${selectedGender}&sortField=${sortField}&sortOrder=${sortOrder}&page=${currentPage}&pageSize=${pageSize}"
                                                    class="btn btn-danger"
                                                    onclick="return confirm('Are you sure you want to activate this account?');">
                                                     Inactive
@@ -235,12 +234,12 @@
                                     </td>
                                     <td class="text-center">
                                         <div class="d-flex justify-content-center gap-2">
-                                            <a href="admin?action=view&id=${user.id}"
+                                            <a href="manage?action=view&id=${user.id}"
                                                class="btn btn-info" style="color: white">
                                                 View
                                             </a>
 
-                                            <a href="admin?action=edit&id=${user.id}"
+                                            <a href="manage?action=edit&id=${user.id}"
                                                class="btn btn-warning" style="color: white">
                                                 Edit
                                             </a>
@@ -257,21 +256,21 @@
                                     <c:if test="${currentPage > 1}">
                                         <li class="page-item">
                                             <a class="page-link"
-                                               href="admin?role=${selectedRole}&status=${selectedStatus}&gender=${selectedGender}&sortField=${sortField}&sortOrder=${sortOrder}&page=${currentPage - 1}&pageSize=${pageSize}">Previous</a>
+                                               href="manage?role=${selectedRole}&status=${selectedStatus}&gender=${selectedGender}&sortField=${sortField}&sortOrder=${sortOrder}&page=${currentPage - 1}&pageSize=${pageSize}">Previous</a>
                                         </li>
                                     </c:if>
 
                                     <c:forEach begin="1" end="${totalPages}" var="i">
                                         <li class="page-item ${i == currentPage ? 'active' : ''}">
                                             <a class="page-link"
-                                               href="admin?role=${selectedRole}&status=${selectedStatus}&gender=${selectedGender}&=${sortField}&sortOrder=${sortOrder}&page=${i}&pageSize=${pageSize}">${i}</a>
+                                               href="manage?role=${selectedRole}&status=${selectedStatus}&gender=${selectedGender}&sortField=${sortField}&sortOrder=${sortOrder}&page=${i}&pageSize=${pageSize}">${i}</a>
                                         </li>
                                     </c:forEach>
 
                                     <c:if test="${currentPage < totalPages}">
                                         <li class="page-item">
                                             <a class="page-link"
-                                               href="admin?role=${selectedRole}&status=${selectedStatus}&gender=${selectedGender}&sortField=${sortField}&sortOrder=${sortOrder}&page=${currentPage + 1}&pageSize=${pageSize}">Next</a>
+                                               href="manage?role=${selectedRole}&status=${selectedStatus}&gender=${selectedGender}&sortField=${sortField}&sortOrder=${sortOrder}&page=${currentPage + 1}&pageSize=${pageSize}">Next</a>
                                         </li>
                                     </c:if>
                                 </ul>
@@ -286,6 +285,31 @@
 </main>
 <!-- Essential javascripts for application to work-->
 <%@include file="../common/jsload.jsp" %>
+<%
+    String toastNotification = (String) session.getAttribute("toastNotification");
+    if (toastNotification != null) {
+        boolean isSuccess = toastNotification.contains("successfully");
+        session.removeAttribute("toastNotification");
+%>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const toastElement = document.getElementById('toast');
+        const toastElementBody = toastElement.querySelector('.toast-body');
+
+        toastElementBody.textContent = "<%= toastNotification %>";
+        toastElement.classList.remove('<%= isSuccess ? "text-bg-danger" : "text-bg-success" %>');
+        toastElement.classList.add('<%= isSuccess ? "text-bg-success" : "text-bg-danger" %>');
+
+        const toast = new bootstrap.Toast(toastElement, {
+            autohide: true,
+            delay: 2000
+        });
+        toast.show();
+    });
+</script>
+<%
+    }
+%>
 <!-- Page specific javascripts-->
 <link rel="stylesheet" href="https://cdn.datatables.net/v/bs5/dt-1.13.4/datatables.min.css">
 </body>

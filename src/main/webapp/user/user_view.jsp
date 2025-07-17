@@ -27,7 +27,7 @@
             <h1><i class="bi bi-person"></i> View User Details</h1>
         </div>
         <ul class="app-breadcrumb breadcrumb">
-            <li class="breadcrumb-item"><a href="admin">User List</a></li>
+            <li class="breadcrumb-item"><a href="manage">User List</a></li>
             <li class="breadcrumb-item active">View User</li>
         </ul>
     </div>
@@ -61,6 +61,7 @@
                                     <c:when test="${user.roleId == 1}">Admin</c:when>
                                     <c:when test="${user.roleId == 2}">Expert</c:when>
                                     <c:when test="${user.roleId == 3}">Customer</c:when>
+                                    <c:when test="${user.roleId == 4}">Sale</c:when>
                                     <c:otherwise>Unknown</c:otherwise>
                                 </c:choose>
                             </td>
@@ -92,8 +93,8 @@
                         </tr>
                     </table>
                     <div class="mt-3">
-                        <a href="admin" class="btn btn-secondary">Back to List</a>
-                        <a href="admin?action=edit&id=${user.id}" class="btn btn-warning">Edit User</a>
+                        <a href="manage" class="btn btn-secondary">Back to List</a>
+                        <a href="manage?action=edit&id=${user.id}" class="btn btn-warning">Edit User</a>
                     </div>
                 </div>
             </div>
@@ -102,5 +103,30 @@
 </main>
 
 <%@include file="../common/jsload.jsp" %>
+<%
+    String toastNotification = (String) session.getAttribute("toastNotification");
+    if (toastNotification != null) {
+        boolean isSuccess = toastNotification.contains("successfully");
+        session.removeAttribute("toastNotification");
+%>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const toastElement = document.getElementById('toast');
+        const toastElementBody = toastElement.querySelector('.toast-body');
+
+        toastElementBody.textContent = "<%= toastNotification %>";
+        toastElement.classList.remove('<%= isSuccess ? "text-bg-danger" : "text-bg-success" %>');
+        toastElement.classList.add('<%= isSuccess ? "text-bg-success" : "text-bg-danger" %>');
+
+        const toast = new bootstrap.Toast(toastElement, {
+            autohide: true,
+            delay: 2000
+        });
+        toast.show();
+    });
+</script>
+<%
+    }
+%>
 </body>
 </html>

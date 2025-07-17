@@ -24,9 +24,12 @@
     </div>
     <ul class="app-menu">
         <c:if test="${sessionScope.user.roleName == 'Admin'}">
-            <li><a class="app-menu__item ${currentPage == 'user' ? 'active' : ''}" href="admin"><i
+            <li><a class="app-menu__item ${currentPage == 'user' ? 'active' : ''}" href="manage"><i
                     class="app-menu__icon bi bi-people-fill"></i><span
                     class="app-menu__label">User List</span></a></li>
+            <li><a class="app-menu__item ${currentPage == 'user' ? 'active' : ''}" href="quizzeslist"><i
+                    class="app-menu__icon bi bi-people-fill"></i><span
+                    class="app-menu__label">Quiz List</span></a></li>
             <li><a class="app-menu__item ${currentPage == 'setting' ? 'active' : ''}" href="settings"><i
                     class="app-menu__icon bi bi-gear-wide-connected"></i><span
                     class="app-menu__label">Setting List</span></a></li>

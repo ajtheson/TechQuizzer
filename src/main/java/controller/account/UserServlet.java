@@ -37,7 +37,7 @@ public class UserServlet extends HttpServlet {
                 targetPage = "user/manage";
                 break;
             case 2:
-                targetPage = "manage-subject";
+                targetPage = "subject/manage-subject";
                 break;
             case 3:
                 targetPage = "home";
@@ -50,7 +50,7 @@ public class UserServlet extends HttpServlet {
                 targetPage = "login";
                 break;
         }
-        response.sendRedirect(targetPage);
+        response.sendRedirect(request.getContextPath() + "/"+targetPage);
     }
 }
 
