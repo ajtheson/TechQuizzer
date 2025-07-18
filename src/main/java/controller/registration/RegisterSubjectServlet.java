@@ -19,7 +19,7 @@ import jakarta.servlet.http.HttpSession;
 /**
  * @author Dell
  */
-@WebServlet(name = "RegisterSubjectServlet", urlPatterns = {"/register_subject"})
+@WebServlet(name = "RegisterSubjectServlet", urlPatterns = {"/registration/register_subject"})
 public class RegisterSubjectServlet extends HttpServlet {
 
 
@@ -41,7 +41,7 @@ public class RegisterSubjectServlet extends HttpServlet {
             RegistrationDAO rDAO = new RegistrationDAO();
             if(rDAO.isRegistrationExist(user.getId(), subjectID)) {
                 session.setAttribute("toastNotification", "You already have an active or pending course for this subject.");
-                response.sendRedirect("my_registration");
+                response.sendRedirect("list");
                 return;
             }
             request.getRequestDispatcher("user_register_subject.jsp").forward(request, response);

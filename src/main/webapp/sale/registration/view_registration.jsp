@@ -12,12 +12,12 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <jsp:include page="../common/headload.jsp"/>
+    <jsp:include page="../../common/headload.jsp"/>
     <title>View Registration</title>
 </head>
-<jsp:include page="../user/user_profile.jsp"/>
+<jsp:include page="../../user/user_profile.jsp"/>
 <body>
-<jsp:include page="../layout/manage/sale_header.jsp"/>
+<jsp:include page="../../layout/manage/sale_header.jsp"/>
 <body>
 <div class="container" style="margin-top: 100px; max-width: 900px">
     <div class="form-container">
@@ -103,8 +103,8 @@
         </div>
 
         <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-            <button type="button" class="btn btn-secondary" onclick="location.href='registrations'">Back</button>
-            <button type="button" class="btn btn-success" onclick="location.href='edit_registration?id=${r.id}'">Update</button>
+            <button type="button" class="btn btn-secondary" onclick="location.href='list'">Back</button>
+            <button type="button" class="btn btn-success" onclick="location.href='edit?id=${r.id}'">Update</button>
         </div>
     </div>
 </div>

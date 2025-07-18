@@ -59,12 +59,12 @@
         <div class="row">
             <!-- Form -->
             <div class="col-md-7">
-                <form class="login-form row" action="user_modify_registration" method="post" id="modifyForm">
+                <form class="login-form row" action="modify" method="post" id="modifyForm">
                     <h3 class="login-head"><i class="bi bi-journal-plus me-2"></i> MODIFY REGISTRATION</h3>
 
                     <!-- Thumbnail -->
                     <div class="col-md-5 text-center">
-                        <img class="subject-thumbnail" src="assets/images/thumbnail/subject/${subject.thumbnail}" alt="${subject.name}">
+                        <img class="subject-thumbnail" src="${pageContext.request.contextPath}/assets/images/thumbnail/subject/${subject.thumbnail}" alt="${subject.name}">
                     </div>
 
                     <div class="col-md-7">
@@ -106,7 +106,7 @@
                                     <button id="submitBtn" class="btn btn-primary" disabled>
                                         <i class="bi bi-check2-circle me-2 fs-5"></i> Update
                                     </button>
-                                    <a href="my_registration" class="btn btn-light border border-secondary text-dark">Cancel</a>
+                                    <a href="list" class="btn btn-light border border-secondary text-dark">Cancel</a>
                                 </div>
                             </div>
                         </div>

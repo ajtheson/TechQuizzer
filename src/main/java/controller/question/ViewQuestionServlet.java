@@ -16,7 +16,7 @@ import jakarta.servlet.http.HttpSession;
 /**
  * @author Dell
  */
-@WebServlet(name = "ViewQuestionServlet", urlPatterns = {"/view_question"})
+@WebServlet(name = "ViewQuestionServlet", urlPatterns = {"/management/question/view"})
 public class ViewQuestionServlet extends HttpServlet {
 
     @Override
@@ -39,7 +39,7 @@ public class ViewQuestionServlet extends HttpServlet {
                 SubjectDAO subjectDAO = new SubjectDAO();
                 if(!subjectDAO.isExpertHasSubject(subjectId, user.getId())){
                     session.invalidate();
-                    response.sendRedirect("login.jsp");
+                    response.sendRedirect(request.getContextPath() + "/account/login");
                     return;
                 }
             }
@@ -62,7 +62,7 @@ public class ViewQuestionServlet extends HttpServlet {
             request.setAttribute("options", options);
             request.setAttribute("subjectID", subjectID);
 
-            request.getRequestDispatcher("question_view.jsp").forward(request, response);
+            request.getRequestDispatcher("/question/question_view.jsp").forward(request, response);
         } catch (Exception e) {
             e.printStackTrace();
             response.getWriter().write("Error: " + e.getMessage());

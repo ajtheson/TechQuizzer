@@ -14,7 +14,7 @@ import jakarta.servlet.http.HttpSession;
 /**
  * @author Dell
  */
-@WebServlet(name = "EditPricePackageServlet", urlPatterns = {"/edit_price_package"})
+@WebServlet(name = "EditPricePackageServlet", urlPatterns = {"/price_package/edit"})
 public class EditPricePackageServlet extends HttpServlet {
 
 
@@ -26,6 +26,7 @@ public class EditPricePackageServlet extends HttpServlet {
         int id = Integer.parseInt(request.getParameter("id"));
         PricePackage p = pDAO.get(id);
         request.setAttribute("p", p);
+        request.setAttribute("subject_id", p.getSubjectId());
         request.getRequestDispatcher("price_package_edit.jsp").forward(request, response);
     }
 
@@ -65,12 +66,12 @@ public class EditPricePackageServlet extends HttpServlet {
             if(pDAO.update(p)){
                 //Add toastNotification success to session to show success message in setting_detail page
                 session.setAttribute("toastNotification", "Price package has been updated successfully.");
-                response.sendRedirect("get_price_package?subject_id=" + subjectID);
+                response.sendRedirect("list?subject_id=" + subjectID);
             }
             else{
                 //Add toastNotification failed to session to show failed message in setting_detail page
                 session.setAttribute("toastNotification", "Price package has been updated failed. Please try again later.");
-                response.sendRedirect("get_price_package?subject_id=" + subjectID);
+                response.sendRedirect("list?subject_id=" + subjectID);
             }
         }
     }

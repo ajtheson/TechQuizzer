@@ -12,16 +12,16 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <jsp:include page="../common/headload.jsp"/>
+    <jsp:include page="../../common/headload.jsp"/>
     <title>Edit Registration</title>
 </head>
-<jsp:include page="../user/user_profile.jsp"/>
+<jsp:include page="../../user/user_profile.jsp"/>
 <body>
-<jsp:include page="../layout/manage/sale_header.jsp"/>
+<jsp:include page="../../layout/manage/sale_header.jsp"/>
 <body>
 <div class="container" style="margin-top: 100px; max-width: 900px">
     <div class="form-container">
-        <form method="post" action="edit_registration">
+        <form method="post" action="edit">
             <input type="hidden" name="id" value="${r.id}">
             <h5 class="fw-bold mb-3">Registration Information</h5>
             <div class="row mb-3" style="display: flex">
@@ -129,7 +129,7 @@
             </div>
 
             <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                <button type="button" class="btn btn-secondary" onclick="location.href='registrations'">Back</button>
+                <button type="button" class="btn btn-secondary" onclick="location.href='list'">Back</button>
                 <button type="submit" class="btn btn-success">Update</button>
             </div>
         </form>

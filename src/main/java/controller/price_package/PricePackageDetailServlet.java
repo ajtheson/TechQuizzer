@@ -13,7 +13,7 @@ import jakarta.servlet.http.HttpServletResponse;
 /**
  * @author Dell
  */
-@WebServlet(name = "PricePackageDetailServlet", urlPatterns = {"/price_package_detail"})
+@WebServlet(name = "PricePackageDetailServlet", urlPatterns = {"/price_package/detail"})
 public class PricePackageDetailServlet extends HttpServlet {
 
     @Override
@@ -23,6 +23,7 @@ public class PricePackageDetailServlet extends HttpServlet {
         int id = Integer.parseInt(request.getParameter("id"));
         PricePackage p = pdao.get(id);
         request.setAttribute("p", p);
+        request.setAttribute("subject_id", p.getSubjectId());
         request.getRequestDispatcher("price_package_detail.jsp").forward(request, response);
     }
 

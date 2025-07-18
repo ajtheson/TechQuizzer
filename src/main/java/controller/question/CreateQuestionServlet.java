@@ -19,7 +19,7 @@ import util.ImageUploader;
  *
  * @author Dell
  */
-@WebServlet(name="CreateQuestionServlet", urlPatterns={"/create_question"})
+@WebServlet(name="CreateQuestionServlet", urlPatterns={"/management/question/create"})
 @MultipartConfig
 public class CreateQuestionServlet extends HttpServlet {
 
@@ -33,7 +33,7 @@ public class CreateQuestionServlet extends HttpServlet {
 
             if(session.getAttribute("user") == null) {
                 session.invalidate();
-                response.sendRedirect("login.jsp");
+                response.sendRedirect(request.getContextPath() + "/account/login");
                 return;
             }
 
@@ -58,7 +58,7 @@ public class CreateQuestionServlet extends HttpServlet {
             request.setAttribute("dimensions", dimensions);
             request.setAttribute("lessons", lessons);
             request.setAttribute("questionLevels", questionLevels);
-            request.getRequestDispatcher("question_create.jsp").forward(request, response);
+            request.getRequestDispatcher("/question/question_create.jsp").forward(request, response);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -148,12 +148,12 @@ public class CreateQuestionServlet extends HttpServlet {
                 }
             }
             session.setAttribute("toastNotification", "Question has been created successfully.");
-            response.sendRedirect("questions");
+            response.sendRedirect("list");
 
         } catch (Exception e) {
             e.printStackTrace();
             session.setAttribute("toastNotification", "Question has been created failed. Please try again later.");
-            response.sendRedirect("questions");
+            response.sendRedirect("list");
         }
     }
 

@@ -7,19 +7,19 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <jsp:include page="../common/headload.jsp"/>
+    <jsp:include page="../../common/headload.jsp"/>
     <title>Add Registration</title>
 
     <!-- Select2 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet"/>
 </head>
-<jsp:include page="../user/user_profile.jsp"/>
+<jsp:include page="../../user/user_profile.jsp"/>
 <body>
-<jsp:include page="../layout/manage/sale_header.jsp"/>
+<jsp:include page="../../layout/manage/sale_header.jsp"/>
 
 <div class="container" style="margin-top: 100px; max-width: 800px">
     <div class="form-container">
-        <form method="post" action="create_registration">
+        <form method="post" action="create">
             <input type="hidden" name="id" value="${r.id}">
             <h5 class="fw-bold mb-3">Create Registration</h5>
 
@@ -70,14 +70,14 @@
             </div>
 
             <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                <button type="button" class="btn btn-secondary" onclick="location.href='registrations'">Back</button>
+                <button type="button" class="btn btn-secondary" onclick="location.href='list'">Back</button>
                 <button type="submit" class="btn btn-success">Create</button>
             </div>
         </form>
     </div>
 </div>
 
-<%@include file="../common/jsload.jsp" %>
+<%@include file="../../common/jsload.jsp" %>
 
 <!-- jQuery -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

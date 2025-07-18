@@ -9,12 +9,12 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <html>
 <head>
-    <%@include file="../common/headload.jsp" %>
+    <%@include file="../../common/headload.jsp" %>
     <title>Registration List</title>
 </head>
-<jsp:include page="../user/user_profile.jsp"/>
+<jsp:include page="../../user/user_profile.jsp"/>
 <body>
-<jsp:include page="../layout/manage/sale_header.jsp"/>
+<jsp:include page="../../layout/manage/sale_header.jsp"/>
 
 <main style="margin-top: 65px; margin-left: 10px; margin-right: 10px">
     <div class="row">
@@ -23,7 +23,7 @@
                 <div style="display: flex; justify-content: space-between">
                     <div style="display: flex; flex-direction: column">
                         <div>
-                            <form action="create_registration" method="get">
+                            <form action="create" method="get">
                                 <button type="submit" class="btn btn-primary">+ Add New Registration</button>
                             </form>
                         </div>
@@ -34,7 +34,7 @@
                             <label for="pageLengthInput" class="form-label mb-0">entries</label>
                         </div>
                     </div>
-                    <form style="display: flex; flex-direction: column" action="registrations" method="get">
+                    <form style="display: flex; flex-direction: column" action="list" method="get">
                         <div style="display: flex; margin-bottom: 15px">
                             <div>
                                 <input type="text" class="form-control d-inline-block w-auto ms-2" name="email"
@@ -80,7 +80,7 @@
                         </div>
                         <div style="align-self: flex-end">
                             <button type="button" class="btn btn-secondary" style="width: 60px"
-                                    onclick="location.href='registrations'">Reset
+                                    onclick="location.href='list'">Reset
                             </button>
                             <button type="submit" class="btn btn-primary" style="width: 60px">Filter</button>
                         </div>
@@ -127,9 +127,9 @@
                             </c:if>
 
                             <td>
-                                <a class="btn btn-info text-white" href="view_registration?id=${r.id}"
+                                <a class="btn btn-info text-white" href="view?id=${r.id}"
                                    style="width: 60px">View</a>
-                                <a class="btn btn-warning text-white" href="edit_registration?id=${r.id}"
+                                <a class="btn btn-warning text-white" href="edit?id=${r.id}"
                                    style="width: 60px; margin-top: 3px">Edit</a>
                             </td>
                         </tr>
@@ -157,7 +157,7 @@
 </div>
 
 
-<%@include file="../common/jsload.jsp" %>
+<%@include file="../../common/jsload.jsp" %>
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 <link rel="stylesheet" href="https://cdn.datatables.net/v/bs5/dt-1.13.4/datatables.min.css">

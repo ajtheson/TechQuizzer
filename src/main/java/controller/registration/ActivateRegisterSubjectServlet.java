@@ -21,7 +21,7 @@ import jakarta.servlet.http.HttpSession;
 /**
  * @author Dell
  */
-@WebServlet(name = "ActivateRegisterSubjectServlet", urlPatterns = {"/activate_register_subject"})
+@WebServlet(name = "ActivateRegisterSubjectServlet", urlPatterns = {"/registration/activate_register_subject"})
 public class ActivateRegisterSubjectServlet extends HttpServlet {
 
 
@@ -37,7 +37,7 @@ public class ActivateRegisterSubjectServlet extends HttpServlet {
             throws ServletException, IOException {
         HttpSession session = request.getSession();
         if(session.getAttribute("otp") == null) {
-            response.sendRedirect("login.jsp");
+            response.sendRedirect(request.getContextPath() + "/account/login");
             return;
         }
         String otpInput = request.getParameter("otp");
@@ -76,7 +76,7 @@ public class ActivateRegisterSubjectServlet extends HttpServlet {
                 int userID = uDAO.addAccountForRegisterSubject(user);
                 if(userID  == -1) {
                     session.setAttribute("verifyNotification", "Something went wrong");
-                    response.sendRedirect("login");
+                    response.sendRedirect(request.getContextPath() + "/account/login");
                     return;
                 }else {
                     RegistrationDAO rDAO = new RegistrationDAO();
@@ -91,11 +91,11 @@ public class ActivateRegisterSubjectServlet extends HttpServlet {
                     registration.setUserId(userID);
                     if(rDAO.addRegistration(registration)) {
                         session.setAttribute("toastNotification", "Registration has been added successfully.");
-                        response.sendRedirect("home");
+                        response.sendRedirect(request.getContextPath() + "/home");
                         return;
                     }else {
                         session.setAttribute("toastNotification", "Something went wrong. Please try again later.");
-                        response.sendRedirect("home");
+                        response.sendRedirect(request.getContextPath() + "/home");
                         return;
                     }
 

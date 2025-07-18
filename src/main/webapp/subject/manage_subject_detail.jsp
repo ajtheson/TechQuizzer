@@ -50,8 +50,8 @@
         </h1>
         <div class="btn-group ms-3">
             <a href="${pageContext.request.contextPath}/management/subject/edit?subject_id=${requestScope.subject.id}" class="btn btn-outline-primary active fw-bold">Overview</a>
-            <a href="/TechQuizzer/dimension/subject-dimension?id=${requestScope.subject.id}" class="btn btn-outline-primary">Dimension</a>
-            <a href="get_price_package?subject_id=${requestScope.subject.id}" class="btn btn-outline-primary">Price
+            <a href="${pageContext.request.contextPath}/dimension/subject-dimension?id=${requestScope.subject.id}" class="btn btn-outline-primary">Dimension</a>
+            <a href="${pageContext.request.contextPath}/price_package/list?subject_id=${requestScope.subject.id}" class="btn btn-outline-primary">Price
                 Package</a>
         </div>
     </div>

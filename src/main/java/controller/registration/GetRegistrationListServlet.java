@@ -18,7 +18,7 @@ import jakarta.servlet.http.HttpServletResponse;
 /**
  * @author Dell
  */
-@WebServlet(name = "GetRegistrationListServlet", urlPatterns = {"/registrations"})
+@WebServlet(name = "GetRegistrationListServlet", urlPatterns = {"/sale/registration/list"})
 public class GetRegistrationListServlet extends HttpServlet {
 
 

@@ -27,9 +27,9 @@
             <i class="bi bi-journal-bookmark"></i> Subject details id ${requestScope.subject_id}
         </h1>
         <div class="btn-group ms-3">
-            <a href="edit-subject?subject_id=${requestScope.subject_id}" class="btn btn-outline-primary">Overview</a>
-            <a href="subject-dimension?id=${requestScope.subject_id}" class="btn btn-outline-primary">Dimension</a>
-            <a href="get_price_package?subject_id=${requestScope.subject_id}" class="btn btn-outline-primary active fw-bold">Price
+            <a href="${pageContext.request.contextPath}/management/subject/edit?subject_id=${requestScope.subject_id}"  class="btn btn-outline-primary">Overview</a>
+            <a href="${pageContext.request.contextPath}/dimension/subject-dimension?id=${requestScope.subject_id}" class="btn btn-outline-primary">Dimension</a>
+            <a href="${pageContext.request.contextPath}/price_package/list?subject_id=${requestScope.subject_id}" class="btn btn-outline-primary active fw-bold">Price
                 Package</a>
         </div>
     </div>
@@ -38,7 +38,7 @@
             <div class="tile">
                 <h3 class="tile-title">Create new price package</h3>
                 <div class="tile-body">
-                    <form action="create_price_package" method="post">
+                    <form action="create" method="post">
                         <input type="hidden" name="subject_id" value="${requestScope.subject_id}">
                         <div class="mb-3">
                             <label class="col-form-label">Package name</label>
@@ -79,7 +79,7 @@
                         </div>
                         <p style="text-align: left; color: red">${error}</p>
                         <button class="btn btn-primary"><i class="bi bi-plus-circle me-2"></i>Create</button>
-                        <a class="btn btn-secondary" href="get_price_package?subject_id=${requestScope.subject_id}"><i class="bi bi-x-circle-fill me-2"></i>Cancel</a>
+                        <a class="btn btn-secondary" href="list?subject_id=${requestScope.subject_id}"><i class="bi bi-x-circle-fill me-2"></i>Cancel</a>
                     </form>
                 </div>
             </div>

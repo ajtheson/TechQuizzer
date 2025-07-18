@@ -31,7 +31,7 @@ public class ToggleQuestionStatusServlet extends HttpServlet {
                 int subjectID = qDao.findSubjectIdByQuestionId(questionId);
                 if(!subjectDAO.isExpertHasSubject(subjectID, user.getId())){
                     session.invalidate();
-                    response.sendRedirect("login.jsp");
+                    response.sendRedirect(request.getContextPath() + "/account/login");
                     return;
                 }
             }
@@ -39,10 +39,10 @@ public class ToggleQuestionStatusServlet extends HttpServlet {
 
             if(qDao.toggleStatus(questionId, status)){
                 session.setAttribute("toastNotification", "Question has been updated successfully.");
-                response.sendRedirect("questions");
+                response.sendRedirect("list");
             }else {
                 session.setAttribute("toastNotification", "Question has been updated failed. Please try again later.");
-                response.sendRedirect("questions");
+                response.sendRedirect("list");
             }
         } catch (Exception e) {
             e.printStackTrace();

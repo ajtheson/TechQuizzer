@@ -29,7 +29,7 @@
                     <!-- 1. Search -->
 
                     <div class="p-3 border-bottom">
-                        <form action="my_registration" method="get">
+                        <form action="list" method="get">
                             <div class="input-group">
                                 <input type="search" class="form-control" placeholder="Search by subject name"
                                        name="search" value="${requestScope.search}">
@@ -40,7 +40,7 @@
                         </form>
                     </div>
 
-                    <form action="my_registration" method="get">
+                    <form action="list" method="get">
                         <%--                    Registration Status--%>
                         <div class="accordion border-bottom" id="accordionFields">
                             <div class="accordion-item">
@@ -113,7 +113,7 @@
                     </form>
 
                     <div class="p-3 border-bottom d-flex justify-content-center">
-                        <button class="btn btn-primary btn-block" style="width: 80%" onclick="location.href='my_registration'">Reset</button>
+                        <button class="btn btn-primary btn-block" style="width: 80%" onclick="location.href='list'">Reset</button>
                     </div>
 
                     <!-- 5. Need More Advice -->
@@ -147,7 +147,7 @@
                                 <div class="subject-media col-md-4">
                                     <a href="#">
                                         <img class="subject-thumbnail"
-                                             src="assets/images/thumbnail/subject/${r.subject.thumbnail}"
+                                             src="${pageContext.request.contextPath}/assets/images/thumbnail/subject/${r.subject.thumbnail}"
                                              alt="Subject_Thumbnail">
                                     </a>
                                 </div>
@@ -182,13 +182,13 @@
                                             <button class="btn"
                                                     style="background-color:#374151; color:white; border:none;"
                                                     type="button"
-                                                    onclick="if(confirm('Are you sure you want to cancel this registration?')) { window.location.href='user_cancel_registration?id=${r.id}'; }"
+                                                    onclick="if(confirm('Are you sure you want to cancel this registration?')) { window.location.href='cancel?id=${r.id}'; }"
                                             >Cancel
                                             </button>
                                             <button class="btn"
                                                     style="background-color:#00897B; color:white; border:none;"
                                                     type="button"
-                                                    onclick="location.href='user_modify_registration?id=${r.id}'"
+                                                    onclick="location.href='modify?id=${r.id}'"
                                             >Modify
                                             </button>
                                         </div>
@@ -198,7 +198,7 @@
                                             <button class="btn"
                                                     style="background-color:#374151; color:white; border:none;"
                                                     type="button"
-                                                    onclick="if(confirm('Are you sure you want to cancel this registration?')) { window.location.href='user_cancel_registration?id=${r.id}'; }"
+                                                    onclick="if(confirm('Are you sure you want to cancel this registration?')) { window.location.href='cancel?id=${r.id}'; }"
                                             >Cancel
                                             </button>
                                         </div>

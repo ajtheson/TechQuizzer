@@ -18,7 +18,7 @@ public class EmailService {
     }
 
     public void sendActivatingEmail(HttpServletRequest request, String email, String token, boolean isEmailExistInSystem) {
-        String verifyLink = getBaseURL(request) + "verify?mode=activate&token=" + token;
+        String verifyLink = getBaseURL(request) + "account/verify?mode=activate&token=" + token;
         String title, content;
 
         if (isEmailExistInSystem) {
@@ -50,7 +50,7 @@ public class EmailService {
     }
 
     public void sendResetPasswordEmail(HttpServletRequest request, String email, String token) {
-        String resetLink = getBaseURL(request) + "verify?mode=reset&token=" + token;
+        String resetLink = getBaseURL(request) + "account/verify?mode=reset&token=" + token;
         String title = "[Password Reset] Reset Your Quiz Account Password";
 
         String content = "Hello,\n\n"

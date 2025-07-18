@@ -17,7 +17,7 @@ import util.PasswordEncoder;
 /**
  * @author Dell
  */
-@WebServlet(name = "LoginToRegisterSubjectServlet", urlPatterns = {"/login_to_register_subject"})
+@WebServlet(name = "LoginToRegisterSubjectServlet", urlPatterns = {"/registration/login_to_register_subject"})
 public class LoginToRegisterSubjectServlet extends HttpServlet {
 
     @Override

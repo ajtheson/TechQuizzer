@@ -14,7 +14,7 @@ import jakarta.servlet.http.HttpServletResponse;
 /**
  * @author Dell
  */
-@WebServlet(name = "GetPricePackageServlet", urlPatterns = {"/get_price_package"})
+@WebServlet(name = "GetPricePackageServlet", urlPatterns = {"/price_package/list"})
 public class GetPricePackageServlet extends HttpServlet {
 
     @Override

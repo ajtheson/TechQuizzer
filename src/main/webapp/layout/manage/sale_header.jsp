@@ -13,7 +13,7 @@
 <body>
 <header class="app-header">
     <%--logo--%>
-    <a class="app-header__logo" href="${pageContext.request.contextPath}/registrations">TechQuizzer</a>
+    <a class="app-header__logo" href="${pageContext.request.contextPath}/sale/registration/list">TechQuizzer</a>
     <ul class="app-nav">
         <c:choose>
             <c:when test="${sessionScope.user != null}">
@@ -28,12 +28,12 @@
                             </span>
                         </li>
                         <li>
-                            <a class="dropdown-item" href="${pageContext.request.contextPath}/change-password">
+                            <a class="dropdown-item" href="${pageContext.request.contextPath}/user/change-password">
                                 <i class="bi bi-gear me-2 fs-5"></i> Change password
                             </a>
                         </li>
                         <li>
-                            <a class="dropdown-item" href="${pageContext.request.contextPath}/logout">
+                            <a class="dropdown-item" href="${pageContext.request.contextPath}/account/logout">
                                 <i class="bi bi-box-arrow-right me-2 fs-5"></i> Logout
                             </a>
                         </li>
@@ -41,7 +41,7 @@
                 </li>
             </c:when>
             <c:otherwise>
-                <a class="nav-link text-white d-flex align-items-center" href="${pageContext.request.contextPath}/login" style="padding: 5px 0 5px 0;">
+                <a class="nav-link text-white d-flex align-items-center" href="${pageContext.request.contextPath}/account/login" style="padding: 5px 0 5px 0;">
                     <h5 style="margin: 0">Login</h5>
                 </a>
             </c:otherwise>

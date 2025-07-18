@@ -18,7 +18,7 @@ import jakarta.servlet.http.HttpSession;
 /**
  * @author Dell
  */
-@WebServlet(name = "UserRegisterSubjectServlet", urlPatterns = {"/user_register_subject"})
+@WebServlet(name = "UserRegisterSubjectServlet", urlPatterns = {"/registration/user_register_subject"})
 public class UserRegisterSubjectServlet extends HttpServlet {
 
 
@@ -30,7 +30,7 @@ public class UserRegisterSubjectServlet extends HttpServlet {
             throws ServletException, IOException {
         HttpSession session = request.getSession();
         if(session.getAttribute("user") == null) {
-            response.sendRedirect("login");
+            response.sendRedirect(request.getContextPath() + "/account/login");
             return;
         }
 
@@ -42,7 +42,7 @@ public class UserRegisterSubjectServlet extends HttpServlet {
 
         if(rDAO.isRegistrationExist(user.getId(), subjectID)) {
             session.setAttribute("toastNotification", "You already have an active or pending course for this subject.");
-            response.sendRedirect("my_registration");
+            response.sendRedirect("list");
             return;
         }
 
@@ -59,10 +59,10 @@ public class UserRegisterSubjectServlet extends HttpServlet {
 
         if(rDAO.addRegistration(r)){
             session.setAttribute("toastNotification", "Registration has been added successfully.");
-            response.sendRedirect("my_registration");
+            response.sendRedirect("list");
         }else{
             session.setAttribute("toastNotification", "Something went wrong. Please try again later.");
-            response.sendRedirect("my_registration");
+            response.sendRedirect("list");
         }
     }
 }

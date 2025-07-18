@@ -13,7 +13,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.*;
 
-@WebServlet(name = "EditQuestionServlet", urlPatterns = {"/edit_question"})
+@WebServlet(name = "EditQuestionServlet", urlPatterns = {"/management/question/edit"})
 @MultipartConfig
 public class EditQuestionServlet extends HttpServlet {
 
@@ -43,7 +43,7 @@ public class EditQuestionServlet extends HttpServlet {
 
             if(session.getAttribute("user") == null) {
                 session.invalidate();
-                response.sendRedirect("login.jsp");
+                response.sendRedirect(request.getContextPath() + "/account/login");
                 return;
             }
 
@@ -56,7 +56,7 @@ public class EditQuestionServlet extends HttpServlet {
             if(user.getRoleId() == 2){
                 if(!subjectDAO.isExpertHasSubject(subjectID, user.getId())){
                     session.invalidate();
-                    response.sendRedirect("login.jsp");
+                    response.sendRedirect(request.getContextPath() + "/account/login");
                     return;
                 }
                 subjects = subjectDAO.getAllSubjectsByOwnerId(user.getId());
@@ -80,7 +80,7 @@ public class EditQuestionServlet extends HttpServlet {
             request.setAttribute("lessons", lessons);
             request.setAttribute("questionLevels", levels);
             request.setAttribute("subjectID", subjectID);
-            request.getRequestDispatcher("question_edit.jsp").forward(request, response);
+            request.getRequestDispatcher("/question/question_edit.jsp").forward(request, response);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -190,11 +190,11 @@ public class EditQuestionServlet extends HttpServlet {
                 }
             }
             session.setAttribute("toastNotification", "Question has been edited successfully.");
-            response.sendRedirect("questions");
+            response.sendRedirect("list");
         } catch (Exception e) {
             e.printStackTrace();
             session.setAttribute("toastNotification", "Question has been edited failed. Please try again later.");
-            response.sendRedirect("questions");
+            response.sendRedirect("list");
         }
     }
 

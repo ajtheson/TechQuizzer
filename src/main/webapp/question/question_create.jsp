@@ -62,7 +62,7 @@
 
 <div class="container" style="margin-top: 50px; max-width: 800px">
     <div class="form-container">
-        <form id="questionForm" method="post" action="create_question" enctype="multipart/form-data">
+        <form id="questionForm" method="post" action="${pageContext.request.contextPath}/management/question/create" enctype="multipart/form-data">
             <div class="row mb-3" style="display: flex">
                 <div class="form-group" style="flex: 1">
                     <label for="subjectId" class="form-label">Subject</label>

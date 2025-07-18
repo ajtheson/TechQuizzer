@@ -69,7 +69,7 @@
 
 <div class="container" style="margin-top: 50px; max-width: 800px">
     <div class="form-container">
-        <form id="questionForm" method="post" action="edit_question" enctype="multipart/form-data">
+        <form id="questionForm" method="post" action="${pageContext.request.contextPath}/management/question/edit" enctype="multipart/form-data">
             <input type="hidden" name="oldid" value="${requestScope.question.id}">
 
             <div class="row mb-3" style="display: flex">
@@ -165,15 +165,15 @@
                             </div>
 
                             <c:if test="${file.type == 'image'}">
-                                <img src="assets/files/media/${question.id}/${file.link}" class="mt-1"
+                                <img src="${pageContext.request.contextPath}/assets/files/media/${question.id}/${file.link}" class="mt-1"
                                      style="max-width: 100%; max-height: 200px" alt="${file.description}">
                             </c:if>
                             <c:if test="${file.type == 'video'}">
-                                <video src="assets/files/media/${question.id}/${file.link}" class="mt-1"
+                                <video src="${pageContext.request.contextPath}/assets/files/media/${question.id}/${file.link}" class="mt-1"
                                        style="max-width: 100%; max-height: 200px" controls>${file.description}</video>
                             </c:if>
                             <c:if test="${file.type == 'audio'}">
-                                <audio src="assets/files/media/${question.id}/${file.link}" class="mt-1"
+                                <audio src="${pageContext.request.contextPath}/assets/files/media/${question.id}/${file.link}" class="mt-1"
                                        style="max-width: 100%; max-height: 200px" controls>${file.description}</audio>
                             </c:if>
                         </c:forEach>
@@ -263,7 +263,6 @@
 
             <!-- Buttons -->
             <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                <button type="button" class="btn btn-secondary">Cancel</button>
                 <button type="submit" class="btn btn-success">Save</button>
             </div>
         </form>

@@ -19,7 +19,7 @@ import jakarta.servlet.http.HttpSession;
 /**
  * @author Dell
  */
-@WebServlet(name = "UserModifyRegistrationServlet", urlPatterns = {"/user_modify_registration"})
+@WebServlet(name = "UserModifyRegistrationServlet", urlPatterns = {"/registration/modify"})
 public class UserModifyRegistrationServlet extends HttpServlet {
 
 
@@ -28,7 +28,7 @@ public class UserModifyRegistrationServlet extends HttpServlet {
             throws ServletException, IOException {
         String raw = request.getParameter("id");
         if(raw == null) {
-            response.sendRedirect("login");
+            response.sendRedirect(request.getContextPath() + "/account/login");
         }else{
             try{
                 int id = Integer.parseInt(raw);
@@ -45,7 +45,7 @@ public class UserModifyRegistrationServlet extends HttpServlet {
                 request.setAttribute("registrationID", id);
                 request.getRequestDispatcher("user_modify_registration.jsp").forward(request, response);
             }catch (NumberFormatException e){
-                response.sendRedirect("login");
+                response.sendRedirect(request.getContextPath() + "/account/login");
             }
         }
     }
@@ -63,10 +63,10 @@ public class UserModifyRegistrationServlet extends HttpServlet {
         HttpSession session = request.getSession();
         if(rDAO.userModifyRegistration(LocalDateTime.now(), p.getSalePrice(), p.getDuration(), packageID, registrationID)) {
             session.setAttribute("toastNotification", "Registration has been modified successfully.");
-            response.sendRedirect("my_registration");
+            response.sendRedirect("list");
         }else{
             session.setAttribute("toastNotification", "Something went wrong. Please try again later.");
-            response.sendRedirect("my_registration");
+            response.sendRedirect("list");
         }
     }
 }

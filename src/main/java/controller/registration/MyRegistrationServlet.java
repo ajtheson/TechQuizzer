@@ -20,7 +20,7 @@ import jakarta.servlet.http.HttpSession;
  *
  * @author Dell
  */
-@WebServlet(name="MyRegistrationServlet", urlPatterns={"/my_registration"})
+@WebServlet(name="MyRegistrationServlet", urlPatterns={"/registration/list"})
 public class MyRegistrationServlet extends HttpServlet {
 
     @Override
@@ -28,7 +28,7 @@ public class MyRegistrationServlet extends HttpServlet {
     throws ServletException, IOException {
         HttpSession session = request.getSession();
         if(session.getAttribute("user") == null) {
-            response.sendRedirect("login");
+            response.sendRedirect(request.getContextPath() + "/account/login");
             return;
         }
         UserDTO user = (UserDTO)session.getAttribute("user");

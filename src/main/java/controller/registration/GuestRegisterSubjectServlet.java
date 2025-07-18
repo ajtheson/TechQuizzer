@@ -24,7 +24,7 @@ import service.TokenService;
 /**
  * @author Dell
  */
-@WebServlet(name = "GuestRegisterSubject", urlPatterns = {"/guest_register_subject"})
+@WebServlet(name = "GuestRegisterSubject", urlPatterns = {"/registration/guest_register_subject"})
 public class GuestRegisterSubjectServlet extends HttpServlet {
 
     @Override
@@ -107,7 +107,7 @@ public class GuestRegisterSubjectServlet extends HttpServlet {
                 //Email in the system but is not activated
                 TokenService tokenService = new TokenService();
                 tokenService.handleVerifyToken(request, email, true);
-                response.sendRedirect("activate");
+                response.sendRedirect(request.getContextPath() + "/account/activate");
             }
         }
     }

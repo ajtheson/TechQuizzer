@@ -69,7 +69,7 @@
                     <h3 class="login-head"><i class="bi bi-journal-plus me-2"></i>REGISTER SUBJECT</h3>
                     <!-- Thumbnail -->
                     <div class="col-md-5 text-center">
-                        <img class="subject-thumbnail" src="assets/images/thumbnail/subject/${subject.thumbnail}" alt="${subject.name}">
+                        <img class="subject-thumbnail" src="${pageContext.request.contextPath}/assets/images/thumbnail/subject/${subject.thumbnail}" alt="${subject.name}">
                     </div>
 
                     <div class="col-md-7">
@@ -99,7 +99,7 @@
                                     <button class="btn btn-primary">
                                         <i class="bi bi-check2-circle me-2 fs-5"></i> Register
                                     </button>
-                                    <a href="home" class="btn btn-light border border-secondary text-dark">Cancel</a>
+                                    <a href="${pageContext.request.contextPath}/home" class="btn btn-light border border-secondary text-dark">Cancel</a>
                                 </div>
                             </div>
                         </div>

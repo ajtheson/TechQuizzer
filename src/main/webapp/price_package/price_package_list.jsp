@@ -24,10 +24,9 @@
             <i class="bi bi-journal-bookmark"></i> Subject details id ${requestScope.subject_id}
         </h1>
         <div class="btn-group ms-3">
-            <a href="${pageContext.request.contextPath}/management/subject/edit?subject_id=${requestScope.subject_id}" class="btn btn-outline-primary">Overview</a>
-            <a href="subject-dimension?id=${requestScope.subject_id}" class="btn btn-outline-primary">Dimension</a>
-            <a href="get_price_package?subject_id=${requestScope.subject_id}"
-               class="btn btn-outline-primary active fw-bold">Price
+            <a href="${pageContext.request.contextPath}/management/subject/edit?subject_id=${requestScope.subject_id}"  class="btn btn-outline-primary">Overview</a>
+            <a href="${pageContext.request.contextPath}/dimension/subject-dimension?id=${requestScope.subject_id}" class="btn btn-outline-primary">Dimension</a>
+            <a href="${pageContext.request.contextPath}/price_package/list?subject_id=${requestScope.subject_id}" class="btn btn-outline-primary active fw-bold">Price
                 Package</a>
         </div>
     </div>
@@ -41,7 +40,7 @@
                         <!-- Filter -->
                         <c:if test="${sessionScope.user.getRoleId() == 1}">
                             <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap">
-                                <form action="create_price_package" method="get">
+                                <form action="create" method="get">
                                     <input type="hidden" name="subject_id" value="${requestScope.subject_id}">
                                     <button type="submit" class="btn btn-primary">+ Add New Package</button>
                                 </form>
@@ -101,9 +100,9 @@
                                     <td>${p.status ? 'Activated' : 'Deactivated'}</td>
                                     <c:if test="${sessionScope.user.getRoleId() == 1}">
                                         <td>
-                                            <a class="btn btn-info text-white" href="price_package_detail?id=${p.id}">View</a>
-                                            <a class="btn btn-warning text-white" href="edit_price_package?id=${p.id}">Edit</a>
-                                            <form action="toggle_price_package_status" method="post"
+                                            <a class="btn btn-info text-white" href="detail?id=${p.id}">View</a>
+                                            <a class="btn btn-warning text-white" href="edit?id=${p.id}">Edit</a>
+                                            <form action="toggle_status" method="post"
                                                   style="display: inline;">
                                                 <input type="hidden" name="id" value="${p.id}"/>
                                                 <input type="hidden" name="status" value="${!p.status}"/>

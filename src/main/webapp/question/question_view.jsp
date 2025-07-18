@@ -129,15 +129,15 @@
                         <c:forEach var="m" items="${medias}">
                             <c:choose>
                                 <c:when test="${m.type == 'image'}">
-                                    <img src="assets/files/media/${question.id}/${m.link}"
+                                    <img src="${pageContext.request.contextPath}/assets/files/media/${question.id}/${m.link}"
                                          style="max-width: 100%; height: auto;"/>
                                 </c:when>
                                 <c:when test="${m.type == 'video'}">
-                                    <video src="assets/files/media/${question.id}/${m.link}" controls
+                                    <video src="${pageContext.request.contextPath}/assets/files/media/${question.id}/${m.link}" controls
                                            style="max-width: 100%;"></video>
                                 </c:when>
                                 <c:when test="${m.type == 'audio'}">
-                                    <audio src="assets/files/media/${question.id}/${m.link}" controls></audio>
+                                    <audio src="${pageContext.request.contextPath}/assets/files/media/${question.id}/${m.link}" controls></audio>
                                 </c:when>
                             </c:choose>
                             <c:if test="${not empty m.description}">
@@ -183,9 +183,9 @@
 
             <!-- Action -->
             <div class="d-flex justify-content-end">
-                <a href="edit_question?id=${question.id}" class="btn btn-success">Update</a>
-                <c:if test="${question.status}"><a href="toggle_question_status?id=${question.id}&mode=deactivate" class="btn btn-secondary" style="margin-left: 10px">Deactivate</a></c:if>
-                <c:if test="${!question.status}"><a href="toggle_question_status?id=${question.id}&mode=activate" class="btn btn-secondary" style="margin-left: 10px">Activate</a></c:if>
+                <a href="${pageContext.request.contextPath}/management/question/edit?id=${question.id}" class="btn btn-success">Update</a>
+                <c:if test="${question.status}"><a href="${pageContext.request.contextPath}/management/question/toggle_question_status?id=${question.id}&mode=deactivate" class="btn btn-secondary" style="margin-left: 10px">Deactivate</a></c:if>
+                <c:if test="${!question.status}"><a href="${pageContext.request.contextPath}/management/question/toggle_question_status?id=${question.id}&mode=activate" class="btn btn-secondary" style="margin-left: 10px">Activate</a></c:if>
             </div>
 
         </form>

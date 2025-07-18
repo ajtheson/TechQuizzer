@@ -195,7 +195,7 @@
                                                 $${subject.minListPrice}</p>
                                             <p class="fw-bold subject-sale-price">$${subject.minSalePrice}</p>
                                             <a class="btn" style="background-color:#00897B; color:white; border:none;"
-                                               href="register_subject?subject_id=${subject.id}"
+                                               href="${pageContext.request.contextPath}/registration/register_subject?subject_id=${subject.id}"
                                                type="button">Register
                                             </a>
                                         </div>

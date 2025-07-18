@@ -48,7 +48,7 @@
                             </span>
                         </li>
                         <li>
-                            <a class="dropdown-item" href="${pageContext.request.contextPath}/my_registration">
+                            <a class="dropdown-item" href="${pageContext.request.contextPath}/registration/list">
                                 <i class="bi bi-archive me-2 fs-5"></i> My registration
                             </a>
                         </li>

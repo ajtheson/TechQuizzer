@@ -13,7 +13,7 @@ import jakarta.servlet.http.HttpSession;
 /**
  * @author Dell
  */
-@WebServlet(name = "UserCancelRegistrationServlet", urlPatterns = {"/user_cancel_registration"})
+@WebServlet(name = "UserCancelRegistrationServlet", urlPatterns = {"/registration/cancel"})
 public class UserCancelRegistrationServlet extends HttpServlet {
 
 
@@ -26,7 +26,7 @@ public class UserCancelRegistrationServlet extends HttpServlet {
             throws ServletException, IOException {
         String raw = request.getParameter("id");
         if(raw == null) {
-            response.sendRedirect("login");
+            response.sendRedirect(request.getContextPath() + "/account/login");
         }else{
             try{
                 int id = Integer.parseInt(raw);
@@ -34,13 +34,13 @@ public class UserCancelRegistrationServlet extends HttpServlet {
                 HttpSession session = request.getSession();
                 if(rDAO.changeStatus(id, "Canceled")){
                     session.setAttribute("toastNotification", "Registration has been canceled successfully.");
-                    response.sendRedirect("my_registration");
+                    response.sendRedirect("list");
                 }else{
                     session.setAttribute("toastNotification", "Something went wrong. Please try again later.");
-                    response.sendRedirect("my_registration");
+                    response.sendRedirect("list");
                 }
             }catch (NumberFormatException e){
-                response.sendRedirect("login");
+                response.sendRedirect(request.getContextPath() + "/account/login");
             }
         }
     }

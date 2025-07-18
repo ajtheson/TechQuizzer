@@ -24,7 +24,7 @@ import jakarta.servlet.http.HttpSession;
 /**
  * @author Dell
  */
-@WebServlet(name = "CreateRegistrationServlet", urlPatterns = {"/create_registration"})
+@WebServlet(name = "CreateRegistrationServlet", urlPatterns = {"/sale/registration/create"})
 public class CreateRegistrationServlet extends HttpServlet {
 
 
@@ -70,7 +70,7 @@ public class CreateRegistrationServlet extends HttpServlet {
 
         if(rDAO.isRegistrationExist(userID, subjectID)){
             session.setAttribute("toastNotification", "User already have an active or pending course for this subject.");
-            response.sendRedirect("registrations");
+            response.sendRedirect("list");
             return;
         }
         PricePackage pricePackage = pDAO.get(packageID);
@@ -95,10 +95,10 @@ public class CreateRegistrationServlet extends HttpServlet {
 
         if(rDAO.createRegistrationBySale(registration)){
             session.setAttribute("toastNotification", "Registration has been created successfully.");
-            response.sendRedirect("registrations");
+            response.sendRedirect("list");
         }else {
             session.setAttribute("toastNotification", "Registration has been created failed. Please try again later.");
-            response.sendRedirect("registrations");
+            response.sendRedirect("list");
         }
     }
 

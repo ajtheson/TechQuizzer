@@ -17,7 +17,7 @@ import service.EmailService;
 /**
  * @author Dell
  */
-@WebServlet(name = "ResendOTPServlet", urlPatterns = {"/resend_otp"})
+@WebServlet(name = "ResendOTPServlet", urlPatterns = {"/registration/resend_otp"})
 public class ResendOTPServlet extends HttpServlet {
 
     @Override
@@ -25,7 +25,7 @@ public class ResendOTPServlet extends HttpServlet {
             throws ServletException, IOException {
         HttpSession session = request.getSession();
         if(session.getAttribute("otp") == null) {
-            response.sendRedirect("login.jsp");
+            response.sendRedirect(request.getContextPath() + "/account/login");
             return;
         }
         LocalDateTime otpCreateAt = (LocalDateTime) session.getAttribute("otpCreateAt");

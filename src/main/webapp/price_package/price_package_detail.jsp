@@ -27,9 +27,9 @@
             <i class="bi bi-journal-bookmark"></i> Subject details id ${requestScope.p.getSubjectId()}
         </h1>
         <div class="btn-group ms-3">
-            <a href="edit-subject?subject_id=${requestScope.p.getSubjectId()}" class="btn btn-outline-primary ">Overview</a>
-            <a href="subject-dimension?id=${requestScope.p.getSubjectId()}" class="btn btn-outline-primary">Dimension</a>
-            <a href="get_price_package?subject_id=${requestScope.p.getSubjectId()}" class="btn btn-outline-primary active fw-bold">Price
+            <a href="${pageContext.request.contextPath}/management/subject/edit?subject_id=${requestScope.subject_id}"  class="btn btn-outline-primary">Overview</a>
+            <a href="${pageContext.request.contextPath}/dimension/subject-dimension?id=${requestScope.subject_id}" class="btn btn-outline-primary">Dimension</a>
+            <a href="${pageContext.request.contextPath}/price_package/list?subject_id=${requestScope.subject_id}" class="btn btn-outline-primary active fw-bold">Price
                 Package</a>
         </div>
     </div>
@@ -77,11 +77,11 @@
 
                 </div>
                 <div class="tile-footer">
-                    <a class="btn btn-primary" href="edit_price_package?id=${p.id}"><i class="bi bi-plus-circle me-2"></i>Edit</a>
+                    <a class="btn btn-primary" href="edit?id=${p.id}"><i class="bi bi-plus-circle me-2"></i>Edit</a>
                     &nbsp;&nbsp;&nbsp;
-                    <a class="btn btn-primary" href="create_price_package?subject_id=${p.subjectId}"><i class="bi bi-plus-circle me-2"></i>Create new price package</a>
+                    <a class="btn btn-primary" href="create?subject_id=${p.subjectId}"><i class="bi bi-plus-circle me-2"></i>Create new price package</a>
                     &nbsp;&nbsp;&nbsp;
-                    <a class="btn btn-secondary" href="get_price_package?subject_id=${p.subjectId}"><i class="bi bi-x-circle-fill me-2"></i>Back</a>
+                    <a class="btn btn-secondary" href="list?subject_id=${p.subjectId}"><i class="bi bi-x-circle-fill me-2"></i>Back</a>
                 </div>
             </div>
         </div>

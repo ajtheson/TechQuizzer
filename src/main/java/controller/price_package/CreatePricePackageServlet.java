@@ -14,7 +14,7 @@ import jakarta.servlet.http.HttpSession;
 /**
  * @author Dell
  */
-@WebServlet(name = "CreatePricePackageServlet", urlPatterns = {"/create_price_package"})
+@WebServlet(name = "CreatePricePackageServlet", urlPatterns = {"/price_package/create"})
 public class CreatePricePackageServlet extends HttpServlet {
 
 
@@ -69,12 +69,12 @@ public class CreatePricePackageServlet extends HttpServlet {
             if(pDAO.add(p)){
                 //Add toastNotification success to session to show success message in setting_list page
                 session.setAttribute("toastNotification", "Price package has been created successfully.");
-                response.sendRedirect("get_price_package?subject_id=" + subjectID);
+                response.sendRedirect("list?subject_id=" + subjectID);
             }
             else{
                 //Add toastNotification failed to session to show failed message in setting_list page
                 session.setAttribute("toastNotification", "Setting has been created failed. Please try again later.");
-                response.sendRedirect("get_price_package?subject_id=" + subjectID);
+                response.sendRedirect("list?subject_id=" + subjectID);
             }
         }
 

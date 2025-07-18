@@ -13,7 +13,7 @@ import jakarta.servlet.http.HttpServletResponse;
 /**
  * @author Dell
  */
-@WebServlet(name = "ViewRegistrationServlet", urlPatterns = {"/view_registration"})
+@WebServlet(name = "ViewRegistrationServlet", urlPatterns = {"/sale/registration/view"})
 public class ViewRegistrationServlet extends HttpServlet {
 
 

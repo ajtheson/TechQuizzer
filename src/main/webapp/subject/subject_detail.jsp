@@ -37,7 +37,7 @@
                     </div>
                     <div class="col-md-4 d-flex flex-column">
                         <img class="subject-thumbnail mt-auto"
-                             src="assets/images/thumbnail/subject/${requestScope.subject.thumbnail}"
+                             src="${pageContext.request.contextPath}/assets/images/thumbnail/subject/${requestScope.subject.thumbnail}"
                              alt="Subject_Thumbnail">
                     </div>
                 </div>
@@ -117,7 +117,7 @@
                         </div>
                         <div class="col-md-12 mt-1 mb-3">
                             <a class="btn btn-primary btn-lg" style="width: 100%"
-                               href="register_subject?subject_id=${requestScope.subject.id}">Register</a>
+                               href="${pageContext.request.contextPath}/registration/register_subject?subject_id=${requestScope.subject.id}">Register</a>
                         </div>
                         <hr>
 

@@ -43,11 +43,11 @@ public class UserServlet extends HttpServlet {
                 targetPage = "home";
                 break;
             case 4:
-                targetPage = "registrations";
+                targetPage = "sale/registration/list";
                 break;
             default:
                 request.setAttribute("error", "Invalid role");
-                targetPage = "login";
+                targetPage = "account/login";
                 break;
         }
         response.sendRedirect(request.getContextPath() + "/"+targetPage);

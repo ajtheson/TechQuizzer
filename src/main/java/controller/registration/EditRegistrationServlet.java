@@ -21,7 +21,7 @@ import util.PasswordGenerator;
 /**
  * @author Dell
  */
-@WebServlet(name = "EditRegistrationServlet", urlPatterns = {"/edit_registration"})
+@WebServlet(name = "EditRegistrationServlet", urlPatterns = {"/sale/registration/edit"})
 public class EditRegistrationServlet extends HttpServlet {
 
 
@@ -92,10 +92,10 @@ public class EditRegistrationServlet extends HttpServlet {
         }
         if (rDAO.updateRegistration(rUpdate)) {
             session.setAttribute("toastNotification", "Registration has been updated successfully.");
-            response.sendRedirect("registrations");
+            response.sendRedirect("list");
         } else {
             session.setAttribute("toastNotification", "Something went wrong. Please try again.");
-            response.sendRedirect("registrations");
+            response.sendRedirect("list");
         }
     }
 }
