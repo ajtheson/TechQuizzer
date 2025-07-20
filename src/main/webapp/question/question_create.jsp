@@ -62,7 +62,8 @@
 
 <div class="container" style="margin-top: 50px; max-width: 800px">
     <div class="form-container">
-        <form id="questionForm" method="post" action="${pageContext.request.contextPath}/management/question/create" enctype="multipart/form-data">
+        <form id="questionForm" method="post" action="${pageContext.request.contextPath}/management/question/create"
+              enctype="multipart/form-data">
             <div class="row mb-3" style="display: flex">
                 <div class="form-group" style="flex: 1">
                     <label for="subjectId" class="form-label">Subject</label>
@@ -133,18 +134,17 @@
             <input type="file" name="media" id="media-hidden" multiple hidden>
 
 
-
             <div class="mb-3">
                 <label class="form-label">Question Format</label><br/>
                 <div class="form-check form-check-inline">
                     <input class="form-check-input" type="radio" name="format" value="multiple"
-                           onclick="toggleChoice(true)"/>
-                    <label class="form-check-label">Multiple Choice</label>
+                           onclick="toggleChoice(true)" id="mmmm"/>
+                    <label class="form-check-label" for="mmmm">Multiple Choice</label>
                 </div>
                 <div class="form-check form-check-inline">
                     <input class="form-check-input" type="radio" name="format" value="essay"
-                           onclick="toggleChoice(false)"/>
-                    <label class="form-check-label">Essay</label>
+                           onclick="toggleChoice(false)" id="nnnn"/>
+                    <label class="form-check-label" for="nnnn">Essay</label>
                 </div>
             </div>
 
@@ -183,7 +183,6 @@
 
             <!-- Buttons -->
             <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                <button type="button" class="btn btn-secondary">Cancel</button>
                 <button type="submit" class="btn btn-success">Save</button>
             </div>
         </form>
@@ -256,6 +255,8 @@
 
     let mediaFiles = [];
 
+    const MAX_SIZE = 50 * 1024 * 1024; // 50MB in bytes
+
     function addMedia() {
         const type = document.getElementById("mediaType").value;
         const fileInput = document.getElementById("mediaFile");
@@ -273,13 +274,17 @@
             return;
         }
 
+        if (file.size > MAX_SIZE) {
+            alert("File is too large. Maximum allowed is 50MB.");
+            return;
+        }
+
         const ext = file.name.split(".").pop().toLowerCase();
         if (!allowed[type].includes(ext)) {
             alert("Invalid file type for " + type);
             return;
         }
 
-        // Chặn file trùng tên
         const alreadyExists = mediaFiles.some(f => f.name === file.name);
         if (alreadyExists) {
             alert("This file has already been added.");
@@ -294,7 +299,7 @@
             const metaInput = document.createElement("input");
             metaInput.type = "hidden";
             metaInput.name = "mediaMeta";
-            metaInput.value = `\${file.name}|\${type}|\${desc}`;
+            metaInput.value = `${file.name}|${type}|${desc}`;
             document.getElementById("media-metadata-container").appendChild(metaInput);
 
             const dt = new DataTransfer();
@@ -352,8 +357,6 @@
             mediaListDiv.appendChild(wrapper);
         });
     }
-
-
 
 
     const dimensionRadioBtn = document.getElementById("byDimension")
@@ -430,9 +433,6 @@
     });
 
 
-
-
-
     document.getElementById("questionForm").addEventListener("submit", function (e) {
         const errorDiv = document.getElementById("error");
         errorDiv.innerText = "";
@@ -483,6 +483,25 @@
             if (corrects.length === 0) {
                 e.preventDefault();
                 errorDiv.innerText = "Please mark at least one correct answer.";
+                return;
+            }
+
+            const incorrects = Array.from(choices).filter((c, idx) => {
+                const checkbox = document.querySelectorAll("#choices input[name^='isCorrect']")[idx];
+                return c.value.trim() !== "" && !checkbox.checked;
+            });
+
+            if (incorrects.length === 0) {
+                e.preventDefault();
+                errorDiv.innerText = "There must be at least one incorrect answer.";
+                return;
+            }
+
+            const trimmedValues = validChoices.map(c => c.value.trim());
+            const uniqueSet = new Set(trimmedValues);
+            if (uniqueSet.size !== trimmedValues.length) {
+                e.preventDefault();
+                errorDiv.innerText = "Answer choices must be unique.";
                 return;
             }
 
