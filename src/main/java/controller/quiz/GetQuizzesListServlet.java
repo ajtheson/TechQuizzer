@@ -17,7 +17,7 @@ import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet(name = "GetQuizzesListServlet", urlPatterns = {"/quiz/quizzeslist"})
+@WebServlet(name = "GetQuizzesListServlet", urlPatterns = {"/management/quiz/list"})
 public class GetQuizzesListServlet extends HttpServlet {
 
     @Override
@@ -62,13 +62,13 @@ public class GetQuizzesListServlet extends HttpServlet {
                     pageSize = tmp;
                 } else {
                     session.setAttribute("error", "Page size must be greater than 0.");
-                    response.sendRedirect("quizzeslist");
+                    response.sendRedirect("list");
                     return;
                 }
             }
         } catch (NumberFormatException e) {
             session.setAttribute("error", "Invalid pagination input.");
-            response.sendRedirect("quizzeslist");
+            response.sendRedirect("list");
             return;
         }
 
@@ -100,7 +100,7 @@ public class GetQuizzesListServlet extends HttpServlet {
             request.setAttribute("sortField", sortField);
             request.setAttribute("sortOrder", sortOrder);
 
-            request.getRequestDispatcher("quiz_list.jsp").forward(request, response);
+            request.getRequestDispatcher("/quiz/quiz_list.jsp").forward(request, response);
         }
         else {
             List<QuizDTO> quizList = quizDAO.getQuizzesByPage(
@@ -127,7 +127,7 @@ public class GetQuizzesListServlet extends HttpServlet {
             request.setAttribute("sortField", sortField);
             request.setAttribute("sortOrder", sortOrder);
 
-            request.getRequestDispatcher("quiz_list.jsp").forward(request, response);
+            request.getRequestDispatcher("/quiz/quiz_list.jsp").forward(request, response);
         }
     }
 }

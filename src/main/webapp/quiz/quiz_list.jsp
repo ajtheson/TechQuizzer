@@ -38,11 +38,11 @@
                 <div class="tile-body">
                     <div class="table-responsive">
                         <div class="mb-3 text-start">
-                            <a href="create_quiz" class="btn btn-primary">
+                            <a href="create" class="btn btn-primary">
                                 <i class="bi bi-plus-lg me-1"></i> Add new quizz
                             </a>
                         </div>
-                        <form method="get" action="quizzeslist" class="d-flex align-items-center gap-3 mb-3">
+                        <form method="get" action="list" class="d-flex align-items-center gap-3 mb-3">
                             <select name="subject" class="form-select" style="width: 250px;" onchange="this.form.submit()">
                                 <option value="">All Subjects</option>
                                 <c:forEach var="subject" items="${subjects}">
@@ -70,7 +70,7 @@
                             <input type="submit" value="Search">
                         </form>
 
-                        <form id="pageSizeForm" action="quizzeslist" method="get" class="d-flex align-items-center" style="height: 25px; margin-bottom: 20px;">
+                        <form id="pageSizeForm" action="list" method="get" class="d-flex align-items-center" style="height: 25px; margin-bottom: 20px;">
                             <span style="margin-right: 5px;">Show</span>
                             <input type="number" name="pageSize" min="1" max="1000" value="${pageSize}"
                                    class="form-control"
@@ -223,7 +223,7 @@
                                     </td>
                                     <td class="col-10">
                                         <div class="d-flex justify-content-center gap-2">
-                                            <a href="get-quiz-detail?action=view&id=${quiz.id}" class="btn btn-info" style="color: white">Overview/Setting</a>
+                                            <a href="detail?action=view&id=${quiz.id}" class="btn btn-info" style="color: white">Overview/Setting</a>
                                         </div>
                                     </td>
                                 </tr>
@@ -242,7 +242,7 @@
                                         <c:set var="endPage" value="${totalPages}"/>
                                     </c:if>
                                     <c:set var="urlBase"
-                                           value="quizzeslist?subject=${subject}&testType=${testType}&search=${search}&sortField=${sortField}&sortOrder=${sortOrder}&pageSize=${pageSize}"/>
+                                           value="list?subject=${subject}&testType=${testType}&search=${search}&sortField=${sortField}&sortOrder=${sortOrder}&pageSize=${pageSize}"/>
 
                                     <c:if test="${currentPage > 1}">
                                         <li class="page-item">

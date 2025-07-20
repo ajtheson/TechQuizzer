@@ -9,7 +9,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 
-@WebServlet(name = "ToggleQuizStatusServlet", urlPatterns = {"/quiz/toggle-quiz-status"})
+@WebServlet(name = "ToggleQuizStatusServlet", urlPatterns = {"/management/quiz/toggle-quiz-status"})
 public class  ToggleQuizStatusServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -24,10 +24,10 @@ public class  ToggleQuizStatusServlet extends HttpServlet {
             dao.changeQuizStatus(id, status);
 
 
-            response.sendRedirect("quizzeslist");
+            response.sendRedirect("list");
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
-            response.sendRedirect("quizzeslist");
+            response.sendRedirect("list");
         }
     }
 }

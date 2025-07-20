@@ -70,7 +70,7 @@
     <div class="form-container">
         <h2 class="text-center mb-4">Create New Quiz</h2>
 
-        <form id="quizForm" method="POST" action="create_quiz">
+        <form id="quizForm" method="POST" action="create">
             <!-- Basic Quiz Information -->
             <div class="section-divider">
                 <h5 class="text-primary mb-3">Basic Information</h5>

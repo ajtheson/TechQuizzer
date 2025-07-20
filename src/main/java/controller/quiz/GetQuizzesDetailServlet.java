@@ -14,13 +14,13 @@ import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet(name = "GetQuizzesDetailServlet", urlPatterns = {"/quiz/get-quiz-detail"})
+@WebServlet(name = "GetQuizzesDetailServlet", urlPatterns = {"/management/quiz/detail"})
 public class GetQuizzesDetailServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
         UserDTO user = (UserDTO) session.getAttribute("user");
         if (user == null) {
-            response.sendRedirect(request.getContextPath() + "/login");
+            response.sendRedirect(request.getContextPath() + "/account/login");
             return;
         }
         String action = request.getParameter("action");
@@ -69,10 +69,10 @@ public class GetQuizzesDetailServlet extends HttpServlet {
                 request.setAttribute("listDimensionQuestion", listDimensionQuestion);
                 request.setAttribute("currentQuizType", currentQuizType);
 
-                request.getRequestDispatcher("quiz_detail.jsp").forward(request, response);
+                request.getRequestDispatcher("/quiz/quiz_detail.jsp").forward(request, response);
                 break;
             default:
-                response.sendRedirect("quizzeslist");
+                response.sendRedirect("list");
         }
     }
 
@@ -116,14 +116,14 @@ public class GetQuizzesDetailServlet extends HttpServlet {
                     request.setAttribute("levels",questionLevels);
 
                     session.setAttribute("toastNotification", "Update successfully.");
-                    response.sendRedirect("get-quiz-detail?action=view&id=" + id + "&tab=setting");
+                    response.sendRedirect("detail?action=view&id=" + id + "&tab=setting");
                 } catch (NumberFormatException e) {
                     request.setAttribute("error", "Invalid number input.");
-                    request.getRequestDispatcher("quiz_detail.jsp").forward(request, response);
+                    request.getRequestDispatcher("/quiz/quiz_detail.jsp").forward(request, response);
                 }
                 break;
             default:
-                response.sendRedirect("quizzeslist");
+                response.sendRedirect("list");
         }
     }
 }

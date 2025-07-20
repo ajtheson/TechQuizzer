@@ -43,7 +43,7 @@
             <li><a class="app-menu__item ${currentPage == 'lesson' ? 'active' : ''}" href="${pageContext.request.contextPath}/management/lesson/list"><i
                     class="app-menu__icon bi bi-journal"></i><span
                     class="app-menu__label">Subject Lesson</span></a></li>
-            <li><a class="app-menu__item ${currentPage == 'quiz' ? 'active' : ''}" href="${pageContext.request.contextPath}/quiz/quizzeslist"><i
+            <li><a class="app-menu__item ${currentPage == 'quiz' ? 'active' : ''}" href="${pageContext.request.contextPath}/management/quiz/list"><i
                     class="app-menu__icon bi bi-people-fill"></i><span
                     class="app-menu__label">Quiz List</span></a></li>
         </c:if>
@@ -53,7 +53,7 @@
             <li><a class="app-menu__item ${currentPage == 'lesson' ? 'active' : ''}" href="${pageContext.request.contextPath}/management/lesson/list-for-expert"><i
                     class="app-menu__icon bi bi-journal"></i><span
                     class="app-menu__label">Subject Lesson</span></a></li>
-            <li><a class="app-menu__item ${currentPage == 'quiz' ? 'active' : ''}" href="${pageContext.request.contextPath}/quiz/quizzeslist"><i
+            <li><a class="app-menu__item ${currentPage == 'quiz' ? 'active' : ''}" href="${pageContext.request.contextPath}/management/quiz/list"><i
                     class="app-menu__icon bi bi-card-checklist"></i><span
                     class="app-menu__label">Quiz List</span></a></li>
         </c:if>

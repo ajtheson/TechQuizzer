@@ -23,7 +23,7 @@
                   enctype="multipart/form-data">
                 <div class="col-5 mt-3">
                     <div style="width: 170px; height: 200px; margin: auto;">
-                        <img id="avatarPreview" src="../assets/images/avatar/default.webp"
+                        <img id="avatarPreview" src="${pageContext.request.contextPath}/assets/images/avatar/default.webp"
                              alt="preview avatar image"
                              style="width: 100%; height: 100%; object-fit: cover; border: #4d5154 solid 2px"/>
                     </div>
@@ -117,7 +117,7 @@
                     document.getElementById('gender').value = data.gender === true ? 'male' : (data.gender === false ? 'female' : 'null');
                     document.getElementById('emailSpan').textContent = data.email || '';
                     document.getElementById('mobile').textContent = data.mobile || '';
-                    document.getElementById('avatarPreview').src = 'assets/images/avatar/' + data.avatar
+                    document.getElementById('avatarPreview').src = '${pageContext.request.contextPath}/assets/images/avatar/' + data.avatar
                 }else {
                     alert("get user detail failed")
                 }

@@ -14,7 +14,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
-@WebServlet(name = "CreateQuizServlet", urlPatterns = { "/quiz/create_quiz" })
+@WebServlet(name = "CreateQuizServlet", urlPatterns = { "/management/quiz/create" })
 public class CreateQuizServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -53,7 +53,7 @@ public class CreateQuizServlet extends HttpServlet {
             request.setAttribute("lessons", lessons);
             request.setAttribute("testTypes", testTypes);
 
-            request.getRequestDispatcher("quiz_create.jsp").forward(request, response);
+            request.getRequestDispatcher("/quiz/quiz_create.jsp").forward(request, response);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -71,7 +71,7 @@ public class CreateQuizServlet extends HttpServlet {
         QuizSettingGroupDAO quizSettingGroupDAO = new QuizSettingGroupDAO();
         QuizDAO quizDAO = new QuizDAO();
         if (user == null) {
-            response.sendRedirect(request.getContextPath() + "/login");
+            response.sendRedirect(request.getContextPath() + "/account/login");
             return;
         }
 
@@ -176,7 +176,7 @@ public class CreateQuizServlet extends HttpServlet {
 
             // Success - redirect to quiz list or quiz detail
             session.setAttribute("toastNotification", "Quiz created successfully!");
-            response.sendRedirect("quizzeslist");
+            response.sendRedirect("list");
 
         } catch (NumberFormatException e) {
             request.setAttribute("errorMessage", "Invalid number format: " + e.getMessage());
