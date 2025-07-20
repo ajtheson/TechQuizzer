@@ -57,7 +57,7 @@
             <div class="tile">
                 <h3 class="tile-title">CREATE NEW SUBJECT</h3>
                 <div class="tile-body">
-                    <form action="create-subject" method="post" enctype="multipart/form-data" id="subjectForm">
+                    <form action="${pageContext.request.contextPath}/management/subject/create" method="post" enctype="multipart/form-data" id="subjectForm">
                         <div class="row align-items-start">
                             <div class="row col-md-8">
                                 <div class="mb-3">
@@ -163,7 +163,7 @@
 
                             <div class="mt-3 d-grid gap-2 d-md-flex justify-content-md-start">
                                 <button class="btn btn-primary" type="submit">Create Subject</button>
-                                <a href="manage-subject" class="btn btn-secondary">Cancel</a>
+                                <a href="list" class="btn btn-secondary">Cancel</a>
                             </div>
                         </div>
                     </form>
