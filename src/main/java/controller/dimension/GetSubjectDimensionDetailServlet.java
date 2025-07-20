@@ -12,7 +12,7 @@ import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
 
-@WebServlet(name = "GetSubjectDimensionDetailServlet", urlPatterns = "/dimension/dimension-detail")
+@WebServlet(name = "GetSubjectDimensionDetailServlet", urlPatterns = "/management/dimension/detail")
 public class GetSubjectDimensionDetailServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -32,6 +32,6 @@ public class GetSubjectDimensionDetailServlet extends HttpServlet {
         }
         request.setAttribute("dimension", dimension);
         request.setAttribute("currentUser", currentUser);
-        request.getRequestDispatcher("subject_dimension_detail.jsp").forward(request, response);
+        request.getRequestDispatcher("/dimension/subject_dimension_detail.jsp").forward(request, response);
     }
 }

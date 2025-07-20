@@ -9,7 +9,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 
-@WebServlet(name = "ToggleLessonStatusServlet", urlPatterns = {"/lesson/toggle-lesson-status-admin"})
+@WebServlet(name = "ToggleLessonStatusServlet", urlPatterns = {"/management/lesson/toggle-lesson-status-admin"})
 public class ToggleLessonStatusServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -28,7 +28,7 @@ public class ToggleLessonStatusServlet extends HttpServlet {
             response.sendRedirect("subject-lesson");
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
-            response.sendRedirect("subject-lesson");
+            response.sendRedirect("list");
         }
     }
 }

@@ -25,7 +25,7 @@
         </h1>
         <div class="btn-group ms-3">
             <a href="${pageContext.request.contextPath}/management/subject/edit?subject_id=${requestScope.subject.id}" class="btn btn-outline-primary">Overview</a>
-            <a href="${pageContext.request.contextPath}/dimension/subject-dimension?id=${requestScope.subject.id}" class="btn btn-outline-primary active fw-bold">Dimension</a>
+            <a href="${pageContext.request.contextPath}/management/dimension/list?id=${requestScope.subject.id}" class="btn btn-outline-primary active fw-bold">Dimension</a>
             <a href="${pageContext.request.contextPath}/price_package/list?subject_id=${requestScope.subject.id}" class="btn btn-outline-primary">Price
                 Package</a>
         </div>
@@ -36,12 +36,12 @@
             <div class="tile">
                 <div class="tile-body">
                     <div class="mb-3 text-start">
-                        <a href="dimension-create?id=${requestScope.subject.id}" class="btn btn-primary">
+                        <a href="create?id=${requestScope.subject.id}" class="btn btn-primary">
                             <i class="bi bi-plus-lg me-1"></i> Add new dimension
                         </a>
                     </div>
 
-                    <form method="get" action="subject-dimension" class="d-flex align-items-center gap-3 mb-3">
+                    <form method="get" action="list" class="d-flex align-items-center gap-3 mb-3">
                         Search:
                         <input type="text" name="search" value="${search}" />
                         <input type="hidden" name="id" value="${subjectId}" />
@@ -93,8 +93,8 @@
                                 </td>
                                 <td>
                                     <div class="d-flex justify-content-center gap-2">
-                                        <a style="color: white" href="dimension-detail?id=${dim.id}" class="btn btn-info btn-sm">View</a>
-                                        <a style="color: white" href="dimension-edit?id=${dim.id}" class="btn btn-warning btn-sm">Edit</a>
+                                        <a style="color: white" href="detail?id=${dim.id}" class="btn btn-info btn-sm">View</a>
+                                        <a style="color: white" href="edit?id=${dim.id}" class="btn btn-warning btn-sm">Edit</a>
                                     </div>
                                 </td>
                             </tr>
@@ -105,7 +105,7 @@
                     <div class="d-flex justify-content-end mt-3">
                         <nav aria-label="Page navigation">
                             <ul class="pagination">
-                                <c:set var="urlBase" value="subject-dimension?id=${requestScope.subject.id}&search=${search}&sortField=${sortField}&sortOrder=${sortOrder}&pageSize=${pageSize}" />
+                                <c:set var="urlBase" value="list?id=${requestScope.subject.id}&search=${search}&sortField=${sortField}&sortOrder=${sortOrder}&pageSize=${pageSize}" />
                                 <c:if test="${currentPage > 1}">
                                     <li class="page-item">
                                         <a class="page-link" href="${urlBase}&page=${currentPage - 1}">Previous</a>

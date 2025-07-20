@@ -17,7 +17,7 @@ import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet(name = "GetSubjectLessonListServletExpert", urlPatterns = {"/lesson/subject-lesson-expert"})
+@WebServlet(name = "GetSubjectLessonListServletExpert", urlPatterns = {"/management/lesson/list-for-expert"})
 public class GetSubjectLessonListServletForExpert extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -96,6 +96,6 @@ public class GetSubjectLessonListServletForExpert extends HttpServlet {
         request.setAttribute("pageSize", pageSize);
         request.setAttribute("totalPages", totalPages);
 
-        request.getRequestDispatcher("subject_lesson_expert.jsp").forward(request, response);
+        request.getRequestDispatcher("/lesson/subject_lesson_expert.jsp").forward(request, response);
     }
 }

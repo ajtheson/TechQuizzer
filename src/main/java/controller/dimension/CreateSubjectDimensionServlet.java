@@ -13,7 +13,7 @@ import service.SubjectService;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet(name = "CreateSubjectDimensionServlet", urlPatterns = {"/dimension/dimension-create"})
+@WebServlet(name = "CreateSubjectDimensionServlet", urlPatterns = {"/management/dimension/create"})
 public class CreateSubjectDimensionServlet extends HttpServlet {
 
     @Override
@@ -31,7 +31,7 @@ public class CreateSubjectDimensionServlet extends HttpServlet {
         SubjectService subjectService = new SubjectService();
         SubjectDTO subject = subjectService.toSubjectDTO(subjectDAO.getSubjectById(id));
         request.setAttribute("subject", subject);
-        request.getRequestDispatcher("subject_dimension_add.jsp").forward(request, response);
+        request.getRequestDispatcher("/dimension/subject_dimension_add.jsp").forward(request, response);
     }
 
     @Override
@@ -54,19 +54,19 @@ public class CreateSubjectDimensionServlet extends HttpServlet {
             for (Dimension dimension : dimensionList) {
                 if(dimension.getName().equalsIgnoreCase(name.trim())) {
                     session.setAttribute("toastNotification", "Duplicate dimension name");
-                    response.sendRedirect("dimension-create?id=" + subjectId);
+                    response.sendRedirect("create?id=" + subjectId);
                     return;
                 }
             }
             if(type.length()>6){
-                session.setAttribute("toastNotification", "Type too long, 6 characters allowed.");
-                response.sendRedirect("dimension-create?id=" + subjectId);
+                session.setAttribute("toastNotification", "Type too long, 6 characters allowed.  ");
+                response.sendRedirect("create?id=" + subjectId);
                 return;
             }
             boolean success = new DimensionDAO().insertDimension(name, type, description, subjectId);
             if (success) {
                 session.setAttribute("toastNotification", "Created successfully");
-                response.sendRedirect("subject-dimension?id=" + subjectId);
+                response.sendRedirect("list?id=" + subjectId);
             }
 
         } catch (Exception e) {

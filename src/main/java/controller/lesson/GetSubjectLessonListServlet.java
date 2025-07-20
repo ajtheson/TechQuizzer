@@ -17,7 +17,7 @@ import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet(name = "GetSubjectLessonListServlet", urlPatterns = {"/lesson/subject-lesson"})
+@WebServlet(name = "GetSubjectLessonListServlet", urlPatterns = {"/management/lesson/list"})
 public class GetSubjectLessonListServlet extends HttpServlet {
 
     @Override
@@ -96,6 +96,6 @@ public class GetSubjectLessonListServlet extends HttpServlet {
         request.setAttribute("pageSize", pageSize);
         request.setAttribute("totalPages", totalPages);
 
-        request.getRequestDispatcher("subject_lesson.jsp").forward(request, response);
+        request.getRequestDispatcher("/lesson/subject_lesson.jsp").forward(request, response);
     }
 }

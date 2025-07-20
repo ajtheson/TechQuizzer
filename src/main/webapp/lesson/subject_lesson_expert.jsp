@@ -28,12 +28,12 @@
             <div class="tile">
                 <div class="tile-body">
                     <div class="mb-3 text-start">
-                        <a href="lesson-create" class="btn btn-primary">
+                        <a href="create" class="btn btn-primary">
                             <i class="bi bi-plus-lg me-1"></i> Add new lesson
                         </a>
                     </div>
 
-                    <form method="get" action="subject-lesson-expert" class="d-flex align-items-center gap-3 mb-3">
+                    <form method="get" action="list-for-expert" class="d-flex align-items-center gap-3 mb-3">
                         <select name="subject" class="form-select" style="width: 250px;" onchange="this.form.submit()">
                             <option value="">All Subjects</option>
                             <c:forEach var="subject" items="${subjects}">
@@ -115,7 +115,7 @@
                     <div class="d-flex justify-content-end mt-3">
                         <nav aria-label="Page navigation">
                             <ul class="pagination">
-                                <c:set var="urlBase" value="subject-lesson-expert?subject=${subject}&lessonType=${lessonType}&search=${search}&sortField=${sortField}&sortOrder=${sortOrder}&pageSize=${pageSize}" />
+                                <c:set var="urlBase" value="list-for-expert?subject=${subject}&lessonType=${lessonType}&search=${search}&sortField=${sortField}&sortOrder=${sortOrder}&pageSize=${pageSize}" />
                                 <c:if test="${currentPage > 1}">
                                     <li class="page-item">
                                         <a class="page-link" href="${urlBase}&page=${currentPage - 1}">Previous</a>

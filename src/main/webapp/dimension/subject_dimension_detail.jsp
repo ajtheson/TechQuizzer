@@ -22,7 +22,7 @@
       <h1><i class="bi bi-diagram-3"></i> Dimension Detail</h1>
     </div>
     <ul class="app-breadcrumb breadcrumb">
-      <li class="breadcrumb-item"><a href="subject-dimension">Dimensions</a></li>
+      <li class="breadcrumb-item"><a href="list?id=${dimension.subjectDTO.id}">Dimensions</a></li>
       <li class="breadcrumb-item active">Detail</li>
     </ul>
   </div>
@@ -43,8 +43,8 @@
 
           <!-- Button -->
           <div class="mt-3">
-            <a href="subject-dimension?id=${dimension.subjectDTO.id}" class="btn btn-secondary">Back to List</a>
-            <a style="color: white" href="dimension-edit?id=${dimension.id}" class="btn btn-warning">Edit Dimension</a>
+            <a href="list?id=${dimension.subjectDTO.id}" class="btn btn-secondary">Back to List</a>
+            <a style="color: white" href="edit?id=${dimension.id}" class="btn btn-warning">Edit Dimension</a>
           </div>
         </div>
       </div>

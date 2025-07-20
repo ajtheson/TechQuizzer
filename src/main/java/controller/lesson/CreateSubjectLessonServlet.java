@@ -20,7 +20,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
-@WebServlet(name = "CreateSubjectLessonServlet", urlPatterns = {"/lesson/lesson-create"})
+@WebServlet(name = "CreateSubjectLessonServlet", urlPatterns = {"/management/lesson/create"})
 @MultipartConfig
 public class CreateSubjectLessonServlet extends HttpServlet {
     @Override
@@ -46,7 +46,7 @@ public class CreateSubjectLessonServlet extends HttpServlet {
         request.setAttribute("experts", experts);
         request.setAttribute("currentUser", currentUser);
 
-        request.getRequestDispatcher("subject_lesson_add.jsp").forward(request, response);
+        request.getRequestDispatcher("/lesson/subject_lesson_add.jsp").forward(request, response);
     }
 
     @Override
@@ -89,7 +89,7 @@ public class CreateSubjectLessonServlet extends HttpServlet {
         for (Lesson lesson : lessonList) {
             if (name.equalsIgnoreCase(lesson.getName())) {
                 session.setAttribute("toastNotification", "Duplicate subject lesson name.");
-                response.sendRedirect("lesson-create");
+                response.sendRedirect("create");
                 return;
             }
         }
@@ -106,9 +106,9 @@ public class CreateSubjectLessonServlet extends HttpServlet {
         }
         UserDTO user = (UserDTO) session.getAttribute("user");
         if(user.getRoleId() ==1){
-            response.sendRedirect("subject-lesson");
+            response.sendRedirect("list");
         } else if (user.getRoleId()==2) {
-            response.sendRedirect("subject-lesson-expert");
+            response.sendRedirect("list-for-expert");
         }
 
     }

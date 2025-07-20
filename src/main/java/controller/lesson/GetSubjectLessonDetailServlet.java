@@ -12,7 +12,7 @@ import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
 
-@WebServlet(name = "GetSubjectLessonDetailServlet", urlPatterns = {"/lesson/lesson-detail"})
+@WebServlet(name = "GetSubjectLessonDetailServlet", urlPatterns = {"/management/lesson/detail"})
 public class GetSubjectLessonDetailServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -43,6 +43,6 @@ public class GetSubjectLessonDetailServlet extends HttpServlet {
         }
         request.setAttribute("lesson", lesson);
         request.setAttribute("currentUser", currentUser);
-        request.getRequestDispatcher("subject_lesson_detail.jsp").forward(request, response);
+        request.getRequestDispatcher("/lesson/subject_lesson_detail.jsp").forward(request, response);
     }
 }

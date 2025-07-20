@@ -25,7 +25,7 @@
         <div class="col-md-8 offset-md-2">
             <div class="tile">
                 <div class="tile-body">
-                    <form method="post" action="dimension-create">
+                    <form method="post" action="create">
                         <input type="hidden" name="subjectId" value="${subject.id}" />
                         <div class="mb-3">
                             <label class="form-label">Name:</label>
@@ -44,7 +44,7 @@
 
                         </div>
                         <div class="mt-3">
-                            <a href="subject-dimension?id=${requestScope.subject.id}" class="btn btn-secondary">Back</a>
+                            <a href="list?id=${requestScope.subject.id}" class="btn btn-secondary">Back</a>
                             <button type="submit" class="btn btn-primary">Create</button>
                         </div>
                     </form>

@@ -40,7 +40,7 @@
                 class="app-menu__label">Subject List</span></a></li>
 
         <c:if test="${sessionScope.user.roleName == 'Admin'}">
-            <li><a class="app-menu__item ${currentPage == 'lesson' ? 'active' : ''}" href="${pageContext.request.contextPath}/lesson/subject-lesson"><i
+            <li><a class="app-menu__item ${currentPage == 'lesson' ? 'active' : ''}" href="${pageContext.request.contextPath}/management/lesson/list"><i
                     class="app-menu__icon bi bi-journal"></i><span
                     class="app-menu__label">Subject Lesson</span></a></li>
             <li><a class="app-menu__item ${currentPage == 'quiz' ? 'active' : ''}" href="${pageContext.request.contextPath}/quiz/quizzeslist"><i
@@ -50,7 +50,7 @@
 
 
         <c:if test="${sessionScope.user.roleName == 'Expert'}">
-            <li><a class="app-menu__item ${currentPage == 'lesson' ? 'active' : ''}" href="${pageContext.request.contextPath}/lesson/subject-lesson-expert"><i
+            <li><a class="app-menu__item ${currentPage == 'lesson' ? 'active' : ''}" href="${pageContext.request.contextPath}/management/lesson/list-for-expert"><i
                     class="app-menu__icon bi bi-journal"></i><span
                     class="app-menu__label">Subject Lesson</span></a></li>
             <li><a class="app-menu__item ${currentPage == 'quiz' ? 'active' : ''}" href="${pageContext.request.contextPath}/quiz/quizzeslist"><i

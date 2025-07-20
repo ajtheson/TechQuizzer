@@ -23,8 +23,13 @@
             <h1><i class="bi bi-journal-text"></i> Lesson Detail</h1>
         </div>
         <ul class="app-breadcrumb breadcrumb">
-            <li class="breadcrumb-item"><a href="lesson-list">Lessons</a></li>
-            <li class="breadcrumb-item active">Detail</li>
+            <c:if test="${currentUser != null && currentUser.roleId == 1}">
+                <li class="breadcrumb-item"><a href="list">Lesson List</a></li>
+            </c:if>
+            <c:if test="${currentUser != null && currentUser.roleId == 2}">
+                <li class="breadcrumb-item"><a href="list-for-expert">Lesson List</a></li>
+            </c:if>
+            <li class="breadcrumb-item active">Add Lesson</li>
         </ul>
     </div>
 
@@ -62,13 +67,14 @@
                         <c:choose>
                             <c:when test="${fn:endsWith(lesson.videoLink, '.mp4')}">
                                 <video width="100%" height="360" controls>
-                                    <source src="${pageContext.request.contextPath}/${lesson.videoLink}" type="video/mp4">
+                                    <source src="${pageContext.request.contextPath}/${lesson.videoLink}"
+                                            type="video/mp4">
                                     Your browser does not support the video tag.
                                 </video>
                             </c:when>
 
                             <c:when test="${fn:contains(lesson.videoLink, 'youtube.com/watch?v=')}">
-                                <c:set var="embedLink" value="${fn:replace(lesson.videoLink, 'watch?v=', 'embed/')}" />
+                                <c:set var="embedLink" value="${fn:replace(lesson.videoLink, 'watch?v=', 'embed/')}"/>
                                 <iframe width="100%" height="360"
                                         src="${embedLink}" frameborder="0"
                                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -84,8 +90,13 @@
 
                     <!-- Button -->
                     <div class="mt-3">
-                        <a href="subject-lesson" class="btn btn-secondary">Back to List</a>
-                        <a style="color: white" href="lesson-edit?id=${lesson.id}" class="btn btn-warning">Edit Lesson</a>
+                        <c:if test="${currentUser != null && currentUser.roleId == 1}">
+                            <a href="list" class="btn btn-secondary">Cancel</a>
+                        </c:if>
+                        <c:if test="${currentUser != null && currentUser.roleId == 2}">
+                            <a href="list-for-expert" class="btn btn-secondary">Cancel</a>
+                        </c:if>
+                        <a style="color: white" href="edit?id=${lesson.id}" class="btn btn-warning">Edit Lesson</a>
                     </div>
                 </div>
             </div>

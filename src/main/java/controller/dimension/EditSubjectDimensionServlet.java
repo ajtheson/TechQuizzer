@@ -14,7 +14,7 @@ import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet(name = "EditSubjectDimensionServlet", urlPatterns = {"/dimension/dimension-edit"})
+@WebServlet(name = "EditSubjectDimensionServlet", urlPatterns = {"/management/dimension/edit"})
 public class EditSubjectDimensionServlet extends HttpServlet {
 
     @Override
@@ -45,7 +45,7 @@ public class EditSubjectDimensionServlet extends HttpServlet {
         }
         request.setAttribute("dimension", dimension);
         request.setAttribute("currentUser", currentUser);
-        request.getRequestDispatcher("subject_dimension_edit.jsp").forward(request, response);
+        request.getRequestDispatcher("/dimension/subject_dimension_edit.jsp").forward(request, response);
     }
 
     @Override
@@ -65,7 +65,7 @@ public class EditSubjectDimensionServlet extends HttpServlet {
                 for (Dimension dimension : dimensionList) {
                     if(dimension.getName().equalsIgnoreCase(name.trim())) {
                         session.setAttribute("toastNotification", "Duplicate dimension name");
-                        response.sendRedirect("dimension-create?id=" + subjectId);
+                        response.sendRedirect("edit?id=" + subjectId);
                         return;
                     }
                 }
@@ -78,7 +78,7 @@ public class EditSubjectDimensionServlet extends HttpServlet {
                 session.setAttribute("toastNotification", "Update successfully");
             }
 
-            response.sendRedirect("dimension-edit?id=" + id);
+            response.sendRedirect("edit?id=" + id);
         } catch (Exception e) {
             e.printStackTrace();
             response.sendRedirect("error.jsp");

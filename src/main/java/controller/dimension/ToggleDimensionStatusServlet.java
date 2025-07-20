@@ -8,7 +8,7 @@ import jakarta.servlet.http.*;
 
 import java.io.IOException;
 
-@WebServlet(name = "ToggleDimensionStatusServlet", urlPatterns = {"/dimension/toggle-dimension-status"})
+@WebServlet(name = "ToggleDimensionStatusServlet", urlPatterns = {"/management/dimension/toggle-dimension-status"})
 public class ToggleDimensionStatusServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -33,7 +33,7 @@ public class ToggleDimensionStatusServlet extends HttpServlet {
             } else {
                 request.getSession().setAttribute("toastNotification", "Failed to update status.");
             }
-            response.sendRedirect("subject-dimension?id=" + subjectId);
+            response.sendRedirect("list?id=" + subjectId);
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -23,10 +23,10 @@
         </div>
         <ul class="app-breadcrumb breadcrumb">
             <c:if test="${currentUser != null && currentUser.roleId == 1}">
-                <li class="breadcrumb-item"><a href="subject-lesson">Lesson List</a></li>
+                <li class="breadcrumb-item"><a href="list">Lesson List</a></li>
             </c:if>
             <c:if test="${currentUser != null && currentUser.roleId == 2}">
-                <li class="breadcrumb-item"><a href="subject-lesson-expert">Lesson List</a></li>
+                <li class="breadcrumb-item"><a href="list-for-expert">Lesson List</a></li>
             </c:if>
             <li class="breadcrumb-item active">Add Lesson</li>
         </ul>
@@ -36,7 +36,7 @@
         <div class="col-md-8 offset-md-2">
             <div class="tile">
                 <div class="tile-body">
-                    <form action="lesson-create" method="post" enctype="multipart/form-data">
+                    <form action="create" method="post" enctype="multipart/form-data">
 
                         <div class="mb-3">
                             <label>Name</label>
@@ -126,10 +126,10 @@
 
                         <div class="mt-3">
                             <c:if test="${currentUser != null && currentUser.roleId == 1}">
-                                <a href="subject-lesson" class="btn btn-secondary">Cancel</a>
+                                <a href="list" class="btn btn-secondary">Cancel</a>
                             </c:if>
                             <c:if test="${currentUser != null && currentUser.roleId == 2}">
-                                <a href="subject-lesson-expert" class="btn btn-secondary">Cancel</a>
+                                <a href="list-for-expert" class="btn btn-secondary">Cancel</a>
                             </c:if>
                             <button type="submit" class="btn btn-primary">Add Lesson</button>
                         </div>

@@ -21,7 +21,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
-@WebServlet(name = "UpdateLessonServlet", urlPatterns = {"/lesson/lesson-edit"})
+@WebServlet(name = "UpdateLessonServlet", urlPatterns = {"/management/lesson/edit"})
 @MultipartConfig
 public class UpdateLessonServlet extends HttpServlet {
     @Override
@@ -46,7 +46,7 @@ public class UpdateLessonServlet extends HttpServlet {
         request.setAttribute("currentUser", currentUser);
         request.setAttribute("subjectList", subjectList);
         request.setAttribute("lessonTypeList", lessonTypeList);
-        request.getRequestDispatcher("subject_lesson_edit.jsp").forward(request, response);
+        request.getRequestDispatcher("/lesson/subject_lesson_edit.jsp").forward(request, response);
     }
 
     @Override
@@ -88,7 +88,7 @@ public class UpdateLessonServlet extends HttpServlet {
             for (Lesson lesson : lessonList) {
                 if (name.equals(lesson.getName())) {
                     session.setAttribute("toastNotification", "Duplicate subject lesson name.");
-                    response.sendRedirect("lesson-edit?id=" + id);
+                    response.sendRedirect("edit?id=" + id);
                     return;
                 }
             }
@@ -102,6 +102,6 @@ public class UpdateLessonServlet extends HttpServlet {
         }else {
             session.setAttribute("toastNotification", "Failed to create lesson.");
         }
-        response.sendRedirect("subject-lesson");
+        response.sendRedirect("list");
     }
 }

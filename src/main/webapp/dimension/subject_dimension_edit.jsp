@@ -20,7 +20,7 @@
             <h1><i class="bi bi-pencil-square"></i> Edit Dimension</h1>
         </div>
         <ul class="app-breadcrumb breadcrumb">
-            <li class="breadcrumb-item"><a href="subject-dimension?id=${dimension.subjectDTO.id}">Dimensions</a></li>
+            <li class="breadcrumb-item"><a href="list?id=${dimension.subjectDTO.id}">Dimensions</a></li>
             <li class="breadcrumb-item active">Edit</li>
         </ul>
     </div>
@@ -29,7 +29,7 @@
         <div class="col-md-8 offset-md-2">
             <div class="tile">
                 <div class="tile-body">
-                    <form method="post" action="dimension-edit">
+                    <form method="post" action="edit">
                         <input type="hidden" name="id" value="${dimension.id}"/>
 
                         <div class="mb-3">
@@ -54,7 +54,7 @@
                         </div>
 
                         <div class="mt-4 d-flex justify-content-between">
-                            <a href="subject-dimension?id=${dimension.subjectDTO.id}" class="btn btn-secondary">Cancel</a>
+                            <a href="list?id=${dimension.subjectDTO.id}" class="btn btn-secondary">Cancel</a>
                             <button type="submit" class="btn btn-primary">Save Changes</button>
                         </div>
                     </form>

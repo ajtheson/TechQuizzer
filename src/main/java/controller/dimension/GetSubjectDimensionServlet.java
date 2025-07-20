@@ -16,7 +16,7 @@ import service.SubjectService;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet(name = "GetSubjectDimensionServlet", urlPatterns = {"/dimension/subject-dimension"})
+@WebServlet(name = "GetSubjectDimensionServlet", urlPatterns = {"/management/dimension/list"})
 public class GetSubjectDimensionServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -50,13 +50,13 @@ public class GetSubjectDimensionServlet extends HttpServlet {
                     pageSize = tmp;
                 } else {
                     session.setAttribute("error", "Page size must be greater than 0.");
-                    response.sendRedirect("subject-lesson");
+                    response.sendRedirect("list");
                     return;
                 }
             }
         } catch (NumberFormatException e) {
             session.setAttribute("error", "Invalid pagination input.");
-            response.sendRedirect("subject-lesson");
+            response.sendRedirect("list");
             return;
         }
         int totalRecords = dimensionDAO.getTotalDimensionCount(subjectId,search);
@@ -75,6 +75,6 @@ public class GetSubjectDimensionServlet extends HttpServlet {
         request.setAttribute("pageSize", pageSize);
         request.setAttribute("totalPages", totalPages);
         request.setAttribute("subject", subject);
-        request.getRequestDispatcher("subject_dimension.jsp").forward(request, response);
+        request.getRequestDispatcher( "/dimension/subject_dimension.jsp").forward(request, response);
     }
 }
