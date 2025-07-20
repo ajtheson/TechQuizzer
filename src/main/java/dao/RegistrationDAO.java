@@ -357,4 +357,26 @@ public class RegistrationDAO extends DBContext {
 
     }
 
+    public boolean isRegistrationValid(int userId, int subjectId){
+        String sql = """
+                select r.valid_to
+                from registrations r join price_packages p on r.price_package_id = p.id
+                where r.user_id = ? and p.subject_id = ?
+                """;
+        try (PreparedStatement pstm = connection.prepareStatement(sql)) {
+            pstm.setInt(1, userId);
+            pstm.setInt(2, subjectId);
+            ResultSet rs = pstm.executeQuery();
+            Timestamp currentTime = Timestamp.valueOf(LocalDateTime.now());
+            while (rs.next()) {
+                Timestamp validToTime = rs.getTimestamp("valid_to");
+                if(validToTime != null && validToTime.after(currentTime)){
+                    return true;
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+        return false;
+    }
 }

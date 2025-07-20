@@ -154,7 +154,7 @@
                                     <img style="max-height: 250px; max-width: 375px; ${not empty requestScope.subject.thumbnail ? 'display:block' : 'display:none'}"
                                          alt="Thumbnail preview"
                                          id="thumbnailPreview"
-                                         src="assets/images/thumbnail/subject/${requestScope.subject.thumbnail}"/>
+                                         src="${pageContext.request.contextPath}/assets/images/thumbnail/subject/${requestScope.subject.thumbnail}"/>
                                 </div>
                             </div>
                             <div class="mb-3">
@@ -187,7 +187,7 @@
                                                           id="subjectDescriptionImageCaption">${subjectDescriptionImage.caption}</textarea>
                                             </div>
                                             <div class="col-md-6 d-flex justify-content-center">
-                                                <img src="assets/images/subject_description/${subjectDescriptionImage.url}" class="description_img_preview"
+                                                <img src="${pageContext.request.contextPath}/assets/images/subject_description/${subjectDescriptionImage.url}" class="description_img_preview"
                                                      id="subjectDescriptionImagePreview" alt="Preview">
                                             </div>
                                         </div>

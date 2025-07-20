@@ -1,14 +1,8 @@
 package controller.subject;
 
-import dao.CategoryDAO;
-import dao.SubjectDAO;
-import dao.SubjectDescriptionImageDAO;
-import dao.UserDAO;
+import dao.*;
 import dto.SubjectDTO;
-import entity.Category;
-import entity.Subject;
-import entity.SubjectDescriptionImage;
-import entity.User;
+import entity.*;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
@@ -32,6 +26,9 @@ public class EditSubjectServlet extends HttpServlet {
         //get id from url
         int id = Integer.parseInt(request.getParameter("subject_id"));
 
+        HttpSession session = request.getSession();
+        String subjectName = (String) session.getAttribute("subjectName");
+
         //Init needed DAO
         SubjectDAO subjectDAO = new SubjectDAO();
         CategoryDAO categoryDAO = new CategoryDAO();
@@ -42,6 +39,10 @@ public class EditSubjectServlet extends HttpServlet {
         ArrayList<User> experts = userDAO.getAllExpert();
         SubjectService subjectService = new SubjectService();
         SubjectDTO subject = subjectService.toSubjectDTO(subjectDAO.getSubjectById(id));
+        if (subjectName != null && !subjectName.isEmpty()) {
+            subject.setName(subjectName);
+            session.removeAttribute("subjectName");
+        }
         subject.setOwnerName(userDAO.getUserById(subject.getOwnerId()).getName());
         subject.setLongDescription(subject.getLongDescription().replace("\\n", "\n"));
         List<SubjectDescriptionImage> subjectDescriptionImages = subjectDescriptionImageDAO.getAllImageBySubjectId(subject.getId());
@@ -64,12 +65,17 @@ public class EditSubjectServlet extends HttpServlet {
         String categoryIdParam = request.getParameter("subjectCategory");
         String ownerIdParam = request.getParameter("owner");
 
-        String name = request.getParameter("subjectName");
-        String status = request.getParameter("status");
-        String subjectDescription = request.getParameter("subjectDescription").replace("\n", "\\n");
-        String tagLine = request.getParameter("tagLine");
+        String name = request.getParameter("subjectName").trim();
+        String status = request.getParameter("status").trim();
+        String subjectDescription = request.getParameter("subjectDescription").replace("\n", "\\n").trim();
+        String tagLine = request.getParameter("tagLine").trim();
         boolean isFeatured = request.getParameter("featured") != null;
         Part thumbnailPart = request.getPart("thumbnail");
+
+        SubjectDAO subjectDAO = new SubjectDAO();
+        PricePackageDAO pricePackageDAO = new PricePackageDAO();
+        HttpSession session = request.getSession();
+        List<Subject> subjects = subjectDAO.getAllSubjects();
 
         int subjectId = 0;
         int categoryId = 0;
@@ -82,7 +88,23 @@ public class EditSubjectServlet extends HttpServlet {
             System.out.println("Number format exception: " + e.getMessage());
         }
 
-        SubjectDAO subjectDAO = new SubjectDAO();
+        for (Subject subject : subjects) {
+            if (subject.getName().equals(name) && subject.getId() != subjectId) {
+                session.setAttribute("toastNotification", "Subject name is existed");
+                session.setAttribute("subjectName", name);
+                response.sendRedirect("edit?subject_id=" + subjectId);
+                return;
+            }
+        }
+
+        List<PricePackage> pricePackages = pricePackageDAO.getActiveOfSubject(subjectId);
+        if (pricePackages.isEmpty() && status.equals("Published")) {
+            session.setAttribute("toastNotification", "Cannot publish subject with active price package");
+            session.setAttribute("subjectName", name);
+            response.sendRedirect("edit?subject_id=" + subjectId);
+            return;
+        }
+
         Subject subject = new Subject();
         subject.setId(subjectId);
         subject.setName(name);
@@ -102,8 +124,7 @@ public class EditSubjectServlet extends HttpServlet {
             ImageUploader.deleteImage(thumbnailDirectory, subjectDAO.getSubjectById(subjectId).getThumbnail());
             subject.setThumbnail(thumbnailName);
             ImageUploader.saveImage(thumbnailDirectory, thumbnailName, thumbnailPart);
-        }
-        else{
+        } else {
             subject.setThumbnail(subjectDAO.getSubjectById(subjectId).getThumbnail());
         }
 
@@ -233,7 +254,6 @@ public class EditSubjectServlet extends HttpServlet {
             }
         }
 
-        HttpSession session = request.getSession();
         session.setAttribute("toastNotification", "Subject has been updated successfully.");
         // Redirect về trang detail
         response.sendRedirect("edit?subject_id=" + subjectId);

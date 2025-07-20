@@ -17,6 +17,7 @@ import jakarta.servlet.http.HttpSession;
 import service.SubjectService;
 
 import java.io.IOException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -55,8 +56,10 @@ public class ManageSubjectServlet extends HttpServlet {
         if (request.getParameter("size") != null) {
             size = Integer.parseInt(request.getParameter("size"));
         }
+        String encodedSearch = "";
         if (request.getParameter("search") != null) {
             search = request.getParameter("search");
+            encodedSearch = URLEncoder.encode(search, "UTF-8");
         }
         if (request.getParameter("categoryId") != null) {
             categoryId = Integer.parseInt(request.getParameter("categoryId"));
@@ -87,6 +90,7 @@ public class ManageSubjectServlet extends HttpServlet {
         request.setAttribute("totalPages", totalPages);
         request.setAttribute("size", size);
         request.setAttribute("search", search);
+        request.setAttribute("encodedSearch", encodedSearch);
         if (!status.equals("")){
             request.setAttribute("status", status);
         }

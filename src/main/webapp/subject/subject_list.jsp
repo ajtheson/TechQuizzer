@@ -223,21 +223,21 @@
                         <c:if test="${page > 1}">
                             <li class="page-item">
                                 <a class="page-link"
-                                   href="?page=${requestScope.page - 1}&size=${requestScope.size}&${not empty requestScope.search ? '&search='.concat(requestScope.search) : ''}${requestScope.isFeatured ? '&isFeatured=true' : ''}${requestScope.categoryId != 0 ? '&categoryId='.concat(requestScope.categoryId) : ''}&sortOrder=${requestScope.sortOrder}">Previous</a>
+                                   href="?page=${requestScope.page - 1}&size=${requestScope.size}&${not empty requestScope.search ? '&search='.concat(requestScope.encodedSearch) : ''}${requestScope.isFeatured ? '&isFeatured=true' : ''}${requestScope.categoryId != 0 ? '&categoryId='.concat(requestScope.categoryId) : ''}&sortOrder=${requestScope.sortOrder}">Previous</a>
                             </li>
                         </c:if>
 
                         <c:forEach begin="1" end="${totalPages}" var="i">
                             <li class="page-item ${i == page ? 'active' : ''}">
                                 <a class="page-link"
-                                   href="?page=${i}&size=${requestScope.size}&${not empty requestScope.search ? '&search='.concat(requestScope.search) : ''}${requestScope.isFeatured ? '&isFeatured=true' : ''}${requestScope.categoryId != 0 ? '&categoryId='.concat(requestScope.categoryId) : ''}&sortOrder=${requestScope.sortOrder}">${i}</a>
+                                   href="?page=${i}&size=${requestScope.size}&${not empty requestScope.search ? '&search='.concat(requestScope.encodedSearch) : ''}${requestScope.isFeatured ? '&isFeatured=true' : ''}${requestScope.categoryId != 0 ? '&categoryId='.concat(requestScope.categoryId) : ''}&sortOrder=${requestScope.sortOrder}">${i}</a>
                             </li>
                         </c:forEach>
 
                         <c:if test="${page < totalPages}">
                             <li class="page-item">
                                 <a class="page-link"
-                                   href="?page=${requestScope.page + 1}&size=${requestScope.size}&${not empty requestScope.search ? '&search='.concat(requestScope.search) : ''}${requestScope.isFeatured ? '&isFeatured=true' : ''}${requestScope.categoryId != 0 ? '&categoryId='.concat(requestScope.categoryId) : ''}&sortOrder=${requestScope.sortOrder}">Next</a>
+                                   href="?page=${requestScope.page + 1}&size=${requestScope.size}&${not empty requestScope.search ? '&search='.concat(requestScope.encodedSearch) : ''}${requestScope.isFeatured ? '&isFeatured=true' : ''}${requestScope.categoryId != 0 ? '&categoryId='.concat(requestScope.categoryId) : ''}&sortOrder=${requestScope.sortOrder}">Next</a>
                             </li>
                         </c:if>
                     </ul>
@@ -261,7 +261,7 @@
         sizeInput = isNaN(sizeInput) || sizeInput < 1 ? 5 : sizeInput;
         let url = "?page=1&size=" + sizeInput
         if (search.length > 0) {
-            url += "&search=" + search
+            url += "&search=" + encodeURIComponent(search)
         }
         if (isFeatured) {
             url += "&isFeatured=true"
@@ -286,7 +286,7 @@
         let searchInput = document.getElementById("searchInput").value.trim()
         let url = "?page=1&size=" + size
         if (searchInput.length > 0) {
-            url += "&search=" + searchInput
+            url += "&search=" + encodeURIComponent(searchInput)
         }
         if (isFeatured) {
             url += "&isFeatured=true"
@@ -310,7 +310,7 @@
     document.getElementById("featuredCheckbox").addEventListener("change", (e) => {
         let url = "?page=1&size=" + size
         if (search.length > 0) {
-            url += "&search=" + search
+            url += "&search=" + encodeURIComponent(search)
         }
         if (e.target.checked) {
             url += "&isFeatured=true"
@@ -328,7 +328,7 @@
     document.getElementById("categoryList").addEventListener("change", (e) => {
         let url = "?page=1&size=" + size
         if (search.length > 0) {
-            url += "&search=" + search
+            url += "&search=" + encodeURIComponent(search)
         }
         if (isFeatured) {
             url += "&isFeatured=true"
@@ -346,7 +346,7 @@
     document.getElementById("clearCategoryBtn").addEventListener("click", () => {
         let url = "?page=1&size=" + size;
         if (search.length > 0) {
-            url += "&search=" + search;
+            url += "&search=" + encodeURIComponent(search);
         }
         if (isFeatured) {
             url += "&isFeatured=true";
@@ -361,7 +361,7 @@
     document.getElementById("sortOrderSelect").addEventListener("change", (e) => {
         let url = "?page=1&size=" + size
         if (search.length > 0) {
-            url += "&search=" + search
+            url += "&search=" + encodeURIComponent(search)
         }
         if (isFeatured) {
             url += "&isFeatured=true"

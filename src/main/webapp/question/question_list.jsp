@@ -195,21 +195,21 @@
                                 <c:if test="${page > 1}">
                                     <li class="page-item">
                                         <a class="page-link"
-                                           href="?page=${requestScope.page - 1}&size=${requestScope.size}${not empty requestScope.search ? '&search='.concat(requestScope.search) : ''}${requestScope.subjectId != 0 ? '&subjectId='.concat(requestScope.subjectId) : ''}${requestScope.dimensionId != 0 ? '&dimensionId='.concat(requestScope.dimensionId) : ''}${requestScope.lessonId != 0 ? '&lessonId='.concat(requestScope.lessonId) : ''}${requestScope.levelId != 0 ? '&levelId='.concat(requestScope.levelId) : ''}${not empty requestScope.status ? '&status='.concat(requestScope.status) : ''}">Previous</a>
+                                           href="?page=${requestScope.page - 1}&size=${requestScope.size}${not empty requestScope.search ? '&search='.concat(requestScope.encodedSearch) : ''}${requestScope.subjectId != 0 ? '&subjectId='.concat(requestScope.subjectId) : ''}${requestScope.dimensionId != 0 ? '&dimensionId='.concat(requestScope.dimensionId) : ''}${requestScope.lessonId != 0 ? '&lessonId='.concat(requestScope.lessonId) : ''}${requestScope.levelId != 0 ? '&levelId='.concat(requestScope.levelId) : ''}${not empty requestScope.status ? '&status='.concat(requestScope.status) : ''}">Previous</a>
                                     </li>
                                 </c:if>
 
                                 <c:forEach begin="${startPage}" end="${endPage}" var="i">
                                     <li class="page-item ${i == page ? 'active' : ''}">
                                         <a class="page-link"
-                                           href="?page=${i}&size=${requestScope.size}${not empty requestScope.search ? '&search='.concat(requestScope.search) : ''}${requestScope.subjectId != 0 ? '&subjectId='.concat(requestScope.subjectId) : ''}${requestScope.dimensionId != 0 ? '&dimensionId='.concat(requestScope.dimensionId) : ''}${requestScope.lessonId != 0 ? '&lessonId='.concat(requestScope.lessonId) : ''}${requestScope.levelId != 0 ? '&levelId='.concat(requestScope.levelId) : ''}${not empty requestScope.status ? '&status='.concat(requestScope.status) : ''}">${i}</a>
+                                           href="?page=${i}&size=${requestScope.size}${not empty requestScope.search ? '&search='.concat(requestScope.encodedSearch) : ''}${requestScope.subjectId != 0 ? '&subjectId='.concat(requestScope.subjectId) : ''}${requestScope.dimensionId != 0 ? '&dimensionId='.concat(requestScope.dimensionId) : ''}${requestScope.lessonId != 0 ? '&lessonId='.concat(requestScope.lessonId) : ''}${requestScope.levelId != 0 ? '&levelId='.concat(requestScope.levelId) : ''}${not empty requestScope.status ? '&status='.concat(requestScope.status) : ''}">${i}</a>
                                     </li>
                                 </c:forEach>
 
                                 <c:if test="${page < totalPages}">
                                     <li class="page-item">
                                         <a class="page-link"
-                                           href="?page=${requestScope.page + 1}&size=${requestScope.size}${not empty requestScope.search ? '&search='.concat(requestScope.search) : ''}${requestScope.subjectId != 0 ? '&subjectId='.concat(requestScope.subjectId) : ''}${requestScope.dimensionId != 0 ? '&dimensionId='.concat(requestScope.dimensionId) : ''}${requestScope.lessonId != 0 ? '&lessonId='.concat(requestScope.lessonId) : ''}${requestScope.levelId != 0 ? '&levelId='.concat(requestScope.levelId) : ''}${not empty requestScope.status ? '&status='.concat(requestScope.status) : ''}">Next</a>
+                                           href="?page=${requestScope.page + 1}&size=${requestScope.size}${not empty requestScope.search ? '&search='.concat(requestScope.encodedSearch) : ''}${requestScope.subjectId != 0 ? '&subjectId='.concat(requestScope.subjectId) : ''}${requestScope.dimensionId != 0 ? '&dimensionId='.concat(requestScope.dimensionId) : ''}${requestScope.lessonId != 0 ? '&lessonId='.concat(requestScope.lessonId) : ''}${requestScope.levelId != 0 ? '&levelId='.concat(requestScope.levelId) : ''}${not empty requestScope.status ? '&status='.concat(requestScope.status) : ''}">Next</a>
                                     </li>
                                 </c:if>
                             </ul>
@@ -278,7 +278,7 @@
         } else {
             let url = "?page=1&size=" + sizeValue;
             if (search.length > 0) {
-                url += "&search=" + search
+                url += "&search=" + encodeURIComponent(search)
             }
             if (subjectId !== 0) {
                 url += "&subjectId=" + subjectId
@@ -304,7 +304,7 @@
         let searchInput = document.getElementById("searchInput").value.trim()
         let url = "?page=1&size=" + size
         if (searchInput.length > 0) {
-            url += "&search=" + searchInput
+            url += "&search=" + encodeURIComponent(searchInput)
         }
         if (subjectId !== 0) {
             url += "&subjectId=" + subjectId
@@ -328,7 +328,7 @@
     subjectFilter.addEventListener("change", (e) => {
         let url = "?page=1&size=" + size
         if (search.length > 0) {
-            url += "&search=" + search
+            url += "&search=" + encodeURIComponent(search)
         }
         if (e.target.value != null) {
             url += "&subjectId=" + e.target.value
@@ -352,7 +352,7 @@
     dimensionFilter.addEventListener("change", (e) => {
         let url = "?page=1&size=" + size
         if (search.length > 0) {
-            url += "&search=" + search
+            url += "&search=" + encodeURIComponent(search)
         }
         if (subjectId !== 0) {
             url += "&subjectId=" + subjectId
@@ -384,7 +384,7 @@
     lessonFilter.addEventListener("change", (e) => {
         let url = "?page=1&size=" + size
         if (search.length > 0) {
-            url += "&search=" + search
+            url += "&search=" + encodeURIComponent(search)
         }
         if (subjectId !== 0) {
             url += "&subjectId=" + subjectId
@@ -416,7 +416,7 @@
     document.getElementById("levelFilter").addEventListener("change", (e) => {
         let url = "?page=1&size=" + size
         if (search.length > 0) {
-            url += "&search=" + search
+            url += "&search=" + encodeURIComponent(search)
         }
         if (subjectId !== 0) {
             url += "&subjectId=" + subjectId
@@ -440,7 +440,7 @@
     document.getElementById("statusFilter").addEventListener("change", (e) => {
         let url = "?page=1&size=" + size
         if (search.length > 0) {
-            url += "&search=" + search
+            url += "&search=" + encodeURIComponent(search)
         }
         if (subjectId !== 0) {
             url += "&subjectId=" + subjectId

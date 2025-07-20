@@ -30,7 +30,8 @@
             <div class="tile" style="background-color: rgb(55, 63, 73);">
                 <div class="row justify-content-center">
                     <div class="col-md-6">
-                        <a class="back_to_subjects_btn" href="${pageContext.request.contextPath}/subject/list"><h5 class="fw-bold"><i
+                        <a class="back_to_subjects_btn" href="${pageContext.request.contextPath}/subject/list"><h5
+                                class="fw-bold"><i
                                 class="bi bi-chevron-left"></i>Back to subjects</h5></a>
                         <h1 class="page-header fw-bold">${requestScope.subject.name}</h1>
                         <h5 class="tagline">${requestScope.subject.tagLine}</h5>
@@ -46,7 +47,7 @@
                 <div class="col-md-6">
                     <div class="tile mt-3 pb-3">
                         <h4 class="fw-bold">Description</h4>
-                        <span>
+                        <span style="font-size: 15px" class="mt-3">
                             ${requestScope.subject.longDescription}
                         </span>
                     </div>
@@ -57,7 +58,7 @@
                             <div class="row">
                                 <c:forEach items="${requestScope.subjectDescriptionImages}" var="image">
                                     <div class="col-md-4 mb-3">
-                                        <img src="assets/images/subject_description/${image.url}"
+                                        <img src="${pageContext.request.contextPath}/assets/images/subject_description/${image.url}"
                                              alt="Subject Image"
                                              class="subject-image">
                                     </div>
@@ -101,6 +102,24 @@
                             </tbody>
                         </table>
                     </div>
+
+                    <div class="tile mt-3 pt-3 pb-3">
+                        <h4 class="fw-bold">Lesson</h4>
+                        <c:forEach items="${requestScope.lessons}" var="lesson">
+                            <div class="d-flex justify-content-between align-items-center py-2 border-bottom">
+                                <span class="d-flex align-items-center" style="font-size: 15px;">
+                                    <i class="bi bi-journal me-2"></i> ${lesson.name}
+                                </span>
+                                <c:if test="${requestScope.isValidRegistration == true}">
+                                    <a class="btn btn-sm btn-outline-primary"
+                                       href="${pageContext.request.contextPath}/lesson/detail?id=${lesson.id}">
+                                        View lesson
+                                    </a>
+                                </c:if>
+                            </div>
+                        </c:forEach>
+                    </div>
+
                 </div>
                 <div class="col-md-4">
                     <div class="tile subject_card row">

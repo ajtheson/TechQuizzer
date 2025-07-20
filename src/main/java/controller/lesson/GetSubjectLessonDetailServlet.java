@@ -37,7 +37,10 @@ public class GetSubjectLessonDetailServlet extends HttpServlet {
         // Lấy user từ session
         HttpSession session = request.getSession(false);
         UserDTO currentUser = (session != null) ? (UserDTO) session.getAttribute("user") : null;
-
+        if (currentUser == null) {
+            response.sendRedirect(request.getContextPath() + "/account/login");
+            return;
+        }
         request.setAttribute("lesson", lesson);
         request.setAttribute("currentUser", currentUser);
         request.getRequestDispatcher("subject_lesson_detail.jsp").forward(request, response);

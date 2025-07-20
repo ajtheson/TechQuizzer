@@ -29,7 +29,10 @@ public class CreateSubjectLessonServlet extends HttpServlet {
 
         HttpSession session = request.getSession(false);
         UserDTO currentUser = (session != null) ? (UserDTO) session.getAttribute("user") : null;
-
+        if (currentUser == null) {
+            response.sendRedirect(request.getContextPath() + "/account/login");
+            return;
+        }
         UserDAO userDAO = new UserDAO();
         SubjectDAO subjectDAO = new SubjectDAO();
         LessonTypeDAO lessonTypeDAO = new LessonTypeDAO();

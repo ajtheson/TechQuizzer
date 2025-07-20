@@ -15,6 +15,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -60,8 +61,10 @@ public class GetQuestionListServlet extends HttpServlet {
         if (request.getParameter("size") != null) {
             size = Integer.parseInt(request.getParameter("size"));
         }
+        String encodedSearch = "";
         if (request.getParameter("search") != null) {
             search = request.getParameter("search");
+            encodedSearch = URLEncoder.encode(search, "UTF-8");
         }
         if (request.getParameter("subjectId") != null) {
             subjectId = Integer.parseInt(request.getParameter("subjectId"));
@@ -111,6 +114,7 @@ public class GetQuestionListServlet extends HttpServlet {
         request.setAttribute("lessonId", lessonId);
         request.setAttribute("levelId", levelId);
         request.setAttribute("search", search);
+        request.setAttribute("encodedSearch", encodedSearch);
         request.setAttribute("subjects", subjects);
         request.setAttribute("dimensions", dimensions);
         request.setAttribute("lessons", lessons);

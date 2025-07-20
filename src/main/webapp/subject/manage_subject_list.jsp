@@ -145,21 +145,21 @@
                                 <c:if test="${page > 1}">
                                     <li class="page-item">
                                         <a class="page-link"
-                                           href="?page=${requestScope.page - 1}&size=${requestScope.size}${not empty requestScope.search ? '&search='.concat(requestScope.search) : ''}${requestScope.categoryId != 0 ? '&categoryId='.concat(requestScope.categoryId) : ''}${not empty requestScope.status ? '&status='.concat(requestScope.status) : ''}">Previous</a>
+                                           href="?page=${requestScope.page - 1}&size=${requestScope.size}${not empty requestScope.search ? '&search='.concat(requestScope.encodedSearch) : ''}${requestScope.categoryId != 0 ? '&categoryId='.concat(requestScope.categoryId) : ''}${not empty requestScope.status ? '&status='.concat(requestScope.status) : ''}">Previous</a>
                                     </li>
                                 </c:if>
 
                                 <c:forEach begin="${startPage}" end="${endPage}" var="i">
                                     <li class="page-item ${i == page ? 'active' : ''}">
                                         <a class="page-link"
-                                           href="?page=${i}&size=${requestScope.size}${not empty requestScope.search ? '&search='.concat(requestScope.search) : ''}${requestScope.categoryId != 0 ? '&categoryId='.concat(requestScope.categoryId) : ''}${not empty requestScope.status ? '&status='.concat(requestScope.status) : ''}">${i}</a>
+                                           href="?page=${i}&size=${requestScope.size}${not empty requestScope.search ? '&search='.concat(requestScope.encodedSearch) : ''}${requestScope.categoryId != 0 ? '&categoryId='.concat(requestScope.categoryId) : ''}${not empty requestScope.status ? '&status='.concat(requestScope.status) : ''}">${i}</a>
                                     </li>
                                 </c:forEach>
 
                                 <c:if test="${page < totalPages}">
                                     <li class="page-item">
                                         <a class="page-link"
-                                           href="?page=${requestScope.page + 1}&size=${requestScope.size}${not empty requestScope.search ? '&search='.concat(requestScope.search) : ''}${requestScope.categoryId != 0 ? '&categoryId='.concat(requestScope.categoryId) : ''}${not empty requestScope.status ? '&status='.concat(requestScope.status) : ''}">Next</a>
+                                           href="?page=${requestScope.page + 1}&size=${requestScope.size}${not empty requestScope.search ? '&search='.concat(requestScope.encodedSearch) : ''}${requestScope.categoryId != 0 ? '&categoryId='.concat(requestScope.categoryId) : ''}${not empty requestScope.status ? '&status='.concat(requestScope.status) : ''}">Next</a>
                                     </li>
                                 </c:if>
 
@@ -223,7 +223,7 @@
         else{
             let url = "?page=1&size=" + sizeValue;
             if (search.length > 0) {
-                url += "&search=" + search
+                url += "&search=" + encodeURIComponent(search)
             }
             if (categoryId !== 0) {
                 url += "&categoryId=" + categoryId
@@ -240,7 +240,7 @@
         let searchInput = document.getElementById("searchInput").value.trim()
         let url = "?page=1&size=" + size
         if (searchInput.length > 0) {
-            url += "&search=" + searchInput
+            url += "&search=" + encodeURIComponent(searchInput)
         }
         if (categoryId !== 0) {
             url += "&categoryId=" + categoryId
@@ -255,7 +255,7 @@
     document.getElementById("categoryList").addEventListener("change", (e) => {
         let url = "?page=1&size=" + size
         if (search.length > 0) {
-            url += "&search=" + search
+            url += "&search=" + encodeURIComponent(search)
         }
         if (e.target.value != null) {
             url += "&categoryId=" + e.target.value
@@ -270,7 +270,7 @@
     document.getElementById("statusFilter").addEventListener("change", (e) => {
         let url = "?page=1&size=" + size
         if (search.length > 0) {
-            url += "&search=" + search
+            url += "&search=" + encodeURIComponent(search)
         }
         if (categoryId !== 0) {
             url += "&categoryId=" + categoryId

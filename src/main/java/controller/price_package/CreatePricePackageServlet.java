@@ -73,7 +73,7 @@ public class CreatePricePackageServlet extends HttpServlet {
             }
             else{
                 //Add toastNotification failed to session to show failed message in setting_list page
-                session.setAttribute("toastNotification", "Setting has been created failed. Please try again later.");
+                session.setAttribute("toastNotification", "Price package has been created failed. Please try again later.");
                 response.sendRedirect("list?subject_id=" + subjectID);
             }
         }

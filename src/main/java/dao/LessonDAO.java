@@ -446,6 +446,26 @@ public class LessonDAO extends DBContext {
         return false;
     }
 
-
-
+    public List<Lesson> getAllLessonsNameBySubject(int subjectId) {
+        List<Lesson> lessons = new ArrayList<>();
+        String sql = """
+                SELECT id, name
+                FROM lessons
+                WHERE subject_id = ? And status = 1
+                ORDER BY topic\s
+                """;
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setInt(1, subjectId);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Lesson l = new Lesson();
+                l.setId(rs.getInt("id"));
+                l.setName(rs.getString("name"));
+                lessons.add(l);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return lessons;
+    }
 }

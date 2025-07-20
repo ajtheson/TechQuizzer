@@ -1,11 +1,9 @@
 package controller.subject;
 
-import dao.PricePackageDAO;
-import dao.RegistrationDAO;
-import dao.SubjectDAO;
-import dao.SubjectDescriptionImageDAO;
+import dao.*;
 import dto.SubjectDTO;
 import dto.UserDTO;
+import entity.Lesson;
 import entity.PricePackage;
 import entity.Subject;
 import entity.SubjectDescriptionImage;
@@ -37,6 +35,7 @@ public class GetSubjectDetailServlet extends HttpServlet {
         PricePackageDAO pricePackageDAO = new PricePackageDAO();
         RegistrationDAO registrationDAO = new RegistrationDAO();
         SubjectDescriptionImageDAO subjectDescriptionImageDAO = new SubjectDescriptionImageDAO();
+        LessonDAO lessonDAO = new LessonDAO();
 
         //Get subjectId from request
         int subjectId = Integer.parseInt(request.getParameter("subject_id"));
@@ -59,12 +58,20 @@ public class GetSubjectDetailServlet extends HttpServlet {
         //Count discount
         int discount = (int)Math.ceil((minListPrice * 1.0 - minSalePrice)/minListPrice * 100);
 
+        //check if user's registration valid
+        boolean isValidRegistration = registrationDAO.isRegistrationValid(userID, subjectId);
+
+        //Get all lessons of this subject
+        List<Lesson> lessons = lessonDAO.getAllLessonsNameBySubject(subjectId);
+
         request.setAttribute("subject", subjectDTO);
         request.setAttribute("pricePackages", pricePackages);
         request.setAttribute("subjectDescriptionImages", subjectDescriptionImages);
         request.setAttribute("minListPrice", minListPrice);
         request.setAttribute("minSalePrice", minSalePrice);
         request.setAttribute("discount", discount);
+        request.setAttribute("isValidRegistration", isValidRegistration);
+        request.setAttribute("lessons", lessons);
         request.getRequestDispatcher("subject_detail.jsp").forward(request, response);
     }
 }

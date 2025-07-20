@@ -28,6 +28,10 @@ public class UpdateLessonServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession(false);
         UserDTO currentUser = (session != null) ? (UserDTO) session.getAttribute("user") : null;
+        if (currentUser == null) {
+            response.sendRedirect(request.getContextPath() + "/account/login");
+            return;
+        }
         int lessonId = Integer.parseInt(request.getParameter("id"));
         LessonDAO lessonDAO = new LessonDAO();
         LessonDTO lesson = lessonDAO.getLessonDTOById(lessonId);
