@@ -33,22 +33,35 @@ public class CreateQuizServlet extends HttpServlet {
             DimensionDAO dimensionDAO = new DimensionDAO();
             LessonDAO lessonDAO = new LessonDAO();
             TestTypeDAO testTypeDAO = new TestTypeDAO();
-            List<Subject> subjects = subjectDAO.getAllSubjects(user.getId());
+
+
             List<QuestionLevel> questionLevels = questionLevelDAO.findAll();
             List<Dimension> dimensions = new ArrayList<>();
             List<Lesson> lessons = new ArrayList<>();
-
-            for (Subject subject : subjects) {
-                dimensions.addAll(dimensionDAO.selectAllDimension(subject.getId()));
-                lessons.addAll(lessonDAO.selectAllLesson(subject.getId()));
+            if (user.getRoleId()==1){
+                List<Subject> subjects = subjectDAO.getAllSubjectsWithoutID();
+                request.setAttribute("subjects", subjects);
+                for (Subject subject : subjects) {
+                    dimensions.addAll(dimensionDAO.selectAllDimension(subject.getId()));
+                    lessons.addAll(lessonDAO.selectAllLesson(subject.getId()));
+                }
             }
+            if (user.getRoleId()==2){
+                List<Subject> subjects = subjectDAO.getAllSubjects(user.getId());
+                request.setAttribute("subjects", subjects);
+                for (Subject subject : subjects) {
+                    dimensions.addAll(dimensionDAO.selectAllDimension(subject.getId()));
+                    lessons.addAll(lessonDAO.selectAllLesson(subject.getId()));
+                }
+            }
+
 
             // Load test types
             List<TestType> testTypes = testTypeDAO.getAllTestTypes();
 
             // Set attributes for JSP
             request.setAttribute("levels", questionLevels);
-            request.setAttribute("subjects", subjects);
+
             request.setAttribute("dimensions", dimensions);
             request.setAttribute("lessons", lessons);
             request.setAttribute("testTypes", testTypes);

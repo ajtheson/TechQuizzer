@@ -80,32 +80,6 @@
                                 <option value="0">Inactive</option>
                             </select>
                         </div>
-
-                        <div class="mb-3">
-                            <c:if test="${currentUser != null && currentUser.roleId == 1}">
-                                <label>Expert:</label>
-                                <select class="form-control" id="owner" name="ownerId" required>
-                                    <option value="">--Choose owner--</option>
-                                    <c:forEach items="${requestScope.experts}" var="expert">
-                                        <option value="${expert.id}">${expert.name}</option>
-                                    </c:forEach>
-                                </select>
-                            </c:if>
-                            <c:if test="${currentUser != null && currentUser.roleId == 2}">
-                                <label>Expert:</label>
-                                <select class="form-control" id="owner" name="ownerId" disabled>
-                                    <option value="">--Choose owner--</option>
-                                    <c:forEach items="${requestScope.experts}" var="expert">
-                                        <option value="${expert.id}"
-                                                <c:if test="${expert.id == currentUser.id}">selected</c:if>>
-                                                ${expert.name}
-                                        </option>
-                                    </c:forEach>
-                                </select>
-                                <input type="hidden" name="ownerId" value="${currentUser.id}" />
-                            </c:if>
-                        </div>
-
                         <div class="mb-3">
                             <label>Subject</label>
                             <select class="form-select" name="subjectId">

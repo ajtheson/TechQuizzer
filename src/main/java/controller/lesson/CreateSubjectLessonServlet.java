@@ -36,12 +36,18 @@ public class CreateSubjectLessonServlet extends HttpServlet {
         UserDAO userDAO = new UserDAO();
         SubjectDAO subjectDAO = new SubjectDAO();
         LessonTypeDAO lessonTypeDAO = new LessonTypeDAO();
-
-        List<Subject> subjectList = subjectDAO.getAllSubjectsWithoutID();
+        if(currentUser.getRoleId()==2){
+            List<Subject> subjectList = subjectDAO.getAllSubjects(currentUser.getId());
+            request.setAttribute("subjectList", subjectList);
+        }
+        if(currentUser.getRoleId()==1){
+            List<Subject> subjectList = subjectDAO.getAllSubjectsWithoutID();
+            request.setAttribute("subjectList", subjectList);
+        }
         List<LessonType> lessonTypeList = lessonTypeDAO.getAllLessonTypes();
         ArrayList<User> experts = userDAO.getAllExpert();
 
-        request.setAttribute("subjectList", subjectList);
+
         request.setAttribute("lessonTypeList", lessonTypeList);
         request.setAttribute("experts", experts);
         request.setAttribute("currentUser", currentUser);
@@ -56,11 +62,9 @@ public class CreateSubjectLessonServlet extends HttpServlet {
         HttpSession session = request.getSession();
         String name = request.getParameter("name");
         String topic = request.getParameter("topic");
-//        String videoLink = request.getParameter("videoLink");
         int order = Integer.parseInt(request.getParameter("order"));
         String content = request.getParameter("content");
         int status = Integer.parseInt(request.getParameter("status"));
-        int ownerId = Integer.parseInt(request.getParameter("ownerId"));
         int subjectId = Integer.parseInt(request.getParameter("subjectId"));
         int lessonTypeId = Integer.parseInt(request.getParameter("lessonTypeId"));
         String videoType = request.getParameter("videoType");
@@ -93,10 +97,6 @@ public class CreateSubjectLessonServlet extends HttpServlet {
                 return;
             }
         }
-
-        SubjectDAO subjectDAO = new SubjectDAO();
-        subjectDAO.updateOwner(subjectId, ownerId);
-
         boolean inserted = dao.insertLesson(name, topic, videoLink, order, content, status, subjectId, lessonTypeId);
 
         if (inserted) {
