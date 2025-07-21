@@ -54,7 +54,7 @@ public class ExamAttemptService {
                     questions.addAll(questionSubList.subList(0, practice.getNumberOfQuestions()));
                 }
                 List<Integer> questionIds = questions.stream().map(q -> q.getId()).toList();
-                if (practice.getFormat().equals("multiple")) {
+                if (practice.getFormat().equalsIgnoreCase("multiple")) {
                     if (!new QuestionAttemptDAO().insertAllByExamAttemptIdAndQuestionIds(insertedExamAttemptId, questionIds)) {
                         throw new Exception("Question attempt not created");
                     }
@@ -82,7 +82,7 @@ public class ExamAttemptService {
                 }
 
                 List<Integer> questionIds = questions.stream().map(q -> q.getId()).toList();
-                if (quizDTO.getFormat().equals("multiple")) {
+                if (quizDTO.getFormat().equalsIgnoreCase("multiple")) {
                     if (!new QuestionAttemptDAO().insertAllByExamAttemptIdAndQuestionIds(insertedExamAttemptId, questionIds)) {
                         throw new Exception("Question attempt not created");
                     }

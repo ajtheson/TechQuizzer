@@ -103,8 +103,8 @@
                                 </td>
                                 <td>
                                     <div class="d-flex justify-content-center gap-2">
-                                        <a style="color: white" href="lesson-detail?id=${lesson.id}" class="btn btn-info">View</a>
-                                        <a style="color: white" href="lesson-edit?id=${lesson.id}" class="btn btn-warning">Edit</a>
+                                        <a style="color: white" href="detail?id=${lesson.id}" class="btn btn-info">View</a>
+                                        <a style="color: white" href="edit?id=${lesson.id}" class="btn btn-warning">Edit</a>
                                     </div>
                                 </td>
                             </tr>

@@ -372,6 +372,7 @@
     const seSubmitBtn = document.getElementById("seSubmitBtn"); //score exam submit button
     const popupPeekAtAnswer = document.getElementById("popupPeekAtAnswer");
     let countSecond = ${requestScope.questionAttempts[0].examAttempt.duration};
+    let isPractice = ${requestScope.questionAttempts[0].examAttempt.type.equalsIgnoreCase("Practice") ? true : false };
 
     //init question array
     <c:forEach var="qa" items="${requestScope.questionAttempts}">
@@ -697,9 +698,10 @@
 
     //update question attempt interval
     const callApiUpdateQuestionAttempt = () => {
+        const duration = isPractice ? countSecond : ${requestScope.questionAttempts[0].examAttempt.duration} - countSecond;
         const data = {
             questionAttempts: allQuestions,
-            duration: countSecond,
+            duration: duration,
             examAttemptId: ${requestScope.questionAttempts[0].examAttempt.id}
         }
         fetch('update-question-attempt', {
@@ -775,10 +777,10 @@
 
     //init UI
     const initQuiz = () => {
-        if (${requestScope.questionAttempts[0].examAttempt.type.equalsIgnoreCase("Practice")}) {
+        if (isPractice) {
             startCountUp(countSecond);
         } else {
-            startCountDown(${requestScope.questionAttempts[0].examAttempt.duration});
+            startCountDown(countSecond);
         }
         renderButton();
         renderQuestion(currentIndex);

@@ -101,10 +101,10 @@ public class QuizHandleServlet extends HttpServlet {
 
             String previousURL = (String) request.getSession().getAttribute("previousURL");
             if(previousURL.contains("practice/create")){
-                previousURL = previousURL.replace("practice/create", "practice/list?page=1&size=3");
+                previousURL = request.getContextPath() + "/practice/list?page=1&size=3";
             }
             else if(previousURL.contains("simulation/detail")){
-                previousURL = previousURL.replace("simulation/detail", "simulation/list?page=1&size=10");
+                previousURL = request.getContextPath() + "/simulation/list?page=1&size=10";
             }
             response.sendRedirect(previousURL);
         } catch (Exception e) {

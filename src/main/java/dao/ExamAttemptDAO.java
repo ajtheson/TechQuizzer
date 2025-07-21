@@ -1,12 +1,16 @@
 package dao;
 
 import dal.DBContext;
+import dto.ExamAttemptDTO;
 import entity.ExamAttempt;
+import entity.Quiz;
+import entity.QuizSetting;
+import entity.User;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Statement;
-import java.sql.Types;
+import java.sql.*;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ExamAttemptDAO extends DBContext {
 
@@ -55,6 +59,107 @@ public class ExamAttemptDAO extends DBContext {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public List<ExamAttempt> findAllByQuizId(int quizId) {
+        List<ExamAttempt> examAttempts = new ArrayList<>();
+        String sql = "SELECT * FROM [exam_attempts] WHERE [quiz_id] = ? AND is_taken = 1";
+        try(PreparedStatement pstm = connection.prepareStatement(sql)){
+            pstm.setInt(1, quizId);
+            try(ResultSet rs = pstm.executeQuery()){
+                if(rs.next()){
+                    ExamAttempt examAttempt = new ExamAttempt();
+                    examAttempt.setId(rs.getInt("id"));
+                    examAttempt.setType(rs.getString("type"));
+                    examAttempt.setStartDate(rs.getDate("start_date") != null ? rs.getDate("start_date").toLocalDate() : null);
+                    examAttempt.setDuration(rs.getInt("duration"));
+                    examAttempt.setNumberCorrectQuestions(rs.getInt("number_correct_question"));
+                    examAttempt.setUserId(rs.getInt("user_id"));
+                    examAttempt.setQuizId(quizId);
+
+                    examAttempts.add(examAttempt);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return examAttempts;
+    }
+
+    public List<ExamAttemptDTO> findAllByQuizIdWithPagination(int quizId, int page, int size, String search, LocalDate filter) {
+        List<ExamAttemptDTO> examAttemptDTOs = new ArrayList<>();
+        String sql = "select e.id, e.[type], e.[start_date], e.duration, e.number_correct_question, e.[user_id], u.[name], q.question_level_id, qs.number_question \n" +
+                "from exam_attempts e\n" +
+                "join quizzes q on e.quiz_id = q.id\n" +
+                "join users u on e.[user_id] = u.id\n" +
+                "join quiz_settings qs on q.quiz_setting_id = qs.id\n" +
+                "where q.id = ? and u.name like ? and (? is null or e.start_date = ?) \n" +
+                "ORDER BY [start_date] DESC " +
+                "OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+        try(PreparedStatement pstm = connection.prepareStatement(sql)){
+            int index = 1;
+            pstm.setInt(index++, quizId);
+            pstm.setString(index++, "%" + search + "%");
+            if(filter != null){
+                pstm.setDate(index++, Date.valueOf(filter));
+                pstm.setDate(index++, Date.valueOf(filter));
+            }else{
+                pstm.setDate(index++, null);
+                pstm.setDate(index++, null);
+            }
+            pstm.setInt(index++, (page - 1) * size);
+            pstm.setInt(index, size);
+            try(ResultSet rs = pstm.executeQuery()){
+                while(rs.next()){
+                    ExamAttemptDTO examAttemptDTO = new ExamAttemptDTO();
+
+                    examAttemptDTO.setId(rs.getInt("id"));
+                    examAttemptDTO.setType(rs.getString("type"));
+                    examAttemptDTO.setStartDate(rs.getDate("start_date") != null ? rs.getDate("start_date").toLocalDate() : null);
+                    examAttemptDTO.setDuration(rs.getInt("duration"));
+                    examAttemptDTO.setNumberCorrectQuestions(rs.getInt("number_correct_question"));
+                    examAttemptDTO.setNumberOfQuestions(rs.getInt("number_question") );
+
+                    User user = new User();
+                    user.setId(rs.getInt("user_id"));
+                    user.setName(rs.getString("name"));
+                    examAttemptDTO.setUser(user);
+
+
+                    examAttemptDTOs.add(examAttemptDTO);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return examAttemptDTOs;
+    }
+
+    public int countByQuizId(int quizId, String search, LocalDate filter) {
+        String sql = "select COUNT(*) \n" +
+                "from exam_attempts e\n" +
+                "join users u on e.[user_id] = u.id\n" +
+                "where e.quiz_id = ? and u.name like ? and (? is null or e.start_date = ?) \n";
+        try(PreparedStatement pstm = connection.prepareStatement(sql)){
+            int index = 1;
+            pstm.setInt(index++, quizId);
+            pstm.setString(index++, "%" + search + "%");
+            if(filter != null){
+                pstm.setDate(index++, Date.valueOf(filter));
+                pstm.setDate(index, Date.valueOf(filter));
+            }else{
+                pstm.setDate(index++, null);
+                pstm.setDate(index, null);
+            }
+            try(ResultSet rs = pstm.executeQuery()){
+                if(rs.next()){
+                    return rs.getInt(1);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
     }
 
     public ExamAttempt findByQuizIdAndUserId(int quizId, int userId){

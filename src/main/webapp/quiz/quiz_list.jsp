@@ -203,7 +203,7 @@
                                     </c:if>
 
                                     <td class="col-8">${quiz.testType.name}</td>
-                                    <td class="col-">
+                                    <td class="col-8">
                                         <c:choose>
                                             <c:when test="${quiz.status==1}">
                                                 <a href="toggle-quiz-status?action=changeStatus&id=${quiz.id}&status=0"
@@ -223,7 +223,10 @@
                                     </td>
                                     <td class="col-10">
                                         <div class="d-flex justify-content-center gap-2">
-                                            <a href="detail?action=view&id=${quiz.id}" class="btn btn-info" style="color: white">Overview/Setting</a>
+                                            <a href="detail?action=view&id=${quiz.id}" class="btn btn-info mb-1" style="color: white">Overview/Setting</a>
+                                        </div>
+                                        <div class="d-flex justify-content-center gap-2">
+                                            <a href="view-submission?id=${quiz.id}" class="btn btn-info" style="color: white">View submissions</a>
                                         </div>
                                     </td>
                                 </tr>

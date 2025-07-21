@@ -557,6 +557,8 @@
     const MAX_FILE_SIZE = 20 * 1024 * 1024;
     const toastElement = document.getElementById('toast');
     const toastElementBody = toastElement.querySelector('.toast-body');
+    let isPractice = ${requestScope.questionAttempts[0].examAttempt.type.equalsIgnoreCase("Practice") ? true : false };
+
 
     //init question array
     <c:forEach var="ea" items="${requestScope.essayAttempts}">
@@ -1038,7 +1040,8 @@
     const updateEssaySubmissionInterval = () => {
         setInterval(() => {
             const formData = new FormData();
-            formData.append("duration", countSecond);
+            const duration = isPractice ? countSecond : ${requestScope.essayAttempts[0].examAttempt.duration} - countSecond;
+            formData.append("duration", duration);
             formData.append("examAttemptId", '${requestScope.essayAttempts[0].examAttempt.id}');
             allEssayAttempts.forEach(ea => {
                 formData.append(`mark\${ea.id}`, ea.marked);
@@ -1066,7 +1069,8 @@
         window.onbeforeunload = null;
 
         const formData = new FormData();
-        formData.append("duration", countSecond);
+        const duration = isPractice ? countSecond : ${requestScope.essayAttempts[0].examAttempt.duration} - countSecond;
+        formData.append("duration", duration);
         formData.append("examAttemptId", '${requestScope.essayAttempts[0].examAttempt.id}');
         allEssayAttempts.forEach(ea => {
             formData.append(`mark\${ea.id}`, ea.marked);
@@ -1103,10 +1107,10 @@
 
     //init UI
     const initQuiz = () => {
-        if (${requestScope.essayAttempts[0].examAttempt.type.equalsIgnoreCase("Practice")}) {
+        if (isPractice) {
             startCountUp(countSecond);
         } else {
-            startCountDown(${requestScope.essayAttempts[0].examAttempt.duration} -countSecond);
+            startCountDown(countSecond);
         }
         renderButton();
         renderQuestion(currentIndex);
