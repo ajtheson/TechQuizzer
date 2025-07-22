@@ -445,7 +445,23 @@ public class LessonDAO extends DBContext {
         }
         return false;
     }
-
+    public boolean insertLessonQuiz(String name, String topic, int order, String content, int status, int subjectId, int lessonTypeId, Integer quizId) {
+        String sql = "INSERT INTO [lessons] (name, topic, [order], content, status, subject_id, lesson_type_id, lesson_quiz_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        try (PreparedStatement pstm = connection.prepareStatement(sql)) {
+            pstm.setString(1, name);
+            pstm.setString(2, topic);
+            pstm.setInt(3, order);
+            pstm.setString(4, content);
+            pstm.setInt(5, status);
+            pstm.setInt(6, subjectId);
+            pstm.setInt(7, lessonTypeId);
+            pstm.setInt(8, quizId);
+            return pstm.executeUpdate() > 0;
+        } catch (Exception e) {
+            System.err.println("Error inserting lesson: " + e.getMessage());
+        }
+        return false;
+    }
     public List<Lesson> getAllLessonsNameBySubject(int subjectId) {
         List<Lesson> lessons = new ArrayList<>();
         String sql = """

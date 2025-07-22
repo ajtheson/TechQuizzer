@@ -1,13 +1,8 @@
 package controller.lesson;
 
-import dao.LessonDAO;
-import dao.LessonTypeDAO;
-import dao.SubjectDAO;
-import dao.UserDAO;
-import entity.Lesson;
-import entity.LessonType;
-import entity.Subject;
-import entity.User;
+import dao.*;
+import dto.QuizDTO;
+import entity.*;
 import dto.UserDTO;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
@@ -36,12 +31,17 @@ public class CreateSubjectLessonServlet extends HttpServlet {
         UserDAO userDAO = new UserDAO();
         SubjectDAO subjectDAO = new SubjectDAO();
         LessonTypeDAO lessonTypeDAO = new LessonTypeDAO();
-        if(currentUser.getRoleId()==2){
+        QuizDAO quizDAO = new QuizDAO();
+        if (currentUser.getRoleId() == 2) {
+            List<QuizDTO> quizList = quizDAO.getQuizByCondition(currentUser.getId());
             List<Subject> subjectList = subjectDAO.getAllSubjects(currentUser.getId());
+            request.setAttribute("quizList", quizList);
             request.setAttribute("subjectList", subjectList);
         }
-        if(currentUser.getRoleId()==1){
+        if (currentUser.getRoleId() == 1) {
+            List<QuizDTO> quizList = quizDAO.getQuizByCondition(null);
             List<Subject> subjectList = subjectDAO.getAllSubjectsWithoutID();
+            request.setAttribute("quizList", quizList);
             request.setAttribute("subjectList", subjectList);
         }
         List<LessonType> lessonTypeList = lessonTypeDAO.getAllLessonTypes();
@@ -65,51 +65,84 @@ public class CreateSubjectLessonServlet extends HttpServlet {
         int order = Integer.parseInt(request.getParameter("order"));
         String content = request.getParameter("content");
         int status = Integer.parseInt(request.getParameter("status"));
-        int subjectId = Integer.parseInt(request.getParameter("subjectId"));
+
         int lessonTypeId = Integer.parseInt(request.getParameter("lessonTypeId"));
-        String videoType = request.getParameter("videoType");
-        String videoLink = null;
+        String quizParam = request.getParameter("quizId");
+        if (quizParam == null) {
+            int subjectId = Integer.parseInt(request.getParameter("subjectId"));
+            String videoType = request.getParameter("videoType");
+            String videoLink = null;
+            if ("youtube".equals(videoType)) {
+                videoLink = request.getParameter("videoLink").trim();
+            } else if ("upload".equals(videoType)) {
+                Part videoPart = request.getPart("videoFile");
+                if (videoPart != null && videoPart.getSize() > 0) {
+                    String fileName = Paths.get(videoPart.getSubmittedFileName()).getFileName().toString();
+                    String uploadDir = getServletContext().getRealPath("/assets/videos");
+                    File dir = new File(uploadDir);
+                    if (!dir.exists()) dir.mkdirs();
 
-        if ("youtube".equals(videoType)) {
-            videoLink = request.getParameter("videoLink").trim();
-        } else if ("upload".equals(videoType)) {
-            Part videoPart = request.getPart("videoFile");
-            if (videoPart != null && videoPart.getSize() > 0) {
-                String fileName = Paths.get(videoPart.getSubmittedFileName()).getFileName().toString();
-                String uploadDir = getServletContext().getRealPath("/assets/videos");
-                File dir = new File(uploadDir);
-                if (!dir.exists()) dir.mkdirs();
+                    String fullPath = uploadDir + File.separator + fileName;
+                    videoPart.write(fullPath);
 
-                String fullPath = uploadDir + File.separator + fileName;
-                videoPart.write(fullPath);
-
-                // Lưu link tương đối để hiển thị
-                videoLink = "assets/videos/" + fileName;
+                    // Lưu link tương đối để hiển thị
+                    videoLink = "assets/videos/" + fileName;
+                }
             }
-        }
-        LessonDAO dao = new LessonDAO();
-        List<Lesson> lessonList = dao.selectAllLesson(subjectId);
+            LessonDAO dao = new LessonDAO();
+            List<Lesson> lessonList = dao.selectAllLesson(subjectId);
 
-        for (Lesson lesson : lessonList) {
-            if (name.equalsIgnoreCase(lesson.getName())) {
-                session.setAttribute("toastNotification", "Duplicate subject lesson name.");
-                response.sendRedirect("create");
-                return;
+            for (Lesson lesson : lessonList) {
+                if (name.equalsIgnoreCase(lesson.getName())) {
+                    session.setAttribute("toastNotification", "Duplicate subject lesson name.");
+                    response.sendRedirect("create");
+                    return;
+                }
             }
-        }
-        boolean inserted = dao.insertLesson(name, topic, videoLink, order, content, status, subjectId, lessonTypeId);
+            boolean inserted = dao.insertLesson(name, topic, videoLink, order, content, status, subjectId, lessonTypeId);
 
-        if (inserted) {
-            session.setAttribute("toastNotification", "Lesson has been created successfully.");
+            if (inserted) {
+                session.setAttribute("toastNotification", "Lesson has been created successfully.");
+            } else {
+                session.setAttribute("toastNotification", "Failed to create lesson.");
+            }
+            UserDTO user = (UserDTO) session.getAttribute("user");
+            if (user.getRoleId() == 1) {
+                response.sendRedirect("list");
+            } else if (user.getRoleId() == 2) {
+                response.sendRedirect("list-for-expert");
+            }
+
         } else {
-            session.setAttribute("toastNotification", "Failed to create lesson.");
-        }
-        UserDTO user = (UserDTO) session.getAttribute("user");
-        if(user.getRoleId() ==1){
-            response.sendRedirect("list");
-        } else if (user.getRoleId()==2) {
-            response.sendRedirect("list-for-expert");
-        }
+            int quizId = Integer.parseInt(quizParam);
+            QuizDAO quizDAO = new QuizDAO();
+            Quiz quiz = quizDAO.findById(quizId);
+            int subjectId = quiz.getSubjectId();
+            LessonDAO dao = new LessonDAO();
+            List<Lesson> lessonList = dao.selectAllLesson(subjectId);
 
+            for (Lesson lesson : lessonList) {
+                if (name.equalsIgnoreCase(lesson.getName())) {
+                    session.setAttribute("toastNotification", "Duplicate subject lesson name.");
+                    response.sendRedirect("create");
+                    return;
+                }
+            }
+            boolean inserted = dao.insertLessonQuiz(name, topic, order, content, status, subjectId, lessonTypeId, quizId);
+
+            if (inserted) {
+                session.setAttribute("toastNotification", "Lesson has been created successfully.");
+            } else {
+                session.setAttribute("toastNotification", "Failed to create lesson.");
+            }
+            UserDTO user = (UserDTO) session.getAttribute("user");
+            if (user.getRoleId() == 1) {
+                response.sendRedirect("list");
+            } else if (user.getRoleId() == 2) {
+                response.sendRedirect("list-for-expert");
+            }
+
+        }
     }
+
 }
