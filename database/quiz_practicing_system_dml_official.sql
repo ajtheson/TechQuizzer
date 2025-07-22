@@ -20,178 +20,177 @@ VALUES
 ('Question Levels', 'Hard', 'Challenging questions for advanced learners', 1, 1),
 ('Question Levels', 'Medium', 'Moderate difficulty questions for practice', 1, 1),
 ('Question Levels', 'Easy', 'Basic questions for beginners or review', 1, 1),
-('Lesson Types', 'Subject Topic', 'Overview of a specific subject topic', 1, 1),
 ('Lesson Types', 'Lesson', 'In-depth lesson material for study', 1, 1),
 ('Lesson Types', 'Quiz', 'Practice quiz to assess understanding', 1, 1);
 
 --users
 --password Pass123@
 INSERT INTO [users] (
-    [email], 
-    [password], 
-    [name], 
-    [gender], 
-    [mobile], 
-    [address], 
-    [activate], 
+    [email],
+    [password],
+    [name],
+    [gender],
+    [mobile],
+    [address],
+    [activate],
     [role_id],
     [token_create_at],
-    [token_send_at]
+[token_send_at]
 ) VALUES
-('admin@gmail.com', '9IvR609uK4oh0w4QpeapLfvPBB37oA5EmVTjpF/liwQ=', N'Bob Tran', 1, '0912345678', N'456 Nguyen Hue Street, District 1, HCM City', 1, 1, NULL, NULL),
-('alice@example.com', '9IvR609uK4oh0w4QpeapLfvPBB37oA5EmVTjpF/liwQ=', N'Alice Nguyen', 0, '0910000001', N'123 Le Loi Street, District 1, HCM City', 1, 3, NULL, NULL),
-('bob@example.com', '9IvR609uK4oh0w4QpeapLfvPBB37oA5EmVTjpF/liwQ=', N'Bob Tran', 1, '0910000002', N'456 Nguyen Hue Avenue, District 1, HCM City', 1, 3, NULL, NULL),
-('charlie@example.com', '9IvR609uK4oh0w4QpeapLfvPBB37oA5EmVTjpF/liwQ=', N'Charlie Le', 1, '0910000003', N'789 Tran Hung Dao, District 5, HCM City', 1, 3, NULL, NULL),
-('daisy@example.com', '9IvR609uK4oh0w4QpeapLfvPBB37oA5EmVTjpF/liwQ=', N'Daisy Pham', 0, '0910000004', N'12 Ly Thuong Kiet, District 10, HCM City', 1, 3, NULL, NULL),
-('edward@example.com', '9IvR609uK4oh0w4QpeapLfvPBB37oA5EmVTjpF/liwQ=', N'Edward Vo', 1, '0910000005', N'99 Cach Mang Thang 8, District 3, HCM City', 1, 3, NULL, NULL),
-('fiona@example.com', '9IvR609uK4oh0w4QpeapLfvPBB37oA5EmVTjpF/liwQ=', N'Fiona Mai', 0, '0910000006', N'24 Truong Sa, Phu Nhuan District, HCM City', 1, 3, NULL, NULL),
-('george@example.com', '9IvR609uK4oh0w4QpeapLfvPBB37oA5EmVTjpF/liwQ=', N'George Do', 1, '0910000007', N'135 Hoang Sa, Binh Thanh District, HCM City', 1, 3, NULL, NULL),
-('hannah@example.com', '9IvR609uK4oh0w4QpeapLfvPBB37oA5EmVTjpF/liwQ=', N'Hannah Nguyen', 0, '0910000008', N'14 Bach Dang, Tan Binh District, HCM City', 1, 3, NULL, NULL),
-('ian@example.com', '9IvR609uK4oh0w4QpeapLfvPBB37oA5EmVTjpF/liwQ=', N'Ian Ho', 1, '0910000009', N'99 Phan Xich Long, Phu Nhuan District, HCM City', 1, 3, NULL, NULL),
-('julia@example.com', '9IvR609uK4oh0w4QpeapLfvPBB37oA5EmVTjpF/liwQ=', N'Julia Bui', 0, '0910000010', N'50 To Hien Thanh, District 10, HCM City', 1, 3, NULL, NULL),
-('kevin@example.com', '9IvR609uK4oh0w4QpeapLfvPBB37oA5EmVTjpF/liwQ=', N'Kevin Nguyen', 1, '0910000011', N'180 Dien Bien Phu, District 3, HCM City', 1, 3, NULL, NULL),
-('lily@example.com', '9IvR609uK4oh0w4QpeapLfvPBB37oA5EmVTjpF/liwQ=', N'Lily Trinh', 0, '0910000012', N'78 Ly Chinh Thang, District 3, HCM City', 1, 3, NULL, NULL),
-('michael@example.com', '9IvR609uK4oh0w4QpeapLfvPBB37oA5EmVTjpF/liwQ=', N'Michael Lam', 1, '0910000013', N'30 Pasteur, District 1, HCM City', 1, 3, NULL, NULL),
-('natalie@example.com', '9IvR609uK4oh0w4QpeapLfvPBB37oA5EmVTjpF/liwQ=', N'Natalie Chau', 0, '0910000014', N'200 Nguyen Thi Minh Khai, District 1, HCM City', 1, 3, NULL, NULL),
-('oliver@example.com', '9IvR609uK4oh0w4QpeapLfvPBB37oA5EmVTjpF/liwQ=', N'Oliver Tran', 1, '0910000015', N'65 Cong Hoa, Tan Binh District, HCM City', 1, 3, NULL, NULL),
-('phoebe@example.com', '9IvR609uK4oh0w4QpeapLfvPBB37oA5EmVTjpF/liwQ=', N'Phoebe Vu', 0, '0910000016', N'81 Nguyen Trai, District 5, HCM City', 1, 3, NULL, NULL),
-('quinn@example.com', '9IvR609uK4oh0w4QpeapLfvPBB37oA5EmVTjpF/liwQ=', N'Quinn Hoang', 1, '0910000017', N'90 Vo Van Tan, District 3, HCM City', 1, 3, NULL, NULL),
-('rachel@example.com', '9IvR609uK4oh0w4QpeapLfvPBB37oA5EmVTjpF/liwQ=', N'Rachel Luu', 0, '0910000018', N'72 Nguyen Dinh Chieu, District 3, HCM City', 1, 3, NULL, NULL),
-('steve@example.com', '9IvR609uK4oh0w4QpeapLfvPBB37oA5EmVTjpF/liwQ=', N'Steve Huynh', 1, '0910000019', N'120 Hoang Dieu, District 4, HCM City', 1, 3, NULL, NULL),
-('tina@example.com', '9IvR609uK4oh0w4QpeapLfvPBB37oA5EmVTjpF/liwQ=', N'Tina Ha', 0, '0910000020', N'31 Nguyen Van Troi, Phu Nhuan District, HCM City', 1, 3, NULL, NULL),
-('expert1@example.com', '9IvR609uK4oh0w4QpeapLfvPBB37oA5EmVTjpF/liwQ=', N'Alex Do', 1, '0920000001', N'88 Le Lai, District 1, HCM City', 1, 2, NULL, NULL),
-('expert2@example.com', '9IvR609uK4oh0w4QpeapLfvPBB37oA5EmVTjpF/liwQ=', N'Bella Tran', 0, '0920000002', N'77 Nguyen Dinh Chieu, District 3, HCM City', 1, 2, NULL, NULL),
-('expert3@example.com', '9IvR609uK4oh0w4QpeapLfvPBB37oA5EmVTjpF/liwQ=', N'Caleb Vu', 1, '0920000003', N'66 Tran Hung Dao, District 5, HCM City', 1, 2, NULL, NULL),
-('expert4@example.com', '9IvR609uK4oh0w4QpeapLfvPBB37oA5EmVTjpF/liwQ=', N'Diana Pham', 0, '0920000004', N'55 Le Van Sy, Phu Nhuan District, HCM City', 1, 2, NULL, NULL),
-('expert5@example.com', '9IvR609uK4oh0w4QpeapLfvPBB37oA5EmVTjpF/liwQ=', N'Ethan Lam', 1, '0920000005', N'44 Nguyen Van Cu, District 1, HCM City', 1, 2, NULL, NULL),
-('expert6@example.com', '9IvR609uK4oh0w4QpeapLfvPBB37oA5EmVTjpF/liwQ=', N'Faye Ngo', 0, '0920000006', N'33 Phan Xich Long, Phu Nhuan District, HCM City', 1, 2, NULL, NULL),
-('sale1@example.com', '9IvR609uK4oh0w4QpeapLfvPBB37oA5EmVTjpF/liwQ=', N'Faye Ngo', 0, '0920000007', N'33 Phan Xich Long, Phu Nhuan District, HCM City', 1, 4, NULL, NULL),
-('sale2@example.com', '9IvR609uK4oh0w4QpeapLfvPBB37oA5EmVTjpF/liwQ=', N'Faye Ngo', 0, '0920000008', N'33 Phan Xich Long, Phu Nhuan District, HCM City', 1, 4, NULL, NULL);
+    ('admin@gmail.com', '9IvR609uK4oh0w4QpeapLfvPBB37oA5EmVTjpF/liwQ=', N'Bob Tran', 1, '0912345678', N'456 Nguyen Hue Street, District 1, HCM City', 1, 1, NULL, NULL),
+    ('alice@example.com', '9IvR609uK4oh0w4QpeapLfvPBB37oA5EmVTjpF/liwQ=', N'Alice Nguyen', 0, '0910000001', N'123 Le Loi Street, District 1, HCM City', 1, 3, NULL, NULL),
+    ('bob@example.com', '9IvR609uK4oh0w4QpeapLfvPBB37oA5EmVTjpF/liwQ=', N'Bob Tran', 1, '0910000002', N'456 Nguyen Hue Avenue, District 1, HCM City', 1, 3, NULL, NULL),
+    ('charlie@example.com', '9IvR609uK4oh0w4QpeapLfvPBB37oA5EmVTjpF/liwQ=', N'Charlie Le', 1, '0910000003', N'789 Tran Hung Dao, District 5, HCM City', 1, 3, NULL, NULL),
+    ('daisy@example.com', '9IvR609uK4oh0w4QpeapLfvPBB37oA5EmVTjpF/liwQ=', N'Daisy Pham', 0, '0910000004', N'12 Ly Thuong Kiet, District 10, HCM City', 1, 3, NULL, NULL),
+    ('edward@example.com', '9IvR609uK4oh0w4QpeapLfvPBB37oA5EmVTjpF/liwQ=', N'Edward Vo', 1, '0910000005', N'99 Cach Mang Thang 8, District 3, HCM City', 1, 3, NULL, NULL),
+    ('fiona@example.com', '9IvR609uK4oh0w4QpeapLfvPBB37oA5EmVTjpF/liwQ=', N'Fiona Mai', 0, '0910000006', N'24 Truong Sa, Phu Nhuan District, HCM City', 1, 3, NULL, NULL),
+    ('george@example.com', '9IvR609uK4oh0w4QpeapLfvPBB37oA5EmVTjpF/liwQ=', N'George Do', 1, '0910000007', N'135 Hoang Sa, Binh Thanh District, HCM City', 1, 3, NULL, NULL),
+    ('hannah@example.com', '9IvR609uK4oh0w4QpeapLfvPBB37oA5EmVTjpF/liwQ=', N'Hannah Nguyen', 0, '0910000008', N'14 Bach Dang, Tan Binh District, HCM City', 1, 3, NULL, NULL),
+    ('ian@example.com', '9IvR609uK4oh0w4QpeapLfvPBB37oA5EmVTjpF/liwQ=', N'Ian Ho', 1, '0910000009', N'99 Phan Xich Long, Phu Nhuan District, HCM City', 1, 3, NULL, NULL),
+    ('julia@example.com', '9IvR609uK4oh0w4QpeapLfvPBB37oA5EmVTjpF/liwQ=', N'Julia Bui', 0, '0910000010', N'50 To Hien Thanh, District 10, HCM City', 1, 3, NULL, NULL),
+    ('kevin@example.com', '9IvR609uK4oh0w4QpeapLfvPBB37oA5EmVTjpF/liwQ=', N'Kevin Nguyen', 1, '0910000011', N'180 Dien Bien Phu, District 3, HCM City', 1, 3, NULL, NULL),
+    ('lily@example.com', '9IvR609uK4oh0w4QpeapLfvPBB37oA5EmVTjpF/liwQ=', N'Lily Trinh', 0, '0910000012', N'78 Ly Chinh Thang, District 3, HCM City', 1, 3, NULL, NULL),
+    ('michael@example.com', '9IvR609uK4oh0w4QpeapLfvPBB37oA5EmVTjpF/liwQ=', N'Michael Lam', 1, '0910000013', N'30 Pasteur, District 1, HCM City', 1, 3, NULL, NULL),
+    ('natalie@example.com', '9IvR609uK4oh0w4QpeapLfvPBB37oA5EmVTjpF/liwQ=', N'Natalie Chau', 0, '0910000014', N'200 Nguyen Thi Minh Khai, District 1, HCM City', 1, 3, NULL, NULL),
+    ('oliver@example.com', '9IvR609uK4oh0w4QpeapLfvPBB37oA5EmVTjpF/liwQ=', N'Oliver Tran', 1, '0910000015', N'65 Cong Hoa, Tan Binh District, HCM City', 1, 3, NULL, NULL),
+    ('phoebe@example.com', '9IvR609uK4oh0w4QpeapLfvPBB37oA5EmVTjpF/liwQ=', N'Phoebe Vu', 0, '0910000016', N'81 Nguyen Trai, District 5, HCM City', 1, 3, NULL, NULL),
+    ('quinn@example.com', '9IvR609uK4oh0w4QpeapLfvPBB37oA5EmVTjpF/liwQ=', N'Quinn Hoang', 1, '0910000017', N'90 Vo Van Tan, District 3, HCM City', 1, 3, NULL, NULL),
+    ('rachel@example.com', '9IvR609uK4oh0w4QpeapLfvPBB37oA5EmVTjpF/liwQ=', N'Rachel Luu', 0, '0910000018', N'72 Nguyen Dinh Chieu, District 3, HCM City', 1, 3, NULL, NULL),
+    ('steve@example.com', '9IvR609uK4oh0w4QpeapLfvPBB37oA5EmVTjpF/liwQ=', N'Steve Huynh', 1, '0910000019', N'120 Hoang Dieu, District 4, HCM City', 1, 3, NULL, NULL),
+    ('tina@example.com', '9IvR609uK4oh0w4QpeapLfvPBB37oA5EmVTjpF/liwQ=', N'Tina Ha', 0, '0910000020', N'31 Nguyen Van Troi, Phu Nhuan District, HCM City', 1, 3, NULL, NULL),
+    ('expert1@example.com', '9IvR609uK4oh0w4QpeapLfvPBB37oA5EmVTjpF/liwQ=', N'Alex Do', 1, '0920000001', N'88 Le Lai, District 1, HCM City', 1, 2, NULL, NULL),
+    ('expert2@example.com', '9IvR609uK4oh0w4QpeapLfvPBB37oA5EmVTjpF/liwQ=', N'Bella Tran', 0, '0920000002', N'77 Nguyen Dinh Chieu, District 3, HCM City', 1, 2, NULL, NULL),
+    ('expert3@example.com', '9IvR609uK4oh0w4QpeapLfvPBB37oA5EmVTjpF/liwQ=', N'Caleb Vu', 1, '0920000003', N'66 Tran Hung Dao, District 5, HCM City', 1, 2, NULL, NULL),
+    ('expert4@example.com', '9IvR609uK4oh0w4QpeapLfvPBB37oA5EmVTjpF/liwQ=', N'Diana Pham', 0, '0920000004', N'55 Le Van Sy, Phu Nhuan District, HCM City', 1, 2, NULL, NULL),
+    ('expert5@example.com', '9IvR609uK4oh0w4QpeapLfvPBB37oA5EmVTjpF/liwQ=', N'Ethan Lam', 1, '0920000005', N'44 Nguyen Van Cu, District 1, HCM City', 1, 2, NULL, NULL),
+    ('expert6@example.com', '9IvR609uK4oh0w4QpeapLfvPBB37oA5EmVTjpF/liwQ=', N'Faye Ngo', 0, '0920000006', N'33 Phan Xich Long, Phu Nhuan District, HCM City', 1, 2, NULL, NULL),
+    ('sale1@example.com', '9IvR609uK4oh0w4QpeapLfvPBB37oA5EmVTjpF/liwQ=', N'Faye Ngo', 0, '0920000007', N'33 Phan Xich Long, Phu Nhuan District, HCM City', 1, 4, NULL, NULL),
+    ('sale2@example.com', '9IvR609uK4oh0w4QpeapLfvPBB37oA5EmVTjpF/liwQ=', N'Faye Ngo', 0, '0920000008', N'33 Phan Xich Long, Phu Nhuan District, HCM City', 1, 4, NULL, NULL);
 
 INSERT INTO [subjects] (
-    [name], [tag_line], [thumbnail], 
-    [detail_description], [featured_subject], [status], 
+    [name], [tag_line], [thumbnail],
+    [detail_description], [featured_subject], [status],
     [category_id], [owner_id]
 ) VALUES
-('Introduction to Programming', 'Start your coding journey', 'subject_1.png',
-'- Understand the core concepts of programming such as variables, data types, and control structures.\n\n- Practice using loops and conditional statements through hands-on examples.\n\n- Build small programs to strengthen your logic and problem-solving skills.',
-1, 1, 1, 22),
+    ('Introduction to Programming', 'Start your coding journey', 'subject_1.png',
+    '- Understand the core concepts of programming such as variables, data types, and control structures.\n\n- Practice using loops and conditional statements through hands-on examples.\n\n- Build small programs to strengthen your logic and problem-solving skills.',
+    1, 1, 1, 22),
 
-('SQL Fundamentals', 'Master database queries', 'subject_2.png',
-'- Learn how to write SQL queries to extract data from relational databases using SELECT, WHERE, and ORDER BY clauses.\n\n- Understand relationships between tables and apply JOIN operations to connect data effectively.\n\n- Practice creating, updating, and managing database structures with SQL DDL and DML commands.',
-0, 1, 2, 22),
+    ('SQL Fundamentals', 'Master database queries', 'subject_2.png',
+    '- Learn how to write SQL queries to extract data from relational databases using SELECT, WHERE, and ORDER BY clauses.\n\n- Understand relationships between tables and apply JOIN operations to connect data effectively.\n\n- Practice creating, updating, and managing database structures with SQL DDL and DML commands.',
+    0, 1, 2, 22),
 
-('Networking Basics', 'Understand how devices connect', 'subject_3.png',
-'- Discover how computers and other devices communicate over networks using IP addresses and ports.\n\n- Learn the fundamentals of subnetting and routing to manage data flow.\n\n- Explore protocols such as TCP/IP, HTTP, and DNS to understand how the internet works behind the scenes.',
-0, 1, 3, 22),
+    ('Networking Basics', 'Understand how devices connect', 'subject_3.png',
+    '- Discover how computers and other devices communicate over networks using IP addresses and ports.\n\n- Learn the fundamentals of subnetting and routing to manage data flow.\n\n- Explore protocols such as TCP/IP, HTTP, and DNS to understand how the internet works behind the scenes.',
+    0, 1, 3, 22),
 
-('AI for Beginners', 'Get started with Artificial Intelligence', 'subject_4.png',
-'- Get introduced to the world of AI, including its history and impact on modern technology.\n\n- Learn about key AI topics such as supervised and unsupervised learning, and explore how machines learn from data.\n\n- Work with real-world examples using tools like Python and popular libraries such as Scikit-learn.',
-1, 1, 4, 22),
+    ('AI for Beginners', 'Get started with Artificial Intelligence', 'subject_4.png',
+    '- Get introduced to the world of AI, including its history and impact on modern technology.\n\n- Learn about key AI topics such as supervised and unsupervised learning, and explore how machines learn from data.\n\n- Work with real-world examples using tools like Python and popular libraries such as Scikit-learn.',
+    1, 1, 4, 22),
 
-('Cybersecurity 101', 'Protect systems and data', 'subject_5.png',
-'- Understand common cyber threats like malware, phishing, and social engineering attacks.\n\n- Learn basic defense mechanisms including firewalls, antivirus tools, and encryption.\n\n- Discover security best practices and strategies to safeguard personal and organizational data.',
-0, 1, 5, 22),
+    ('Cybersecurity 101', 'Protect systems and data', 'subject_5.png',
+    '- Understand common cyber threats like malware, phishing, and social engineering attacks.\n\n- Learn basic defense mechanisms including firewalls, antivirus tools, and encryption.\n\n- Discover security best practices and strategies to safeguard personal and organizational data.',
+    0, 1, 5, 22),
 
-('Frontend Development', 'Build beautiful interfaces', 'subject_6.png',
-'- Explore the structure of web pages using HTML and style them using CSS for responsive and attractive design.\n\n- Add interactivity with JavaScript, enabling user input handling and dynamic content.\n\n- Work on projects that help you build real-world front-end applications and websites.',
-1, 1, 6, 22),
+    ('Frontend Development', 'Build beautiful interfaces', 'subject_6.png',
+    '- Explore the structure of web pages using HTML and style them using CSS for responsive and attractive design.\n\n- Add interactivity with JavaScript, enabling user input handling and dynamic content.\n\n- Work on projects that help you build real-world front-end applications and websites.',
+    1, 1, 6, 22),
 
-('Data Science Essentials', 'Analyze and visualize data', 'subject_7.png',
-'- Learn how to clean, transform, and manipulate data using popular libraries such as Pandas and NumPy.\n\n- Use visualization tools like Matplotlib and Seaborn to uncover patterns and insights.\n\n- Understand the basics of statistics, data distributions, and hypothesis testing in a data science context.',
-0, 1, 7, 22),
+    ('Data Science Essentials', 'Analyze and visualize data', 'subject_7.png',
+    '- Learn how to clean, transform, and manipulate data using popular libraries such as Pandas and NumPy.\n\n- Use visualization tools like Matplotlib and Seaborn to uncover patterns and insights.\n\n- Understand the basics of statistics, data distributions, and hypothesis testing in a data science context.',
+    0, 1, 7, 22),
 
-('Backend with Node.js', 'Create APIs and services', 'subject_8.png',
-'- Learn how to set up a server using Node.js and handle HTTP requests and responses.\n\n- Work with Express.js to create RESTful APIs and manage routing efficiently.\n\n- Understand how to connect your backend with databases and implement authentication and error handling.',
-1, 1, 6, 22),
+    ('Backend with Node.js', 'Create APIs and services', 'subject_8.png',
+    '- Learn how to set up a server using Node.js and handle HTTP requests and responses.\n\n- Work with Express.js to create RESTful APIs and manage routing efficiently.\n\n- Understand how to connect your backend with databases and implement authentication and error handling.',
+    1, 1, 6, 22),
 
-('Deep Learning Intro', 'Neural networks explained', 'subject_9.png',
-'- Explore foundational deep learning concepts including perceptrons, activation functions, and backpropagation.\n\n- Learn about Convolutional Neural Networks (CNNs) and how they are used in image recognition.\n\n- Use TensorFlow or PyTorch to build and train simple deep learning models with real datasets.',
-0, 1, 4, 22),
+    ('Deep Learning Intro', 'Neural networks explained', 'subject_9.png',
+    '- Explore foundational deep learning concepts including perceptrons, activation functions, and backpropagation.\n\n- Learn about Convolutional Neural Networks (CNNs) and how they are used in image recognition.\n\n- Use TensorFlow or PyTorch to build and train simple deep learning models with real datasets.',
+    0, 1, 4, 22),
 
-('Java Advanced Concepts', 'Level up your Java skills', 'subject_10.png',
-'- Learn about Java generics, collections framework, and multithreading.\n\n- Understand memory management and performance tuning.\n\n- Build real-world projects to apply OOP principles effectively.',
-0, 1, 1, 25),
+    ('Java Advanced Concepts', 'Level up your Java skills', 'subject_10.png',
+    '- Learn about Java generics, collections framework, and multithreading.\n\n- Understand memory management and performance tuning.\n\n- Build real-world projects to apply OOP principles effectively.',
+    0, 1, 1, 25),
 
-('Database Design', 'Model data efficiently', 'subject_11.png',
-'- Understand normalization and database schema design.\n\n- Learn to create ER diagrams and optimize table relationships.\n\n- Apply indexing and constraints to improve performance.',
-1, 0, 2, 26),
+    ('Database Design', 'Model data efficiently', 'subject_11.png',
+    '- Understand normalization and database schema design.\n\n- Learn to create ER diagrams and optimize table relationships.\n\n- Apply indexing and constraints to improve performance.',
+    1, 0, 2, 26),
 
-('Cloud Networking', 'Connect on the cloud', 'subject_12.png',
-'- Explore how networks operate in cloud infrastructure.\n\n- Learn about VPNs, VPCs, and load balancers.\n\n- Study practical AWS and Azure networking examples.',
-0, 1, 3, 27),
+    ('Cloud Networking', 'Connect on the cloud', 'subject_12.png',
+    '- Explore how networks operate in cloud infrastructure.\n\n- Learn about VPNs, VPCs, and load balancers.\n\n- Study practical AWS and Azure networking examples.',
+    0, 1, 3, 27),
 
-('Machine Learning Basics', 'Teach machines to learn', 'subject_13.png',
-'- Introduction to machine learning workflows.\n\n- Learn supervised and unsupervised algorithms.\n\n- Apply basic models using Scikit-learn and Python.',
-1, 1, 4, 22),
+    ('Machine Learning Basics', 'Teach machines to learn', 'subject_13.png',
+    '- Introduction to machine learning workflows.\n\n- Learn supervised and unsupervised algorithms.\n\n- Apply basic models using Scikit-learn and Python.',
+    1, 1, 4, 22),
 
-('Ethical Hacking', 'Hack to protect', 'subject_14.png',
-'- Learn penetration testing and ethical hacking fundamentals.\n\n- Explore tools like Metasploit and Wireshark.\n\n- Understand vulnerabilities and exploits in practice.',
-0, 0, 5, 23),
+    ('Ethical Hacking', 'Hack to protect', 'subject_14.png',
+    '- Learn penetration testing and ethical hacking fundamentals.\n\n- Explore tools like Metasploit and Wireshark.\n\n- Understand vulnerabilities and exploits in practice.',
+    0, 0, 5, 23),
 
-('React Development', 'Build dynamic UIs', 'subject_15.png',
-'- Understand component-based architecture.\n\n- Learn about JSX, props, and state.\n\n- Build responsive apps using hooks and React Router.',
-1, 1, 6, 24),
+    ('React Development', 'Build dynamic UIs', 'subject_15.png',
+    '- Understand component-based architecture.\n\n- Learn about JSX, props, and state.\n\n- Build responsive apps using hooks and React Router.',
+    1, 1, 6, 24),
 
-('Big Data Basics', 'Manage large-scale data', 'subject_16.png',
-'- Learn how big data systems process large datasets.\n\n- Explore Hadoop and Spark frameworks.\n\n- Apply data pipelines and real-time processing.',
-0, 0, 7, 25),
+    ('Big Data Basics', 'Manage large-scale data', 'subject_16.png',
+    '- Learn how big data systems process large datasets.\n\n- Explore Hadoop and Spark frameworks.\n\n- Apply data pipelines and real-time processing.',
+    0, 0, 7, 25),
 
-('C# for Beginners', 'Get started with C#', 'subject_17.png',
-'- Learn syntax, data types, and control flow in C#.\n\n- Build console applications using Visual Studio.\n\n- Understand object-oriented principles with C#.',
-0, 1, 1, 26),
+    ('C# for Beginners', 'Get started with C#', 'subject_17.png',
+    '- Learn syntax, data types, and control flow in C#.\n\n- Build console applications using Visual Studio.\n\n- Understand object-oriented principles with C#.',
+    0, 1, 1, 26),
 
-('NoSQL Databases', 'Flexible data models', 'subject_18.png',
-'- Learn about document, key-value, and graph databases.\n\n- Explore MongoDB and Redis in practice.\n\n- Understand CAP theorem and use-cases of NoSQL.',
-1, 1, 2, 27),
+    ('NoSQL Databases', 'Flexible data models', 'subject_18.png',
+    '- Learn about document, key-value, and graph databases.\n\n- Explore MongoDB and Redis in practice.\n\n- Understand CAP theorem and use-cases of NoSQL.',
+    1, 1, 2, 27),
 
-('Routing Protocols', 'Direct network traffic', 'subject_19.png',
-'- Understand static and dynamic routing.\n\n- Learn RIP, OSPF, and BGP protocols.\n\n- Configure routers and simulate networks.',
-0, 0, 3, 22),
+    ('Routing Protocols', 'Direct network traffic', 'subject_19.png',
+    '- Understand static and dynamic routing.\n\n- Learn RIP, OSPF, and BGP protocols.\n\n- Configure routers and simulate networks.',
+    0, 0, 3, 22),
 
-('Natural Language Processing', 'Make machines understand text', 'subject_20.png',
-'- Learn text preprocessing and tokenization.\n\n- Explore sentiment analysis and text classification.\n\n- Work with NLTK and spaCy libraries.',
-1, 1, 4, 23),
+    ('Natural Language Processing', 'Make machines understand text', 'subject_20.png',
+    '- Learn text preprocessing and tokenization.\n\n- Explore sentiment analysis and text classification.\n\n- Work with NLTK and spaCy libraries.',
+    1, 1, 4, 23),
 
-('Data Privacy', 'Protect personal info', 'subject_21.png',
-'- Learn GDPR and data protection principles.\n\n- Implement secure data handling practices.\n\n- Understand anonymization and encryption methods.',
-1, 0, 5, 24),
+    ('Data Privacy', 'Protect personal info', 'subject_21.png',
+    '- Learn GDPR and data protection principles.\n\n- Implement secure data handling practices.\n\n- Understand anonymization and encryption methods.',
+    1, 0, 5, 24),
 
-('Vue.js Fundamentals', 'Progressive JavaScript framework', 'subject_22.png',
-'- Create interactive UI components.\n\n- Work with Vue CLI and Vue Router.\n\n- Build reactive apps using Vue’s data binding.',
-0, 1, 6, 25),
+    ('Vue.js Fundamentals', 'Progressive JavaScript framework', 'subject_22.png',
+    '- Create interactive UI components.\n\n- Work with Vue CLI and Vue Router.\n\n- Build reactive apps using Vue’s data binding.',
+    0, 1, 6, 25),
 
-('Python for Data Science', 'Analyze with Python', 'subject_23.png',
-'- Use Pandas and NumPy for data manipulation.\n\n- Perform data visualization with Matplotlib.\n\n- Clean and transform datasets efficiently.',
-1, 1, 7, 26),
+    ('Python for Data Science', 'Analyze with Python', 'subject_23.png',
+    '- Use Pandas and NumPy for data manipulation.\n\n- Perform data visualization with Matplotlib.\n\n- Clean and transform datasets efficiently.',
+    1, 1, 7, 26),
 
-('Design Patterns in Java', 'Reusable solutions', 'subject_24.png',
-'- Learn structural, behavioral, and creational patterns.\n\n- Implement patterns like Singleton, Factory, and Observer.\n\n- Improve code readability and reusability.',
-0, 1, 1, 27),
+    ('Design Patterns in Java', 'Reusable solutions', 'subject_24.png',
+    '- Learn structural, behavioral, and creational patterns.\n\n- Implement patterns like Singleton, Factory, and Observer.\n\n- Improve code readability and reusability.',
+    0, 1, 1, 27),
 
-('PostgreSQL Essentials', 'Advanced SQL skills', 'subject_25.png',
-'- Use PostgreSQL for relational database management.\n\n- Practice stored procedures, views, and indexes.\n\n- Work with JSON and geospatial data.',
-1, 0, 2, 22),
+    ('PostgreSQL Essentials', 'Advanced SQL skills', 'subject_25.png',
+    '- Use PostgreSQL for relational database management.\n\n- Practice stored procedures, views, and indexes.\n\n- Work with JSON and geospatial data.',
+    1, 0, 2, 22),
 
-('Wireless Networks', 'Go untethered', 'subject_26.png',
-'- Learn wireless standards and security protocols.\n\n- Set up secure wireless LANs.\n\n- Understand mobile and IoT networking.',
-0, 1, 3, 23),
+    ('Wireless Networks', 'Go untethered', 'subject_26.png',
+    '- Learn wireless standards and security protocols.\n\n- Set up secure wireless LANs.\n\n- Understand mobile and IoT networking.',
+    0, 1, 3, 23),
 
-('AI Ethics', 'Responsible AI development', 'subject_27.png',
-'- Explore the social impact of AI technologies.\n\n- Understand bias, fairness, and transparency.\n\n- Study case studies and regulations.',
-1, 0, 4, 24),
+    ('AI Ethics', 'Responsible AI development', 'subject_27.png',
+    '- Explore the social impact of AI technologies.\n\n- Understand bias, fairness, and transparency.\n\n- Study case studies and regulations.',
+    1, 0, 4, 24),
 
-('Incident Response', 'React to threats fast', 'subject_28.png',
-'- Develop incident response plans and playbooks.\n\n- Learn containment and recovery strategies.\n\n- Understand threat intelligence sources.',
-0, 1, 5, 25),
+    ('Incident Response', 'React to threats fast', 'subject_28.png',
+    '- Develop incident response plans and playbooks.\n\n- Learn containment and recovery strategies.\n\n- Understand threat intelligence sources.',
+    0, 1, 5, 25),
 
-('Web Accessibility', 'Inclusive web design', 'subject_29.png',
-'- Learn WCAG guidelines and ARIA roles.\n\n- Test and fix accessibility issues.\n\n- Design usable, inclusive interfaces.',
-1, 0, 6, 26),
+    ('Web Accessibility', 'Inclusive web design', 'subject_29.png',
+    '- Learn WCAG guidelines and ARIA roles.\n\n- Test and fix accessibility issues.\n\n- Design usable, inclusive interfaces.',
+    1, 0, 6, 26),
 
-('Statistics for Data Science', 'Understand the numbers', 'subject_30.png',
-'- Learn probability, distributions, and hypothesis testing.\n\n- Use stats to validate machine learning models.\n\n- Apply in Python using SciPy and StatsModels.',
-0, 1, 7, 27);
+    ('Statistics for Data Science', 'Understand the numbers', 'subject_30.png',
+    '- Learn probability, distributions, and hypothesis testing.\n\n- Use stats to validate machine learning models.\n\n- Apply in Python using SciPy and StatsModels.',
+    0, 1, 7, 27);
 
 UPDATE [subjects] SET [update_date] = '2025-01-01 00:00:00' WHERE [id] = 1;
 UPDATE [subjects] SET [update_date] = '2025-01-02 00:00:00' WHERE [id] = 2;
@@ -227,211 +226,211 @@ UPDATE [subjects] SET [update_date] = '2025-01-30 00:00:00' WHERE [id] = 30;
 -- Price Packages for each subject (duration in months)
 INSERT INTO [price_packages] ([name], [duration], [list_price], [sale_price], [description], [status], [subject_id]) VALUES
 -- Subject ID 1
-('Bronze', 1, 49.99, 29.99, 'Basic access for one month', 1, 1),
-('Silver', 3, 99.99, 59.99, 'Standard access for three months', 1, 1),
-('Gold', 6, 199.99, 99.99, 'Full access for six months', 1, 1),
+    ('Bronze', 1, 49.99, 29.99, 'Basic access for one month', 1, 1),
+    ('Silver', 3, 99.99, 59.99, 'Standard access for three months', 1, 1),
+    ('Gold', 6, 199.99, 99.99, 'Full access for six months', 1, 1),
 -- Subject ID 2
-('Bronze', 1, 39.99, 24.99, 'Basic access for one month', 1, 2),
-('Silver', 3, 79.99, 49.99, 'Standard access for three months', 1, 2),
-('Gold', 6, 159.99, 89.99, 'Full access for six months', 1, 2),
+    ('Bronze', 1, 39.99, 24.99, 'Basic access for one month', 1, 2),
+    ('Silver', 3, 79.99, 49.99, 'Standard access for three months', 1, 2),
+    ('Gold', 6, 159.99, 89.99, 'Full access for six months', 1, 2),
 -- Subject ID 3
-('Bronze', 1, 44.99, 27.99, 'Basic access for one month', 1, 3),
-('Silver', 3, 89.99, 54.99, 'Standard access for three months', 1, 3),
-('Gold', 6, 179.99, 94.99, 'Full access for six months', 1, 3),
+    ('Bronze', 1, 44.99, 27.99, 'Basic access for one month', 1, 3),
+    ('Silver', 3, 89.99, 54.99, 'Standard access for three months', 1, 3),
+    ('Gold', 6, 179.99, 94.99, 'Full access for six months', 1, 3),
 -- Subject ID 4
-('Bronze', 1, 59.99, 34.99, 'Basic access for one month', 1, 4),
-('Silver', 3, 109.99, 64.99, 'Standard access for three months', 1, 4),
-('Gold', 6, 219.99, 114.99, 'Full access for six months', 1, 4),
+    ('Bronze', 1, 59.99, 34.99, 'Basic access for one month', 1, 4),
+    ('Silver', 3, 109.99, 64.99, 'Standard access for three months', 1, 4),
+    ('Gold', 6, 219.99, 114.99, 'Full access for six months', 1, 4),
 -- Subject ID 5
-('Bronze', 1, 49.99, 29.99, 'Basic access for one month', 1, 5),
-('Silver', 3, 99.99, 59.99, 'Standard access for three months', 1, 5),
-('Gold', 6, 199.99, 99.99, 'Full access for six months', 1, 5),
+    ('Bronze', 1, 49.99, 29.99, 'Basic access for one month', 1, 5),
+    ('Silver', 3, 99.99, 59.99, 'Standard access for three months', 1, 5),
+    ('Gold', 6, 199.99, 99.99, 'Full access for six months', 1, 5),
 -- Subject ID 6
-('Bronze', 1, 54.99, 31.99, 'Basic access for one month', 1, 6),
-('Silver', 3, 104.99, 62.99, 'Standard access for three months', 1, 6),
-('Gold', 6, 209.99, 109.99, 'Full access for six months', 1, 6),
+    ('Bronze', 1, 54.99, 31.99, 'Basic access for one month', 1, 6),
+    ('Silver', 3, 104.99, 62.99, 'Standard access for three months', 1, 6),
+    ('Gold', 6, 209.99, 109.99, 'Full access for six months', 1, 6),
 -- Subject ID 7
-('Bronze', 1, 44.99, 27.99, 'Basic access for one month', 1, 7),
-('Silver', 3, 89.99, 54.99, 'Standard access for three months', 1, 7),
-('Gold', 6, 179.99, 94.99, 'Full access for six months', 1, 7),
+    ('Bronze', 1, 44.99, 27.99, 'Basic access for one month', 1, 7),
+    ('Silver', 3, 89.99, 54.99, 'Standard access for three months', 1, 7),
+    ('Gold', 6, 179.99, 94.99, 'Full access for six months', 1, 7),
 -- Subject ID 8
-('Bronze', 1, 49.99, 29.99, 'Basic access for one month', 1, 8),
-('Silver', 3, 99.99, 59.99, 'Standard access for three months', 1, 8),
-('Gold', 6, 199.99, 99.99, 'Full access for six months', 1, 8),
+    ('Bronze', 1, 49.99, 29.99, 'Basic access for one month', 1, 8),
+    ('Silver', 3, 99.99, 59.99, 'Standard access for three months', 1, 8),
+    ('Gold', 6, 199.99, 99.99, 'Full access for six months', 1, 8),
 -- Subject ID 9
-('Bronze', 1, 59.99, 34.99, 'Basic access for one month', 1, 9),
-('Silver', 3, 109.99, 64.99, 'Standard access for three months', 1, 9),
-('Gold', 6, 219.99, 114.99, 'Full access for six months', 1, 9),
+    ('Bronze', 1, 59.99, 34.99, 'Basic access for one month', 1, 9),
+    ('Silver', 3, 109.99, 64.99, 'Standard access for three months', 1, 9),
+    ('Gold', 6, 219.99, 114.99, 'Full access for six months', 1, 9),
 
 -- Subject ID 10
-('Bronze', 1, 49.99, 29.99, 'Basic access for one month', 1, 10),
-('Silver', 3, 99.99, 59.99, 'Standard access for three months', 1, 10),
-('Gold', 6, 199.99, 99.99, 'Full access for six months', 1, 10),
+    ('Bronze', 1, 49.99, 29.99, 'Basic access for one month', 1, 10),
+    ('Silver', 3, 99.99, 59.99, 'Standard access for three months', 1, 10),
+    ('Gold', 6, 199.99, 99.99, 'Full access for six months', 1, 10),
 -- Subject ID 11
-('Bronze', 1, 49.99, 29.99, 'Basic access for one month', 1, 11),
-('Silver', 3, 99.99, 59.99, 'Standard access for three months', 1, 11),
-('Gold', 6, 199.99, 99.99, 'Full access for six months', 1, 11),
+    ('Bronze', 1, 49.99, 29.99, 'Basic access for one month', 1, 11),
+    ('Silver', 3, 99.99, 59.99, 'Standard access for three months', 1, 11),
+    ('Gold', 6, 199.99, 99.99, 'Full access for six months', 1, 11),
 -- Subject ID 12
-('Bronze', 1, 49.99, 29.99, 'Basic access for one month', 1, 12),
-('Silver', 3, 99.99, 59.99, 'Standard access for three months', 1, 12),
-('Gold', 6, 199.99, 99.99, 'Full access for six months', 1, 12),
+    ('Bronze', 1, 49.99, 29.99, 'Basic access for one month', 1, 12),
+    ('Silver', 3, 99.99, 59.99, 'Standard access for three months', 1, 12),
+    ('Gold', 6, 199.99, 99.99, 'Full access for six months', 1, 12),
 -- Subject ID 13
-('Bronze', 1, 49.99, 29.99, 'Basic access for one month', 1, 13),
-('Silver', 3, 99.99, 59.99, 'Standard access for three months', 1, 13),
-('Gold', 6, 199.99, 99.99, 'Full access for six months', 1, 13),
+    ('Bronze', 1, 49.99, 29.99, 'Basic access for one month', 1, 13),
+    ('Silver', 3, 99.99, 59.99, 'Standard access for three months', 1, 13),
+    ('Gold', 6, 199.99, 99.99, 'Full access for six months', 1, 13),
 -- Subject ID 14
-('Bronze', 1, 49.99, 29.99, 'Basic access for one month', 1, 14),
-('Silver', 3, 99.99, 59.99, 'Standard access for three months', 1, 14),
-('Gold', 6, 199.99, 99.99, 'Full access for six months', 1, 14),
+    ('Bronze', 1, 49.99, 29.99, 'Basic access for one month', 1, 14),
+    ('Silver', 3, 99.99, 59.99, 'Standard access for three months', 1, 14),
+    ('Gold', 6, 199.99, 99.99, 'Full access for six months', 1, 14),
 -- Subject ID 15
-('Bronze', 1, 49.99, 29.99, 'Basic access for one month', 1, 15),
-('Silver', 3, 99.99, 59.99, 'Standard access for three months', 1, 15),
-('Gold', 6, 199.99, 99.99, 'Full access for six months', 1, 15),
+    ('Bronze', 1, 49.99, 29.99, 'Basic access for one month', 1, 15),
+    ('Silver', 3, 99.99, 59.99, 'Standard access for three months', 1, 15),
+    ('Gold', 6, 199.99, 99.99, 'Full access for six months', 1, 15),
 -- Subject ID 16
-('Bronze', 1, 49.99, 29.99, 'Basic access for one month', 1, 16),
-('Silver', 3, 99.99, 59.99, 'Standard access for three months', 1, 16),
-('Gold', 6, 199.99, 99.99, 'Full access for six months', 1, 16),
+    ('Bronze', 1, 49.99, 29.99, 'Basic access for one month', 1, 16),
+    ('Silver', 3, 99.99, 59.99, 'Standard access for three months', 1, 16),
+    ('Gold', 6, 199.99, 99.99, 'Full access for six months', 1, 16),
 -- Subject ID 17
-('Bronze', 1, 49.99, 29.99, 'Basic access for one month', 1, 17),
-('Silver', 3, 99.99, 59.99, 'Standard access for three months', 1, 17),
-('Gold', 6, 199.99, 99.99, 'Full access for six months', 1, 17),
+    ('Bronze', 1, 49.99, 29.99, 'Basic access for one month', 1, 17),
+    ('Silver', 3, 99.99, 59.99, 'Standard access for three months', 1, 17),
+    ('Gold', 6, 199.99, 99.99, 'Full access for six months', 1, 17),
 -- Subject ID 18
-('Bronze', 1, 49.99, 29.99, 'Basic access for one month', 1, 18),
-('Silver', 3, 99.99, 59.99, 'Standard access for three months', 1, 18),
-('Gold', 6, 199.99, 99.99, 'Full access for six months', 1, 18),
+    ('Bronze', 1, 49.99, 29.99, 'Basic access for one month', 1, 18),
+    ('Silver', 3, 99.99, 59.99, 'Standard access for three months', 1, 18),
+    ('Gold', 6, 199.99, 99.99, 'Full access for six months', 1, 18),
 -- Subject ID 19
-('Bronze', 1, 49.99, 29.99, 'Basic access for one month', 1, 19),
-('Silver', 3, 99.99, 59.99, 'Standard access for three months', 1, 19),
-('Gold', 6, 199.99, 99.99, 'Full access for six months', 1, 19),
+    ('Bronze', 1, 49.99, 29.99, 'Basic access for one month', 1, 19),
+    ('Silver', 3, 99.99, 59.99, 'Standard access for three months', 1, 19),
+    ('Gold', 6, 199.99, 99.99, 'Full access for six months', 1, 19),
 -- Subject ID 20
-('Bronze', 1, 49.99, 29.99, 'Basic access for one month', 1, 20),
-('Silver', 3, 99.99, 59.99, 'Standard access for three months', 1, 20),
-('Gold', 6, 199.99, 99.99, 'Full access for six months', 1, 20),
+    ('Bronze', 1, 49.99, 29.99, 'Basic access for one month', 1, 20),
+    ('Silver', 3, 99.99, 59.99, 'Standard access for three months', 1, 20),
+    ('Gold', 6, 199.99, 99.99, 'Full access for six months', 1, 20),
 -- Subject ID 21
-('Bronze', 1, 49.99, 29.99, 'Basic access for one month', 1, 21),
-('Silver', 3, 99.99, 59.99, 'Standard access for three months', 1, 21),
-('Gold', 6, 199.99, 99.99, 'Full access for six months', 1, 21),
+    ('Bronze', 1, 49.99, 29.99, 'Basic access for one month', 1, 21),
+    ('Silver', 3, 99.99, 59.99, 'Standard access for three months', 1, 21),
+    ('Gold', 6, 199.99, 99.99, 'Full access for six months', 1, 21),
 -- Subject ID 22
-('Bronze', 1, 49.99, 29.99, 'Basic access for one month', 1, 22),
-('Silver', 3, 99.99, 59.99, 'Standard access for three months', 1, 22),
-('Gold', 6, 199.99, 99.99, 'Full access for six months', 1, 22),
+    ('Bronze', 1, 49.99, 29.99, 'Basic access for one month', 1, 22),
+    ('Silver', 3, 99.99, 59.99, 'Standard access for three months', 1, 22),
+    ('Gold', 6, 199.99, 99.99, 'Full access for six months', 1, 22),
 -- Subject ID 23
-('Bronze', 1, 49.99, 29.99, 'Basic access for one month', 1, 23),
-('Silver', 3, 99.99, 59.99, 'Standard access for three months', 1, 23),
-('Gold', 6, 199.99, 99.99, 'Full access for six months', 1, 23),
+    ('Bronze', 1, 49.99, 29.99, 'Basic access for one month', 1, 23),
+    ('Silver', 3, 99.99, 59.99, 'Standard access for three months', 1, 23),
+    ('Gold', 6, 199.99, 99.99, 'Full access for six months', 1, 23),
 -- Subject ID 24
-('Bronze', 1, 49.99, 29.99, 'Basic access for one month', 1, 24),
-('Silver', 3, 99.99, 59.99, 'Standard access for three months', 1, 24),
-('Gold', 6, 199.99, 99.99, 'Full access for six months', 1, 24),
+    ('Bronze', 1, 49.99, 29.99, 'Basic access for one month', 1, 24),
+    ('Silver', 3, 99.99, 59.99, 'Standard access for three months', 1, 24),
+    ('Gold', 6, 199.99, 99.99, 'Full access for six months', 1, 24),
 -- Subject ID 25
-('Bronze', 1, 49.99, 29.99, 'Basic access for one month', 1, 25),
-('Silver', 3, 99.99, 59.99, 'Standard access for three months', 1, 25),
-('Gold', 6, 199.99, 99.99, 'Full access for six months', 1, 25),
+    ('Bronze', 1, 49.99, 29.99, 'Basic access for one month', 1, 25),
+    ('Silver', 3, 99.99, 59.99, 'Standard access for three months', 1, 25),
+    ('Gold', 6, 199.99, 99.99, 'Full access for six months', 1, 25),
 -- Subject ID 26
-('Bronze', 1, 49.99, 29.99, 'Basic access for one month', 1, 26),
-('Silver', 3, 99.99, 59.99, 'Standard access for three months', 1, 26),
-('Gold', 6, 199.99, 99.99, 'Full access for six months', 1, 26),
+    ('Bronze', 1, 49.99, 29.99, 'Basic access for one month', 1, 26),
+    ('Silver', 3, 99.99, 59.99, 'Standard access for three months', 1, 26),
+    ('Gold', 6, 199.99, 99.99, 'Full access for six months', 1, 26),
 -- Subject ID 27
-('Bronze', 1, 49.99, 29.99, 'Basic access for one month', 1, 27),
-('Silver', 3, 99.99, 59.99, 'Standard access for three months', 1, 27),
-('Gold', 6, 199.99, 99.99, 'Full access for six months', 1, 27),
+    ('Bronze', 1, 49.99, 29.99, 'Basic access for one month', 1, 27),
+    ('Silver', 3, 99.99, 59.99, 'Standard access for three months', 1, 27),
+    ('Gold', 6, 199.99, 99.99, 'Full access for six months', 1, 27),
 -- Subject ID 28
-('Bronze', 1, 49.99, 29.99, 'Basic access for one month', 1, 28),
-('Silver', 3, 99.99, 59.99, 'Standard access for three months', 1, 28),
-('Gold', 6, 199.99, 99.99, 'Full access for six months', 1, 28),
+    ('Bronze', 1, 49.99, 29.99, 'Basic access for one month', 1, 28),
+    ('Silver', 3, 99.99, 59.99, 'Standard access for three months', 1, 28),
+    ('Gold', 6, 199.99, 99.99, 'Full access for six months', 1, 28),
 -- Subject ID 29
-('Bronze', 1, 49.99, 29.99, 'Basic access for one month', 1, 29),
-('Silver', 3, 99.99, 59.99, 'Standard access for three months', 1, 29),
-('Gold', 6, 199.99, 99.99, 'Full access for six months', 1, 29),
-('Premium', null, 300.99, 249.99, 'Full access for every time', 1, 29),
+    ('Bronze', 1, 49.99, 29.99, 'Basic access for one month', 1, 29),
+    ('Silver', 3, 99.99, 59.99, 'Standard access for three months', 1, 29),
+    ('Gold', 6, 199.99, 99.99, 'Full access for six months', 1, 29),
+    ('Premium', null, 300.99, 249.99, 'Full access for every time', 1, 29),
 -- Subject ID 30
-('Bronze', 1, 49.99, 29.99, 'Basic access for one month', 1, 30),
-('Silver', 3, 99.99, 59.99, 'Standard access for three months', 1, 30),
-('Gold', 6, 199.99, 99.99, 'Full access for six months', 1, 30),
-('Premium', null, 300.99, 249.99, 'Full access for every time', 1, 30);
+    ('Bronze', 1, 49.99, 29.99, 'Basic access for one month', 1, 30),
+    ('Silver', 3, 99.99, 59.99, 'Standard access for three months', 1, 30),
+    ('Gold', 6, 199.99, 99.99, 'Full access for six months', 1, 30),
+    ('Premium', null, 300.99, 249.99, 'Full access for every time', 1, 30);
 
-INSERT INTO [registrations] ([time], [total_cost], [duration], [valid_from], [valid_to], [status], [price_package_id], [user_id], [last_updated_by]) VALUES 
-('2025-05-19 08:50:00.000', 29.99, 1,'2025-05-20 09:00:00.000', '2025-06-20 09:00:00.000', 'Paid', 1, 2, 28),
-('2025-06-09 08:50:00.000', 49.99, 3,null, null, 'Pending Confirmation', 5, 2, null),
-('2025-06-09 08:50:00.000', 49.99, 3,null, null, 'Pending Payment', 8, 2, 29),
-('2024-06-19 08:50:00.000', 114.99, 6,'2024-06-20 09:00:00.000', '2024-12-20 09:00:00.000', 'Expired', 27, 2, 28),
-('2025-06-05 08:50:00.000', 99.99, 6,null, null, 'Canceled', 24, 2, null),
-('2025-06-05 08:50:00.000', 99.99, 6,null, null, 'Rejected', 21, 2, 29),
-('2025-03-11 08:50:00.000', 249.99, null, null, null, 'Pending Confirmation', 88, 2, null),
-('2025-03-11 08:50:00.000', 249.99, null,'2025-03-13 09:00:00.000', null, 'Paid', 92, 2, 28),
-('2025-05-19 08:50:00.000', 29.99, 1,'2025-05-20 09:00:00.000', '2025-06-20 09:00:00.000', 'Paid', 1, 3, 28),
-('2025-06-09 08:50:00.000', 49.99, 3,null, null, 'Pending Confirmation', 5, 4, null),
-('2025-06-09 08:50:00.000', 49.99, 3,null, null, 'Pending Payment', 8, 5, 29),
-('2024-06-19 08:50:00.000', 114.99, 6,'2024-06-20 09:00:00.000', '2024-12-20 09:00:00.000', 'Expired', 27, 6, 28),
-('2025-06-05 08:50:00.000', 99.99, 6,null, null, 'Canceled', 24, 7, null),
-('2025-06-05 08:50:00.000', 99.99, 6,null, null, 'Rejected', 21, 8, 29);
+INSERT INTO [registrations] ([time], [total_cost], [duration], [valid_from], [valid_to], [status], [price_package_id], [user_id], [last_updated_by]) VALUES
+    ('2025-05-19 08:50:00.000', 29.99, 1,'2025-05-20 09:00:00.000', '2025-06-20 09:00:00.000', 'Paid', 1, 2, 28),
+    ('2025-06-09 08:50:00.000', 49.99, 3,null, null, 'Pending Confirmation', 5, 2, null),
+    ('2025-06-09 08:50:00.000', 49.99, 3,null, null, 'Pending Payment', 8, 2, 29),
+    ('2024-06-19 08:50:00.000', 114.99, 6,'2024-06-20 09:00:00.000', '2024-12-20 09:00:00.000', 'Expired', 27, 2, 28),
+    ('2025-06-05 08:50:00.000', 99.99, 6,null, null, 'Canceled', 24, 2, null),
+    ('2025-06-05 08:50:00.000', 99.99, 6,null, null, 'Rejected', 21, 2, 29),
+    ('2025-03-11 08:50:00.000', 249.99, null, null, null, 'Pending Confirmation', 88, 2, null),
+    ('2025-03-11 08:50:00.000', 249.99, null,'2025-03-13 09:00:00.000', null, 'Paid', 92, 2, 28),
+    ('2025-05-19 08:50:00.000', 29.99, 1,'2025-05-20 09:00:00.000', '2025-06-20 09:00:00.000', 'Paid', 1, 3, 28),
+    ('2025-06-09 08:50:00.000', 49.99, 3,null, null, 'Pending Confirmation', 5, 4, null),
+    ('2025-06-09 08:50:00.000', 49.99, 3,null, null, 'Pending Payment', 8, 5, 29),
+    ('2024-06-19 08:50:00.000', 114.99, 6,'2024-06-20 09:00:00.000', '2024-12-20 09:00:00.000', 'Expired', 27, 6, 28),
+    ('2025-06-05 08:50:00.000', 99.99, 6,null, null, 'Canceled', 24, 7, null),
+    ('2025-06-05 08:50:00.000', 99.99, 6,null, null, 'Rejected', 21, 8, 29);
 
 INSERT INTO [dimensions] ([name], [description], [subject_id]) VALUES
 -- subject_id = 1 (Introduction to Programming)
-('Variables and Data Types', 'Covers primitive data types, variables, and type conversions.', 1),
-('Control Structures', 'Learn about if-else, switch, loops, and their logic.', 1),
-('Programming Tools', 'Intro to IDEs and compilers used for coding.', 1),
-('Problem Solving', 'Strengthen logical thinking through hands-on problems.', 1),
+    ('Variables and Data Types', 'Covers primitive data types, variables, and type conversions.', 1),
+    ('Control Structures', 'Learn about if-else, switch, loops, and their logic.', 1),
+    ('Programming Tools', 'Intro to IDEs and compilers used for coding.', 1),
+    ('Problem Solving', 'Strengthen logical thinking through hands-on problems.', 1),
 
 -- subject_id = 2 (SQL Fundamentals)
-('SQL Basics', 'Understand SELECT, WHERE, ORDER BY, and filtering data.', 2),
-('Joins & Relationships', 'Work with JOINs to combine tables meaningfully.', 2),
-('SQL Platforms', 'Practice using MySQL, SQL Server, or PostgreSQL.', 2),
-('Database Design', 'Apply normalization and database modeling concepts.', 2),
+    ('SQL Basics', 'Understand SELECT, WHERE, ORDER BY, and filtering data.', 2),
+    ('Joins & Relationships', 'Work with JOINs to combine tables meaningfully.', 2),
+    ('SQL Platforms', 'Practice using MySQL, SQL Server, or PostgreSQL.', 2),
+    ('Database Design', 'Apply normalization and database modeling concepts.', 2),
 
 -- subject_id = 3 (Networking Basics)
-('Network Fundamentals', 'IP, MAC, ports, and data transmission concepts.', 3),
-('Subnetting & Routing', 'Learn how to manage and segment networks.', 3),
-('Network Tools', 'Use tools like Wireshark, Ping, and Traceroute.', 3),
-('Troubleshooting', 'Diagnose and resolve basic network issues.', 3),
+    ('Network Fundamentals', 'IP, MAC, ports, and data transmission concepts.', 3),
+    ('Subnetting & Routing', 'Learn how to manage and segment networks.', 3),
+    ('Network Tools', 'Use tools like Wireshark, Ping, and Traceroute.', 3),
+    ('Troubleshooting', 'Diagnose and resolve basic network issues.', 3),
 
 -- subject_id = 4 (AI for Beginners)
-('AI Concepts', 'History, types of AI, and ethical implications.', 4),
-('Machine Learning Basics', 'Supervised vs unsupervised learning, algorithms.', 4),
-('Python Libraries', 'Use Scikit-learn, NumPy for AI experimentation.', 4),
-('AI Applications', 'Understand how AI is used in real-world scenarios.', 4);
+    ('AI Concepts', 'History, types of AI, and ethical implications.', 4),
+    ('Machine Learning Basics', 'Supervised vs unsupervised learning, algorithms.', 4),
+    ('Python Libraries', 'Use Scikit-learn, NumPy for AI experimentation.', 4),
+    ('AI Applications', 'Understand how AI is used in real-world scenarios.', 4);
 
 INSERT INTO [lessons] ([name], [topic], [order], [video_link], [content], [status], [subject_id], [lesson_type_id]) VALUES
 -- Subject 1: Introduction to Programming
-('Intro to Programming', 'Basics', 1, 'https://youtu.be/vid101', 'Introduction and goals of the course.', 1, 1, 1),
-('Variables in Programming', 'Variables', 2, 'https://youtu.be/vid102', 'Learn about variables and data types.', 1, 1, 1),
-('Control Flow', 'Control', 3, 'https://youtu.be/vid103', 'Using if/else, loops in code.', 1, 1, 1),
-('Functions and Methods', 'Functions', 4, 'https://youtu.be/vid104', 'Defining and calling functions.', 1, 1, 1),
-('Project: Simple Calculator', 'Project', 5, 'https://youtu.be/vid105', 'Build a basic calculator in code.', 1, 1, 2),
+    ('Intro to Programming', 'Basics', 1, 'https://youtu.be/vid101', 'Introduction and goals of the course.', 1, 1, 1),
+    ('Variables in Programming', 'Variables', 2, 'https://youtu.be/vid102', 'Learn about variables and data types.', 1, 1, 1),
+    ('Control Flow', 'Control', 3, 'https://youtu.be/vid103', 'Using if/else, loops in code.', 1, 1, 1),
+    ('Functions and Methods', 'Functions', 4, 'https://youtu.be/vid104', 'Defining and calling functions.', 1, 1, 1),
+    ('Project: Simple Calculator', 'Project', 5, 'https://youtu.be/vid105', 'Build a basic calculator in code.', 1, 1, 2),
 
 -- Subject 2: SQL Fundamentals
-('Intro to SQL', 'Basics', 1, 'https://youtu.be/vid201', 'What is SQL and how it works.', 1, 2, 1),
-('SELECT Statements', 'Queries', 2, 'https://youtu.be/vid202', 'Querying data from a single table.', 1, 2, 1),
-('Filtering with WHERE', 'Queries', 3, 'https://youtu.be/vid203', 'How to filter records with conditions.', 1, 2, 1),
-('JOIN Operations', 'Joins', 4, 'https://youtu.be/vid204', 'Combining data across tables.', 1, 2, 1),
-('SQL Project: Report System', 'Project', 5, 'https://youtu.be/vid205', 'Build a simple reporting system.', 1, 2, 2),
+    ('Intro to SQL', 'Basics', 1, 'https://youtu.be/vid201', 'What is SQL and how it works.', 1, 2, 1),
+    ('SELECT Statements', 'Queries', 2, 'https://youtu.be/vid202', 'Querying data from a single table.', 1, 2, 1),
+    ('Filtering with WHERE', 'Queries', 3, 'https://youtu.be/vid203', 'How to filter records with conditions.', 1, 2, 1),
+    ('JOIN Operations', 'Joins', 4, 'https://youtu.be/vid204', 'Combining data across tables.', 1, 2, 1),
+    ('SQL Project: Report System', 'Project', 5, 'https://youtu.be/vid205', 'Build a simple reporting system.', 1, 2, 2),
 
 -- Subject 3: Networking Basics
-('Intro to Networking', 'Basics', 1, 'https://youtu.be/vid301', 'What is a computer network?', 1, 3, 1),
-('IP Addressing', 'IP', 2, 'https://youtu.be/vid302', 'Learn how devices are addressed.', 1, 3, 1),
-('Subnetting Explained', 'Subnetting', 3, 'https://youtu.be/vid303', 'Dividing networks using subnet masks.', 1, 3, 1),
-('Common Protocols', 'Protocols', 4, 'https://youtu.be/vid304', 'Intro to HTTP, DNS, TCP/IP.', 1, 3, 1),
-('Networking Lab', 'Lab', 5, 'https://youtu.be/vid305', 'Hands-on practice with tools.', 1, 3, 2),
+    ('Intro to Networking', 'Basics', 1, 'https://youtu.be/vid301', 'What is a computer network?', 1, 3, 1),
+    ('IP Addressing', 'IP', 2, 'https://youtu.be/vid302', 'Learn how devices are addressed.', 1, 3, 1),
+    ('Subnetting Explained', 'Subnetting', 3, 'https://youtu.be/vid303', 'Dividing networks using subnet masks.', 1, 3, 1),
+    ('Common Protocols', 'Protocols', 4, 'https://youtu.be/vid304', 'Intro to HTTP, DNS, TCP/IP.', 1, 3, 1),
+    ('Networking Lab', 'Lab', 5, 'https://youtu.be/vid305', 'Hands-on practice with tools.', 1, 3, 2),
 
 -- Subject 4: AI for Beginners
-('What is AI?', 'Basics', 1, 'https://youtu.be/vid401', 'Definition and history of AI.', 1, 4, 1),
-('Types of Learning', 'ML', 2, 'https://youtu.be/vid402', 'Supervised vs unsupervised.', 1, 4, 1),
-('Working with Data', 'Data', 3, 'https://youtu.be/vid403', 'Cleaning and preparing data.', 1, 4, 1),
-('Intro to Python Libraries', 'Tools', 4, 'https://youtu.be/vid404', 'Using NumPy, pandas for AI.', 1, 4, 1),
-('Mini AI Project', 'Project', 5, 'https://youtu.be/vid405', 'Build a basic classifier.', 1, 4, 2);
+    ('What is AI?', 'Basics', 1, 'https://youtu.be/vid401', 'Definition and history of AI.', 1, 4, 1),
+    ('Types of Learning', 'ML', 2, 'https://youtu.be/vid402', 'Supervised vs unsupervised.', 1, 4, 1),
+    ('Working with Data', 'Data', 3, 'https://youtu.be/vid403', 'Cleaning and preparing data.', 1, 4, 1),
+    ('Intro to Python Libraries', 'Tools', 4, 'https://youtu.be/vid404', 'Using NumPy, pandas for AI.', 1, 4, 1),
+    ('Mini AI Project', 'Project', 5, 'https://youtu.be/vid405', 'Build a basic classifier.', 1, 4, 2);
 
 -- Questions (ID 1 - 10) - Dimension 1: Variables and Data Types
 INSERT INTO questions (content, explaination, question_format, question_level_id, subject_lesson_id, subject_dimension_id) VALUES
-('Which of the following are primitive data types in Java?', 'Primitive types include int, boolean, etc.', 'multiple', 1, NULL, 1),
-('Which of the following is a valid way to declare an integer variable?', 'Only option with type and variable name correctly used is valid.', 'multiple', 1, NULL, 1),
-('Which methods can convert a string to an integer in Java?', 'parseInt and valueOf can both be used.', 'multiple', 2, NULL, 1),
-('Which of the following is a valid Java variable name?', 'Java variable names must follow rules: can’t start with digits, no keywords.', 'multiple', 1, NULL, 1),
-('What type of value can a boolean variable store in Java?', 'Boolean values are only true or false.', 'multiple', 1, NULL, 1),
-('Explain the difference between primitive and reference data types in Java.', 'Primitive types store actual values, reference types store memory addresses.', 'essay', 2, NULL, 1),
-('Describe the default values of primitive data types in Java.', 'Each primitive type has a defined default (e.g., int is 0).', 'essay', 2, NULL, 1),
-('How does type casting work in Java? Provide examples.', 'Casting allows converting one data type to another.', 'essay', 3, NULL, 1),
-('Discuss the memory allocation of primitive vs reference types.', 'Primitive types go on the stack; references point to heap objects.', 'essay', 3, NULL, 1),
-('Explain how variable scope affects accessibility in Java.', 'Variable scope determines where a variable can be accessed.', 'essay', 2, NULL, 1);
+                                                                                                                               ('Which of the following are primitive data types in Java?', 'Primitive types include int, boolean, etc.', 'multiple', 1, NULL, 1),
+                                                                                                                               ('Which of the following is a valid way to declare an integer variable?', 'Only option with type and variable name correctly used is valid.', 'multiple', 1, NULL, 1),
+                                                                                                                               ('Which methods can convert a string to an integer in Java?', 'parseInt and valueOf can both be used.', 'multiple', 2, NULL, 1),
+                                                                                                                               ('Which of the following is a valid Java variable name?', 'Java variable names must follow rules: can’t start with digits, no keywords.', 'multiple', 1, NULL, 1),
+                                                                                                                               ('What type of value can a boolean variable store in Java?', 'Boolean values are only true or false.', 'multiple', 1, NULL, 1),
+                                                                                                                               ('Explain the difference between primitive and reference data types in Java.', 'Primitive types store actual values, reference types store memory addresses.', 'essay', 2, NULL, 1),
+                                                                                                                               ('Describe the default values of primitive data types in Java.', 'Each primitive type has a defined default (e.g., int is 0).', 'essay', 2, NULL, 1),
+                                                                                                                               ('How does type casting work in Java? Provide examples.', 'Casting allows converting one data type to another.', 'essay', 3, NULL, 1),
+                                                                                                                               ('Discuss the memory allocation of primitive vs reference types.', 'Primitive types go on the stack; references point to heap objects.', 'essay', 3, NULL, 1),
+                                                                                                                               ('Explain how variable scope affects accessibility in Java.', 'Variable scope determines where a variable can be accessed.', 'essay', 2, NULL, 1);
 
 -- Options for Multiple Choice (Q1 → Q5)
 INSERT INTO question_options (question_id, option_content, is_answer) VALUES
@@ -1205,28 +1204,28 @@ INSERT INTO question_options (question_id, option_content, is_answer) VALUES
 -- Multiple choice (10 single answer, 5 multiple answers) and 5 essay questions
 
 INSERT INTO questions (content, explaination, question_format, question_level_id, subject_lesson_id, subject_dimension_id) VALUES
-('What is the primary purpose of a compiler?', 'A compiler translates source code into machine code.', 'multiple', 1, 1, NULL), -- 311
-('Which of the following best describes an algorithm?', 'An algorithm is a step-by-step procedure to solve a problem.', 'multiple', 1, 1, NULL), -- 312
-('Which language is commonly used for teaching introductory programming?', 'Python is widely used due to its simplicity and readability.', 'multiple', 1, 1, NULL), -- 313
-('Which of the following is NOT a programming language?', 'HTML is a markup language, not a programming language.', 'multiple', 1, 1, NULL), -- 314
-('What is the output of 5 + 3 * 2 in most programming languages?', 'Multiplication has higher precedence than addition.', 'multiple', 2, 1, NULL), -- 315
-('Which tool helps in writing and managing source code?', 'An IDE provides features like debugging, syntax highlighting.', 'multiple', 1, 1, NULL), -- 316
-('Which of the following is used for version control?', 'Git is a widely used distributed version control system.', 'multiple', 1, 1, NULL), -- 317
-('What is a variable in programming?', 'A variable is a storage location associated with a name.', 'multiple', 1, 1, NULL), -- 318
-('Which of these is a valid data type?', 'Integer is a common data type used to store whole numbers.', 'multiple', 1, 1, NULL), -- 319
-('Which statement is used to output text in most programming languages?', 'Print statements are used to display output.', 'multiple', 1, 1, NULL), -- 320
+                                                                                                                               ('What is the primary purpose of a compiler?', 'A compiler translates source code into machine code.', 'multiple', 1, 1, NULL), -- 311
+                                                                                                                               ('Which of the following best describes an algorithm?', 'An algorithm is a step-by-step procedure to solve a problem.', 'multiple', 1, 1, NULL), -- 312
+                                                                                                                               ('Which language is commonly used for teaching introductory programming?', 'Python is widely used due to its simplicity and readability.', 'multiple', 1, 1, NULL), -- 313
+                                                                                                                               ('Which of the following is NOT a programming language?', 'HTML is a markup language, not a programming language.', 'multiple', 1, 1, NULL), -- 314
+                                                                                                                               ('What is the output of 5 + 3 * 2 in most programming languages?', 'Multiplication has higher precedence than addition.', 'multiple', 2, 1, NULL), -- 315
+                                                                                                                               ('Which tool helps in writing and managing source code?', 'An IDE provides features like debugging, syntax highlighting.', 'multiple', 1, 1, NULL), -- 316
+                                                                                                                               ('Which of the following is used for version control?', 'Git is a widely used distributed version control system.', 'multiple', 1, 1, NULL), -- 317
+                                                                                                                               ('What is a variable in programming?', 'A variable is a storage location associated with a name.', 'multiple', 1, 1, NULL), -- 318
+                                                                                                                               ('Which of these is a valid data type?', 'Integer is a common data type used to store whole numbers.', 'multiple', 1, 1, NULL), -- 319
+                                                                                                                               ('Which statement is used to output text in most programming languages?', 'Print statements are used to display output.', 'multiple', 1, 1, NULL), -- 320
 -- Multiple answers
-('Which of the following are programming languages?', 'Python, Java, and C++ are programming languages.', 'multiple', 1, 1, NULL), -- 321
-('Which of these tools are used for debugging?', 'Both IDEs and command-line tools support debugging.', 'multiple', 2, 1, NULL), -- 322
-('Which components are part of an IDE?', 'IDEs include editors, compilers, and debuggers.', 'multiple', 2, 1, NULL), -- 323
-('Which of the following are examples of interpreted languages?', 'Python and JavaScript are interpreted languages.', 'multiple', 2, 1, NULL), -- 324
-('Which file extensions indicate source code files?', 'Source code files use extensions like .py, .java, .c.', 'multiple', 1, 1, NULL), -- 325
+                                                                                                                               ('Which of the following are programming languages?', 'Python, Java, and C++ are programming languages.', 'multiple', 1, 1, NULL), -- 321
+                                                                                                                               ('Which of these tools are used for debugging?', 'Both IDEs and command-line tools support debugging.', 'multiple', 2, 1, NULL), -- 322
+                                                                                                                               ('Which components are part of an IDE?', 'IDEs include editors, compilers, and debuggers.', 'multiple', 2, 1, NULL), -- 323
+                                                                                                                               ('Which of the following are examples of interpreted languages?', 'Python and JavaScript are interpreted languages.', 'multiple', 2, 1, NULL), -- 324
+                                                                                                                               ('Which file extensions indicate source code files?', 'Source code files use extensions like .py, .java, .c.', 'multiple', 1, 1, NULL), -- 325
 -- Essay
-('Explain the role of a compiler in program execution.', 'Compilers translate high-level code into machine-executable code.', 'essay', 2, 1, NULL), -- 326
-('Describe the difference between syntax and semantics in programming.', 'Syntax refers to structure; semantics to meaning.', 'essay', 2, 1, NULL), -- 327
-('How does an IDE help a beginner programmer?', 'IDEs offer tools to simplify writing and testing code.', 'essay', 1, 1, NULL), -- 328
-('Discuss the importance of learning programming fundamentals.', 'Understanding fundamentals builds a strong programming foundation.', 'essay', 2, 1, NULL), -- 329
-('What are the common errors faced by new programmers?', 'Syntax errors, logic errors, and runtime errors are typical.', 'essay', 2, 1, NULL);
+                                                                                                                               ('Explain the role of a compiler in program execution.', 'Compilers translate high-level code into machine-executable code.', 'essay', 2, 1, NULL), -- 326
+                                                                                                                               ('Describe the difference between syntax and semantics in programming.', 'Syntax refers to structure; semantics to meaning.', 'essay', 2, 1, NULL), -- 327
+                                                                                                                               ('How does an IDE help a beginner programmer?', 'IDEs offer tools to simplify writing and testing code.', 'essay', 1, 1, NULL), -- 328
+                                                                                                                               ('Discuss the importance of learning programming fundamentals.', 'Understanding fundamentals builds a strong programming foundation.', 'essay', 2, 1, NULL), -- 329
+                                                                                                                               ('What are the common errors faced by new programmers?', 'Syntax errors, logic errors, and runtime errors are typical.', 'essay', 2, 1, NULL);
 
 -- Options for the multiple choice questions
 INSERT INTO question_options (question_id, option_content, is_answer) VALUES
@@ -1310,50 +1309,50 @@ INSERT INTO question_options (question_id, option_content, is_answer) VALUES
 
 -- MULTIPLE (1 đáp án đúng)
 INSERT INTO questions (content, explaination, question_format, question_level_id, subject_lesson_id, subject_dimension_id) VALUES
-('Which keyword is used to declare a variable in Java?', 'The "int" keyword is used to declare an integer variable.', 'multiple', 1, 2, NULL),
-('What is the default value of an uninitialized boolean in Java?', 'Default boolean value is false.', 'multiple', 1, 2, NULL),
-('Which of the following denotes a character in Java?', 'Single quotes are used for characters.', 'multiple', 1, 2, NULL),
-('Which data type is used to store decimal values in Java?', 'float and double are used for decimals.', 'multiple', 2, 2, NULL),
-('Which of the following is a valid variable name in Java?', 'A variable name must start with a letter and not contain special characters.', 'multiple', 1, 2, NULL),
-('Which type of casting is done automatically in Java?', 'Widening casting is done automatically.', 'multiple', 2, 2, NULL),
-('What does "int x = 5.5;" cause in Java?', 'This causes a compilation error due to type mismatch.', 'multiple', 2, 2, NULL),
-('Which is the largest primitive data type in Java?', 'The double data type has the largest range.', 'multiple', 3, 2, NULL),
-('How many bytes does a Java int occupy?', 'int occupies 4 bytes or 32 bits.', 'multiple', 2, 2, NULL),
-('Which of the following can hold only one character?', 'char is used for single characters.', 'multiple', 1, 2, NULL),
+                                                                                                                               ('Which keyword is used to declare a variable in Java?', 'The "int" keyword is used to declare an integer variable.', 'multiple', 1, 2, NULL),
+                                                                                                                               ('What is the default value of an uninitialized boolean in Java?', 'Default boolean value is false.', 'multiple', 1, 2, NULL),
+                                                                                                                               ('Which of the following denotes a character in Java?', 'Single quotes are used for characters.', 'multiple', 1, 2, NULL),
+                                                                                                                               ('Which data type is used to store decimal values in Java?', 'float and double are used for decimals.', 'multiple', 2, 2, NULL),
+                                                                                                                               ('Which of the following is a valid variable name in Java?', 'A variable name must start with a letter and not contain special characters.', 'multiple', 1, 2, NULL),
+                                                                                                                               ('Which type of casting is done automatically in Java?', 'Widening casting is done automatically.', 'multiple', 2, 2, NULL),
+                                                                                                                               ('What does "int x = 5.5;" cause in Java?', 'This causes a compilation error due to type mismatch.', 'multiple', 2, 2, NULL),
+                                                                                                                               ('Which is the largest primitive data type in Java?', 'The double data type has the largest range.', 'multiple', 3, 2, NULL),
+                                                                                                                               ('How many bytes does a Java int occupy?', 'int occupies 4 bytes or 32 bits.', 'multiple', 2, 2, NULL),
+                                                                                                                               ('Which of the following can hold only one character?', 'char is used for single characters.', 'multiple', 1, 2, NULL),
 
 -- MULTIPLE (nhiều đáp án đúng)
-('Which of the following are valid primitive data types in Java?', 'Java has 8 primitive types.', 'multiple', 2, 2, NULL),
-('Which names are invalid for variable declaration in Java?', 'Variables cannot start with digits or use reserved words.', 'multiple', 3, 2, NULL),
-('Which types can store whole numbers in Java?', 'byte, short, int, and long store integers.', 'multiple', 1, 2, NULL),
-('Which of the following are widening conversions in Java?', 'Widening happens from smaller to larger types.', 'multiple', 3, 2, NULL),
-('Which of the following keywords are used to declare constants in Java?', 'The "final" keyword makes a variable constant.', 'multiple', 2, 2, NULL),
+                                                                                                                               ('Which of the following are valid primitive data types in Java?', 'Java has 8 primitive types.', 'multiple', 2, 2, NULL),
+                                                                                                                               ('Which names are invalid for variable declaration in Java?', 'Variables cannot start with digits or use reserved words.', 'multiple', 3, 2, NULL),
+                                                                                                                               ('Which types can store whole numbers in Java?', 'byte, short, int, and long store integers.', 'multiple', 1, 2, NULL),
+                                                                                                                               ('Which of the following are widening conversions in Java?', 'Widening happens from smaller to larger types.', 'multiple', 3, 2, NULL),
+                                                                                                                               ('Which of the following keywords are used to declare constants in Java?', 'The "final" keyword makes a variable constant.', 'multiple', 2, 2, NULL),
 
 -- ESSAY
-('Explain the difference between float and double in Java.', 'Discuss precision and size of each type.', 'essay', 2, 2, NULL),
-('Describe the naming conventions for Java variables.', 'CamelCase, no starting digits, no special characters.', 'essay', 1, 2, NULL),
-('Compare primitive and reference data types in Java.', 'Discuss memory use and how values are stored.', 'essay', 3, 2, NULL),
-('Explain implicit and explicit type casting in Java.', 'Implicit is automatic, explicit requires cast syntax.', 'essay', 3, 2, NULL),
-('What happens when a variable is used before initialization in Java?', 'It causes a compile-time error.', 'essay', 2, 2, NULL);
+                                                                                                                               ('Explain the difference between float and double in Java.', 'Discuss precision and size of each type.', 'essay', 2, 2, NULL),
+                                                                                                                               ('Describe the naming conventions for Java variables.', 'CamelCase, no starting digits, no special characters.', 'essay', 1, 2, NULL),
+                                                                                                                               ('Compare primitive and reference data types in Java.', 'Discuss memory use and how values are stored.', 'essay', 3, 2, NULL),
+                                                                                                                               ('Explain implicit and explicit type casting in Java.', 'Implicit is automatic, explicit requires cast syntax.', 'essay', 3, 2, NULL),
+                                                                                                                               ('What happens when a variable is used before initialization in Java?', 'It causes a compile-time error.', 'essay', 2, 2, NULL);
 
 -- OPTIONS for Multiple (1 đáp án đúng)
 INSERT INTO question_options (question_id, option_content, is_answer) VALUES
-(331, 'var', 0), (331, 'int', 1), (331, 'String', 0), (331, 'define', 0),
-(332, 'true', 0), (332, 'false', 1), (332, '0', 0), (332, 'null', 0),
-(333, '"A"', 0), (333, 'A', 1), (333, 'AB', 0), (333, '"AB"', 0),
-(334, 'String', 0), (334, 'int', 0), (334, 'double', 1), (334, 'boolean', 0),
-(335, '2name', 0), (335, 'first_name', 1), (335, 'name!', 0), (335, 'void', 0),
-(336, 'Narrowing', 0), (336, 'Widening', 1), (336, 'Casting', 0), (336, 'Object', 0),
-(337, 'It runs normally', 0), (337, 'Causes warning', 0), (337, 'Causes error', 1), (337, 'Converts automatically', 0),
-(338, 'int', 0), (338, 'float', 0), (338, 'double', 1), (338, 'byte', 0),
-(339, '2 bytes', 0), (339, '4 bytes', 1), (339, '8 bytes', 0), (339, '1 byte', 0),
-(340, 'char', 1), (340, 'String', 0), (340, 'int', 0), (340, 'double', 0),
+                                                                          (331, 'var', 0), (331, 'int', 1), (331, 'String', 0), (331, 'define', 0),
+                                                                          (332, 'true', 0), (332, 'false', 1), (332, '0', 0), (332, 'null', 0),
+                                                                          (333, '"A"', 0), (333, 'A', 1), (333, 'AB', 0), (333, '"AB"', 0),
+                                                                          (334, 'String', 0), (334, 'int', 0), (334, 'double', 1), (334, 'boolean', 0),
+                                                                          (335, '2name', 0), (335, 'first_name', 1), (335, 'name!', 0), (335, 'void', 0),
+                                                                          (336, 'Narrowing', 0), (336, 'Widening', 1), (336, 'Casting', 0), (336, 'Object', 0),
+                                                                          (337, 'It runs normally', 0), (337, 'Causes warning', 0), (337, 'Causes error', 1), (337, 'Converts automatically', 0),
+                                                                          (338, 'int', 0), (338, 'float', 0), (338, 'double', 1), (338, 'byte', 0),
+                                                                          (339, '2 bytes', 0), (339, '4 bytes', 1), (339, '8 bytes', 0), (339, '1 byte', 0),
+                                                                          (340, 'char', 1), (340, 'String', 0), (340, 'int', 0), (340, 'double', 0),
 
 -- OPTIONS for Multiple (nhiều đáp án đúng)
-(341, 'int', 1), (341, 'float', 1), (341, 'char', 1), (341, 'String', 0),
-(342, '2cool', 1), (342, 'first-name', 1), (342, 'total$', 1), (342, 'void', 1),
-(343, 'byte', 1), (343, 'int', 1), (343, 'float', 0), (343, 'long', 1),
-(344, 'int to long', 1), (344, 'short to int', 1), (344, 'long to byte', 0), (344, 'double to int', 0),
-(345, 'const', 0), (345, 'final', 1), (345, 'var', 0), (345, 'static final', 1);
+                                                                          (341, 'int', 1), (341, 'float', 1), (341, 'char', 1), (341, 'String', 0),
+                                                                          (342, '2cool', 1), (342, 'first-name', 1), (342, 'total$', 1), (342, 'void', 1),
+                                                                          (343, 'byte', 1), (343, 'int', 1), (343, 'float', 0), (343, 'long', 1),
+                                                                          (344, 'int to long', 1), (344, 'short to int', 1), (344, 'long to byte', 0), (344, 'double to int', 0),
+                                                                          (345, 'const', 0), (345, 'final', 1), (345, 'var', 0), (345, 'static final', 1);
 
 -- INSERT cả câu hỏi và lựa chọn cho lesson_id = 3
 INSERT INTO questions (content, explaination, question_format, question_level_id, subject_lesson_id, subject_dimension_id) VALUES
@@ -1503,59 +1502,59 @@ INSERT INTO question_options (question_id, option_content, is_answer) VALUES
 (405, 'boolean', 0), (405, 'int', 1), (405, 'double', 1), (405, 'float', 1);
 
 INSERT INTO [quiz_settings] ([number_question], [question_type])
-VALUES 
-(20, 'dimension'), (41, 'lesson'), (42, 'dimension'), (43, 'lesson'), (44, 'dimension'),
-(45, 'lesson'), (46, 'dimension'), (47, 'lesson'), (48, 'dimension'), (49, 'lesson'),
-(50, 'dimension'), (51, 'lesson'), (52, 'dimension'), (53, 'lesson'), (54, 'dimension'),
-(55, 'lesson'), (56, 'dimension'), (57, 'lesson'), (58, 'dimension'), (59, 'lesson'),
-(60, 'dimension'), (61, 'lesson'), (62, 'dimension'), (63, 'lesson'), (64, 'dimension'),
-(65, 'lesson'), (66, 'dimension'), (67, 'lesson'), (68, 'dimension'), (69, 'lesson'),
-(70, 'dimension'), (40, 'lesson'), (41, 'dimension'), (42, 'lesson'), (43, 'dimension'),
-(44, 'lesson'), (45, 'dimension'), (46, 'lesson'), (47, 'dimension'), (48, 'lesson');
+VALUES
+    (20, 'dimension'), (41, 'lesson'), (42, 'dimension'), (43, 'lesson'), (44, 'dimension'),
+    (45, 'lesson'), (46, 'dimension'), (47, 'lesson'), (48, 'dimension'), (49, 'lesson'),
+    (50, 'dimension'), (51, 'lesson'), (52, 'dimension'), (53, 'lesson'), (54, 'dimension'),
+    (55, 'lesson'), (56, 'dimension'), (57, 'lesson'), (58, 'dimension'), (59, 'lesson'),
+    (60, 'dimension'), (61, 'lesson'), (62, 'dimension'), (63, 'lesson'), (64, 'dimension'),
+    (65, 'lesson'), (66, 'dimension'), (67, 'lesson'), (68, 'dimension'), (69, 'lesson'),
+    (70, 'dimension'), (40, 'lesson'), (41, 'dimension'), (42, 'lesson'), (43, 'dimension'),
+    (44, 'lesson'), (45, 'dimension'), (46, 'lesson'), (47, 'dimension'), (48, 'lesson');
 
 -- Insert 40 quizzes
 INSERT INTO [quizzes] ([format], [name], [question_level_id], [duration], [pass_rate], [description], [status], [test_type_id], [subject_id], [quiz_setting_id])
-VALUES 
-('multiple', 'Programming Fundamentals Quiz', 1, 60*60, 70, 'Test your basic programming knowledge with variables, loops, and functions', 1, 1, 1, 1),
-('essay', 'Advanced Programming Challenge', 3, 90, 80, 'Complex programming scenarios and algorithm design', 1, 2, 1, 2),
-('multiple', 'SQL Basics Assessment', 1, 45, 65, 'Basic SQL queries, SELECT statements, and simple joins', 1, 1, 2, 3),
-('essay', 'Database Design Quiz', 2, 75, 75, 'Normalization, relationships, and database optimization', 1, 2, 2, 4),
-('multiple', 'Network Protocols Test', 2, 60, 70, 'TCP/IP, HTTP, DNS, and network troubleshooting', 1, 1, 3, 5),
-('essay', 'Advanced Networking', 3, 120, 85, 'Subnetting, routing protocols, and network security', 1, 2, 3, 6),
-('multiple', 'AI Fundamentals Quiz', 1, 50, 65, 'Introduction to machine learning concepts and algorithms', 1, 1, 4, 7),
-('essay', 'Machine Learning Deep Dive', 3, 100, 80, 'Advanced ML algorithms, neural networks, and deep learning', 1, 2, 4, 8),
-('multiple', 'Cybersecurity Basics', 2, 55, 70, 'Common threats, security measures, and best practices', 1, 1, 5, 9),
-('essay', 'Security Advanced Topics', 3, 85, 85, 'Cryptography, penetration testing, and incident response', 1, 2, 5, 10),
-('multiple', 'HTML & CSS Fundamentals', 1, 40, 60, 'Basic web structure, styling, and responsive design', 1, 1, 6, 11),
-('multiple', 'JavaScript Essentials', 2, 65, 75, 'DOM manipulation, events, and asynchronous programming', 1, 2, 6, 12),
-('multiple', 'Data Analysis Basics', 1, 55, 65, 'Statistical concepts, data visualization, and basic analytics', 1, 1, 7, 13),
-('essay', 'Advanced Data Science', 3, 95, 85, 'Complex statistical models, machine learning, and big data', 1, 2, 7, 14),
-('multiple', 'Node.js Fundamentals', 2, 70, 70, 'Server-side JavaScript, Express.js, and API development', 1, 1, 8, 15),
-('essay', 'Backend Architecture Quiz', 3, 90, 80, 'Scalable systems, microservices, and database integration', 1, 2, 8, 16),
-('multiple', 'Neural Networks Intro', 2, 80, 75, 'Basic neural network concepts and training algorithms', 1, 1, 9, 17),
-('essay', 'Deep Learning Mastery', 3, 110, 85, 'CNNs, RNNs, and advanced deep learning architectures', 1, 2, 9, 18),
-('multiple', 'Programming Logic Test', 1, 45, 65, 'Problem-solving with basic programming constructs', 1, 1, 1, 19),
-('multiple', 'Object-Oriented Programming', 2, 75, 75, 'Classes, inheritance, polymorphism, and design patterns', 1, 2, 1, 20),
-('essay', 'Database Queries Advanced', 3, 85, 80, 'Complex joins, subqueries, and performance optimization', 1, 1, 2, 21),
-('essay', 'SQL Performance Tuning', 3, 90, 85, 'Index optimization, query plans, and database tuning', 1, 2, 2, 22),
-('multiple', 'Network Security Basics', 2, 60, 70, 'Firewalls, VPNs, and network attack prevention', 1, 1, 3, 23),
-('essay', 'Enterprise Networking', 3, 105, 85, 'Large-scale network design and management', 1, 2, 3, 24),
-('multiple', 'AI Ethics and Applications', 1, 50, 65, 'Responsible AI, bias detection, and real-world applications', 1, 1, 4, 25),
-('multiple', 'Computer Vision Basics', 2, 80, 75, 'Image processing, feature detection, and CNN applications', 1, 2, 4, 26),
-('multiple', 'Information Security', 1, 55, 65, 'Data protection, access control, and security policies', 1, 1, 5, 27),
-('essay', 'Ethical Hacking Intro', 3, 95, 85, 'Penetration testing, vulnerability assessment, and tools', 1, 2, 5, 28),
-('multiple', 'React Fundamentals', 2, 70, 70, 'Component-based development, state management, and hooks', 1, 1, 6, 29),
-('essay', 'Full-Stack Development', 3, 100, 80, 'End-to-end web application development', 1, 2, 6, 30),
-('multiple', 'Statistical Analysis', 2, 75, 75, 'Hypothesis testing, regression analysis, and statistical inference', 1, 1, 7, 31),
-('essay', 'Big Data Analytics', 3, 110, 85, 'Hadoop, Spark, and large-scale data processing', 1, 2, 7, 32),
-('multiple', 'RESTful API Design', 2, 65, 70, 'API best practices, authentication, and documentation', 1, 1, 8, 33),
-('essay', 'Microservices Architecture', 3, 95, 85, 'Distributed systems, containerization, and service mesh', 1, 2, 8, 34),
-('multiple', 'TensorFlow Basics', 2, 80, 75, 'Building and training models with TensorFlow', 1, 1, 9, 35),
-('essay', 'Advanced Deep Learning', 3, 120, 85, 'GANs, transfer learning, and model optimization', 1, 2, 9, 36),
-('multiple', 'Web Development Basics', 1, 50, 60, 'HTML5, CSS3, and basic JavaScript concepts', 1, 1, 6, 37),
-('multiple', 'Database Administration', 2, 85, 75, 'Backup, recovery, and database maintenance', 1, 2, 2, 38),
-('multiple', 'Cloud Computing Intro', 1, 60, 65, 'Cloud services, deployment models, and basic concepts', 1, 1, 3, 39),
-('multiple', 'DevOps Fundamentals', 2, 75, 70, 'CI/CD, automation, and infrastructure as code', 1, 2, 8, 40);
+VALUES
+    ('multiple', 'Programming Fundamentals Quiz', 1, 60*60, 70, 'Test your basic programming knowledge with variables, loops, and functions', 1, 1, 1, 1),
+    ('essay', 'Advanced Programming Challenge', 3, 90, 80, 'Complex programming scenarios and algorithm design', 1, 2, 1, 2),
+    ('multiple', 'SQL Basics Assessment', 1, 45, 65, 'Basic SQL queries, SELECT statements, and simple joins', 1, 1, 2, 3),
+    ('essay', 'Database Design Quiz', 2, 75, 75, 'Normalization, relationships, and database optimization', 1, 2, 2, 4),
+    ('multiple', 'Network Protocols Test', 2, 60, 70, 'TCP/IP, HTTP, DNS, and network troubleshooting', 1, 1, 3, 5),
+    ('essay', 'Advanced Networking', 3, 120, 85, 'Subnetting, routing protocols, and network security', 1, 2, 3, 6),
+    ('multiple', 'AI Fundamentals Quiz', 1, 50, 65, 'Introduction to machine learning concepts and algorithms', 1, 1, 4, 7),
+    ('essay', 'Machine Learning Deep Dive', 3, 100, 80, 'Advanced ML algorithms, neural networks, and deep learning', 1, 2, 4, 8),
+    ('multiple', 'Cybersecurity Basics', 2, 55, 70, 'Common threats, security measures, and best practices', 1, 1, 5, 9),
+    ('essay', 'Security Advanced Topics', 3, 85, 85, 'Cryptography, penetration testing, and incident response', 1, 2, 5, 10),
+    ('multiple', 'HTML & CSS Fundamentals', 1, 40, 60, 'Basic web structure, styling, and responsive design', 1, 1, 6, 11),
+    ('multiple', 'JavaScript Essentials', 2, 65, 75, 'DOM manipulation, events, and asynchronous programming', 1, 2, 6, 12),
+    ('multiple', 'Data Analysis Basics', 1, 55, 65, 'Statistical concepts, data visualization, and basic analytics', 1, 1, 7, 13),
+    ('essay', 'Advanced Data Science', 3, 95, 85, 'Complex statistical models, machine learning, and big data', 1, 2, 7, 14),
+    ('multiple', 'Node.js Fundamentals', 2, 70, 70, 'Server-side JavaScript, Express.js, and API development', 1, 1, 8, 15),
+    ('essay', 'Backend Architecture Quiz', 3, 90, 80, 'Scalable systems, microservices, and database integration', 1, 2, 8, 16),
+    ('multiple', 'Neural Networks Intro', 2, 80, 75, 'Basic neural network concepts and training algorithms', 1, 1, 9, 17),
+    ('essay', 'Deep Learning Mastery', 3, 110, 85, 'CNNs, RNNs, and advanced deep learning architectures', 1, 2, 9, 18),
+    ('multiple', 'Programming Logic Test', 1, 45, 65, 'Problem-solving with basic programming constructs', 1, 1, 1, 19),
+    ('multiple', 'Object-Oriented Programming', 2, 75, 75, 'Classes, inheritance, polymorphism, and design patterns', 1, 2, 1, 20),
+    ('essay', 'Database Queries Advanced', 3, 85, 80, 'Complex joins, subqueries, and performance optimization', 1, 1, 2, 21),
+    ('essay', 'SQL Performance Tuning', 3, 90, 85, 'Index optimization, query plans, and database tuning', 1, 2, 2, 22),
+    ('multiple', 'Network Security Basics', 2, 60, 70, 'Firewalls, VPNs, and network attack prevention', 1, 1, 3, 23),
+    ('essay', 'Enterprise Networking', 3, 105, 85, 'Large-scale network design and management', 1, 2, 3, 24),
+    ('multiple', 'AI Ethics and Applications', 1, 50, 65, 'Responsible AI, bias detection, and real-world applications', 1, 1, 4, 25),
+    ('multiple', 'Computer Vision Basics', 2, 80, 75, 'Image processing, feature detection, and CNN applications', 1, 2, 4, 26),
+    ('multiple', 'Information Security', 1, 55, 65, 'Data protection, access control, and security policies', 1, 1, 5, 27),
+    ('essay', 'Ethical Hacking Intro', 3, 95, 85, 'Penetration testing, vulnerability assessment, and tools', 1, 2, 5, 28),
+    ('multiple', 'React Fundamentals', 2, 70, 70, 'Component-based development, state management, and hooks', 1, 1, 6, 29),
+    ('essay', 'Full-Stack Development', 3, 100, 80, 'End-to-end web application development', 1, 2, 6, 30),
+    ('multiple', 'Statistical Analysis', 2, 75, 75, 'Hypothesis testing, regression analysis, and statistical inference', 1, 1, 7, 31),
+    ('essay', 'Big Data Analytics', 3, 110, 85, 'Hadoop, Spark, and large-scale data processing', 1, 2, 7, 32),
+    ('multiple', 'RESTful API Design', 2, 65, 70, 'API best practices, authentication, and documentation', 1, 1, 8, 33),
+    ('essay', 'Microservices Architecture', 3, 95, 85, 'Distributed systems, containerization, and service mesh', 1, 2, 8, 34),
+    ('multiple', 'TensorFlow Basics', 2, 80, 75, 'Building and training models with TensorFlow', 1, 1, 9, 35),
+    ('essay', 'Advanced Deep Learning', 3, 120, 85, 'GANs, transfer learning, and model optimization', 1, 2, 9, 36),
+    ('multiple', 'Web Development Basics', 1, 50, 60, 'HTML5, CSS3, and basic JavaScript concepts', 1, 1, 6, 37),
+    ('multiple', 'Database Administration', 2, 85, 75, 'Backup, recovery, and database maintenance', 1, 2, 2, 38),
+    ('multiple', 'Cloud Computing Intro', 1, 60, 65, 'Cloud services, deployment models, and basic concepts', 1, 1, 3, 39),
+    ('multiple', 'DevOps Fundamentals', 2, 75, 70, 'CI/CD, automation, and infrastructure as code', 1, 2, 8, 40);
 
 -- Insert quiz_setting_groups records
 -- Each quiz_setting can have multiple groups
@@ -1564,217 +1563,217 @@ VALUES
 -- Based on question_type: 'lesson' groups -> subject_lesson_id populated, 'dimension' groups -> subject_dimension_id populated
 
 INSERT INTO [quiz_setting_groups] ([number_question], [subject_lesson_id], [subject_dimension_id], [quiz_setting_id])
-VALUES 
+VALUES
 -- Quiz Setting ID 1: 40 questions total, type 'dimension' -> split across multiple dimensions
-(5, NULL, 1, 1),  -- Variables and Data Types
-(5, NULL, 2, 1),  -- Control Structures  
-(5, NULL, 3, 1),   -- Programming Tools
-(5, NULL, 4, 1),   -- Problem Solving
+    (5, NULL, 1, 1),  -- Variables and Data Types
+    (5, NULL, 2, 1),  -- Control Structures
+    (5, NULL, 3, 1),   -- Programming Tools
+    (5, NULL, 4, 1),   -- Problem Solving
 
 -- Quiz Setting ID 2: 41 questions total, type 'lesson' -> split across multiple lessons
-(12, 1, NULL, 2),  -- Intro to Programming
-(10, 2, NULL, 2),  -- Variables in Programming
-(10, 3, NULL, 2),  -- Control Flow
-(9, 4, NULL, 2),   -- Functions and Methods
+    (12, 1, NULL, 2),  -- Intro to Programming
+    (10, 2, NULL, 2),  -- Variables in Programming
+    (10, 3, NULL, 2),  -- Control Flow
+    (9, 4, NULL, 2),   -- Functions and Methods
 
 -- Quiz Setting ID 3: 42 questions total, type 'dimension' -> split across SQL dimensions
-(15, NULL, 5, 3),  -- SQL Basics
-(12, NULL, 6, 3),  -- Joins & Relationships
-(10, NULL, 7, 3),  -- SQL Platforms
-(5, NULL, 8, 3),   -- Database Design
+    (15, NULL, 5, 3),  -- SQL Basics
+    (12, NULL, 6, 3),  -- Joins & Relationships
+    (10, NULL, 7, 3),  -- SQL Platforms
+    (5, NULL, 8, 3),   -- Database Design
 
 -- Quiz Setting ID 4: 43 questions total, type 'lesson' -> split across SQL lessons
-(12, 6, NULL, 4),  -- Intro to SQL
-(11, 7, NULL, 4),  -- SELECT Statements
-(10, 8, NULL, 4),  -- Filtering with WHERE
-(10, 9, NULL, 4),  -- JOIN Operations
+    (12, 6, NULL, 4),  -- Intro to SQL
+    (11, 7, NULL, 4),  -- SELECT Statements
+    (10, 8, NULL, 4),  -- Filtering with WHERE
+    (10, 9, NULL, 4),  -- JOIN Operations
 
 -- Quiz Setting ID 5: 44 questions total, type 'dimension' -> split across Network dimensions
-(15, NULL, 9, 5),  -- Network Fundamentals
-(12, NULL, 10, 5), -- Subnetting & Routing
-(10, NULL, 11, 5), -- Network Tools
-(7, NULL, 12, 5),  -- Troubleshooting
+    (15, NULL, 9, 5),  -- Network Fundamentals
+    (12, NULL, 10, 5), -- Subnetting & Routing
+    (10, NULL, 11, 5), -- Network Tools
+    (7, NULL, 12, 5),  -- Troubleshooting
 
 -- Quiz Setting ID 6: 45 questions total, type 'lesson' -> split across Network lessons
-(12, 11, NULL, 6), -- Intro to Networking
-(11, 12, NULL, 6), -- IP Addressing
-(11, 13, NULL, 6), -- Subnetting Explained
-(11, 14, NULL, 6), -- Common Protocols
+    (12, 11, NULL, 6), -- Intro to Networking
+    (11, 12, NULL, 6), -- IP Addressing
+    (11, 13, NULL, 6), -- Subnetting Explained
+    (11, 14, NULL, 6), -- Common Protocols
 
 -- Quiz Setting ID 7: 46 questions total, type 'dimension' -> split across AI dimensions
-(15, NULL, 13, 7), -- AI Concepts
-(12, NULL, 14, 7), -- Machine Learning Basics
-(10, NULL, 15, 7), -- Python Libraries
-(9, NULL, 16, 7),  -- AI Applications
+    (15, NULL, 13, 7), -- AI Concepts
+    (12, NULL, 14, 7), -- Machine Learning Basics
+    (10, NULL, 15, 7), -- Python Libraries
+    (9, NULL, 16, 7),  -- AI Applications
 
 -- Quiz Setting ID 8: 47 questions total, type 'lesson' -> split across AI lessons
-(12, 16, NULL, 8), -- What is AI?
-(12, 17, NULL, 8), -- Types of Learning
-(12, 18, NULL, 8), -- Working with Data
-(11, 19, NULL, 8), -- Intro to Python Libraries
+    (12, 16, NULL, 8), -- What is AI?
+    (12, 17, NULL, 8), -- Types of Learning
+    (12, 18, NULL, 8), -- Working with Data
+    (11, 19, NULL, 8), -- Intro to Python Libraries
 
 -- Quiz Setting ID 9: 48 questions total, type 'dimension' -> mixed dimensions from different subjects
-(15, NULL, 1, 9),  -- Variables and Data Types (Programming)
-(12, NULL, 5, 9),  -- SQL Basics
-(10, NULL, 9, 9),  -- Network Fundamentals
-(11, NULL, 13, 9), -- AI Concepts
+    (15, NULL, 1, 9),  -- Variables and Data Types (Programming)
+    (12, NULL, 5, 9),  -- SQL Basics
+    (10, NULL, 9, 9),  -- Network Fundamentals
+    (11, NULL, 13, 9), -- AI Concepts
 
 -- Quiz Setting ID 10: 49 questions total, type 'lesson' -> mixed lessons
-(13, 1, NULL, 10), -- Intro to Programming
-(12, 6, NULL, 10), -- Intro to SQL
-(12, 11, NULL, 10), -- Intro to Networking
-(12, 16, NULL, 10), -- What is AI?
+    (13, 1, NULL, 10), -- Intro to Programming
+    (12, 6, NULL, 10), -- Intro to SQL
+    (12, 11, NULL, 10), -- Intro to Networking
+    (12, 16, NULL, 10), -- What is AI?
 
 -- Quiz Setting ID 11: 50 questions total, type 'dimension'
-(18, NULL, 2, 11), -- Control Structures
-(16, NULL, 6, 11), -- Joins & Relationships
-(16, NULL, 10, 11), -- Subnetting & Routing
+    (18, NULL, 2, 11), -- Control Structures
+    (16, NULL, 6, 11), -- Joins & Relationships
+    (16, NULL, 10, 11), -- Subnetting & Routing
 
 -- Quiz Setting ID 12: 51 questions total, type 'lesson'
-(17, 2, NULL, 12), -- Variables in Programming
-(17, 7, NULL, 12), -- SELECT Statements
-(17, 12, NULL, 12), -- IP Addressing
+    (17, 2, NULL, 12), -- Variables in Programming
+    (17, 7, NULL, 12), -- SELECT Statements
+    (17, 12, NULL, 12), -- IP Addressing
 
 -- Quiz Setting ID 13: 52 questions total, type 'dimension'
-(20, NULL, 3, 13), -- Programming Tools
-(16, NULL, 7, 13), -- SQL Platforms
-(16, NULL, 11, 13), -- Network Tools
+    (20, NULL, 3, 13), -- Programming Tools
+    (16, NULL, 7, 13), -- SQL Platforms
+    (16, NULL, 11, 13), -- Network Tools
 
 -- Quiz Setting ID 14: 53 questions total, type 'lesson'
-(18, 3, NULL, 14), -- Control Flow
-(18, 8, NULL, 14), -- Filtering with WHERE
-(17, 13, NULL, 14), -- Subnetting Explained
+    (18, 3, NULL, 14), -- Control Flow
+    (18, 8, NULL, 14), -- Filtering with WHERE
+    (17, 13, NULL, 14), -- Subnetting Explained
 
 -- Quiz Setting ID 15: 54 questions total, type 'dimension'
-(18, NULL, 4, 15), -- Problem Solving
-(18, NULL, 8, 15), -- Database Design
-(18, NULL, 12, 15), -- Troubleshooting
+    (18, NULL, 4, 15), -- Problem Solving
+    (18, NULL, 8, 15), -- Database Design
+    (18, NULL, 12, 15), -- Troubleshooting
 
 -- Quiz Setting ID 16: 55 questions total, type 'lesson'
-(18, 4, NULL, 16), -- Functions and Methods
-(19, 9, NULL, 16), -- JOIN Operations
-(18, 14, NULL, 16), -- Common Protocols
+    (18, 4, NULL, 16), -- Functions and Methods
+    (19, 9, NULL, 16), -- JOIN Operations
+    (18, 14, NULL, 16), -- Common Protocols
 
 -- Quiz Setting ID 17: 56 questions total, type 'dimension'
-(20, NULL, 14, 17), -- Machine Learning Basics
-(18, NULL, 15, 17), -- Python Libraries
-(18, NULL, 16, 17), -- AI Applications
+    (20, NULL, 14, 17), -- Machine Learning Basics
+    (18, NULL, 15, 17), -- Python Libraries
+    (18, NULL, 16, 17), -- AI Applications
 
 -- Quiz Setting ID 18: 57 questions total, type 'lesson'
-(19, 17, NULL, 18), -- Types of Learning
-(19, 18, NULL, 18), -- Working with Data
-(19, 19, NULL, 18), -- Intro to Python Libraries
+    (19, 17, NULL, 18), -- Types of Learning
+    (19, 18, NULL, 18), -- Working with Data
+    (19, 19, NULL, 18), -- Intro to Python Libraries
 
 -- Quiz Setting ID 19: 58 questions total, type 'dimension'
-(20, NULL, 1, 19), -- Variables and Data Types
-(19, NULL, 2, 19), -- Control Structures
-(19, NULL, 3, 19), -- Programming Tools
+    (20, NULL, 1, 19), -- Variables and Data Types
+    (19, NULL, 2, 19), -- Control Structures
+    (19, NULL, 3, 19), -- Programming Tools
 
 -- Quiz Setting ID 20: 59 questions total, type 'lesson'
-(15, 5, NULL, 20), -- Project: Simple Calculator
-(15, 10, NULL, 20), -- SQL Project: Report System
-(15, 15, NULL, 20), -- Networking Lab
-(14, 20, NULL, 20), -- Mini AI Project
+    (15, 5, NULL, 20), -- Project: Simple Calculator
+    (15, 10, NULL, 20), -- SQL Project: Report System
+    (15, 15, NULL, 20), -- Networking Lab
+    (14, 20, NULL, 20), -- Mini AI Project
 
 -- Quiz Setting ID 21: 60 questions total, type 'dimension'
-(20, NULL, 5, 21), -- SQL Basics
-(20, NULL, 6, 21), -- Joins & Relationships
-(20, NULL, 7, 21), -- SQL Platforms
+    (20, NULL, 5, 21), -- SQL Basics
+    (20, NULL, 6, 21), -- Joins & Relationships
+    (20, NULL, 7, 21), -- SQL Platforms
 
 -- Quiz Setting ID 22: 61 questions total, type 'lesson'
-(21, 6, NULL, 22), -- Intro to SQL
-(20, 7, NULL, 22), -- SELECT Statements
-(20, 8, NULL, 22), -- Filtering with WHERE
+    (21, 6, NULL, 22), -- Intro to SQL
+    (20, 7, NULL, 22), -- SELECT Statements
+    (20, 8, NULL, 22), -- Filtering with WHERE
 
 -- Quiz Setting ID 23: 62 questions total, type 'dimension'
-(21, NULL, 9, 23), -- Network Fundamentals
-(21, NULL, 10, 23), -- Subnetting & Routing
-(20, NULL, 11, 23), -- Network Tools
+    (21, NULL, 9, 23), -- Network Fundamentals
+    (21, NULL, 10, 23), -- Subnetting & Routing
+    (20, NULL, 11, 23), -- Network Tools
 
 -- Quiz Setting ID 24: 63 questions total, type 'lesson'
-(21, 11, NULL, 24), -- Intro to Networking
-(21, 12, NULL, 24), -- IP Addressing
-(21, 13, NULL, 24), -- Subnetting Explained
+    (21, 11, NULL, 24), -- Intro to Networking
+    (21, 12, NULL, 24), -- IP Addressing
+    (21, 13, NULL, 24), -- Subnetting Explained
 
 -- Quiz Setting ID 25: 64 questions total, type 'dimension'
-(22, NULL, 13, 25), -- AI Concepts
-(21, NULL, 14, 25), -- Machine Learning Basics
-(21, NULL, 15, 25), -- Python Libraries
+    (22, NULL, 13, 25), -- AI Concepts
+    (21, NULL, 14, 25), -- Machine Learning Basics
+    (21, NULL, 15, 25), -- Python Libraries
 
 -- Quiz Setting ID 26: 65 questions total, type 'lesson'
-(22, 16, NULL, 26), -- What is AI?
-(22, 17, NULL, 26), -- Types of Learning
-(21, 18, NULL, 26), -- Working with Data
+    (22, 16, NULL, 26), -- What is AI?
+    (22, 17, NULL, 26), -- Types of Learning
+    (21, 18, NULL, 26), -- Working with Data
 
 -- Quiz Setting ID 27: 66 questions total, type 'dimension'
-(22, NULL, 4, 27), -- Problem Solving
-(22, NULL, 8, 27), -- Database Design
-(22, NULL, 12, 27), -- Troubleshooting
+    (22, NULL, 4, 27), -- Problem Solving
+    (22, NULL, 8, 27), -- Database Design
+    (22, NULL, 12, 27), -- Troubleshooting
 
 -- Quiz Setting ID 28: 67 questions total, type 'lesson'
-(23, 4, NULL, 28), -- Functions and Methods
-(22, 9, NULL, 28), -- JOIN Operations
-(22, 14, NULL, 28), -- Common Protocols
+    (23, 4, NULL, 28), -- Functions and Methods
+    (22, 9, NULL, 28), -- JOIN Operations
+    (22, 14, NULL, 28), -- Common Protocols
 
 -- Quiz Setting ID 29: 68 questions total, type 'dimension'
-(23, NULL, 16, 29), -- AI Applications
-(23, NULL, 1, 29), -- Variables and Data Types
-(22, NULL, 5, 29), -- SQL Basics
+    (23, NULL, 16, 29), -- AI Applications
+    (23, NULL, 1, 29), -- Variables and Data Types
+    (22, NULL, 5, 29), -- SQL Basics
 
 -- Quiz Setting ID 30: 69 questions total, type 'lesson'
-(23, 19, NULL, 30), -- Intro to Python Libraries
-(23, 20, NULL, 30), -- Mini AI Project
-(23, 1, NULL, 30), -- Intro to Programming
+    (23, 19, NULL, 30), -- Intro to Python Libraries
+    (23, 20, NULL, 30), -- Mini AI Project
+    (23, 1, NULL, 30), -- Intro to Programming
 
 -- Quiz Setting ID 31: 70 questions total, type 'dimension'
-(24, NULL, 2, 31), -- Control Structures
-(23, NULL, 6, 31), -- Joins & Relationships
-(23, NULL, 10, 31), -- Subnetting & Routing
+    (24, NULL, 2, 31), -- Control Structures
+    (23, NULL, 6, 31), -- Joins & Relationships
+    (23, NULL, 10, 31), -- Subnetting & Routing
 
 -- Quiz Setting ID 32: 40 questions total, type 'lesson'
-(20, 2, NULL, 32), -- Variables in Programming
-(20, 7, NULL, 32), -- SELECT Statements
+    (20, 2, NULL, 32), -- Variables in Programming
+    (20, 7, NULL, 32), -- SELECT Statements
 
 -- Quiz Setting ID 33: 41 questions total, type 'dimension'
-(21, NULL, 3, 33), -- Programming Tools
-(20, NULL, 7, 33), -- SQL Platforms
+    (21, NULL, 3, 33), -- Programming Tools
+    (20, NULL, 7, 33), -- SQL Platforms
 
 -- Quiz Setting ID 34: 42 questions total, type 'lesson'
-(21, 3, NULL, 34), -- Control Flow
-(21, 8, NULL, 34), -- Filtering with WHERE
+    (21, 3, NULL, 34), -- Control Flow
+    (21, 8, NULL, 34), -- Filtering with WHERE
 
 -- Quiz Setting ID 35: 43 questions total, type 'dimension'
-(22, NULL, 11, 35), -- Network Tools
-(21, NULL, 15, 35), -- Python Libraries
+    (22, NULL, 11, 35), -- Network Tools
+    (21, NULL, 15, 35), -- Python Libraries
 
 -- Quiz Setting ID 36: 44 questions total, type 'lesson'
-(22, 12, NULL, 36), -- IP Addressing
-(22, 17, NULL, 36), -- Types of Learning
+    (22, 12, NULL, 36), -- IP Addressing
+    (22, 17, NULL, 36), -- Types of Learning
 
 -- Quiz Setting ID 37: 45 questions total, type 'dimension'
-(23, NULL, 9, 37), -- Network Fundamentals
-(22, NULL, 13, 37), -- AI Concepts
+    (23, NULL, 9, 37), -- Network Fundamentals
+    (22, NULL, 13, 37), -- AI Concepts
 
 -- Quiz Setting ID 38: 46 questions total, type 'lesson'
-(23, 13, NULL, 38), -- Subnetting Explained
-(23, 18, NULL, 38), -- Working with Data
+    (23, 13, NULL, 38), -- Subnetting Explained
+    (23, 18, NULL, 38), -- Working with Data
 
 -- Quiz Setting ID 39: 47 questions total, type 'dimension'
-(24, NULL, 14, 39), -- Machine Learning Basics
-(23, NULL, 4, 39), -- Problem Solving
+    (24, NULL, 14, 39), -- Machine Learning Basics
+    (23, NULL, 4, 39), -- Problem Solving
 
 -- Quiz Setting ID 40: 48 questions total, type 'lesson'
-(24, 15, NULL, 40), -- Networking Lab
-(24, 20, NULL, 40); -- Mini AI Project
+    (24, 15, NULL, 40), -- Networking Lab
+    (24, 20, NULL, 40); -- Mini AI Project
 
 insert into [practices] (format, name, number_question, question_level_id, subject_dimension_id, subject_lesson_id, user_id) values
-('multiple', 'practice1', '20', 1, 1, null, 2)
+    ('multiple', 'practice1', '20', 1, 1, null, 2)
 
 insert into [exam_attempts] (type, duration, number_correct_question, user_id, quiz_id, practice_id) values
-('practice', 10*60 + 1234, 10, 2, null, 1)
+    ('practice', 10*60 + 1234, 10, 2, null, 1)
 
 INSERT INTO [subject_description_images]([subject_id], [url], [caption])
 VALUES
-(1, 'Test1.jpg', 'This is 1st image'),
-(1, 'Test2.jpg', 'This is 2nd image'),
-(1, 'Test3.jpg', 'This is 3rd image');
+    (1, 'Test1.jpg', 'This is 1st image'),
+    (1, 'Test2.jpg', 'This is 2nd image'),
+    (1, 'Test3.jpg', 'This is 3rd image');
