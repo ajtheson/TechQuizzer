@@ -37,7 +37,7 @@
             <div class="tile">
                 <div class="tile-body">
                     <div class="text-center mb-4">
-                        <img src="assets/images/avatar/${user.avatar != null ? user.avatar : 'default.webp'}"
+                        <img src="${pageContext.request.contextPath}/assets/images/avatar/${user.avatar != null ? user.avatar : 'default.webp'}"
                              alt="User Avatar"
                              style="width: 150px; height: 180px; object-fit: cover; border: 2px solid #4d5154; border-radius: 8px;">
                     </div>
