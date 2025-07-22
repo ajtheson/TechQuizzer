@@ -421,16 +421,16 @@ INSERT INTO [lessons] ([name], [topic], [order], [video_link], [content], [statu
 
 -- Questions (ID 1 - 10) - Dimension 1: Variables and Data Types
 INSERT INTO questions (content, explaination, question_format, question_level_id, subject_lesson_id, subject_dimension_id) VALUES
-                                                                                                                               ('Which of the following are primitive data types in Java?', 'Primitive types include int, boolean, etc.', 'multiple', 1, NULL, 1),
-                                                                                                                               ('Which of the following is a valid way to declare an integer variable?', 'Only option with type and variable name correctly used is valid.', 'multiple', 1, NULL, 1),
-                                                                                                                               ('Which methods can convert a string to an integer in Java?', 'parseInt and valueOf can both be used.', 'multiple', 2, NULL, 1),
-                                                                                                                               ('Which of the following is a valid Java variable name?', 'Java variable names must follow rules: can’t start with digits, no keywords.', 'multiple', 1, NULL, 1),
-                                                                                                                               ('What type of value can a boolean variable store in Java?', 'Boolean values are only true or false.', 'multiple', 1, NULL, 1),
-                                                                                                                               ('Explain the difference between primitive and reference data types in Java.', 'Primitive types store actual values, reference types store memory addresses.', 'essay', 2, NULL, 1),
-                                                                                                                               ('Describe the default values of primitive data types in Java.', 'Each primitive type has a defined default (e.g., int is 0).', 'essay', 2, NULL, 1),
-                                                                                                                               ('How does type casting work in Java? Provide examples.', 'Casting allows converting one data type to another.', 'essay', 3, NULL, 1),
-                                                                                                                               ('Discuss the memory allocation of primitive vs reference types.', 'Primitive types go on the stack; references point to heap objects.', 'essay', 3, NULL, 1),
-                                                                                                                               ('Explain how variable scope affects accessibility in Java.', 'Variable scope determines where a variable can be accessed.', 'essay', 2, NULL, 1);
+('Which of the following are primitive data types in Java?', 'Primitive types include int, boolean, etc.', 'multiple', 1, NULL, 1),
+('Which of the following is a valid way to declare an integer variable?', 'Only option with type and variable name correctly used is valid.', 'multiple', 1, NULL, 1),
+('Which methods can convert a string to an integer in Java?', 'parseInt and valueOf can both be used.', 'multiple', 1, NULL, 1),
+('Which of the following is a valid Java variable name?', 'Java variable names must follow rules: can’t start with digits, no keywords.', 'multiple', 1, NULL, 1),
+('What type of value can a boolean variable store in Java?', 'Boolean values are only true or false.', 'multiple', 1, NULL, 1),
+('Explain the difference between primitive and reference data types in Java.', 'Primitive types store actual values, reference types store memory addresses.', 'essay', 1, NULL, 1),
+('Describe the default values of primitive data types in Java.', 'Each primitive type has a defined default (e.g., int is 0).', 'essay', 1, NULL, 1),
+('How does type casting work in Java? Provide examples.', 'Casting allows converting one data type to another.', 'essay', 1, NULL, 1),
+('Discuss the memory allocation of primitive vs reference types.', 'Primitive types go on the stack; references point to heap objects.', 'essay', 1, NULL, 1),
+('Explain how variable scope affects accessibility in Java.', 'Variable scope determines where a variable can be accessed.', 'essay', 1, NULL, 1);
 
 -- Options for Multiple Choice (Q1 → Q5)
 INSERT INTO question_options (question_id, option_content, is_answer) VALUES
@@ -468,30 +468,30 @@ INSERT INTO question_options (question_id, option_content, is_answer) VALUES
 -- Questions (ID 11 - 30) - Dimension 2: Control Structures
 INSERT INTO questions (content, explaination, question_format, question_level_id, subject_lesson_id, subject_dimension_id) VALUES
 -- MULTIPLE - one answer
-( 'Which keyword is used for a conditional branch in Java?', 'The "if" keyword introduces a conditional branch.', 'multiple', 1, NULL, 2),
-( 'Which of the following is a valid while loop?', 'The correct syntax uses while(condition).', 'multiple', 1, NULL, 2),
-( 'Which of the following keywords exits the current loop?', 'The "break" statement is used to exit loops.', 'multiple', 1, NULL, 2),
-( 'Which of these is a valid syntax for a for loop?', 'The for loop has three parts: init, condition, update.', 'multiple', 2, NULL, 2),
-( 'Which of these statements checks multiple values in Java?', 'Switch is used for checking multiple discrete values.', 'multiple', 1, NULL, 2),
-( 'Which type of loop is guaranteed to execute at least once?', 'do-while loop runs at least once before checking the condition.', 'multiple', 2, NULL, 2),
-( 'Which statement is used to skip an iteration?', 'The continue statement skips the current iteration.', 'multiple', 2, NULL, 2),
-( 'Which of these is a ternary operator?', 'The ternary operator is written as condition ? trueVal : falseVal.', 'multiple', 2, NULL, 2),
-( 'What is the output of: if (false) { System.out.println("Hi"); }?', 'Since the condition is false, the statement will not run.', 'multiple', 1, NULL, 2),
-( 'Which control structure handles multiple branches based on one variable?', 'Switch handles multiple branches based on a variable.', 'multiple', 1, NULL, 2),
+( 'Which keyword is used for a conditional branch in Java?', 'The "if" keyword introduces a conditional branch.', 'multiple', 1, NULL, 1),
+( 'Which of the following is a valid while loop?', 'The correct syntax uses while(condition).', 'multiple', 1, NULL, 1),
+( 'Which of the following keywords exits the current loop?', 'The "break" statement is used to exit loops.', 'multiple', 1, NULL, 1),
+( 'Which of these is a valid syntax for a for loop?', 'The for loop has three parts: init, condition, update.', 'multiple', 1, NULL, 1),
+( 'Which of these statements checks multiple values in Java?', 'Switch is used for checking multiple discrete values.', 'multiple', 1, NULL, 1),
+( 'Which type of loop is guaranteed to execute at least once?', 'do-while loop runs at least once before checking the condition.', 'multiple', 1, NULL, 1),
+( 'Which statement is used to skip an iteration?', 'The continue statement skips the current iteration.', 'multiple', 1, NULL, 1),
+( 'Which of these is a ternary operator?', 'The ternary operator is written as condition ? trueVal : falseVal.', 'multiple', 1, NULL, 1),
+( 'What is the output of: if (false) { System.out.println("Hi"); }?', 'Since the condition is false, the statement will not run.', 'multiple', 1, NULL, 1),
+( 'Which control structure handles multiple branches based on one variable?', 'Switch handles multiple branches based on a variable.', 'multiple', 1, NULL, 1),
 
 -- MULTIPLE - multiple answers
-( 'Which of the following are valid loop structures in Java?', 'Java supports for, while, and do-while loops.', 'multiple', 2, NULL, 2),
-( 'Which of the following can be used in a switch statement?', 'switch supports int, char, String, enums.', 'multiple', 3, NULL, 2),
-( 'Which statements control flow in Java?', 'Control flow includes if, switch, break, continue.', 'multiple', 2, NULL, 2),
-( 'Which are possible results of using break inside a loop?', 'Break exits the loop, sometimes prematurely.', 'multiple', 3, NULL, 2),
-( 'Which of the following affect loop conditions?', 'Conditions may involve counters, booleans, function calls.', 'multiple', 2, NULL, 2),
+( 'Which of the following are valid loop structures in Java?', 'Java supports for, while, and do-while loops.', 'multiple', 1, NULL, 1),
+( 'Which of the following can be used in a switch statement?', 'switch supports int, char, String, enums.', 'multiple', 1, NULL, 1),
+( 'Which statements control flow in Java?', 'Control flow includes if, switch, break, continue.', 'multiple', 1, NULL, 1),
+( 'Which are possible results of using break inside a loop?', 'Break exits the loop, sometimes prematurely.', 'multiple', 1, NULL, 1),
+( 'Which of the following affect loop conditions?', 'Conditions may involve counters, booleans, function calls.', 'multiple', 1, NULL, 1),
 
 -- ESSAY
-( 'Explain how if-else statements work in Java with an example.', 'if-else allows conditional branching.', 'essay', 1, NULL, 2),
-( 'Describe differences between while and do-while loops.', 'do-while executes once before checking the condition.', 'essay', 2, NULL, 2),
-( 'How does a switch statement improve code readability?', 'switch makes multiple condition checks more concise.', 'essay', 2, NULL, 2),
-( 'Discuss the importance of break and continue in loops.', 'They control flow inside loops.', 'essay', 3, NULL, 2),
-( 'Write a program using nested loops and explain its logic.', 'Nested loops are useful for 2D iterations.', 'essay', 3, NULL, 2);
+( 'Explain how if-else statements work in Java with an example.', 'if-else allows conditional branching.', 'essay', 1, NULL, 1),
+( 'Describe differences between while and do-while loops.', 'do-while executes once before checking the condition.', 'essay', 1, NULL, 1),
+( 'How does a switch statement improve code readability?', 'switch makes multiple condition checks more concise.', 'essay', 1, NULL, 1),
+( 'Discuss the importance of break and continue in loops.', 'They control flow inside loops.', 'essay', 1, NULL, 1),
+( 'Write a program using nested loops and explain its logic.', 'Nested loops are useful for 2D iterations.', 'essay', 1, NULL, 1);
 
 
 -- Options for MULTIPLE (Q11 → Q25)
@@ -518,30 +518,30 @@ INSERT INTO question_options (question_id, option_content, is_answer) VALUES
 -- Questions (ID 31 - 50) - Dimension 3: Programming Tools
 INSERT INTO questions (content, explaination, question_format, question_level_id, subject_lesson_id, subject_dimension_id) VALUES
 -- MULTIPLE - one answer
-( 'Which tool compiles Java code into bytecode?', 'javac compiles .java files into .class bytecode.', 'multiple', 1, NULL, 3),
-( 'What is the standard IDE for Java development?', 'Eclipse and IntelliJ IDEA are common IDEs.', 'multiple', 1, NULL, 3),
-( 'Which file extension represents compiled Java bytecode?', 'Compiled Java classes use the .class extension.', 'multiple', 1, NULL, 3),
-( 'What command runs a compiled Java program?', 'java runs a .class file.', 'multiple', 1, NULL, 3),
-( 'Which tool helps detect syntax errors before runtime?', 'IDEs like IntelliJ can highlight syntax issues.', 'multiple', 2, NULL, 3),
-( 'Which IDE is known for its smart code completion for Java?', 'IntelliJ IDEA is praised for advanced code completion.', 'multiple', 2, NULL, 3),
-( 'Which of these is used to build Java projects and manage dependencies?', 'Maven is a build tool and dependency manager.', 'multiple', 2, NULL, 3),
-( 'Which folder typically contains compiled .class files?', 'The /bin folder usually stores compiled code.', 'multiple', 2, NULL, 3),
-( 'Which of the following is a debugging tool in IDEs?', 'Breakpoints allow step-by-step debugging.', 'multiple', 1, NULL, 3),
-( 'Which command-line tool lists directory contents?', 'The "ls" command lists files in Unix-based systems.', 'multiple', 1, NULL, 3),
+( 'Which tool compiles Java code into bytecode?', 'javac compiles .java files into .class bytecode.', 'multiple', 1, NULL, 1),
+( 'What is the standard IDE for Java development?', 'Eclipse and IntelliJ IDEA are common IDEs.', 'multiple', 1, NULL, 1),
+( 'Which file extension represents compiled Java bytecode?', 'Compiled Java classes use the .class extension.', 'multiple', 1, NULL, 1),
+( 'What command runs a compiled Java program?', 'java runs a .class file.', 'multiple', 1, NULL, 1),
+( 'Which tool helps detect syntax errors before runtime?', 'IDEs like IntelliJ can highlight syntax issues.', 'multiple', 1, NULL, 1),
+( 'Which IDE is known for its smart code completion for Java?', 'IntelliJ IDEA is praised for advanced code completion.', 'multiple', 1, NULL, 1),
+( 'Which of these is used to build Java projects and manage dependencies?', 'Maven is a build tool and dependency manager.', 'multiple', 1, NULL, 1),
+( 'Which folder typically contains compiled .class files?', 'The /bin folder usually stores compiled code.', 'multiple', 1, NULL, 1),
+( 'Which of the following is a debugging tool in IDEs?', 'Breakpoints allow step-by-step debugging.', 'multiple', 1, NULL, 1),
+( 'Which command-line tool lists directory contents?', 'The "ls" command lists files in Unix-based systems.', 'multiple', 1, NULL, 1),
 
 -- MULTIPLE - multiple answers
-( 'Which of the following are Java IDEs?', 'Eclipse, NetBeans, and IntelliJ IDEA are popular Java IDEs.', 'multiple', 2, NULL, 3),
-( 'Which of the following are build tools used in Java projects?', 'Maven and Gradle are Java build tools.', 'multiple', 3, NULL, 3),
-( 'Which tools assist in version control?', 'Git, GitHub, and GitLab are version control tools.', 'multiple', 3, NULL, 3),
-( 'Which tools can be used to test Java code?', 'JUnit and TestNG are Java testing tools.', 'multiple', 2, NULL, 3),
+( 'Which of the following are Java IDEs?', 'Eclipse, NetBeans, and IntelliJ IDEA are popular Java IDEs.', 'multiple', 1, NULL, 1),
+( 'Which of the following are build tools used in Java projects?', 'Maven and Gradle are Java build tools.', 'multiple', 1, NULL, 1),
+( 'Which tools assist in version control?', 'Git, GitHub, and GitLab are version control tools.', 'multiple', 1, NULL, 1),
+( 'Which tools can be used to test Java code?', 'JUnit and TestNG are Java testing tools.', 'multiple', 1, NULL, 1),
 ( 'Which features are commonly found in modern IDEs?', 'IDEs often include debugging, auto-completion, and version control integration.', 'multiple', 3, NULL, 3),
 
 -- ESSAY
-( 'Explain the role of an IDE in software development.', 'IDEs provide a complete development environment with editing, compiling, and debugging.', 'essay', 2, NULL, 3),
-( 'Compare Maven and Gradle in Java project management.', 'Both manage dependencies and build processes but differ in approach.', 'essay', 3, NULL, 3),
-( 'Describe how breakpoints help in debugging.', 'Breakpoints pause execution for variable inspection and control flow.', 'essay', 2, NULL, 3),
-( 'Discuss the importance of using version control tools like Git.', 'Version control allows collaboration, tracking, and history of code.', 'essay', 3, NULL, 3),
-( 'Write steps to compile and run a Java program using the terminal.', 'Use javac to compile and java to execute the .class file.', 'essay', 1, NULL, 3);
+( 'Explain the role of an IDE in software development.', 'IDEs provide a complete development environment with editing, compiling, and debugging.', 'essay', 1, NULL, 1),
+( 'Compare Maven and Gradle in Java project management.', 'Both manage dependencies and build processes but differ in approach.', 'essay', 1, NULL, 1),
+( 'Describe how breakpoints help in debugging.', 'Breakpoints pause execution for variable inspection and control flow.', 'essay', 1, NULL, 1),
+( 'Discuss the importance of using version control tools like Git.', 'Version control allows collaboration, tracking, and history of code.', 'essay', 1, NULL, 1),
+( 'Write steps to compile and run a Java program using the terminal.', 'Use javac to compile and java to execute the .class file.', 'essay', 1, NULL, 1);
 -- Options for MULTIPLE (Q31 → Q45)
 INSERT INTO question_options (question_id, option_content, is_answer) VALUES
 -- One-answer questions
