@@ -324,7 +324,11 @@ BEGIN
 	
 END
 GO
-
+ALTER TABLE [lessons]
+ADD [lesson_quiz_id] INT;
+ALTER TABLE [lessons]
+ADD CONSTRAINT FK_lessons_quiz_id 
+FOREIGN KEY ([lesson_quiz_id]) REFERENCES [quizzes]([id]) ON DELETE NO ACTION ON UPDATE NO ACTION;
 CREATE TRIGGER tr_au_system_setting
 ON [system_settings]
 AFTER UPDATE
