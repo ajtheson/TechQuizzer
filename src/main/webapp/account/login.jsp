@@ -12,6 +12,12 @@
     <title>Login</title>
 </head>
 <body>
+
+<a href="${pageContext.request.contextPath}/home" class="btn btn-secondary"
+        style="position: fixed; left: 50px; top: 100px; z-index: 1000;">
+    Home
+</a>
+
 <section class="material-half-bg">
     <div class="cover"></div>
 </section>

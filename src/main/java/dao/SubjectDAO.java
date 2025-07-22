@@ -608,4 +608,27 @@ public class SubjectDAO extends DBContext {
         return null;
     }
 
+    public List<Subject> findAllFeaturedSubject(){
+        List<Subject> subjects = new ArrayList<>();
+        String sql = "SELECT * FROM [subjects] WHERE [featured_subject] = 1 and [status] = 1";
+        try(PreparedStatement pstm = connection.prepareStatement(sql)){
+            pstm.executeQuery();
+            ResultSet rs = pstm.executeQuery();
+            while(rs.next()){
+                Subject subject = new Subject();
+                subject.setId(rs.getInt("id"));
+                subject.setName(rs.getString("name"));
+                subject.setTagLine(rs.getString("tag_line"));
+                subject.setThumbnail(rs.getString("thumbnail"));
+                subject.setLongDescription(rs.getString("detail_description"));
+                subject.setFeaturedSubject(rs.getBoolean("featured_subject"));
+
+                subjects.add(subject);
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return subjects;
+    }
+
 }

@@ -482,7 +482,7 @@
     dimensionSelect.addEventListener("click", (e) => {
         if (!subjectSelect.value) {
             e.preventDefault();
-            alert("Vui lòng chọn Subject trước khi chọn Dimension");
+            alert("Please choose subject before choose dimension");
             this.blur();
         }
     });
@@ -491,7 +491,7 @@
     lessonSelect.addEventListener("click", (e) => {
         if (!subjectSelect.value) {
             e.preventDefault();
-            alert("Vui lòng chọn Subject trước khi chọn Lesson");
+            alert("Please choose subject before choose lesson");
             this.blur();
         }
     });

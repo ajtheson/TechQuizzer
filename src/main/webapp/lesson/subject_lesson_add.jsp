@@ -49,6 +49,21 @@
                         </div>
 
                         <div class="mb-3">
+                            <label>Lesson Type</label>
+                            <c:forEach var="lessonType" items="${lessonTypeList}">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="lessonTypeId"
+                                           id="lessonType${lessonType.id}" value="${lessonType.id}"
+                                           <c:if test="${lessonType.name.toLowerCase() == 'lesson'}">checked</c:if>>
+                                    <label class="form-check-label" for="lessonType${lessonType.id}">
+                                            ${lessonType.name}
+                                    </label>
+                                </div>
+                            </c:forEach>
+                        </div>
+
+                        <!-- Video Section - Show when Lesson is selected -->
+                        <div class="mb-3" id="videoSection">
                             <label>Video Source</label>
                             <div class="form-check">
                                 <input class="form-check-input" type="radio" name="videoType" id="youtubeOption" value="youtube" checked>
@@ -61,6 +76,17 @@
                                 <label class="form-check-label" for="uploadOption">Upload MP4</label>
                             </div>
                             <input type="file" class="form-control mt-2" name="videoFile" id="videoFileInput" accept="video/mp4" disabled>
+                        </div>
+
+                        <!-- Quiz Section - Show when Quiz is selected -->
+                        <div class="mb-3" id="quizSection" style="display: none;">
+                            <label>Select Quiz</label>
+                            <select class="form-select" name="quizId">
+                                <option value="">Choose a quiz...</option>
+                                <c:forEach var="quiz" items="${quizList}">
+                                    <option value="${quiz.id}">${quiz.name}</option>
+                                </c:forEach>
+                            </select>
                         </div>
 
                         <div class="mb-3">
@@ -80,20 +106,12 @@
                                 <option value="0">Inactive</option>
                             </select>
                         </div>
-                        <div class="mb-3">
+
+                        <div id="subSection" class="mb-3" style="display: block;">
                             <label>Subject</label>
                             <select class="form-select" name="subjectId">
                                 <c:forEach var="s" items="${subjectList}">
                                     <option value="${s.id}">${s.name}</option>
-                                </c:forEach>
-                            </select>
-                        </div>
-
-                        <div class="mb-3">
-                            <label>Lesson Type</label>
-                            <select class="form-select" name="lessonTypeId">
-                                <c:forEach var="lessonType" items="${lessonTypeList}">
-                                    <option value="${lessonType.id}">${lessonType.name}</option>
                                 </c:forEach>
                             </select>
                         </div>
@@ -132,6 +150,19 @@
         boolean isSuccess = toastNotification.contains("successfully");
         session.removeAttribute("toastNotification");
 %>
+
+<div class="position-fixed top-0 end-0 p-3" style="z-index: 9999" data-bs-delay="2000">
+    <div id="toast" class="toast align-items-center border-0" role="alert"
+         aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+            <div class="toast-body">
+                <!-- Message will be injected here -->
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
+                    aria-label="Close"></button>
+        </div>
+    </div>
+</div>
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         const toastElement = document.getElementById('toast');
@@ -152,22 +183,71 @@
     }
 %>
 <script>
-    // Enable/disable fields based on radio selection
     document.addEventListener("DOMContentLoaded", () => {
         const ytOption = document.getElementById("youtubeOption");
         const uploadOption = document.getElementById("uploadOption");
         const ytInput = document.getElementById("youtubeLink");
         const fileInput = document.getElementById("videoFileInput");
 
-        function toggleInputs() {
+        function toggleVideoInputs() {
             ytInput.disabled = !ytOption.checked;
             fileInput.disabled = !uploadOption.checked;
         }
 
-        ytOption.addEventListener("change", toggleInputs);
-        uploadOption.addEventListener("change", toggleInputs);
+        ytOption.addEventListener("change", toggleVideoInputs);
+        uploadOption.addEventListener("change", toggleVideoInputs);
+
+        const lessonTypeRadios = document.querySelectorAll('input[name="lessonTypeId"]');
+        const videoSection = document.getElementById("videoSection");
+        const subSection = document.getElementById("subSection");
+        const quizSection = document.getElementById("quizSection");
+        const quizSelect = quizSection.querySelector('select[name="quizId"]');
+        const subjectSelect = subSection.querySelector('select[name="subjectId"]');
+
+        function toggleLessonTypeSection() {
+            const selectedType = document.querySelector('input[name="lessonTypeId"]:checked');
+            if (selectedType) {
+                const selectedLabel = selectedType.nextElementSibling.textContent.toLowerCase().trim();
+
+                if (selectedLabel === 'lesson' || selectedLabel === 'subject topic') {
+                    // Hiện video + subject, ẩn quiz
+                    videoSection.style.display = 'block';
+                    subSection.style.display = 'block';
+                    quizSection.style.display = 'none';
+
+                    // Enable video & subject fields
+                    ytInput.disabled = !ytOption.checked;
+                    fileInput.disabled = !uploadOption.checked;
+                    subjectSelect.disabled = false;
+
+                    // Disable quiz field
+                    quizSelect.disabled = true;
+
+                } else if (selectedLabel === 'quiz') {
+                    // Ẩn video + subject, hiện quiz
+                    videoSection.style.display = 'none';
+                    subSection.style.display = 'none';
+                    quizSection.style.display = 'block';
+
+                    // Disable video & subject fields
+                    ytInput.disabled = true;
+                    fileInput.disabled = true;
+                    subjectSelect.disabled = true;
+
+                    // Enable quiz field
+                    quizSelect.disabled = false;
+                }
+            }
+        }
+
+        // Add listener cho radio
+        lessonTypeRadios.forEach(radio => {
+            radio.addEventListener('change', toggleLessonTypeSection);
+        });
+
+        // Khởi tạo khi load trang
+        toggleLessonTypeSection();
     });
 </script>
 </body>
 </html>
-

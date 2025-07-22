@@ -230,6 +230,11 @@ public class AdminServlet extends HttpServlet {
                 response.sendRedirect("manage?action=add");
                 return;
             }
+            if (mobile.length() >10){
+                request.getSession().setAttribute("toastNotification", "Mobile number is too long");
+                response.sendRedirect("manage?action=add");
+                return;
+            }
             if (mobile.matches(".*[a-zA-Z].*")) {
                 request.getSession().setAttribute("toastNotification", "Wrong format of mobile");
                 response.sendRedirect("manage?action=add");

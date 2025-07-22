@@ -41,7 +41,7 @@
                         <input type="hidden" name="id" value="${user.id}">
 
                         <div class="mb-3 text-center">
-                            <img src="assets/images/avatar/${user.avatar != null ? user.avatar : 'default.webp'}"
+                            <img src="${pageContext.request.contextPath}/assets/images/avatar/${user.avatar != null ? user.avatar : 'default.webp'}"
                                  alt="User Avatar"
                                  style="width: 150px; height: 180px; object-fit: cover; border: 2px solid #4d5154; border-radius: 8px;">
                         </div>

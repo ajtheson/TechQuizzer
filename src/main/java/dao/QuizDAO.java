@@ -502,5 +502,80 @@ public class QuizDAO extends DBContext {
 
         return 0;
     }
+    public List<QuizDTO> getQuizByCondition(Integer ownerId) {
+        List<QuizDTO> quizzes = new ArrayList<>();
+
+        StringBuilder sql = new StringBuilder();
+        sql.append("SELECT q.id, q.name, q.question_level_id, qs.number_question, ")
+                .append("q.duration, q.pass_rate, q.status, q.quiz_setting_id, ")
+                .append("u.name AS expert_name, ")
+                .append("s.id AS subject_id, s.name AS subject_name, ")
+                .append("t.id AS test_type_id, t.name AS test_type_name, ")
+                .append("ql.name AS question_level_name ")
+                .append("FROM quizzes q ")
+                .append("JOIN subjects s ON q.subject_id = s.id ")
+                .append("JOIN test_types t ON q.test_type_id = t.id ")
+                .append("LEFT JOIN quiz_settings qs ON q.quiz_setting_id = qs.id ")
+                .append("LEFT JOIN question_levels ql ON q.question_level_id = ql.id ")
+                .append("LEFT JOIN users u ON s.owner_id = u.id ")
+                .append("WHERE 1=1 ");
+
+        if (ownerId != null) {
+            sql.append("AND s.owner_id = ? ");
+        }
+
+        try (PreparedStatement pstm = connection.prepareStatement(sql.toString())) {
+            int paramIndex = 0;
+            if (ownerId != null) {
+                pstm.setInt(paramIndex++, ownerId);
+            }
+
+
+            ResultSet rs = pstm.executeQuery();
+            while (rs.next()) {
+                QuizDTO dto = new QuizDTO();
+                dto.setId(rs.getInt("id"));
+                dto.setName(rs.getString("name"));
+
+                QuestionLevel questionLevel = new QuestionLevel();
+                questionLevel.setId(rs.getInt("question_level_id"));
+                questionLevel.setName(rs.getString("question_level_name"));
+                dto.setQuestionLevel(questionLevel);
+
+                dto.setDuration(rs.getInt("duration"));
+                dto.setPassRate(rs.getInt("pass_rate"));
+                dto.setStatus(rs.getInt("status"));
+
+                Subject subject = new Subject();
+                subject.setId(rs.getInt("subject_id"));
+                subject.setName(rs.getString("subject_name"));
+                dto.setSubject(subject);
+
+                SubjectDTO subjectDTO = new SubjectDTO();
+                subjectDTO.setId(rs.getInt("subject_id"));
+                subjectDTO.setName(rs.getString("subject_name"));
+                subjectDTO.setOwnerName(rs.getString("expert_name"));
+                dto.setSubjectDTO(subjectDTO);
+
+                TestType testType = new TestType();
+                testType.setId(rs.getInt("test_type_id"));
+                testType.setName(rs.getString("test_type_name"));
+                dto.setTestType(testType);
+
+                QuizSetting quizSetting = new QuizSetting();
+                quizSetting.setId(rs.getInt("quiz_setting_id"));
+                quizSetting.setNumberOfQuestions(rs.getInt("number_question"));
+                dto.setQuizSetting(quizSetting);
+
+                quizzes.add(dto);
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Error: " + e.getMessage());
+        }
+
+        return quizzes;
+    }
+
 
 }
