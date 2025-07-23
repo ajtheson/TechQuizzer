@@ -1,4 +1,4 @@
-﻿USE [master]
+USE [master]
 GO
 
 IF EXISTS (SELECT 1 FROM [sys].[databases] WHERE [name] = 'quiz_practicing_system')
@@ -15,18 +15,16 @@ GO
 
 CREATE TABLE [system_settings](
 	[id] INT PRIMARY KEY IDENTITY,
-	[type] VARCHAR(255) NOT NULL,
-	[value] VARCHAR(255) NOT NULL,
+	[type] VARCHAR(255) NOT NULL, --in (...) --role
+	[value] VARCHAR(255) NOT NULL, --customer
 	[description] VARCHAR(MAX) NOT NULL,
-	[order] INT,
-	[status] BIT NOT NULL,
-	[mandatory] BIT DEFAULT 0
+	[order] INT DEFAULT null,
+	[status] BIT NOT NULL
 )
 
 CREATE TABLE [roles](
 	[id] INT PRIMARY KEY IDENTITY,
-	[name] VARCHAR(255) UNIQUE NOT NULL,
-	[status] BIT NOT NULL DEFAULT 1
+	[name] VARCHAR(255) UNIQUE NOT NULL
 )
 
 CREATE TABLE [users](
@@ -53,8 +51,7 @@ CREATE TABLE [users](
 
 CREATE TABLE [subject_categories](
 	[id] INT PRIMARY KEY IDENTITY,
-	[name] VARCHAR(255) NOT NULL UNIQUE,
-	[status] BIT NOT NULL DEFAULT 1
+	[name] VARCHAR(255) NOT NULL UNIQUE
 )
 
 CREATE TABLE [subjects](
@@ -63,8 +60,8 @@ CREATE TABLE [subjects](
 	[tag_line] VARCHAR(255) NOT NULL,
 	[thumbnail] VARCHAR(255),
 	[detail_description] VARCHAR(MAX) NOT NULL,
-	[featured_subject] BIT NOT NULL, 
-	[status] BIT NOT NULL,
+	[featured_subject] BIT NOT NULL, --!!!unknown
+	[status] BIT NOT NULL, -- pulished or unpublished
 	[category_id] INT,
 	[owner_id] INT, --user_id
 	[update_date] DATETIME DEFAULT GETDATE(), 
@@ -104,8 +101,7 @@ CREATE TABLE [price_packages](
 
 CREATE TABLE [lesson_types](
 	[id] INT PRIMARY KEY IDENTITY,
-	[name] VARCHAR(255) NOT NULL UNIQUE,
-	[status] BIT NOT NULL DEFAULT 1
+	[name] VARCHAR(255) NOT NULL UNIQUE
 )
 
 CREATE TABLE [lessons](
@@ -119,12 +115,12 @@ CREATE TABLE [lessons](
 	[subject_id] INT,
 	[lesson_type_id] INT,
 	FOREIGN KEY ([subject_id]) REFERENCES [subjects]([id]) ON DELETE CASCADE,
-	FOREIGN KEY ([lesson_type_id]) REFERENCES [lesson_types]([id]) ON DELETE SET NULL
+	FOREIGN KEY ([lesson_type_id]) REFERENCES [lesson_types]([id]) ON DELETE SET NULL,
 )
 
 CREATE TABLE [registrations](
 	[id] INT PRIMARY KEY IDENTITY,
-	[time] DATETIME,
+	[time] DATETIME, --registration time
 	[total_cost] DECIMAL(18,2) NOT NULL,
 	[duration] INT,
 	[valid_from] DATETIME,
@@ -141,8 +137,7 @@ CREATE TABLE [registrations](
 
 CREATE TABLE [question_levels](
 	[id] INT PRIMARY KEY IDENTITY,
-	[name] VARCHAR(255) NOT NULL UNIQUE,
-	[status] BIT NOT NULL DEFAULT 1
+	[name] VARCHAR(255) NOT NULL UNIQUE
 )
 
 CREATE TABLE [questions](
@@ -150,7 +145,7 @@ CREATE TABLE [questions](
 	[content] VARCHAR(MAX),
 	[explaination] VARCHAR(MAX),
 	[question_format] VARCHAR(MAX),
-	[status] BIT DEFAULT 1, 
+	[status] BIT DEFAULT 1, -- show 1 hide 0
 	[is_deleted] BIT DEFAULT 0,
 	[question_level_id] INT,
 	[subject_lesson_id] INT,
@@ -170,14 +165,13 @@ CREATE TABLE [question_options](
 
 CREATE TABLE [test_types](
 	[id] INT PRIMARY KEY IDENTITY,
-	[name] VARCHAR(255) NOT NULL UNIQUE,
-	[status] BIT NOT NULL DEFAULT 1
+	[name] VARCHAR(255) NOT NULL UNIQUE
 )
 
 CREATE TABLE [quiz_settings](
 	[id] INT PRIMARY KEY IDENTITY,
 	[number_question] INT NOT NULL,
-	[question_type] CHAR(9) NOT NULL
+	[question_type] CHAR(9) NOT NULL --in (dimension, lesson)
 )
 
 CREATE TABLE [quiz_setting_groups](
@@ -193,10 +187,10 @@ CREATE TABLE [quiz_setting_groups](
 
 CREATE TABLE [quizzes](
 	[id] INT PRIMARY KEY IDENTITY,
-	[format] CHAR(8) NOT NULL, 
+	[format] CHAR(8) NOT NULL, --multiple / essay
 	[name] VARCHAR(255) NOT NULL,
-	[duration] INT NOT NULL,
-	[pass_rate] INT NOT NULL,
+	[duration] INT NOT NULL, --minute
+	[pass_rate] INT NOT NULL, --%
 	[description] VARCHAR(MAX) NOT NULL,
 	[status] BIT NOT NULL DEFAULT 1,
 	[test_type_id] INT,
@@ -211,7 +205,7 @@ CREATE TABLE [quizzes](
 
 CREATE TABLE [practices](
 	[id] INT PRIMARY KEY IDENTITY,
-	[format] CHAR(8) NOT NULL,
+	[format] CHAR(8) NOT NULL, --multiple / essay
 	[name] VARCHAR(255) NOT NULL,
 	[number_question] INT NOT NULL,
 	[question_level_id] INT,
@@ -226,7 +220,7 @@ CREATE TABLE [practices](
 
 CREATE TABLE [exam_attempts](
 	[id] INT PRIMARY KEY IDENTITY,
-	[type] CHAR(8) NOT NULL, --quiz / practice
+	[type] CHAR(8) NOT NULL, --practice / quiz
 	[start_date] DATE NOT NULL DEFAULT GETDATE(),
 	[duration] INT,
 	[is_taken] BIT DEFAULT 0, 
@@ -234,7 +228,7 @@ CREATE TABLE [exam_attempts](
 	[user_id] INT,
 	[quiz_id] INT,
 	[practice_id] INT,
-	FOREIGN KEY ([user_id]) REFERENCES [users]([id]) ON DELETE SET NULL,
+	FOREIGN KEY ([user_id]) REFERENCES [users]([id]) ON DELETE SET NULL, --set null to hold to calculate total attempt
 	FOREIGN KEY ([quiz_id]) REFERENCES [quizzes]([id]) ON DELETE CASCADE,
 	FOREIGN KEY ([practice_id]) REFERENCES [practices]([id])
 )
@@ -274,7 +268,7 @@ CREATE TABLE [essay_submissions](
 
 CREATE TABLE [question_medias](
 	[id] INT PRIMARY KEY IDENTITY,
-	[type] VARCHAR(MAX),
+	[type] VARCHAR(MAX), --video, audio, image
 	[link] VARCHAR(MAX),
 	[description] VARCHAR(MAX),
 	[question_id] INT,
@@ -329,73 +323,3 @@ ADD [lesson_quiz_id] INT;
 ALTER TABLE [lessons]
 ADD CONSTRAINT FK_lessons_quiz_id 
 FOREIGN KEY ([lesson_quiz_id]) REFERENCES [quizzes]([id]) ON DELETE NO ACTION ON UPDATE NO ACTION;
-CREATE TRIGGER tr_au_system_setting
-ON [system_settings]
-AFTER UPDATE
-AS
-BEGIN
-	-- Xử lý khi status hoặc value được thay đổi
-	IF UPDATE([status]) OR UPDATE([value])
-	BEGIN
-		-- Role
-		IF EXISTS (SELECT 1 FROM inserted WHERE [type] = 'User Roles')
-		BEGIN
-			UPDATE r 
-			SET [name] = i.[value],
-				[status] = i.[status]
-			FROM [roles] r
-			INNER JOIN deleted d ON r.[name] = d.[value]
-			INNER JOIN inserted i ON d.[id] = i.[id]
-			WHERE i.[type] = 'User Roles' AND d.[type] = 'User Roles'
-		END
-		
-		-- Subject category
-		IF EXISTS (SELECT 1 FROM inserted WHERE [type] = 'Subject Categories')
-		BEGIN
-			UPDATE sc 
-			SET [name] = i.[value],
-				[status] = i.[status]
-			FROM [subject_categories] sc
-			INNER JOIN deleted d ON sc.[name] = d.[value]
-			INNER JOIN inserted i ON d.[id] = i.[id]
-			WHERE i.[type] = 'Subject Categories' AND d.[type] = 'Subject Categories'
-		END
-		
-		-- Test type
-		IF EXISTS (SELECT 1 FROM inserted WHERE [type] = 'Test Types')
-		BEGIN
-			UPDATE tt 
-			SET [name] = i.[value],
-				[status] = i.[status]
-			FROM [test_types] tt
-			INNER JOIN deleted d ON tt.[name] = d.[value]
-			INNER JOIN inserted i ON d.[id] = i.[id]
-			WHERE i.[type] = 'Test Types' AND d.[type] = 'Test Types'
-		END
-		
-		-- Question level
-		IF EXISTS (SELECT 1 FROM inserted WHERE [type] = 'Question Levels')
-		BEGIN
-			UPDATE ql 
-			SET [name] = i.[value],
-				[status] = i.[status]
-			FROM [question_levels] ql
-			INNER JOIN deleted d ON ql.[name] = d.[value]
-			INNER JOIN inserted i ON d.[id] = i.[id]
-			WHERE i.[type] = 'Question Levels' AND d.[type] = 'Question Levels'
-		END
-		
-		-- Lesson type
-		IF EXISTS (SELECT 1 FROM inserted WHERE [type] = 'Lesson Types')
-		BEGIN
-			UPDATE lt 
-			SET [name] = i.[value],
-				[status] = i.[status]
-			FROM [lesson_types] lt
-			INNER JOIN deleted d ON lt.[name] = d.[value]
-			INNER JOIN inserted i ON d.[id] = i.[id]
-			WHERE i.[type] = 'Lesson Types' AND d.[type] = 'Lesson Types'
-		END
-	END
-END
-

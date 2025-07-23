@@ -145,7 +145,7 @@
                         <div class="timeline-post" style="border-radius: 5px">
                             <div class="row">
                                 <div class="subject-media col-md-4">
-                                    <a href="#">
+                                    <a href="${pageContext.request.contextPath}/subject/detail?subject_id=${r.subject.id}">
                                         <img class="subject-thumbnail"
                                              src="${pageContext.request.contextPath}/assets/images/thumbnail/subject/${r.subject.thumbnail}"
                                              alt="Subject_Thumbnail">

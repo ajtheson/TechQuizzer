@@ -45,6 +45,10 @@ public class LoginServlet extends HttpServlet {
         UserDAO userDAO = new UserDAO();
         User user = userDAO.getUserByEmail(email);
         HttpSession session = request.getSession();
+        if (email == null || password == null || email.isEmpty() || password.isEmpty()) {
+            request.getSession().setAttribute("error", "Please enter email or password");
+            request.getRequestDispatcher("login.jsp").forward(request, response);
+        }
         if (user == null) {
             request.getSession().setAttribute("error", "Wrong email or password");
             request.getRequestDispatcher("login.jsp").forward(request, response);
