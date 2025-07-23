@@ -61,7 +61,7 @@ public class GetSimulationExamListServlet extends HttpServlet {
             request.getRequestDispatcher("/quiz/simulation_exam.jsp").forward(request, response);
 
         } catch (Exception e) {
-            e.printStackTrace();
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         }
 
 

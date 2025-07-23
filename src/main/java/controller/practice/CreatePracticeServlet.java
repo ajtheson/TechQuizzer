@@ -97,7 +97,7 @@ public class CreatePracticeServlet extends HttpServlet {
             response.sendRedirect(request.getContextPath() + "/quiz/handle?examAttemptId=" + insertedExamAttemptId);
 
         } catch (Exception e) {
-            e.printStackTrace();
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         }
 
     }

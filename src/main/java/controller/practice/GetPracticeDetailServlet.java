@@ -22,22 +22,28 @@ public class GetPracticeDetailServlet extends HttpServlet {
 
         try{
             HttpSession session = request.getSession(false);
+            PracticeDAO practiceDAO = new PracticeDAO();
+
             if (session == null || session.getAttribute("user") == null) {
                 throw new Exception("User not logged in");
             }
-
             UserDTO user = (UserDTO) session.getAttribute("user");
+
+            int id = Integer.parseInt(idParam);
+            if(!practiceDAO.isBelongToUser(id, user.getId()) ){
+                throw new Exception("Practice is not available");
+            }
+
             List<RegistrationDTO> registrationDTOs = new RegistrationDAO().findAllByUserID(user.getId());
             List<Subject> subjects = registrationDTOs.stream().map(r -> r.getSubject()).toList();
 
-            int id = Integer.parseInt(idParam);
             PracticeDTO practiceDTO = new PracticeDAO().findById(id);
 
             request.setAttribute("practice", practiceDTO);
             request.setAttribute("registrationSubjects", subjects);
             request.getRequestDispatcher("practice_detail.jsp").forward(request, response);
         }catch (Exception e){
-            e.printStackTrace();
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -52,7 +58,7 @@ public class GetPracticeDetailServlet extends HttpServlet {
             }
             response.sendRedirect(request.getContextPath() + "/quiz/review?examAttemptId=" + examAttempt.getId());
         } catch (Exception e) {
-            e.printStackTrace();
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         }
     }
 }

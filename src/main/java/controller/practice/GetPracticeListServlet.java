@@ -61,7 +61,7 @@ public class GetPracticeListServlet extends HttpServlet {
             request.setAttribute("filter", filter);
             request.getRequestDispatcher("practice_list.jsp").forward(request, response);
         } catch (Exception e) {
-            e.printStackTrace();
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         }
 
     }

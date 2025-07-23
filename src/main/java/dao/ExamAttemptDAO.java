@@ -162,28 +162,32 @@ public class ExamAttemptDAO extends DBContext {
         return 0;
     }
 
-    public ExamAttempt findByQuizIdAndUserId(int quizId, int userId){
-        String sql = "SELECT * FROM [exam_attempts] WHERE [quiz_id] = ? AND [user_id] = ?";
+    public List<ExamAttemptDTO> findTop10ByQuizIdAndUserIdOrderByDateDescAndIdDesc(int quizId, int userId){
+        List<ExamAttemptDTO> examAttemptDTOs = new ArrayList<>();
+        String sql = "SELECT TOP(10) e.*, qs.number_question FROM [exam_attempts] e " +
+                "JOIN [quizzes] q ON e.[quiz_id] = q.[id] " +
+                "JOIN [quiz_settings] qs ON q.[quiz_setting_id] = qs.[id] " +
+                "WHERE [quiz_id] = ? AND [user_id] = ? ORDER BY [start_date] DESC, [id] DESC";
         try(PreparedStatement pstm = connection.prepareStatement(sql)){
             pstm.setInt(1, quizId);
             pstm.setInt(2, userId);
             try(ResultSet rs = pstm.executeQuery()){
-                if(rs.next()){
-                    ExamAttempt examAttempt = new ExamAttempt();
-                    examAttempt.setId(rs.getInt("id"));
-                    examAttempt.setType(rs.getString("type"));
-                    examAttempt.setStartDate(rs.getDate("start_date") != null ? rs.getDate("start_date").toLocalDate() : null);
-                    examAttempt.setDuration(rs.getInt("duration"));
-                    examAttempt.setNumberCorrectQuestions(rs.getInt("number_correct_question"));
-                    examAttempt.setUserId(rs.getInt("user_id"));
-                    examAttempt.setQuizId(quizId);
-                    return examAttempt;
+                while(rs.next()){
+                    ExamAttemptDTO examAttemptDTO = new ExamAttemptDTO();
+                    examAttemptDTO.setId(rs.getInt("id"));
+                    examAttemptDTO.setType(rs.getString("type"));
+                    examAttemptDTO.setStartDate(rs.getDate("start_date") != null ? rs.getDate("start_date").toLocalDate() : null);
+                    examAttemptDTO.setDuration(rs.getInt("duration"));
+                    examAttemptDTO.setNumberCorrectQuestions(rs.getInt("number_correct_question"));
+                    examAttemptDTO.setNumberOfQuestions(rs.getInt("number_question") );
+
+                    examAttemptDTOs.add(examAttemptDTO);
                 }
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return null;
+        return examAttemptDTOs;
     }
 
     public boolean updateNumberCorrectQuestion(int numberCorrectQuestions, int id) {
@@ -260,6 +264,22 @@ public class ExamAttemptDAO extends DBContext {
             }
         }catch (Exception e){
             e.printStackTrace();
+        }
+        return false;
+    }
+
+    public boolean isBelongToUser(int examAttemptId, int userId){
+        String sql = "SELECT 1 FROM [exam_attempts] WHERE [user_id] = ? and [id] = ?";
+        try(PreparedStatement pstm = connection.prepareStatement(sql)){
+            pstm.setInt(1, userId);
+            pstm.setInt(2, examAttemptId);
+            try(ResultSet rs = pstm.executeQuery()){
+                if(rs.next()){
+                    return true;
+                }
+            }
+        }catch (Exception e){
+            return false;
         }
         return false;
     }

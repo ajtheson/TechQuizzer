@@ -49,12 +49,12 @@
         <table class="table table-striped">
             <thead>
             <tr>
-                <th>ID</th>
-                <th>Quiz Taker Name</th>
-                <th>Start Date</th>
-                <th>Duration</th>
-                <th>Score</th>
-                <th></th>
+                <th style="width: 10%">ID</th>
+                <th style="width: 20%">Quiz Taker Name</th>
+                <th style="width: 15%">Start Date</th>
+                <th style="width: 15%">Duration</th>
+                <th style="width: 15%">Correct</th>
+                <th style="width: 25%"></th>
             </tr>
             </thead>
             <tbody class="table-group-divider">
@@ -65,10 +65,18 @@
                         <td>${submission.getUser().getName()}</td>
                         <td>${submission.getStartDate()}</td>
                         <td>${submission.getFormattedDuration()}</td>
-                        <td>${submission.numberCorrectQuestions}/${submission.numberOfQuestions}</td>
+                        <td id="scoreCell${submission.getId()}">
+                                ${submission.numberCorrectQuestions}/${submission.numberOfQuestions}
+                        </td>
                         <td>
-                            <a href="${pageContext.request.contextPath}/quiz/review?examAttemptId=${submission.getId()}"
+                            <a id="reviewBtn${submission.getId()}" href="${pageContext.request.contextPath}/quiz/review?examAttemptId=${submission.getId()}"
                                class="btn btn-outline-secondary">Review</a>
+                            <button id="updateBtn${submission.getId()}" onclick="clickUpdateBtn(${submission.getId()})"
+                               class="btn btn-outline-secondary">Update Correct</button>
+                            <button id="saveBtn${submission.getId()}" onclick="clickSaveBtn(${submission.getId()})"
+                               class="btn btn-outline-secondary d-none">Save</button>
+                            <button id="cancelBtn${submission.getId()}" onclick="clickCancelBtn(${submission.getId()})"
+                               class="btn btn-outline-secondary d-none">Cancel</button>
                         </td>
                     </tr>
                 </c:forEach>
@@ -165,7 +173,90 @@
         window.location.href = url
     });
 
+    const clickUpdateBtn = (submissionId) => {
+        const reviewBtn = document.getElementById("reviewBtn" + submissionId);
+        const updateBtn = document.getElementById("updateBtn" + submissionId);
+        const saveBtn = document.getElementById("saveBtn" + submissionId);
+        const cancelBtn = document.getElementById("cancelBtn" + submissionId);
+
+        reviewBtn.classList.add("d-none");
+        updateBtn.classList.add("d-none");
+        saveBtn.classList.remove("d-none");
+        cancelBtn.classList.remove("d-none");
+
+        const scoreCell = document.getElementById("scoreCell" + submissionId);
+        const currentCorrect = scoreCell.textContent.trim().split('/')[0];
+        const total = scoreCell.textContent.trim().split('/')[1];
+
+        scoreCell.setAttribute('data-old', scoreCell.innerHTML);
+
+        scoreCell.innerHTML = `
+            <input type="number" id="updateScore\${submissionId}" value="\${currentCorrect}" min="0" max="\${total}" style="width: 60px;"> / \${total}
+        `;
+    };
+
+    const clickCancelBtn = (submissionId) => {
+        const reviewBtn = document.getElementById("reviewBtn" + submissionId);
+        const updateBtn = document.getElementById("updateBtn" + submissionId);
+        const saveBtn = document.getElementById("saveBtn" + submissionId);
+        const cancelBtn = document.getElementById("cancelBtn" + submissionId);
+
+        reviewBtn.classList.remove("d-none");
+        updateBtn.classList.remove("d-none");
+        saveBtn.classList.add("d-none");
+        cancelBtn.classList.add("d-none");
+
+        const scoreCell = document.getElementById("scoreCell" + submissionId);
+        const oldContent = scoreCell.getAttribute('data-old');
+        if (oldContent) {
+            scoreCell.innerHTML = oldContent;
+        }
+    }
+
+    const clickSaveBtn = (submissionId) => {
+        const updateScore = document.getElementById("updateScore" + submissionId).value;
+        const totalScore = document.getElementById("scoreCell" + submissionId).textContent.trim().split('/')[1];
+        if (parseInt(updateScore) > parseInt(totalScore) || parseInt(updateScore) < 0) {
+            alert("Invalid number of correct questions.");
+            return;
+        }
+        window.location.href = `${pageContext.request.contextPath}/management/quiz/edit-correct-question?examAttemptId=\${submissionId}&correct=\${updateScore}`;
+    }
+
 
 </script>
+
+<%
+    String toastNotification = (String) session.getAttribute("toastNotification");
+    if (toastNotification != null) {
+        boolean isSuccess = toastNotification.contains("successfully");
+        session.removeAttribute("toastNotification");
+%>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const toastElement = document.getElementById('toast');
+        const toastElementBody = toastElement.querySelector('.toast-body');
+        toastElementBody.textContent = "<%= toastNotification %>";
+        toastElement.classList.remove('<%= isSuccess ? "text-bg-danger" : "text-bg-success" %>');
+        toastElement.classList.add('<%= isSuccess ? "text-bg-success" : "text-bg-danger" %>');
+        const toast = new bootstrap.Toast(toastElement, {autohide: true, delay: 2000});
+        toast.show();
+    });
+</script>
+<% } %>
+
+<script>
+    window.addEventListener("pageshow", function(event) {
+        if (event.persisted) {
+            window.location.reload();
+        }
+    });
+    const navEntries = performance.getEntriesByType("navigation");
+    if (navEntries.length > 0 && navEntries[0].type === "back_forward") {
+        window.location.reload();
+    }
+</script>
+
+
 
 </html>

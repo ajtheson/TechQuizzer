@@ -328,7 +328,7 @@
             </div>
 
             <%--question box--%>
-            <div id="questionBoxContainer" class="d-flex flex-wrap gap-2 px-4 pb-4">
+            <div id="questionBoxContainer" class="d-flex flex-wrap gap-2 px-4 pb-4" style="max-height: 550px; overflow: auto">
                 ...
             </div>
         </div>
@@ -434,7 +434,7 @@
         if (allQuestions[currentIndex].marked) {
             markBtn.classList.add("markedBtn");
         }
-        if(allQuestions[currentIndex].question.explaination && allQuestions[currentIndex].question.explaination.trim() !== '') {
+        if (allQuestions[currentIndex].question.explaination && allQuestions[currentIndex].question.explaination.trim() !== '') {
             document.getElementById("peekBtn").classList.remove("invisible");
         } else {
             document.getElementById("peekBtn").classList.add("invisible");
@@ -503,15 +503,6 @@
 
                 if (mediaElement) {
                     mediaWrapper.appendChild(mediaElement);
-
-                    // // Add description if exists
-                    // if (media.description && media.description.trim() !== '') {
-                    //     const description = document.createElement("p");
-                    //     description.className = "fst-italic mt-1";
-                    //     description.textContent = media.description;
-                    //     mediaWrapper.appendChild(description);
-                    // }
-
                     mediaContainer.appendChild(mediaWrapper);
                 }
             });
@@ -519,18 +510,23 @@
 
         const optionList = document.getElementById("qOption");
         optionList.innerHTML = "";
+        let ascii = 65;
 
         currentQuestionAttempt.options.forEach((option, i) => {
+            const label = String.fromCharCode(ascii) + ". ";
+
             const li = document.createElement("li");
             li.className = "option-item";
             if (currentQuestionAttempt.userChoices.includes(option.id)) {
                 li.classList.add("selected");
             }
-
             li.innerHTML =
                 `<div class="option-checkbox" onclick="selectOption(this)"></div>
                 <span id="optionId" class="d-none">\${option.id}</span>
-                <span>\${option.optionContent}</span>`;
+                <span>\${label}\${option.optionContent}</span>`;
+
+            ascii++;
+            if (ascii === 91) ascii = 97;
 
             optionList.appendChild(li);
         });
@@ -690,7 +686,17 @@
 
     //insert content to popup Peek at Answer
     popupPeekAtAnswer.addEventListener("show.bs.modal", (e) => {
-        const answerLetter = allQuestions[currentIndex].options.filter(op => op.answer).map(op => op.optionContent.charAt(0)).join(', ');
+        const answerLetter = allQuestions[currentIndex].options
+            .map((op, idx) => op.answer ? idx : -1)
+            .filter(idx => idx !== -1)
+            .map(idx => {
+                if (idx < 26) {
+                    return String.fromCharCode(65 + idx); // A-Z
+                } else {
+                    return String.fromCharCode(97 + (idx - 26)); // a-z
+                }
+            })
+            .join(', ');
         popupPeekAtAnswer.querySelector("#explainContainer span").textContent = `The correct answer is \${answerLetter}`;
         popupPeekAtAnswer.querySelector("#explainContainer p").textContent = allQuestions[currentIndex].question.explaination;
     })
@@ -698,7 +704,7 @@
 
     //update question attempt interval
     const callApiUpdateQuestionAttempt = () => {
-        const duration = isPractice ? countSecond : ${requestScope.questionAttempts[0].examAttempt.duration} - countSecond;
+        const duration = isPractice ? countSecond : ${requestScope.questionAttempts[0].examAttempt.duration} -countSecond;
         const data = {
             questionAttempts: allQuestions,
             duration: duration,

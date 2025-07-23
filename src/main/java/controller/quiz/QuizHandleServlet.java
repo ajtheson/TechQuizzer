@@ -8,6 +8,7 @@ import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
 import java.io.IOException;
+import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -43,16 +44,6 @@ public class QuizHandleServlet extends HttpServlet {
             //handle multiple and essay question
             if(format.equalsIgnoreCase("multiple")){
                 List<QuestionAttemptDTO> questionAttemptDTOs = new QuestionAttemptDAO().findAllByExamAttemptId(examAttemptId);
-                for(QuestionAttemptDTO questionAttemptDTO : questionAttemptDTOs){
-                    int asciiCharacter = 65;
-                    for(QuestionOption questionOption : questionAttemptDTO.getOptions()){
-                        questionOption.setOptionContent((char)asciiCharacter + ". " + questionOption.getOptionContent());
-                        asciiCharacter++;
-                        if(asciiCharacter == 91){
-                            asciiCharacter = 97;
-                        }
-                    }
-                }
                 request.setAttribute("questionAttempts", questionAttemptDTOs);
                 request.getRequestDispatcher("multiple_handle.jsp").forward(request, response);
             }else{
@@ -63,7 +54,7 @@ public class QuizHandleServlet extends HttpServlet {
 
 
         } catch (Exception e) {
-            e.printStackTrace();
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         }
 
     }
@@ -87,7 +78,7 @@ public class QuizHandleServlet extends HttpServlet {
                             .map(option -> option.getId())
                             .collect(Collectors.toList());
 
-                    boolean isExactlyCorrect = optionIdsSelected.equals(correctOptionIds);
+                    boolean isExactlyCorrect = new HashSet<>(optionIdsSelected).equals(new HashSet<>(correctOptionIds));
                     if(isExactlyCorrect){
                         numberCorrectQuestions++;
                     }
@@ -103,12 +94,9 @@ public class QuizHandleServlet extends HttpServlet {
             if(previousURL.contains("practice/create")){
                 previousURL = request.getContextPath() + "/practice/list?page=1&size=3";
             }
-            else if(previousURL.contains("simulation/detail")){
-                previousURL = request.getContextPath() + "/simulation/list?page=1&size=10";
-            }
             response.sendRedirect(previousURL);
         } catch (Exception e) {
-            e.printStackTrace();
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         }
     }
 }

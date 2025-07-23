@@ -60,7 +60,7 @@ public class ViewSubmissionListServlet extends HttpServlet {
             request.getRequestDispatcher("/quiz/quiz_submission_list.jsp").forward(request, response);
 
         } catch (Exception e) {
-            e.printStackTrace();
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         }
     }
 

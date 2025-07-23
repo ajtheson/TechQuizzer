@@ -93,7 +93,7 @@ public class UpdateEssaySubmissionServlet extends HttpServlet {
                 throw new Exception("Essay attempt not updated");
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         }
 
     }

@@ -3,6 +3,7 @@ import dao.*;
 import dto.EssayAttemptDTO;
 import dto.PracticeDTO;
 import dto.QuestionAttemptDTO;
+import dto.UserDTO;
 import entity.ExamAttempt;
 import entity.QuestionOption;
 import entity.Quiz;
@@ -20,10 +21,16 @@ public class QuizReviewServlet extends HttpServlet {
         String examAttemptIdParam = request.getParameter("examAttemptId");
 
         try{
+            HttpSession session = request.getSession(false);
+            if (session == null || session.getAttribute("user") == null) {
+                throw new Exception("User not logged in");
+            }
+            UserDTO user = (UserDTO) session.getAttribute("user");
+
             ExamAttemptDAO examAttemptDAO = new ExamAttemptDAO();
             int examAttemptId = Integer.parseInt(examAttemptIdParam);
-            if(!examAttemptDAO.isTakenExamAttempt(examAttemptId)){
-                throw new Exception("Exam attempt is not taken");
+            if(!examAttemptDAO.isTakenExamAttempt(examAttemptId) || !examAttemptDAO.isBelongToUser(examAttemptId, user.getId())){
+                throw new Exception("Exam attempt is not available");
             }
             
             //get format
@@ -42,16 +49,6 @@ public class QuizReviewServlet extends HttpServlet {
             //handle multiple or essay question
             if(format.equalsIgnoreCase("multiple")){
                 List<QuestionAttemptDTO> questionAttemptDTOs = new QuestionAttemptDAO().findAllByExamAttemptId(examAttemptId);
-                for(QuestionAttemptDTO questionAttemptDTO : questionAttemptDTOs){
-                    int asciiCharacter = 65;
-                    for(QuestionOption questionOption : questionAttemptDTO.getOptions()){
-                        questionOption.setOptionContent((char)asciiCharacter + ". " + questionOption.getOptionContent());
-                        asciiCharacter++;
-                        if(asciiCharacter == 91){
-                            asciiCharacter = 97;
-                        }
-                    }
-                }
                 request.setAttribute("questionAttempts", questionAttemptDTOs);
                 request.getRequestDispatcher("multiple_review.jsp").forward(request, response);
             }else{
@@ -61,7 +58,7 @@ public class QuizReviewServlet extends HttpServlet {
             }
 
         }catch (Exception e){
-            e.printStackTrace();
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         }
     }
 

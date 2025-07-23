@@ -174,6 +174,21 @@ public class PracticeDAO extends DBContext {
         return 0;
     }
 
+    public boolean isBelongToUser(int practiceId, int userId) {
+        String sql = "SELECT 1 FROM [practices] WHERE id = ? AND user_id = ?";
+        try (PreparedStatement pstm = connection.prepareStatement(sql)) {
+            pstm.setInt(1, practiceId);
+            pstm.setInt(2, userId);
+            ResultSet rs = pstm.executeQuery();
+            if (rs.next()) {
+                return true;
+            }
+        } catch (Exception e) {
+            return false;
+        }
+        return false;
+    }
+
 }
 
 

@@ -102,7 +102,7 @@
                         <td id="row_name">${quiz.getName()}</td>
                         <td id="row_level">${quiz.getQuestionLevel().getName()}</td>
                         <td id="row_question">${quiz.getQuizSetting().getNumberOfQuestions()}</td>
-                        <td id="row_duration">${quiz.getDuration()}</td>
+                        <td id="row_duration">${(quiz.getDuration()/60).intValue()}</td>
                         <td id="row_passRate">${quiz.getPassRate()}</td>
                         <td>
                             <a href="${pageContext.request.contextPath}/simulation/detail?id=${quiz.getId()}"

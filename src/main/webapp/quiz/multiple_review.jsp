@@ -300,7 +300,7 @@
             </div>
 
             <%--question box--%>
-            <div id="questionBoxContainer" class="d-flex flex-wrap gap-2 px-4 pb-4">
+            <div id="questionBoxContainer" class="d-flex flex-wrap gap-2 px-4 pb-4" style="max-height: 470px; overflow: auto">
                 ...
             </div>
         </div>
@@ -442,15 +442,6 @@
 
                 if (mediaElement) {
                     mediaWrapper.appendChild(mediaElement);
-
-                    // // Add description if exists
-                    // if (media.description && media.description.trim() !== '') {
-                    //     const description = document.createElement("p");
-                    //     description.className = "fst-italic mt-1";
-                    //     description.textContent = media.description;
-                    //     mediaWrapper.appendChild(description);
-                    // }
-
                     mediaContainer.appendChild(mediaWrapper);
                 }
             });
@@ -458,8 +449,11 @@
 
         const optionList = document.getElementById("qOption");
         optionList.innerHTML = "";
+        let ascii = 65;
 
         currentQuestionAttempt.options.forEach((option, i) => {
+            const label = String.fromCharCode(ascii) + ". ";
+
             const li = document.createElement("li");
             li.className = "option-item";
 
@@ -482,7 +476,7 @@
                 \${isUserSelected && !isCorrectAnswer ? '<i class="bi bi-x text-white"></i>' : ''}
             </div>
             <span id="optionId" class="d-none">\${option.id}</span>
-            <span>\${option.optionContent}</span>
+            <span>\${label}\${option.optionContent}</span>
             `;
 
             optionList.appendChild(li);
@@ -492,7 +486,17 @@
 
     //insert content to popup explanation
     popupExplanation.addEventListener("show.bs.modal", (e) => {
-        const answerLetter = allQuestions[currentIndex].options.filter(op => op.answer).map(op => op.optionContent.charAt(0)).join(', ');
+        const answerLetter = allQuestions[currentIndex].options
+            .map((op, idx) => op.answer ? idx : -1)
+            .filter(idx => idx !== -1)
+            .map(idx => {
+                if (idx < 26) {
+                    return String.fromCharCode(65 + idx); // A-Z
+                } else {
+                    return String.fromCharCode(97 + (idx - 26)); // a-z
+                }
+            })
+            .join(', ');
         popupExplanation.querySelector("#explainContainer span").textContent = `The correct answer is \${answerLetter}`;
         popupExplanation.querySelector("#explainContainer p").textContent = allQuestions[currentIndex].question.explaination;
     })
@@ -508,9 +512,9 @@
                 case "ALL":
                     return true;
                 case "CORRECT":
-                    return q.userChoices.length && q.userChoices.every(selectedId => q.options.find(opt => opt.id === selectedId)?.answer === true);
+                    return q.userChoices.length && q.userChoices.length === q.options.filter(o => o.answer).length && q.userChoices.every(selectedId => q.options.find(opt => opt.id === selectedId)?.answer === true);
                 case "INCORRECT":
-                    return q.userChoices.length && q.userChoices.some(selectedId => q.options.find(opt => opt.id === selectedId)?.answer === false);
+                    return (q.userChoices.length && q.userChoices.some(selectedId => q.options.find(opt => opt.id === selectedId)?.answer === false)) || q.userChoices.length !== q.options.filter(o => o.answer).length;
                 case "UNANSWERED":
                     return q.userChoices.length === 0;
                 case "MARKED":
@@ -524,7 +528,7 @@
             const btn = document.createElement("button");
             btn.className = "question-box";
 
-            const isAllCorrect = q.userChoices.every(selectedId => q.options.find(opt => opt.id === selectedId)?.answer === true);
+            const isAllCorrect = q.userChoices.length === q.options.filter(o => o.answer).length && q.userChoices.every(selectedId => q.options.find(opt => opt.id === selectedId)?.answer === true);
             if (allQuestions[index].userChoices.length && isAllCorrect) {
                 btn.classList.add("correct");
             }
