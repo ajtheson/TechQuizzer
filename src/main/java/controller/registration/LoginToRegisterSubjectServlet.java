@@ -23,12 +23,19 @@ public class LoginToRegisterSubjectServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        UserDAO uDAO = new UserDAO();
-        HttpSession session = request.getSession();
-        String email = (String) session.getAttribute("guestEmail");
-        User u = uDAO.getUserByEmail(email);
-        request.setAttribute("userName", u.getName());
-        request.getRequestDispatcher("login_to_register_subject.jsp").forward(request, response);
+        try{
+            UserDAO uDAO = new UserDAO();
+            HttpSession session = request.getSession();
+            String email = (String) session.getAttribute("guestEmail");
+            User u = uDAO.getUserByEmail(email);
+            request.setAttribute("userName", u.getName());
+            request.getRequestDispatcher("login_to_register_subject.jsp").forward(request, response);
+        }catch (Exception e) {
+            System.out.println(e.getMessage());
+            HttpSession session = request.getSession();
+            session.invalidate();
+            response.sendError(HttpServletResponse.SC_NOT_FOUND);
+        }
     }
 
 

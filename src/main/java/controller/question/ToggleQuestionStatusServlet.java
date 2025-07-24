@@ -45,7 +45,9 @@ public class ToggleQuestionStatusServlet extends HttpServlet {
                 response.sendRedirect("list");
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
+            session.invalidate();
+            response.sendError(HttpServletResponse.SC_NOT_FOUND);
         }
     }
 

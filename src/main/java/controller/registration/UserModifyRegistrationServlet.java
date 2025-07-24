@@ -28,7 +28,7 @@ public class UserModifyRegistrationServlet extends HttpServlet {
             throws ServletException, IOException {
         String raw = request.getParameter("id");
         if(raw == null) {
-            response.sendRedirect(request.getContextPath() + "/account/login");
+            response.sendRedirect(request.getContextPath() + "/home");
         }else{
             try{
                 int id = Integer.parseInt(raw);
@@ -45,7 +45,10 @@ public class UserModifyRegistrationServlet extends HttpServlet {
                 request.setAttribute("registrationID", id);
                 request.getRequestDispatcher("user_modify_registration.jsp").forward(request, response);
             }catch (NumberFormatException e){
-                response.sendRedirect(request.getContextPath() + "/account/login");
+                System.out.println(e.getMessage());
+                HttpSession session = request.getSession();
+                session.invalidate();
+                response.sendError(HttpServletResponse.SC_NOT_FOUND);
             }
         }
     }

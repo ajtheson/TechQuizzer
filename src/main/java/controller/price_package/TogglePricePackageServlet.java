@@ -8,6 +8,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 /**
  * @author Dell
@@ -28,7 +29,10 @@ public class TogglePricePackageServlet extends HttpServlet {
             // Chuyển hướng lại danh sách
             response.sendRedirect("list?subject_id=" + subjectID);
         } catch (Exception e) {
-            System.out.println("Error: " + e.getMessage());
+            System.out.println(e.getMessage());
+            HttpSession session = request.getSession();
+            session.invalidate();
+            response.sendError(HttpServletResponse.SC_NOT_FOUND);
         }
     }
 }

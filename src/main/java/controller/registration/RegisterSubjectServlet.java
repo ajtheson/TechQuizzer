@@ -27,26 +27,38 @@ public class RegisterSubjectServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        int subjectID = Integer.parseInt(request.getParameter("subject_id"));
-        HttpSession session = request.getSession();
-        SubjectDAO sDAO = new SubjectDAO();
-        PricePackageDAO pDAO = new PricePackageDAO();
-        Subject s = sDAO.getForRegister(subjectID);
-        List<PricePackage> packages = pDAO.getActiveOfSubject(subjectID);
-        request.setAttribute("subject", s);
-        request.setAttribute("packages", packages);
-        //Check login
-        if(session.getAttribute("user") != null){
-            UserDTO user = (UserDTO) session.getAttribute("user");
-            RegistrationDAO rDAO = new RegistrationDAO();
-            if(rDAO.isRegistrationExist(user.getId(), subjectID)) {
-                session.setAttribute("toastNotification", "You already have an active or pending course for this subject.");
-                response.sendRedirect("list");
+        try{
+            int subjectID = Integer.parseInt(request.getParameter("subject_id"));
+            HttpSession session = request.getSession();
+            SubjectDAO sDAO = new SubjectDAO();
+            PricePackageDAO pDAO = new PricePackageDAO();
+            Subject s = sDAO.findById(subjectID);
+            if(!s.isPublished()){
+                session.setAttribute("toastNotification", "Subject not published now");
+                response.sendRedirect(request.getContextPath() + "/home");
                 return;
             }
-            request.getRequestDispatcher("user_register_subject.jsp").forward(request, response);
-        }else{
-            request.getRequestDispatcher("guest_register_subject.jsp").forward(request, response);
+            List<PricePackage> packages = pDAO.getActiveOfSubject(subjectID);
+            request.setAttribute("subject", s);
+            request.setAttribute("packages", packages);
+            //Check login
+            if(session.getAttribute("user") != null){
+                UserDTO user = (UserDTO) session.getAttribute("user");
+                RegistrationDAO rDAO = new RegistrationDAO();
+                if(rDAO.isRegistrationExist(user.getId(), subjectID)) {
+                    session.setAttribute("toastNotification", "You already have an active or pending course for this subject.");
+                    response.sendRedirect("list");
+                    return;
+                }
+                request.getRequestDispatcher("user_register_subject.jsp").forward(request, response);
+            }else{
+                request.getRequestDispatcher("guest_register_subject.jsp").forward(request, response);
+            }
+        }catch (Exception e) {
+            System.out.println(e.getMessage());
+            HttpSession session = request.getSession();
+            session.invalidate();
+            response.sendError(HttpServletResponse.SC_NOT_FOUND);
         }
     }
 

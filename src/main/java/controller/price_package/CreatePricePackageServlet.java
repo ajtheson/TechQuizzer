@@ -22,9 +22,16 @@ public class CreatePricePackageServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        int subjectID = Integer.parseInt(request.getParameter("subject_id"));
-        request.setAttribute("subject_id", subjectID);
-        request.getRequestDispatcher("price_package_create.jsp").forward(request, response);
+        try{
+            int subjectID = Integer.parseInt(request.getParameter("subject_id"));
+            request.setAttribute("subject_id", subjectID);
+            request.getRequestDispatcher("price_package_create.jsp").forward(request, response);
+        }catch (Exception e) {
+            System.out.println(e.getMessage());
+            HttpSession session = request.getSession();
+            session.invalidate();
+            response.sendError(HttpServletResponse.SC_NOT_FOUND);
+        }
     }
 
 

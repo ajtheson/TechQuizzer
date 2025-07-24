@@ -60,7 +60,10 @@ public class CreateQuestionServlet extends HttpServlet {
             request.setAttribute("questionLevels", questionLevels);
             request.getRequestDispatcher("/question/question_create.jsp").forward(request, response);
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
+            HttpSession session = request.getSession();
+            session.invalidate();
+            response.sendError(HttpServletResponse.SC_NOT_FOUND);
         }
     }
 
@@ -151,7 +154,7 @@ public class CreateQuestionServlet extends HttpServlet {
             response.sendRedirect("list");
 
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
             session.setAttribute("toastNotification", "Question has been created failed. Please try again later.");
             response.sendRedirect("list");
         }

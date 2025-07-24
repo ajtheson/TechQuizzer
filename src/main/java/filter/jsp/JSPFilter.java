@@ -40,25 +40,26 @@ public class JSPFilter implements Filter {
     }
 
 
-	public void doFilter(ServletRequest request, ServletResponse response,
-						 FilterChain chain)
-			throws IOException, ServletException {
+    public void doFilter(ServletRequest request, ServletResponse response,
+                         FilterChain chain)
+            throws IOException, ServletException {
 
-		HttpServletRequest req = (HttpServletRequest) request;
-		HttpServletResponse res = (HttpServletResponse) response;
-		HttpSession session = req.getSession();
-		String uri = req.getRequestURI();
+        HttpServletRequest req = (HttpServletRequest) request;
+        HttpServletResponse res = (HttpServletResponse) response;
+        HttpSession session = req.getSession();
+        String uri = req.getRequestURI();
 
-		if (uri.contains("/error/")) {
-			chain.doFilter(request, response);
-		} else {
-			session.invalidate();
-			res.sendError(HttpServletResponse.SC_NOT_FOUND);
-		}
-	}
+        if (uri.contains("/error/")) {
+            session.invalidate();
+            chain.doFilter(request, response);
+        } else {
+            session.invalidate();
+            res.sendError(HttpServletResponse.SC_NOT_FOUND);
+        }
+    }
 
 
-	public FilterConfig getFilterConfig() {
+    public FilterConfig getFilterConfig() {
         return (this.filterConfig);
     }
 
