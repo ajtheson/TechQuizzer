@@ -350,17 +350,17 @@ INSERT INTO [price_packages] ([name], [duration], [list_price], [sale_price], [d
     ('Premium', null, 300.99, 249.99, 'Full access for every time', 1, 30);
 
 INSERT INTO [registrations] ([time], [total_cost], [duration], [valid_from], [valid_to], [status], [price_package_id], [user_id], [last_updated_by]) VALUES
-    ('2025-05-19 08:50:00.000', 29.99, 1,'2025-05-20 09:00:00.000', '2025-06-20 09:00:00.000', 'Paid', 1, 2, 28),
-    ('2025-06-09 08:50:00.000', 49.99, 3,null, null, 'Pending Confirmation', 5, 2, null),
-    ('2025-06-09 08:50:00.000', 49.99, 3,null, null, 'Pending Payment', 8, 2, 29),
+    ('2025-07-19 08:50:00.000', 29.99, 1,'2025-07-20 09:00:00.000', '2025-08-20 09:00:00.000', 'Paid', 1, 2, 28),
+    ('2025-07-20 08:50:00.000', 49.99, 3,null, null, 'Pending Confirmation', 5, 2, null),
+    ('2025-07-20 08:50:00.000', 49.99, 3,null, null, 'Pending Payment', 8, 2, 29),
     ('2024-06-19 08:50:00.000', 114.99, 6,'2024-06-20 09:00:00.000', '2024-12-20 09:00:00.000', 'Expired', 27, 2, 28),
     ('2025-06-05 08:50:00.000', 99.99, 6,null, null, 'Canceled', 24, 2, null),
     ('2025-06-05 08:50:00.000', 99.99, 6,null, null, 'Rejected', 21, 2, 29),
-    ('2025-03-11 08:50:00.000', 249.99, null, null, null, 'Pending Confirmation', 88, 2, null),
-    ('2025-03-11 08:50:00.000', 249.99, null,'2025-03-13 09:00:00.000', null, 'Paid', 92, 2, 28),
-    ('2025-05-19 08:50:00.000', 29.99, 1,'2025-05-20 09:00:00.000', '2025-06-20 09:00:00.000', 'Paid', 1, 3, 28),
-    ('2025-06-09 08:50:00.000', 49.99, 3,null, null, 'Pending Confirmation', 5, 4, null),
-    ('2025-06-09 08:50:00.000', 49.99, 3,null, null, 'Pending Payment', 8, 5, 29),
+    ('2025-07-20 08:50:00.000', 249.99, null, null, null, 'Pending Confirmation', 88, 2, null),
+    ('2025-07-11 08:50:00.000', 249.99, null,'2025-07-12 09:00:00.000', null, 'Paid', 92, 2, 28),
+    ('2025-07-18 08:50:00.000', 29.99, 1,'2025-07-20 09:00:00.000', '2025-08-20 09:00:00.000', 'Paid', 1, 3, 28),
+    ('2025-07-23 08:50:00.000', 49.99, 3,null, null, 'Pending Confirmation', 5, 4, null),
+    ('2025-07-23 08:50:00.000', 49.99, 3,null, null, 'Pending Payment', 8, 5, 29),
     ('2024-06-19 08:50:00.000', 114.99, 6,'2024-06-20 09:00:00.000', '2024-12-20 09:00:00.000', 'Expired', 27, 6, 28),
     ('2025-06-05 08:50:00.000', 99.99, 6,null, null, 'Canceled', 24, 7, null),
     ('2025-06-05 08:50:00.000', 99.99, 6,null, null, 'Rejected', 21, 8, 29);
@@ -392,7 +392,7 @@ INSERT INTO [dimensions] ([name], [description], [subject_id]) VALUES
 
 INSERT INTO [lessons] ([name], [topic], [order], [video_link], [content], [status], [subject_id], [lesson_type_id]) VALUES
 -- Subject 1: Introduction to Programming
-    ('Intro to Programming', 'Basics', 1, 'https://youtu.be/vid101', 'Introduction and goals of the course.', 1, 1, 1),
+    ('Intro to Programming', 'Basics', 1, 'https://www.youtube.com/watch?v=XTiIiI-LOY8', 'Introduction and goals of the course.', 1, 1, 1),
     ('Variables in Programming', 'Variables', 2, 'https://youtu.be/vid102', 'Learn about variables and data types.', 1, 1, 1),
     ('Control Flow', 'Control', 3, 'https://youtu.be/vid103', 'Using if/else, loops in code.', 1, 1, 1),
     ('Functions and Methods', 'Functions', 4, 'https://youtu.be/vid104', 'Defining and calling functions.', 1, 1, 1),
@@ -1478,8 +1478,10 @@ INSERT INTO questions (content, explaination, question_format, question_level_id
 ('Why is it important to modularize code in calculator programs?', 'Modularity makes testing and debugging easier.', 'essay', 2, 5, NULL),
 ('How can you enhance the calculator to support floating point arithmetic?', 'Discuss using double and handling rounding issues.', 'essay', 3, 5, NULL),
 ('Explain how loops can be used to build a continuous-use calculator.', 'Using while or do-while to repeat until exit.', 'essay', 2, 5, NULL),
-('Describe how exception handling improves user experience in calculator programs.', 'Try-catch helps avoid crashes and give messages.', 'essay', 3, 5, NULL);
+('Describe how exception handling improves user experience in calculator programs.', 'Try-catch helps avoid crashes and give messages.', 'essay', 3, 5, NULL),
 
+('See picture below and answer question: What is the output of the program?', 
+'The switch statement evaluates the expression and executes the matching case block.', 'multiple', 1, NULL, 1);
 -- INSERT options
 INSERT INTO question_options (question_id, option_content, is_answer) VALUES
 -- One correct
@@ -1499,7 +1501,12 @@ INSERT INTO question_options (question_id, option_content, is_answer) VALUES
 (402, 'Divide by zero', 1), (402, 'Syntax error', 0), (402, 'InputMismatch', 1), (402, 'Overflow', 1),
 (403, 'Scanner', 1), (403, 'BufferedReader', 1), (403, 'Random', 0), (403, 'Formatter', 0),
 (404, 'if-else', 1), (404, 'for loop', 0), (404, 'switch-case', 1), (404, 'interface', 0),
-(405, 'boolean', 0), (405, 'int', 1), (405, 'double', 1), (405, 'float', 1);
+(405, 'boolean', 0), (405, 'int', 1), (405, 'double', 1), (405, 'float', 1),
+
+-- Q406: multiple answers
+(411, 'One', 0),
+(411, 'Zero', 1),
+(411, 'Hello World', 0);
 
 INSERT INTO [quiz_settings] ([number_question], [question_type])
 VALUES
@@ -1556,11 +1563,8 @@ VALUES
     ('multiple', 'Cloud Computing Intro', 1, 60, 65, 'Cloud services, deployment models, and basic concepts', 1, 1, 3, 39),
     ('multiple', 'DevOps Fundamentals', 2, 75, 70, 'CI/CD, automation, and infrastructure as code', 1, 2, 8, 40);
 
--- Insert quiz_setting_groups records
--- Each quiz_setting can have multiple groups
--- Each group contains different lessons OR dimensions (not mixed)
--- Total number_question across all groups for same quiz_setting_id equals number_question in quiz_settings
--- Based on question_type: 'lesson' groups -> subject_lesson_id populated, 'dimension' groups -> subject_dimension_id populated
+INSERT INTO [question_medias] ([type], [link], [description], [question_id]) VALUES
+('image', 'hoi_dap_C.png', 'Describe piece of code C language', 411);
 
 INSERT INTO [quiz_setting_groups] ([number_question], [subject_lesson_id], [subject_dimension_id], [quiz_setting_id])
 VALUES
@@ -1765,12 +1769,6 @@ VALUES
 -- Quiz Setting ID 40: 48 questions total, type 'lesson'
     (24, 15, NULL, 40), -- Networking Lab
     (24, 20, NULL, 40); -- Mini AI Project
-
-insert into [practices] (format, name, number_question, question_level_id, subject_dimension_id, subject_lesson_id, user_id) values
-    ('multiple', 'practice1', '20', 1, 1, null, 2)
-
-insert into [exam_attempts] (type, duration, number_correct_question, user_id, quiz_id, practice_id) values
-    ('practice', 10*60 + 1234, 10, 2, null, 1)
 
 INSERT INTO [subject_description_images]([subject_id], [url], [caption])
 VALUES
