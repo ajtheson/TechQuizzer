@@ -49,53 +49,76 @@
                             <input type="text" class="form-control" name="topic" value="${lesson.topic}" required>
                         </div>
 
-                        <div class="mb-3">
-                            <label><strong>Video Source</strong></label>
+                        <c:if test="${lesson.lessonType.name eq 'Lesson'}">
+                            <div class="mb-3">
+                                <label><strong>Video Source</strong></label>
 
-                            <!-- Radio: YouTube -->
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="videoType" id="videoTypeYoutube" value="youtube"
-                                ${fn:contains(lesson.videoLink, 'youtube') ? 'checked' : ''}>
-                                <label class="form-check-label" for="videoTypeYoutube">YouTube Link</label>
-                            </div>
-                            <input type="text" class="form-control mt-2" name="videoLink" id="youtubeInput"
-                                   value="${fn:contains(lesson.videoLink, 'youtube') ? lesson.videoLink : ''}"
-                                   placeholder="https://www.youtube.com/watch?v=..."
-                            ${fn:contains(lesson.videoLink, 'youtube') ? '' : 'disabled'}>
+                                <!-- Radio: YouTube -->
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="videoType" id="videoTypeYoutube" value="youtube"
+                                        ${fn:contains(lesson.videoLink, 'youtube') ? 'checked' : ''}>
+                                    <label class="form-check-label" for="videoTypeYoutube">YouTube Link</label>
+                                </div>
+                                <input type="text" class="form-control mt-2" name="videoLink" id="youtubeInput"
+                                       value="${fn:contains(lesson.videoLink, 'youtube') ? lesson.videoLink : ''}"
+                                       placeholder="https://www.youtube.com/watch?v=..."
+                                    ${fn:contains(lesson.videoLink, 'youtube') ? '' : 'disabled'}>
 
-                            <!-- Radio: Upload file -->
-                            <div class="form-check mt-3">
-                                <input class="form-check-input" type="radio" name="videoType" id="videoTypeUpload" value="upload"
-                                ${fn:endsWith(lesson.videoLink, '.mp4') ? 'checked' : ''}>
-                                <label class="form-check-label" for="videoTypeUpload">Upload MP4 File</label>
-                            </div>
-                            <input type="file" class="form-control mt-2" name="videoFile" id="fileInput"
-                                   accept="video/mp4" ${fn:endsWith(lesson.videoLink, '.mp4') ? '' : 'disabled'}>
+                                <!-- Radio: Upload file -->
+                                <div class="form-check mt-3">
+                                    <input class="form-check-input" type="radio" name="videoType" id="videoTypeUpload" value="upload"
+                                        ${fn:endsWith(lesson.videoLink, '.mp4') ? 'checked' : ''}>
+                                    <label class="form-check-label" for="videoTypeUpload">Upload MP4 File</label>
+                                </div>
+                                <input type="file" class="form-control mt-2" name="videoFile" id="fileInput"
+                                       accept="video/mp4" ${fn:endsWith(lesson.videoLink, '.mp4') ? '' : 'disabled'}>
 
-                            <!-- Preview video -->
-                            <div class="mt-4">
-                                <p><strong>Current Video Preview:</strong></p>
-                                <c:choose>
-                                    <c:when test="${fn:endsWith(lesson.videoLink, '.mp4')}">
-                                        <video width="100%" height="360" controls style="border: none;">
-                                            <source src="${pageContext.request.contextPath}/${lesson.videoLink}" type="video/mp4">
-                                            Your browser does not support the video tag.
-                                        </video>
-                                    </c:when>
-                                    <c:when test="${fn:contains(lesson.videoLink, 'youtube.com/watch?v=')}">
-                                        <c:set var="embedLink" value="${fn:replace(lesson.videoLink, 'watch?v=', 'embed/')}" />
-                                        <iframe width="100%" height="360"
-                                                src="${embedLink}" frameborder="0"
-                                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                                                allowfullscreen>
-                                        </iframe>
-                                    </c:when>
-                                    <c:otherwise>
-                                        <p>No preview available</p>
-                                    </c:otherwise>
-                                </c:choose>
+                                <!-- Preview video -->
+                                <div class="mt-4">
+                                    <p><strong>Current Video Preview:</strong></p>
+                                    <c:choose>
+                                        <c:when test="${fn:endsWith(lesson.videoLink, '.mp4')}">
+                                            <video width="100%" height="360" controls style="border: none;">
+                                                <source src="${pageContext.request.contextPath}/${lesson.videoLink}" type="video/mp4">
+                                                Your browser does not support the video tag.
+                                            </video>
+                                        </c:when>
+                                        <c:when test="${fn:contains(lesson.videoLink, 'youtube.com/watch?v=')}">
+                                            <c:set var="embedLink" value="${fn:replace(lesson.videoLink, 'watch?v=', 'embed/')}" />
+                                            <iframe width="100%" height="360"
+                                                    src="${embedLink}" frameborder="0"
+                                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                                    allowfullscreen>
+                                            </iframe>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <p>No preview available</p>
+                                        </c:otherwise>
+                                    </c:choose>
+                                </div>
                             </div>
-                        </div>
+                            <div class="mb-3">
+                                <label>Subject</label>
+                                <select class="form-select" name="subjectId">
+                                    <c:forEach var="s" items="${subjectList}">
+                                        <option value="${s.id}" ${lesson.subject.id == s.id ? 'selected' : ''}>${s.name}</option>
+                                    </c:forEach>
+                                </select>
+                            </div>
+                        </c:if>
+                        <c:if test="${lesson.lessonType.name eq 'Quiz'}">
+                            <div class="mb-3">
+                                <label><strong>Quiz:</strong></label>
+                                <select class="form-select" name="quizId">
+                                    <option value="">Choose a quiz...</option>
+                                    <c:forEach var="q" items="${quizList}">
+                                        <option value="${q.id}" ${quiz != null && q.id == quiz.id ? 'selected' : ''}>
+                                                ${q.name}
+                                        </option>
+                                    </c:forEach>
+                                </select>
+                            </div>
+                        </c:if>
 
 
                         <div class="mb-3">
@@ -138,18 +161,11 @@
                                 <input type="hidden" name="ownerId" value="${currentUser.id}" />
                             </c:if>
                         </div>
-                        <div class="mb-3">
-                            <label>Subject</label>
-                            <select class="form-select" name="subjectId">
-                                <c:forEach var="s" items="${subjectList}">
-                                    <option value="${s.id}" ${lesson.subject.id == s.id ? 'selected' : ''}>${s.name}</option>
-                                </c:forEach>
-                            </select>
-                        </div>
+
 
                         <div class="mb-3">
                             <label>Lesson Type</label>
-                            <select class="form-select" name="lessonTypeId">
+                            <select class="form-select" name="lessonTypeId" readonly="true">
                                 <c:forEach var="lessonType" items="${lessonTypeList}">
                                     <option value="${lessonType.id}" ${lesson.lessonType.id == lessonType.id ? 'selected' : ''}>${lessonType.name}</option>
                                 </c:forEach>

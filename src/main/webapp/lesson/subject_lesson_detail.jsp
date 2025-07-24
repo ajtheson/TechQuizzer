@@ -42,6 +42,9 @@
                     <p><strong>Order:</strong> ${lesson.order}</p>
                     <p><strong>Topic:</strong> ${lesson.topic}</p>
                     <p><strong>Lesson Type:</strong> ${lesson.lessonType.name}</p>
+                    <c:if test="${not empty quiz}">
+                        <p><strong>Quiz:</strong> ${quiz.name}</p>
+                    </c:if>
                     <p><strong>Subject:</strong> ${lesson.subjectDTO.name}</p>
 
                     <c:if test="${currentUser != null && currentUser.roleId == 1}">
