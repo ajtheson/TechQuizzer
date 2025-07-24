@@ -37,7 +37,7 @@ public class LessonDAO extends DBContext {
     public LessonDTO getLessonDTOById(int id) {
         LessonDTO lesson = null;
         String sql = "SELECT l.id, l.name, l.[order],l.topic, l.video_link, l.content, l.status, " +
-                "l.subject_id, s.name AS subject_name, " +
+                "l.subject_id,l.lesson_quiz_id, s.name AS subject_name, " +
                 "l.lesson_type_id, lt.name AS lesson_type_name,u.name AS owner_name " +
                 "FROM lessons l " +
                 "LEFT JOIN subjects s ON l.subject_id = s.id " +
@@ -58,6 +58,7 @@ public class LessonDAO extends DBContext {
                     lesson.setVideoLink(rs.getString("video_link"));
                     lesson.setContent(rs.getString("content"));
                     lesson.setStatus(rs.getBoolean("status"));
+                    lesson.setQuizId(rs.getInt("lesson_quiz_id"));
 
                     // Subject
                     Subject subject = new Subject();

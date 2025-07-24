@@ -36,7 +36,7 @@
         <div class="col-md-8 offset-md-2">
             <div class="tile">
                 <div class="tile-body">
-                    <form action="lesson-edit" method="post" enctype="multipart/form-data">
+                    <form action="edit" method="post" enctype="multipart/form-data">
                         <input type="hidden" name="id" value="${lesson.id}">
 
                         <div class="mb-3">
@@ -163,7 +163,7 @@
                             <c:if test="${currentUser != null && currentUser.roleId == 2}">
                                 <a href="list-for-expert" class="btn btn-secondary">Cancel</a>
                             </c:if>
-                            <button type="submit" class="btn btn-primary">Add Lesson</button>
+                            <button type="submit" class="btn btn-primary">Edit Lesson</button>
                         </div>
                     </form>
                 </div>

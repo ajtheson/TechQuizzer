@@ -370,6 +370,7 @@ public class SubjectDAO extends DBContext {
             ResultSet rs = pstm.executeQuery();
             if (rs.next()) {
                 Subject subject = new Subject();
+                subject.setId(subjectId);
                 subject.setName(rs.getString("name"));
                 subject.setThumbnail(rs.getString("thumbnail"));
                 subject.setCategoryId(rs.getInt("category_id"));

@@ -13,7 +13,8 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 
 @WebFilter(filterName = "AdminAPIFilter", urlPatterns = {"/price_package/create", "/price_package/edit", "/price_package/detail", "/price_package/toggle_status"
-        , "/admin/setting/create", "/admin/setting/edit", "/admin/setting/detail", "/admin/setting/list", "/admin/setting/toggle-setting-status"})
+        , "/admin/setting/create", "/admin/setting/edit", "/admin/setting/detail", "/admin/setting/list", "/admin/setting/toggle-setting-status",
+    "/user/manage"})
 public class AdminAPIFilter implements Filter {
 
     private static final boolean debug = true;

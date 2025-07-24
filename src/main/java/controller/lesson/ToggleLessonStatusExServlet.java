@@ -25,7 +25,7 @@ public class ToggleLessonStatusExServlet extends HttpServlet {
             } else {
                 request.getSession().setAttribute("toastNotification", "Failed to update status.");
             }
-            response.sendRedirect("subject-lesson-expert");
+            response.sendRedirect("list-for-expert");
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
             response.sendRedirect("list-for-expert");
