@@ -135,8 +135,20 @@
                             </span>
                         </div>
                         <div class="col-md-12 mt-1 mb-3">
-                            <a class="btn btn-primary btn-lg" style="width: 100%"
-                               href="${pageContext.request.contextPath}/registration/register_subject?subject_id=${requestScope.subject.id}">Register</a>
+                            <c:if test="${requestScope.isValidRegistration == true}">
+                                <button class="btn btn-secondary btn-lg" style="width: 100%" disabled>
+                                    Registered
+                                </button>
+                            </c:if>
+                            <c:if test="${requestScope.subject.published == false}">
+                                <button class="btn btn-secondary btn-lg" style="width: 100%" disabled>
+                                    Not available
+                                </button>
+                            </c:if>
+                            <c:if test="${requestScope.isValidRegistration == false && requestScope.subject.published == true}">
+                                <a class="btn btn-primary btn-lg" style="width: 100%"
+                                   href="${pageContext.request.contextPath}/registration/register_subject?subject_id=${requestScope.subject.id}">Register</a>
+                            </c:if>
                         </div>
                         <hr>
 

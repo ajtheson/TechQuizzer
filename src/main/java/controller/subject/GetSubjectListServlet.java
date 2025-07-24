@@ -74,6 +74,7 @@ public class GetSubjectListServlet extends HttpServlet {
         SubjectService subjectService = new SubjectService();
         for (Subject subject : subjectList) {
             SubjectDTO subjectDTO = subjectService.toSubjectDTO(subject);
+            subjectDTO.setRegistered(registrationDAO.isRegistrationValid(userID, subjectDTO.getId()));
             subjects.add(subjectDTO);
         }
 

@@ -357,6 +357,8 @@ public class RegistrationDAO extends DBContext {
 
     }
 
+    //Return true when the registration valid
+    //False when the registration is expired
     public boolean isRegistrationValid(int userId, int subjectId){
         String sql = """
                 select r.valid_to

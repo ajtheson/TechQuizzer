@@ -39,7 +39,7 @@
                         </div>
                         <div class="mb-3">
                             <label class="form-label" for="type">Type</label>
-                            <select class="form-control" id="type" name="type" required>
+                            <select class="form-control" id="type" disabled>
                                 <option value="">--Choose setting type--</option>
                                 <option value="User Roles" ${type == 'User Roles' ? 'selected="selected"' : ''}>User Roles</option>
                                 <option value="Subject Categories" ${type == 'Subject Categories' ? 'selected="selected"' : ''}>Subject Categories</option>
@@ -47,6 +47,7 @@
                                 <option value="Question Levels" ${type == 'Question Levels' ? 'selected="selected"' : ''}>Question Levels</option>
                                 <option value="Lesson Types" ${type == 'Lesson Types' ? 'selected="selected"' : ''}>Lesson Types</option>
                             </select>
+                            <input value="${type}" type="text" name="type" hidden>
                         </div>
                         <div class="mb-3">
                             <label class="col-form-label" for="value">Value</label>

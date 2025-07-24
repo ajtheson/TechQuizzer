@@ -6,6 +6,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
 
@@ -14,17 +15,22 @@ public class ToggleSettingStatusServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        HttpSession session = request.getSession(false);
         try {
             int id = Integer.parseInt(request.getParameter("id"));
             boolean status = Boolean.parseBoolean(request.getParameter("status"));
-
             SettingDAO dao = new SettingDAO();
-            dao.updateStatus(id, status);
-
-            // Chuyển hướng lại danh sách
+            if(!status && dao.isMandatorySetting(id)){
+                session.setAttribute("toastNotification", "Setting status has been updated failed! Cannot deactivated mandatory setting.");
+            }
+            else{
+                dao.updateStatus(id, status);
+                session.setAttribute("toastNotification", "Setting has been updated successfully.");
+            }
             response.sendRedirect(request.getContextPath() + "/admin/setting/list");
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
+            session.setAttribute("toastNotification", "Setting status has been updated failed!\n" + e.getMessage());
             response.sendRedirect(request.getContextPath() + "/admin/setting/list");
         }
     }

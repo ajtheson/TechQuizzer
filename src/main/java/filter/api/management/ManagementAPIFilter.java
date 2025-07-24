@@ -1,23 +1,19 @@
 package filter.api.management;
 
-import java.io.IOException;
-import java.io.PrintStream;
-import java.io.PrintWriter;
-import java.io.StringWriter;
-
 import dto.UserDTO;
-import jakarta.servlet.Filter;
-import jakarta.servlet.FilterChain;
-import jakarta.servlet.FilterConfig;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.ServletRequest;
-import jakarta.servlet.ServletResponse;
+import jakarta.servlet.*;
 import jakarta.servlet.annotation.WebFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
-@WebFilter(filterName = "ManagementAPIFilter", urlPatterns = {"/price_package/list", "/management/question/create", "/management/question/edit", "/management/question/list", "/management/question/toggle_question_status", "/management/question/view"})
+import java.io.IOException;
+import java.io.PrintStream;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+
+@WebFilter(filterName = "ManagementAPIFilter", urlPatterns = {"/price_package/list", "/management/question/create", "/management/question/edit", "/management/question/list", "/management/question/toggle_question_status", "/management/question/view"
+        , "/management/question/list", "/management/subject/list", "/management/subject/edit"})
 public class ManagementAPIFilter implements Filter {
 
     private static final boolean debug = true;
@@ -54,7 +50,7 @@ public class ManagementAPIFilter implements Filter {
         if (session.getAttribute("user") == null) {
             res.sendError(HttpServletResponse.SC_UNAUTHORIZED);
             return;
-        }else{
+        } else {
             UserDTO user = (UserDTO) session.getAttribute("user");
             int roleID = user.getRoleId();
             if (roleID != 2 && roleID != 1) {

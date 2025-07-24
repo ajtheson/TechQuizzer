@@ -193,7 +193,7 @@ public class SubjectDAO extends DBContext {
         if (ownerId != 0) {
             sql.append(" AND [owner_id] = ?");
         }
-        sql.append(" ORDER BY [id]");
+            sql.append(" ORDER BY [id]");
         sql.append(" OFFSET ? ROWS FETCH NEXT ? ROWS ONLY");
         try (PreparedStatement pstm = connection.prepareStatement(sql.toString())) {
             int paramIndex = 1;
@@ -433,7 +433,7 @@ public class SubjectDAO extends DBContext {
         List<Subject> list = new ArrayList<>();
         StringBuilder sql = new StringBuilder("SELECT * FROM [subjects] WHERE 1=1");
         if (owner_id != 0) {
-            sql.append(" AND [owner_id] = ?");
+                sql.append(" AND [owner_id] = ?");
         }
         sql.append(" ORDER BY name ASC");
         try (PreparedStatement ps = connection.prepareStatement(sql.toString())) {
