@@ -28,6 +28,12 @@ public class ActivateRegisterSubjectServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        if(session.getAttribute("otp") == null) {
+            session.invalidate();
+            response.sendError(HttpServletResponse.SC_NOT_FOUND);
+            return;
+        }
         request.getRequestDispatcher("activate_register_subject.jsp").forward(request, response);
     }
 

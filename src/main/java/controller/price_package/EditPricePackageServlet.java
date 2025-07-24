@@ -22,12 +22,19 @@ public class EditPricePackageServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        PricePackageDAO pDAO = new PricePackageDAO();
-        int id = Integer.parseInt(request.getParameter("id"));
-        PricePackage p = pDAO.get(id);
-        request.setAttribute("p", p);
-        request.setAttribute("subject_id", p.getSubjectId());
-        request.getRequestDispatcher("price_package_edit.jsp").forward(request, response);
+        try{
+            PricePackageDAO pDAO = new PricePackageDAO();
+            int id = Integer.parseInt(request.getParameter("id"));
+            PricePackage p = pDAO.get(id);
+            request.setAttribute("p", p);
+            request.setAttribute("subject_id", p.getSubjectId());
+            request.getRequestDispatcher("price_package_edit.jsp").forward(request, response);
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+            HttpSession session = request.getSession();
+            session.invalidate();
+            response.sendError(HttpServletResponse.SC_NOT_FOUND);
+        }
     }
 
 

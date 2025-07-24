@@ -26,7 +26,7 @@ public class UserCancelRegistrationServlet extends HttpServlet {
             throws ServletException, IOException {
         String raw = request.getParameter("id");
         if(raw == null) {
-            response.sendRedirect(request.getContextPath() + "/account/login");
+            response.sendRedirect(request.getContextPath() + "/home");
         }else{
             try{
                 int id = Integer.parseInt(raw);
@@ -40,7 +40,10 @@ public class UserCancelRegistrationServlet extends HttpServlet {
                     response.sendRedirect("list");
                 }
             }catch (NumberFormatException e){
-                response.sendRedirect(request.getContextPath() + "/account/login");
+                System.out.println(e.getMessage());
+                HttpSession session = request.getSession();
+                session.invalidate();
+                response.sendError(HttpServletResponse.SC_NOT_FOUND);
             }
         }
     }

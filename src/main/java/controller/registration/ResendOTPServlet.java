@@ -25,7 +25,7 @@ public class ResendOTPServlet extends HttpServlet {
             throws ServletException, IOException {
         HttpSession session = request.getSession();
         if(session.getAttribute("otp") == null) {
-            response.sendRedirect(request.getContextPath() + "/account/login");
+            response.sendRedirect(request.getContextPath() + "/home");
             return;
         }
         LocalDateTime otpCreateAt = (LocalDateTime) session.getAttribute("otpCreateAt");

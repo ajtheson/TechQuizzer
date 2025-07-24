@@ -10,6 +10,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 /**
  * @author Dell
@@ -20,12 +21,19 @@ public class GetPricePackageServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        PricePackageDAO pDAO = new PricePackageDAO();
-        int subjectId = Integer.parseInt(request.getParameter("subject_id"));
-        List<PricePackage> list = pDAO.getOfSubject(subjectId);
-        request.setAttribute("p", list);
-        request.setAttribute("subject_id", subjectId);
-        request.getRequestDispatcher("price_package_list.jsp").forward(request, response);
+        try{
+            PricePackageDAO pDAO = new PricePackageDAO();
+            int subjectId = Integer.parseInt(request.getParameter("subject_id"));
+            List<PricePackage> list = pDAO.getOfSubject(subjectId);
+            request.setAttribute("p", list);
+            request.setAttribute("subject_id", subjectId);
+            request.getRequestDispatcher("price_package_list.jsp").forward(request, response);
+        }catch (Exception e) {
+            System.out.println(e.getMessage());
+            HttpSession session = request.getSession();
+            session.invalidate();
+            response.sendError(HttpServletResponse.SC_NOT_FOUND);
+        }
      }
 
 }

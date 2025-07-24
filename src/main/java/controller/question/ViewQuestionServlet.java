@@ -64,8 +64,10 @@ public class ViewQuestionServlet extends HttpServlet {
 
             request.getRequestDispatcher("/question/question_view.jsp").forward(request, response);
         } catch (Exception e) {
-            e.printStackTrace();
-            response.getWriter().write("Error: " + e.getMessage());
+            System.out.println(e.getMessage());
+            HttpSession session = request.getSession();
+            session.invalidate();
+            response.sendError(HttpServletResponse.SC_NOT_FOUND);
         }
     }
 }
