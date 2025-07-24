@@ -267,6 +267,33 @@ public class ExamAttemptDAO extends DBContext {
         }
         return false;
     }
+    public List<ExamAttempt> findAllByQuizIdAndUserId(int quizId, int userId) {
+        List<ExamAttempt> attempts = new ArrayList<>();
+        String sql = "SELECT * FROM [exam_attempts] WHERE [quiz_id] = ? AND [user_id] = ? ORDER BY [start_date] DESC ";
+
+        try (PreparedStatement pstm = connection.prepareStatement(sql)) {
+            pstm.setInt(1, quizId);
+            pstm.setInt(2, userId);
+
+            try (ResultSet rs = pstm.executeQuery()) {
+                while (rs.next()) {
+                    ExamAttempt examAttempt = new ExamAttempt();
+                    examAttempt.setId(rs.getInt("id"));
+                    examAttempt.setType(rs.getString("type"));
+                    examAttempt.setStartDate(rs.getDate("start_date") != null ? rs.getDate("start_date").toLocalDate() : null);
+                    examAttempt.setDuration(rs.getInt("duration"));
+                    examAttempt.setNumberCorrectQuestions(rs.getInt("number_correct_question"));
+                    examAttempt.setUserId(rs.getInt("user_id"));
+                    examAttempt.setQuizId(rs.getInt("quiz_id"));
+                    attempts.add(examAttempt);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return attempts;
+    }
 
     public boolean isBelongToUser(int examAttemptId, int userId){
         String sql = "SELECT 1 FROM [exam_attempts] WHERE [user_id] = ? and [id] = ?";

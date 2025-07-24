@@ -37,8 +37,6 @@ public class GetQuestionListServlet extends HttpServlet {
         //Init DAO object needed
         QuestionDAO questionDAO = new QuestionDAO();
         RoleDAO roleDAO = new RoleDAO();
-        CategoryDAO categoryDAO = new CategoryDAO();
-        UserDAO userDAO = new UserDAO();
         SubjectDAO subjectDAO = new SubjectDAO();
         DimensionDAO dimensionDAO = new DimensionDAO();
         LessonDAO lessonDAO = new LessonDAO();

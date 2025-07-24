@@ -137,4 +137,23 @@ public class SettingDAO extends DBContext {
         return false;
     }
 
+    public boolean isMandatorySetting(int id){
+        String sql = """
+                SELECT *
+                FROM [system_settings]
+                where [id] = ? and [mandatory] = 1
+                """;
+        try(PreparedStatement pstm = connection.prepareStatement(sql)){
+            pstm.setInt(1, id);
+            ResultSet rs = pstm.executeQuery();
+            if(rs.next()){
+                return true;
+            }
+        }
+        catch (SQLException e){
+            System.out.println("Error: " + e.getMessage());
+        }
+        return false;
+    }
+
 }

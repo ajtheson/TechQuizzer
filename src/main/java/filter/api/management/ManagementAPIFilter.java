@@ -1,23 +1,20 @@
 package filter.api.management;
 
-import java.io.IOException;
-import java.io.PrintStream;
-import java.io.PrintWriter;
-import java.io.StringWriter;
-
 import dto.UserDTO;
-import jakarta.servlet.Filter;
-import jakarta.servlet.FilterChain;
-import jakarta.servlet.FilterConfig;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.ServletRequest;
-import jakarta.servlet.ServletResponse;
+import jakarta.servlet.*;
 import jakarta.servlet.annotation.WebFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
-@WebFilter(filterName = "ManagementAPIFilter", urlPatterns = {"/price_package/list", "/management/question/create", "/management/question/edit", "/management/question/list", "/management/question/toggle_question_status", "/management/question/view"})
+import java.io.IOException;
+import java.io.PrintStream;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+
+@WebFilter(filterName = "ManagementAPIFilter", urlPatterns = {"/price_package/list", "/management/question/create", "/management/question/edit", "/management/question/list", "/management/question/toggle_question_status", "/management/question/view"
+        , "/management/subject/list", "/management/subject/edit"
+        , "/management/dimension/create", "/management/dimension/edit", "/management/dimension/detail", "/management/dimension/toggle-dimension-status", "/management/lesson/create", "/management/lesson/edit", "/management/lesson/detail", "/management/lesson/list", "/management/lesson/list-for-expert", "/management/lesson/toggle-lesson-status-expert", "/management/lesson/toggle-lesson-status-admin", "/management/quiz/create", "/management/quiz/detail", "/management/quiz/list", "/management/quiz/toggle-quiz-status", "/management/quiz/quiz-setting"})
 public class ManagementAPIFilter implements Filter {
 
     private static final boolean debug = true;
@@ -54,7 +51,7 @@ public class ManagementAPIFilter implements Filter {
         if (session.getAttribute("user") == null) {
             res.sendError(HttpServletResponse.SC_UNAUTHORIZED);
             return;
-        }else{
+        } else {
             UserDTO user = (UserDTO) session.getAttribute("user");
             int roleID = user.getRoleId();
             if (roleID != 2 && roleID != 1) {

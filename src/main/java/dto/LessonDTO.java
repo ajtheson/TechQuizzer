@@ -16,6 +16,7 @@ public class LessonDTO {
     private Subject subject;
     private SubjectDTO subjectDTO;
     private LessonType lessonType;
+    private int quizId;
 
     public int getId() {
         return id;
@@ -80,5 +81,13 @@ public class LessonDTO {
 
     public void setSubjectDTO(SubjectDTO subjectDTO) {
         this.subjectDTO = subjectDTO;
+    }
+
+    public int getQuizId() {
+        return quizId;
+    }
+
+    public void setQuizId(int quizId) {
+        this.quizId = quizId;
     }
 }

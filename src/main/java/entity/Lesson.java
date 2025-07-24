@@ -11,6 +11,7 @@ public class Lesson {
     private boolean status;
     private int subjectId;
     private Integer lessonTypeId;
+    private Integer quizId;
 
     public Lesson() {
     }
@@ -98,5 +99,17 @@ public class Lesson {
 
     public void setLessonTypeId(int lessonTypeId) {
         this.lessonTypeId = lessonTypeId;
+    }
+
+    public void setLessonTypeId(Integer lessonTypeId) {
+        this.lessonTypeId = lessonTypeId;
+    }
+
+    public Integer getQuizId() {
+        return quizId;
+    }
+
+    public void setQuizId(Integer quizId) {
+        this.quizId = quizId;
     }
 }

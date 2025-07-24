@@ -47,6 +47,8 @@ public class EditSettingServlet extends HttpServlet {
         String error = "";
         SettingDAO settingDAO = new SettingDAO();
 
+        HttpSession session = request.getSession();
+
         int order = 0;
 
         //Check input if it is empty or invalid
@@ -56,7 +58,9 @@ public class EditSettingServlet extends HttpServlet {
             error = "Please enter a valid value";
         } else if (status.isEmpty()) {
             error = "Please choose a valid status";
-        } else if (description.isEmpty()) {
+        } else if (status.equalsIgnoreCase("deactivate") && settingDAO.isMandatorySetting(id)) {
+            error = "Can not deactivate mandatory setting";
+        }else if (description.isEmpty()) {
             error = "Please enter a valid description";
         } else if (orderParam.isEmpty()) {
             error = "Please enter a valid order";
@@ -89,7 +93,6 @@ public class EditSettingServlet extends HttpServlet {
         //If there is no error, update a setting and redirect to setting_detail page
         else {
             Setting setting = new Setting(id, type, value, description, order, status.equals("activate"));
-            HttpSession session = request.getSession();
             if (settingDAO.update(setting)) {
                 //Add toastNotification success to session to show success message in setting_detail page
                 session.setAttribute("toastNotification", "Setting has been updated successfully.");

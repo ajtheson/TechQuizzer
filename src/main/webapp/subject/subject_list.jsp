@@ -194,10 +194,15 @@
                                             <p class="text-decoration-line-through subject-list-price text-muted">
                                                 $${subject.minListPrice}</p>
                                             <p class="fw-bold subject-sale-price">$${subject.minSalePrice}</p>
+                                            <c:if test="${subject.isRegistered}">
+                                                <button class="btn btn-secondary" disabled>Registered</button>
+                                            </c:if>
+                                            <c:if test="${!subject.isRegistered}">
                                             <a class="btn" style="background-color:#00897B; color:white; border:none;"
                                                href="${pageContext.request.contextPath}/registration/register_subject?subject_id=${subject.id}"
                                                type="button">Register
                                             </a>
+                                            </c:if>
                                         </div>
                                     </div>
                                 </div>

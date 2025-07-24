@@ -33,7 +33,8 @@
                         <%--Filter--%>
                         <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap">
                             <div class="d-flex flex-column gap-2 align-items-start">
-                                <a class="btn btn-primary mb-3 w-auto" type="button" href="${pageContext.request.contextPath}/management/question/create">+ Add New
+                                <a class="btn btn-primary mb-3 w-auto" type="button"
+                                   href="${pageContext.request.contextPath}/management/question/create">+ Add New
                                     Question</a>
 
                                 <%--Items per page--%>
@@ -130,13 +131,9 @@
                                             <td>${empty question.questionDimensionName ? 'None' : question.questionDimensionName}</td>
                                             <td>${empty question.subjectLessonName ? 'None' : question.subjectLessonName}</td>
                                             <td>${question.questionLevelName}</td>
-                                            <td>${question.status ? 'Show' : 'Hide'}</td>
                                             <td>
-                                                <a class="btn btn-info text-white" type="button"
-                                                   href="${pageContext.request.contextPath}/management/question/view?id=${question.id}">View</a>
-                                                <a class="btn btn-warning text-white" type="button"
-                                                   href="${pageContext.request.contextPath}/management/question/edit?id=${question.id}">Edit</a>
-                                                <form action="${pageContext.request.contextPath}/management/question/toggle_question_status" method="post"
+                                                <form action="${pageContext.request.contextPath}/management/question/toggle_question_status"
+                                                      method="post"
                                                       style="display: inline;">
                                                     <input type="hidden" name="id" value="${question.id}"/>
                                                     <input type="hidden" name="statusChange"
@@ -160,6 +157,12 @@
                                                             ${question.status ? 'Show' : 'Hide'}
                                                     </button>
                                                 </form>
+                                            </td>
+                                            <td>
+                                                <a class="btn btn-info text-white" type="button" style="width: 90%;"
+                                                   href="${pageContext.request.contextPath}/management/question/view?id=${question.id}">View</a>
+                                                <a class="btn btn-warning text-white mt-1" type="button" style="width: 90%;"
+                                                   href="${pageContext.request.contextPath}/management/question/edit?id=${question.id}">Edit</a>
                                             </td>
                                         </tr>
                                     </c:forEach>
