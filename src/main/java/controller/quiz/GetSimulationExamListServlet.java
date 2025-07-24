@@ -24,9 +24,9 @@ public class GetSimulationExamListServlet extends HttpServlet {
         String filterParam = request.getParameter("filter");
         String searchParam = request.getParameter("search");
 
+        HttpSession session = request.getSession(false);
         try {
             QuizDAO quizDAO = new QuizDAO();
-            HttpSession session = request.getSession(false);
             if (session == null || session.getAttribute("user") == null) {
                 throw new Exception("User not logged in");
             }
@@ -61,8 +61,8 @@ public class GetSimulationExamListServlet extends HttpServlet {
             request.getRequestDispatcher("/quiz/simulation_exam.jsp").forward(request, response);
 
         } catch (Exception e) {
-            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-        }
+            session.invalidate();
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);        }
 
 
     }

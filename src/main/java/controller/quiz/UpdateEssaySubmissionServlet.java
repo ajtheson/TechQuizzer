@@ -31,6 +31,8 @@ public class UpdateEssaySubmissionServlet extends HttpServlet {
         //get parameter
         List<EssaySubmission> submissions = new ArrayList<>();
         List<EssayAttemptDTO> attemptDTOs = new ArrayList<>();
+        HttpSession session = request.getSession(false);
+
         try{
             boolean isMultipart = request.getContentType() != null && request.getContentType().toLowerCase().startsWith("multipart/"); //check headers type
             int duration = 0;
@@ -93,6 +95,7 @@ public class UpdateEssaySubmissionServlet extends HttpServlet {
                 throw new Exception("Essay attempt not updated");
             }
         } catch (Exception e) {
+            session.invalidate();
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         }
 

@@ -18,7 +18,7 @@ public class QuizHandleServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         //get parameter
         String examAttemptIdParam = request.getParameter("examAttemptId");
-
+        HttpSession session = request.getSession(false);
         try{
             ExamAttemptDAO examAttemptDAO = new ExamAttemptDAO();
             int examAttemptId = Integer.parseInt(examAttemptIdParam);
@@ -54,6 +54,7 @@ public class QuizHandleServlet extends HttpServlet {
 
 
         } catch (Exception e) {
+            session.invalidate();
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         }
 
@@ -63,6 +64,7 @@ public class QuizHandleServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         //get parameter
         String examAttemptIdParam = request.getParameter("examAttemptId");
+        HttpSession session = request.getSession(false);
 
         try{
             int examAttemptId = Integer.parseInt(examAttemptIdParam);
@@ -96,6 +98,7 @@ public class QuizHandleServlet extends HttpServlet {
             }
             response.sendRedirect(previousURL);
         } catch (Exception e) {
+            session.invalidate();
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         }
     }

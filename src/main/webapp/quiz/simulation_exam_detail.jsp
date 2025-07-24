@@ -18,10 +18,10 @@
 <jsp:include page="../layout/header.jsp"/>
 <jsp:include page="../user/user_profile.jsp"/>
 
-<button onclick="window.history.back(); return false;" class="btn btn-outline-secondary"
+<a href="${pageContext.request.contextPath}/simulation/list" class="btn btn-outline-secondary"
         style="position: fixed; left: 50px; top: 100px; z-index: 1000;">
     <i class="bi bi-arrow-left"></i> Back
-</button>
+</a>
 
 <div class="container" style="margin-top: 100px">
 

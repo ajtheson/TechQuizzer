@@ -28,10 +28,10 @@ public class ViewSubmissionListServlet extends HttpServlet {
         String sizeParam = request.getParameter("size");
         String filterParam = request.getParameter("filter");
         String searchParam = request.getParameter("search");
+        HttpSession session = request.getSession(false);
 
         try {
             ExamAttemptDAO examAttemptDAO = new ExamAttemptDAO();
-            HttpSession session = request.getSession(false);
             if (session == null || session.getAttribute("user") == null) {
                 throw new Exception("User not logged in");
             }
@@ -60,6 +60,7 @@ public class ViewSubmissionListServlet extends HttpServlet {
             request.getRequestDispatcher("/quiz/quiz_submission_list.jsp").forward(request, response);
 
         } catch (Exception e) {
+            session.invalidate();
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         }
     }

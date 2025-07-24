@@ -17,7 +17,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
-@WebFilter(filterName = "CustomerAPIFilter", urlPatterns = {"/registration/list", "/registration/cancel", "/registration/modify", "/registration/user_register_subject"})
+@WebFilter(filterName = "CustomerAPIFilter", urlPatterns = {"/registration/list", "/registration/cancel", "/registration/modify", "/registration/user_register_subject", "/simulation/detail", "/simulation/list", "/quiz/handle", "/quiz/update-essay-attempt", "/quiz/update-question-attempt", "/user/detail", "/user/profile/edit", "/practice/create", "/practice/detail", "/practice/list"})
 public class CustomerAPIFilter implements Filter {
 
     private static final boolean debug = true;

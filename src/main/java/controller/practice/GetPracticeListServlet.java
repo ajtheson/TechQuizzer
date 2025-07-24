@@ -30,10 +30,10 @@ public class GetPracticeListServlet extends HttpServlet {
         String pageParam = request.getParameter("page");
         String sizeParam = request.getParameter("size");
         String filterParam = request.getParameter("filter");
+        HttpSession session = request.getSession(false);
 
         try {
             PracticeDAO practiceDAO = new PracticeDAO();
-            HttpSession session = request.getSession(false);
             if (session == null || session.getAttribute("user") == null) {
                 throw new Exception("User not logged in");
             }
@@ -61,6 +61,7 @@ public class GetPracticeListServlet extends HttpServlet {
             request.setAttribute("filter", filter);
             request.getRequestDispatcher("practice_list.jsp").forward(request, response);
         } catch (Exception e) {
+            session.invalidate();
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         }
 

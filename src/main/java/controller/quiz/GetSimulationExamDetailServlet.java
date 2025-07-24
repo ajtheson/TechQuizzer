@@ -61,8 +61,9 @@ public class GetSimulationExamDetailServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String quizIdParam = request.getParameter("quizId");
 
+        HttpSession session = request.getSession(false);
+
         try{
-            HttpSession session = request.getSession(false);
             if (session == null || session.getAttribute("user") == null) {
                 throw new Exception("User not logged in");
             }
@@ -84,6 +85,7 @@ public class GetSimulationExamDetailServlet extends HttpServlet {
             response.sendRedirect(request.getContextPath() + "/quiz/handle?examAttemptId=" + insertedExamAttemptId);
 
         } catch (Exception e) {
+            session.invalidate();
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         }
     }

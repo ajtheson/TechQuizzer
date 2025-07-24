@@ -12,10 +12,9 @@ public class UpdateCorrectQuestionServlet extends HttpServlet {
         //get parameter
         String examAttemptIdParam = request.getParameter("examAttemptId");
         String correctParam = request.getParameter("correct");
+        HttpSession session = request.getSession(false);
 
         try{
-            HttpSession session = request.getSession(false);
-
             int examAttemptId = Integer.parseInt(examAttemptIdParam);
             int numberCorrectQuestion = Integer.parseInt(correctParam);
 
@@ -28,6 +27,7 @@ public class UpdateCorrectQuestionServlet extends HttpServlet {
             String previousURL = request.getHeader("Referer");
             response.sendRedirect(previousURL);
         } catch (Exception e) {
+            session.invalidate();
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         }
     }

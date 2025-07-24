@@ -19,9 +19,9 @@ public class GetPracticeDetailServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         //get parameter
         String idParam = request.getParameter("id");
+        HttpSession session = request.getSession(false);
 
         try{
-            HttpSession session = request.getSession(false);
             PracticeDAO practiceDAO = new PracticeDAO();
 
             if (session == null || session.getAttribute("user") == null) {
@@ -43,6 +43,7 @@ public class GetPracticeDetailServlet extends HttpServlet {
             request.setAttribute("registrationSubjects", subjects);
             request.getRequestDispatcher("practice_detail.jsp").forward(request, response);
         }catch (Exception e){
+            session.invalidate();
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         }
     }
@@ -50,6 +51,8 @@ public class GetPracticeDetailServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String idParam = request.getParameter("practiceId");
+        HttpSession session = request.getSession(false);
+
         try{
             int id = Integer.parseInt(idParam);
             ExamAttempt examAttempt = new ExamAttemptDAO().findByPracticeId(id);
@@ -58,6 +61,7 @@ public class GetPracticeDetailServlet extends HttpServlet {
             }
             response.sendRedirect(request.getContextPath() + "/quiz/review?examAttemptId=" + examAttempt.getId());
         } catch (Exception e) {
+            session.invalidate();
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         }
     }

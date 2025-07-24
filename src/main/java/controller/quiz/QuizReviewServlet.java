@@ -19,9 +19,8 @@ public class QuizReviewServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         //get parameter
         String examAttemptIdParam = request.getParameter("examAttemptId");
-
+        HttpSession session = request.getSession(false);
         try{
-            HttpSession session = request.getSession(false);
             if (session == null || session.getAttribute("user") == null) {
                 throw new Exception("User not logged in");
             }
@@ -29,7 +28,11 @@ public class QuizReviewServlet extends HttpServlet {
 
             ExamAttemptDAO examAttemptDAO = new ExamAttemptDAO();
             int examAttemptId = Integer.parseInt(examAttemptIdParam);
-            if(!examAttemptDAO.isTakenExamAttempt(examAttemptId) || !examAttemptDAO.isBelongToUser(examAttemptId, user.getId())){
+            if(!examAttemptDAO.isTakenExamAttempt(examAttemptId)){
+                throw new Exception("Exam attempt is not available");
+            }
+
+            if(user.getRoleId() == 3 && !examAttemptDAO.isBelongToUser(examAttemptId, user.getId())){
                 throw new Exception("Exam attempt is not available");
             }
             
@@ -58,8 +61,8 @@ public class QuizReviewServlet extends HttpServlet {
             }
 
         }catch (Exception e){
-            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-        }
+            session.invalidate();
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);        }
     }
 
     @Override

@@ -12,7 +12,7 @@ import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
-@WebFilter(filterName = "ManagementAPIFilter", urlPatterns = {"/price_package/list", "/management/question/create", "/management/question/edit", "/management/question/list", "/management/question/toggle_question_status", "/management/question/view"
+@WebFilter(filterName = "ManagementAPIFilter", urlPatterns = {"/price_package/list", "/management/question/create", "/management/question/edit", "/management/question/list", "/management/question/toggle_question_status", "/management/question/view", "/management/quiz/edit-correct-question", "/management/quiz/view-submission"
         , "/management/subject/list", "/management/subject/edit"
         , "/management/dimension/create", "/management/dimension/edit", "/management/dimension/detail", "/management/dimension/toggle-dimension-status", "/management/lesson/create", "/management/lesson/edit", "/management/lesson/detail", "/management/lesson/list", "/management/lesson/list-for-expert", "/management/lesson/toggle-lesson-status-expert", "/management/lesson/toggle-lesson-status-admin", "/management/quiz/create", "/management/quiz/detail", "/management/quiz/list", "/management/quiz/toggle-quiz-status", "/management/quiz/quiz-setting"})
 public class ManagementAPIFilter implements Filter {

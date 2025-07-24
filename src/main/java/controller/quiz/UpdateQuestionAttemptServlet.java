@@ -28,6 +28,8 @@ public class UpdateQuestionAttemptServlet extends HttpServlet {
         //get parameter
         ObjectMapper mapper = new ObjectMapper();
         UpdateQuestionAttemptDTO updateQuestionAttemptDTO = mapper.readValue(request.getInputStream(), UpdateQuestionAttemptDTO.class);
+        HttpSession session = request.getSession(false);
+
         try{
             int duration = updateQuestionAttemptDTO.getDuration();
             int examAttemptId = updateQuestionAttemptDTO.getExamAttemptId();
@@ -64,6 +66,7 @@ public class UpdateQuestionAttemptServlet extends HttpServlet {
 
             }
         }catch (Exception e){
+            session.invalidate();
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         }
     }

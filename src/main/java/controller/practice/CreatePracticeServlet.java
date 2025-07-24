@@ -16,8 +16,8 @@ import java.util.*;
 public class CreatePracticeServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        HttpSession session = request.getSession(false);
         try {
-            HttpSession session = request.getSession(false);
             if (session == null || session.getAttribute("user") == null) {
                 throw new Exception("User not logged in");
             }
@@ -37,6 +37,7 @@ public class CreatePracticeServlet extends HttpServlet {
             request.setAttribute("questionLevels", questionLevels);
             request.getRequestDispatcher("practice_create.jsp").forward(request, response);
         } catch (Exception e) {
+            session.invalidate();
             e.printStackTrace();
         }
     }
@@ -51,9 +52,9 @@ public class CreatePracticeServlet extends HttpServlet {
         String subjectLessonIdParam = request.getParameter("subjectLessonId");
         String examFormatParam = request.getParameter("examFormat");
         String questionLevelIdParam = request.getParameter("questionLevelId");
+        HttpSession session = request.getSession(false);
 
         try {
-            HttpSession session = request.getSession(false);
             if (session == null || session.getAttribute("user") == null) {
                 throw new Exception("User not logged in");
             }
@@ -97,6 +98,7 @@ public class CreatePracticeServlet extends HttpServlet {
             response.sendRedirect(request.getContextPath() + "/quiz/handle?examAttemptId=" + insertedExamAttemptId);
 
         } catch (Exception e) {
+            session.invalidate();
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         }
 
