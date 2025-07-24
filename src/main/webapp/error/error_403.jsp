@@ -47,7 +47,7 @@
         </h1>
         <p>You do not have permission to access this resource.</p>
         <p>
-            <a class="btn btn-primary" href="${pageContext.request.contextPath}/home"
+            <a class="btn btn-primary" href="${pageContext.request.contextPath}/account/user"
             >Go Home Page</a
             >
         </p>

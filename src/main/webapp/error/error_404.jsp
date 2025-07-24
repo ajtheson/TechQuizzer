@@ -47,7 +47,7 @@
         </h1>
         <p>The page you have requested is not found.</p>
         <p>
-            <a class="btn btn-primary" href="${pageContext.request.contextPath}/home"
+            <a class="btn btn-primary" href="${pageContext.request.contextPath}/account/user"
             >Go Home Page</a
             >
         </p>

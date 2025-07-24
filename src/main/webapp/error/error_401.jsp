@@ -47,7 +47,7 @@
         </h1>
         <p>You are not authorized to view this page.</p>
         <p>
-            <a class="btn btn-primary" href="${pageContext.request.contextPath}/home"
+            <a class="btn btn-primary" href="${pageContext.request.contextPath}/account/user"
             >Go Home Page</a
             >
         </p>
