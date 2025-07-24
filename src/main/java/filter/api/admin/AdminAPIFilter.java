@@ -17,7 +17,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
-@WebFilter(filterName="AdminAPIFilter", urlPatterns={"/price_package/create", "/price_package/edit", "/price_package/detail", "/price_package/toggle_status"})
+@WebFilter(filterName="AdminAPIFilter", urlPatterns={"/price_package/create", "/price_package/edit", "/price_package/detail", "/price_package/toggle_status","/user/manage"})
 public class AdminAPIFilter implements Filter {
 
     private static final boolean debug = true;

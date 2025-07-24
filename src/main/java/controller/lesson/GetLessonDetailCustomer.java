@@ -1,10 +1,13 @@
 package controller.lesson;
 
+import dao.ExamAttemptDAO;
 import dao.LessonDAO;
 import dao.QuizDAO;
 import dto.LessonDTO;
 import dto.QuizDTO;
 import dto.UserDTO;
+import entity.ExamAttempt;
+import entity.Lesson;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -15,6 +18,7 @@ import service.ExamAttemptService;
 import service.QuizService;
 
 import java.io.IOException;
+import java.util.List;
 
 @WebServlet(name = "GetLessonDetailCustomer", urlPatterns = {"/lesson/detail"})
 
@@ -46,10 +50,16 @@ public class GetLessonDetailCustomer extends HttpServlet {
             response.sendRedirect(request.getContextPath() + "/account/login");
             return;
         }
+        List<ExamAttempt> examAttempts = new ExamAttemptDAO().findAllByQuizIdAndUserId(lesson.getQuizId(), currentUser.getId());
+        if (examAttempts != null && !examAttempts.isEmpty()) {
+            request.setAttribute("examAttempts", examAttempts);
+        }
+        List<Lesson> otherLesson = dao.selectAllLesson(lesson.getSubject().getId());
         request.setAttribute("subjectId", lesson.getSubject().getId());
         request.setAttribute("lesson", lesson);
+        request.setAttribute("otherLessons", otherLesson);
         request.setAttribute("currentUser", currentUser);
-
+        request.setAttribute("examAttemptCount", examAttempts.size());
         request.getRequestDispatcher("/lesson/lesson-detail-customer.jsp").forward(request, response);
 
     }

@@ -525,7 +525,7 @@ public class QuizDAO extends DBContext {
         }
 
         try (PreparedStatement pstm = connection.prepareStatement(sql.toString())) {
-            int paramIndex = 0;
+            int paramIndex = 1;
             if (ownerId != null) {
                 pstm.setInt(paramIndex++, ownerId);
             }

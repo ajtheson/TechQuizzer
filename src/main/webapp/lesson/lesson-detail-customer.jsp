@@ -23,7 +23,7 @@
             <h1><i class="bi bi-journal-text"></i> Lesson Detail</h1>
         </div>
         <ul class="app-breadcrumb breadcrumb">
-            <li class="breadcrumb-item"><a href="${pageContext.request.contextPath}/customer/lesson-list">My Lessons</a></li>
+            <li class="breadcrumb-item"><a href="${pageContext.request.contextPath}/subject/detail?subject_id=${subjectId}">My Lessons</a></li>
             <li class="breadcrumb-item active">${lesson.name}</li>
         </ul>
     </div>
@@ -71,7 +71,42 @@
                                     </div>
                                 </form>
                             </div>
+                            <c:if test="${not empty examAttempts}">
+                                <div class="mt-4">
+                                    <h5>Your Previous Attempts</h5>
+                                    <table class="table table-bordered">
+                                        <thead class="table-light">
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Start Date</th>
+                                            <th>Duration (min)</th>
+                                            <th>Correct Answers</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <c:forEach var="attempt" items="${examAttempts}" varStatus="loop">
+                                            <tr>
+                                                <td>${examAttemptCount - loop.index}</td>
+                                                <td>${attempt.startDate}</td>
+                                                <td>
+                                                    <c:choose>
+                                                        <c:when test="${attempt.duration >= 60}">
+                                                            ${(attempt.duration / 60).intValue()} min
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                            ${attempt.duration} sec
+                                                        </c:otherwise>
+                                                    </c:choose>
+                                                </td>
+                                                <td>${attempt.numberCorrectQuestions}</td>
+                                            </tr>
+                                        </c:forEach>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </c:if>
                         </c:when>
+
                     </c:choose>
 
                     <!-- Bài học khác cùng môn -->
@@ -84,7 +119,7 @@
                                     <li class="list-group-item d-flex justify-content-between align-items-center">
                                         <span>${other.name}</span>
                                         <a class="btn btn-sm btn-outline-primary"
-                                           href="${pageContext.request.contextPath}/customer/lesson-detail?id=${other.id}&subjectId=${subjectId}">
+                                           href="${pageContext.request.contextPath}/lesson/detail?id=${other.id}">
                                             View
                                         </a>
                                     </li>
