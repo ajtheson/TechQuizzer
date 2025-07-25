@@ -57,7 +57,7 @@ public class LessonTypeDAO extends DBContext {
 
     public List<LessonType> getAllLessonTypes() {
         List<LessonType> list = new ArrayList<>();
-        String sql = "SELECT * FROM lesson_types ";
+        String sql = "SELECT * FROM lesson_types where status = 1";
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
 
             ResultSet rs = ps.executeQuery();

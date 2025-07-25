@@ -67,7 +67,10 @@ public class EditSettingServlet extends HttpServlet {
             error = "Please choose a valid status";
         } else if (status.equalsIgnoreCase("deactivate") && settingDAO.isMandatorySetting(id)) {
             error = "Can not deactivate mandatory setting";
-        }else if (description.isEmpty()) {
+        }else if (status.equalsIgnoreCase("deactivate") && settingDAO.isSettingValueInUse(id)) {
+            error = "Can not deactivate this setting. " + settingDAO.getSettingUsageDetails(id);
+        }
+        else if (description.isEmpty()) {
             error = "Please enter a valid description";
         } else if (orderParam.isEmpty()) {
             error = "Please enter a valid order";

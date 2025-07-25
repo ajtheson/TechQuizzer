@@ -12,7 +12,7 @@ import java.util.List;
 public class CategoryDAO  extends DBContext {
     public List<Category> getAllCategory() {
         List<Category> list = new ArrayList<>();
-        String sql = "select [id], [name] from [subject_categories]";
+        String sql = "select [id], [name] from [subject_categories] where [status] = 1";
         try(PreparedStatement pstm = connection.prepareStatement(sql)){
             ResultSet rs = pstm.executeQuery();
             while(rs.next()){

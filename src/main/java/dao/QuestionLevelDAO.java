@@ -29,7 +29,7 @@ public class QuestionLevelDAO extends DBContext {
 
     public List<QuestionLevel> findAll() {
         List<QuestionLevel> questionLevels = new ArrayList<QuestionLevel>();
-        String sql = "select [id], [name] from [question_levels]";
+        String sql = "select [id], [name] from [question_levels] where [status] = 1";
         try(PreparedStatement pstm = connection.prepareStatement(sql)){
             ResultSet rs = pstm.executeQuery();
             while(rs.next()){

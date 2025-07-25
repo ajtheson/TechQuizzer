@@ -13,7 +13,7 @@ import java.util.List;
 public class TestTypeDAO extends DBContext {
     public List<TestType> getAllTestTypes() {
         List<TestType> list = new ArrayList<>();
-        String sql = "select * from test_types";
+        String sql = "select * from test_types where status = 1";
 
         try (PreparedStatement ps = connection.prepareStatement(sql);) {
             ResultSet rs = ps.executeQuery();

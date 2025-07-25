@@ -23,6 +23,9 @@ public class ToggleSettingStatusServlet extends HttpServlet {
             if(!status && dao.isMandatorySetting(id)){
                 session.setAttribute("toastNotification", "Setting status has been updated failed! Cannot deactivated mandatory setting.");
             }
+            else if(!status && dao.isSettingValueInUse(id)){
+                session.setAttribute("toastNotification", "Setting status has been updated failed! Can not deactivate this setting. " + dao.getSettingUsageDetails(id));
+            }
             else{
                 dao.updateStatus(id, status);
                 session.setAttribute("toastNotification", "Setting has been updated successfully.");

@@ -46,7 +46,7 @@
 
                         <div class="mb-3 row">
                             <div class="col-md-6">
-                                <label class="form-label">Access duration</label>
+                                <label class="form-label">Access duration (Months)</label>
                                 <input class="form-control" type="number" min="1" name="duration" value="${p.duration}" readonly>
                             </div>
                             <div class="col-md-6">
