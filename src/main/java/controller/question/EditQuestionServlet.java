@@ -34,10 +34,6 @@ public class EditQuestionServlet extends HttpServlet {
             LessonDAO lessonDAO = new LessonDAO();
 
             Question question = qDAO.findById(questionId);
-            if (question == null) throw new Exception("Question not found");
-
-
-
 
             int subjectID = qDAO.findSubjectIdByQuestionId(questionId);
 
@@ -56,7 +52,7 @@ public class EditQuestionServlet extends HttpServlet {
             if(user.getRoleId() == 2){
                 if(!subjectDAO.isExpertHasSubject(subjectID, user.getId())){
                     session.invalidate();
-                    response.sendRedirect(request.getContextPath() + "/account/login");
+                    response.sendError(HttpServletResponse.SC_FORBIDDEN);
                     return;
                 }
                 subjects = subjectDAO.getAllSubjectsByOwnerId(user.getId());

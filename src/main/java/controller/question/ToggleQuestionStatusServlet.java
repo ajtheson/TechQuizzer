@@ -31,7 +31,7 @@ public class ToggleQuestionStatusServlet extends HttpServlet {
                 int subjectID = qDao.findSubjectIdByQuestionId(questionId);
                 if(!subjectDAO.isExpertHasSubject(subjectID, user.getId())){
                     session.invalidate();
-                    response.sendRedirect(request.getContextPath() + "/account/login");
+                    response.sendError(HttpServletResponse.SC_FORBIDDEN);
                     return;
                 }
             }

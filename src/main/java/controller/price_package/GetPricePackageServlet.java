@@ -4,7 +4,10 @@ import java.io.IOException;
 import java.util.List;
 
 import dao.PricePackageDAO;
+import dao.SubjectDAO;
+import dto.UserDTO;
 import entity.PricePackage;
+import entity.Subject;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -24,6 +27,18 @@ public class GetPricePackageServlet extends HttpServlet {
         try{
             PricePackageDAO pDAO = new PricePackageDAO();
             int subjectId = Integer.parseInt(request.getParameter("subject_id"));
+            SubjectDAO sDAO = new SubjectDAO();
+            Subject subject = sDAO.getSubjectById(subjectId);
+            HttpSession session = request.getSession();
+            UserDTO user = (UserDTO) session.getAttribute("user");
+            if(user.getRoleId() == 2){
+                if(subject.getOwnerId() != user.getId()){
+                    System.out.println("Subject is not owner of user");
+                    session.invalidate();
+                    response.sendError(HttpServletResponse.SC_FORBIDDEN);
+                    return;
+                }
+            }
             List<PricePackage> list = pDAO.getOfSubject(subjectId);
             request.setAttribute("p", list);
             request.setAttribute("subject_id", subjectId);
