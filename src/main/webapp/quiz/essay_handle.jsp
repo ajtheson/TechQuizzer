@@ -590,9 +590,16 @@
     const renderButton = () => {
         //render prev, next, score exam button
         if (currentIndex === 0) {
-            nextBtn.classList.remove("d-none");
-            prevButton.classList.add("invisible");
-            scoreExamBtn.classList.add("d-none");
+            if(currentIndex === allQuestions.length - 1){
+                scoreExamBtn.classList.remove("d-none");
+                nextBtn.classList.add("d-none");
+                prevButton.classList.add("invisible");
+            }
+            else{
+                nextBtn.classList.remove("d-none");
+                prevButton.classList.add("invisible");
+                scoreExamBtn.classList.add("d-none");
+            }
         } else if (currentIndex > 0 && currentIndex < allEssayAttempts.length) {
             prevButton.classList.remove("invisible");
             if (currentIndex === allEssayAttempts.length - 1) {

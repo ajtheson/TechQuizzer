@@ -131,11 +131,12 @@ public class QuizSettingGroupDAO extends DBContext {
 
     public List<QuizSettingGroup> getByQuizSettingIdAndType(int quizSettingId, String type) {
         List<QuizSettingGroup> groups = new ArrayList<>();
+        type = type.trim();
         String sql;
 
-        if ("lesson".equals(type)) {
+        if ("lesson".equalsIgnoreCase(type)) {
             sql = "SELECT * FROM quiz_setting_groups WHERE quiz_setting_id = ? AND subject_lesson_id IS NOT NULL";
-        } else if ("dimension".equals(type)) {
+        } else if ("dimension".equalsIgnoreCase(type)) {
             sql = "SELECT * FROM quiz_setting_groups WHERE quiz_setting_id = ? AND subject_dimension_id IS NOT NULL";
         } else {
             return groups; // Return empty list for invalid type
