@@ -23,38 +23,46 @@ public class EditSubjectServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        //get id from url
-        int id = Integer.parseInt(request.getParameter("subject_id"));
+        try{
+            //get id from url
+            int id = Integer.parseInt(request.getParameter("subject_id"));
 
-        HttpSession session = request.getSession();
-        String subjectName = (String) session.getAttribute("subjectName");
+            HttpSession session = request.getSession();
+            String subjectName = (String) session.getAttribute("subjectName");
 
-        //Init needed DAO
-        SubjectDAO subjectDAO = new SubjectDAO();
-        CategoryDAO categoryDAO = new CategoryDAO();
-        UserDAO userDAO = new UserDAO();
-        SubjectDescriptionImageDAO subjectDescriptionImageDAO = new SubjectDescriptionImageDAO();
+            //Init needed DAO
+            SubjectDAO subjectDAO = new SubjectDAO();
+            CategoryDAO categoryDAO = new CategoryDAO();
+            UserDAO userDAO = new UserDAO();
+            SubjectDescriptionImageDAO subjectDescriptionImageDAO = new SubjectDescriptionImageDAO();
 
-        List<Category> categories = categoryDAO.getAllCategory();
-        ArrayList<User> experts = userDAO.getAllExpert();
-        SubjectService subjectService = new SubjectService();
-        SubjectDTO subject = subjectService.toSubjectDTO(subjectDAO.getSubjectById(id));
-        if (subjectName != null && !subjectName.isEmpty()) {
-            subject.setName(subjectName);
-            session.removeAttribute("subjectName");
+            List<Category> categories = categoryDAO.getAllCategory();
+            ArrayList<User> experts = userDAO.getAllExpert();
+            SubjectService subjectService = new SubjectService();
+            SubjectDTO subject = subjectService.toSubjectDTO(subjectDAO.getSubjectById(id));
+            if (subjectName != null && !subjectName.isEmpty()) {
+                subject.setName(subjectName);
+                session.removeAttribute("subjectName");
+            }
+            subject.setOwnerName(userDAO.getUserById(subject.getOwnerId()).getName());
+            subject.setLongDescription(subject.getLongDescription().replace("\\n", "\n"));
+            List<SubjectDescriptionImage> subjectDescriptionImages = subjectDescriptionImageDAO.getAllImageBySubjectId(subject.getId());
+
+            //Set attribute to request to pass to setting_edit.jsp
+            request.setAttribute("subject", subject);
+            request.setAttribute("categories", categories);
+            if (!subjectDescriptionImages.isEmpty()) {
+                request.setAttribute("subjectDescriptionImages", subjectDescriptionImages);
+            }
+            request.setAttribute("experts", experts);
+            request.getRequestDispatcher("/subject/manage_subject_detail.jsp").forward(request, response);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            HttpSession session = request.getSession();
+            session.invalidate();
+            response.sendError(HttpServletResponse.SC_NOT_FOUND);
         }
-        subject.setOwnerName(userDAO.getUserById(subject.getOwnerId()).getName());
-        subject.setLongDescription(subject.getLongDescription().replace("\\n", "\n"));
-        List<SubjectDescriptionImage> subjectDescriptionImages = subjectDescriptionImageDAO.getAllImageBySubjectId(subject.getId());
 
-        //Set attribute to request to pass to setting_edit.jsp
-        request.setAttribute("subject", subject);
-        request.setAttribute("categories", categories);
-        if (!subjectDescriptionImages.isEmpty()) {
-            request.setAttribute("subjectDescriptionImages", subjectDescriptionImages);
-        }
-        request.setAttribute("experts", experts);
-        request.getRequestDispatcher("/subject/manage_subject_detail.jsp").forward(request, response);
     }
 
     @Override

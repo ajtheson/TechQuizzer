@@ -16,21 +16,28 @@ public class EditSettingServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        //get id from url
-        int id = Integer.parseInt(request.getParameter("id"));
+        try {
+            //get id from url
+            int id = Integer.parseInt(request.getParameter("id"));
 
-        //Get setting by id from database
-        SettingDAO settingDAO = new SettingDAO();
-        Setting setting = settingDAO.getSettingById(id);
+            //Get setting by id from database
+            SettingDAO settingDAO = new SettingDAO();
+            Setting setting = settingDAO.getSettingById(id);
 
-        //Set attribute to request to pass to setting_edit.jsp
-        request.setAttribute("id", id);
-        request.setAttribute("type", setting.getType());
-        request.setAttribute("value", setting.getValue());
-        request.setAttribute("order", setting.getOrder());
-        request.setAttribute("description", setting.getDescription());
-        request.setAttribute("status", setting.isActivated() ? "activate" : "deactivate");
-        request.getRequestDispatcher("/setting/setting_edit.jsp").forward(request, response);
+            //Set attribute to request to pass to setting_edit.jsp
+            request.setAttribute("id", id);
+            request.setAttribute("type", setting.getType());
+            request.setAttribute("value", setting.getValue());
+            request.setAttribute("order", setting.getOrder());
+            request.setAttribute("description", setting.getDescription());
+            request.setAttribute("status", setting.isActivated() ? "activate" : "deactivate");
+            request.getRequestDispatcher("/setting/setting_edit.jsp").forward(request, response);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            HttpSession session = request.getSession();
+            session.invalidate();
+            response.sendError(HttpServletResponse.SC_NOT_FOUND);
+        }
     }
 
     @Override

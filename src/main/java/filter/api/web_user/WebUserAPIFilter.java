@@ -1,30 +1,25 @@
-package filter.api.customer;
+package filter.api.web_user;
+
+import dto.UserDTO;
+import jakarta.servlet.*;
+import jakarta.servlet.annotation.WebFilter;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
 import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
-import dto.UserDTO;
-import jakarta.servlet.Filter;
-import jakarta.servlet.FilterChain;
-import jakarta.servlet.FilterConfig;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.ServletRequest;
-import jakarta.servlet.ServletResponse;
-import jakarta.servlet.annotation.WebFilter;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
-
-@WebFilter(filterName = "CustomerAPIFilter", urlPatterns = {"/registration/list", "/registration/cancel", "/registration/modify", "/registration/user_register_subject", "/simulation/detail", "/simulation/list", "/quiz/handle", "/quiz/update-essay-attempt", "/quiz/update-question-attempt", "/practice/create", "/practice/detail", "/practice/list"})
-public class CustomerAPIFilter implements Filter {
+@WebFilter(filterName = "WebUserAPIFilter", urlPatterns = {"/user/detail", "/user/profile/edit", "/user/change-password"})
+public class WebUserAPIFilter implements Filter {
 
     private static final boolean debug = true;
 
     private FilterConfig filterConfig = null;
 
-    public CustomerAPIFilter() {
+    public WebUserAPIFilter() {
     }
 
     private void doBeforeProcessing(ServletRequest request, ServletResponse response)
@@ -54,14 +49,6 @@ public class CustomerAPIFilter implements Filter {
         if (session.getAttribute("user") == null) {
             res.sendError(HttpServletResponse.SC_UNAUTHORIZED);
             return;
-        }else{
-            UserDTO user = (UserDTO) session.getAttribute("user");
-            int roleID = user.getRoleId();
-            if (roleID != 3) {
-                session.invalidate();
-                res.sendError(HttpServletResponse.SC_FORBIDDEN);
-                return;
-            }
         }
 
         Throwable problem = null;

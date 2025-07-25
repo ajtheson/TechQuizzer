@@ -28,18 +28,13 @@ public class ViewQuestionServlet extends HttpServlet {
             QuestionDAO qDAO = new QuestionDAO();
             Question question = qDAO.findById(questionId);
 
-            if (question == null) {
-                response.getWriter().write("Question not found.");
-                return;
-            }
-
             UserDTO user = (UserDTO) session.getAttribute("user");
             if(user.getRoleId() == 2) {
                 int subjectId = qDAO.findSubjectIdByQuestionId(questionId);
                 SubjectDAO subjectDAO = new SubjectDAO();
                 if(!subjectDAO.isExpertHasSubject(subjectId, user.getId())){
                     session.invalidate();
-                    response.sendRedirect(request.getContextPath() + "/account/login");
+                    response.sendError(HttpServletResponse.SC_FORBIDDEN);
                     return;
                 }
             }

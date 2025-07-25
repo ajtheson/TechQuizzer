@@ -23,55 +23,63 @@ public class GetSubjectDetailServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        int userID = 0;
-        HttpSession session = request.getSession();
-        if (session.getAttribute("user") != null) {
-            UserDTO user = (UserDTO) session.getAttribute("user");
-            userID = user.getId();
+        try{
+            int userID = 0;
+            HttpSession session = request.getSession();
+            if (session.getAttribute("user") != null) {
+                UserDTO user = (UserDTO) session.getAttribute("user");
+                userID = user.getId();
+            }
+
+            //Init DAO object needed
+            SubjectDAO subjectDAO = new SubjectDAO();
+            PricePackageDAO pricePackageDAO = new PricePackageDAO();
+            RegistrationDAO registrationDAO = new RegistrationDAO();
+            SubjectDescriptionImageDAO subjectDescriptionImageDAO = new SubjectDescriptionImageDAO();
+            LessonDAO lessonDAO = new LessonDAO();
+
+            //Get subjectId from request
+            int subjectId = Integer.parseInt(request.getParameter("subject_id"));
+
+            //Get subject to show detail
+            Subject subject = subjectDAO.getSubjectById(subjectId);
+            SubjectService subjectService = new SubjectService();
+            SubjectDTO subjectDTO = subjectService.toSubjectDTO(subject);
+            subjectDTO.setLongDescription(subject.getLongDescription().replace("\\n", "<br>"));
+
+            //Get active price packages of this subject to show
+            List<PricePackage> pricePackages = pricePackageDAO.getActiveOfSubject(subjectId);
+
+            List<SubjectDescriptionImage> subjectDescriptionImages = subjectDescriptionImageDAO.getAllImageBySubjectId(subjectId);
+
+            //Get min list price and sale price to show
+            double minListPrice = pricePackageDAO.getMinListPrice(subjectId);
+            double minSalePrice = pricePackageDAO.getMinSalePrice(subjectId);
+
+            //Count discount
+            int discount = (int)Math.ceil((minListPrice * 1.0 - minSalePrice)/minListPrice * 100);
+
+            //check if user's registration valid
+            boolean isValidRegistration = registrationDAO.isRegistrationValid(userID, subjectId);
+
+            //Get all lessons of this subject
+            List<Lesson> lessons = lessonDAO.getAllLessonsNameBySubject(subjectId);
+
+            request.setAttribute("subject", subjectDTO);
+            request.setAttribute("pricePackages", pricePackages);
+            request.setAttribute("subjectDescriptionImages", subjectDescriptionImages);
+            request.setAttribute("minListPrice", minListPrice);
+            request.setAttribute("minSalePrice", minSalePrice);
+            request.setAttribute("discount", discount);
+            request.setAttribute("isValidRegistration", isValidRegistration);
+            request.setAttribute("lessons", lessons);
+            request.getRequestDispatcher("subject_detail.jsp").forward(request, response);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            HttpSession session = request.getSession();
+            session.invalidate();
+            response.sendError(HttpServletResponse.SC_NOT_FOUND);
         }
 
-        //Init DAO object needed
-        SubjectDAO subjectDAO = new SubjectDAO();
-        PricePackageDAO pricePackageDAO = new PricePackageDAO();
-        RegistrationDAO registrationDAO = new RegistrationDAO();
-        SubjectDescriptionImageDAO subjectDescriptionImageDAO = new SubjectDescriptionImageDAO();
-        LessonDAO lessonDAO = new LessonDAO();
-
-        //Get subjectId from request
-        int subjectId = Integer.parseInt(request.getParameter("subject_id"));
-
-        //Get subject to show detail
-        Subject subject = subjectDAO.getSubjectById(subjectId);
-        SubjectService subjectService = new SubjectService();
-        SubjectDTO subjectDTO = subjectService.toSubjectDTO(subject);
-        subjectDTO.setLongDescription(subject.getLongDescription().replace("\\n", "<br>"));
-
-        //Get active price packages of this subject to show
-        List<PricePackage> pricePackages = pricePackageDAO.getActiveOfSubject(subjectId);
-
-        List<SubjectDescriptionImage> subjectDescriptionImages = subjectDescriptionImageDAO.getAllImageBySubjectId(subjectId);
-
-        //Get min list price and sale price to show
-        double minListPrice = pricePackageDAO.getMinListPrice(subjectId);
-        double minSalePrice = pricePackageDAO.getMinSalePrice(subjectId);
-
-        //Count discount
-        int discount = (int)Math.ceil((minListPrice * 1.0 - minSalePrice)/minListPrice * 100);
-
-        //check if user's registration valid
-        boolean isValidRegistration = registrationDAO.isRegistrationValid(userID, subjectId);
-
-        //Get all lessons of this subject
-        List<Lesson> lessons = lessonDAO.getAllLessonsNameBySubject(subjectId);
-
-        request.setAttribute("subject", subjectDTO);
-        request.setAttribute("pricePackages", pricePackages);
-        request.setAttribute("subjectDescriptionImages", subjectDescriptionImages);
-        request.setAttribute("minListPrice", minListPrice);
-        request.setAttribute("minSalePrice", minSalePrice);
-        request.setAttribute("discount", discount);
-        request.setAttribute("isValidRegistration", isValidRegistration);
-        request.setAttribute("lessons", lessons);
-        request.getRequestDispatcher("subject_detail.jsp").forward(request, response);
     }
 }

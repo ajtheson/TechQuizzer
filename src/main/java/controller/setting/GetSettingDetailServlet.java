@@ -7,6 +7,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
 
@@ -15,10 +16,17 @@ public class GetSettingDetailServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        int id = Integer.parseInt(request.getParameter("id"));
-        SettingDAO settingDAO = new SettingDAO();
-        Setting setting = settingDAO.getSettingById(id);
-        request.setAttribute("setting", setting);
-        request.getRequestDispatcher("/setting/setting_detail.jsp").forward(request, response);
+        try {
+            int id = Integer.parseInt(request.getParameter("id"));
+            SettingDAO settingDAO = new SettingDAO();
+            Setting setting = settingDAO.getSettingById(id);
+            request.setAttribute("setting", setting);
+            request.getRequestDispatcher("/setting/setting_detail.jsp").forward(request, response);
+        }catch (Exception e) {
+            System.out.println(e.getMessage());
+            HttpSession session = request.getSession();
+            session.invalidate();
+            response.sendError(HttpServletResponse.SC_NOT_FOUND);
+        }
     }
 }
