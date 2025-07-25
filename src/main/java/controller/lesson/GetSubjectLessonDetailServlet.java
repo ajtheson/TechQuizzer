@@ -1,8 +1,11 @@
 package controller.lesson;
 
 import dao.LessonDAO;
+import dao.QuizDAO;
 import dto.LessonDTO;
+import dto.QuizDTO;
 import dto.UserDTO;
+import entity.Quiz;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -41,6 +44,14 @@ public class GetSubjectLessonDetailServlet extends HttpServlet {
             response.sendRedirect(request.getContextPath() + "/account/login");
             return;
         }
+            QuizDAO quizDAO = new QuizDAO();
+            QuizDTO quiz = quizDAO.findByQuizId(lesson.getQuizId());
+            if(quiz !=null){
+                request.setAttribute("quiz", quiz);
+        }
+        System.out.println("lesson.getQuizId() = " + lesson.getQuizId());
+
+
         request.setAttribute("lesson", lesson);
         request.setAttribute("currentUser", currentUser);
         request.getRequestDispatcher("/lesson/subject_lesson_detail.jsp").forward(request, response);

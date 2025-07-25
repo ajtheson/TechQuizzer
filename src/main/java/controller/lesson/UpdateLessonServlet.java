@@ -1,15 +1,10 @@
 package controller.lesson;
 
-import dao.LessonDAO;
-import dao.LessonTypeDAO;
-import dao.SubjectDAO;
-import dao.UserDAO;
+import dao.*;
 import dto.LessonDTO;
+import dto.QuizDTO;
 import dto.UserDTO;
-import entity.Lesson;
-import entity.LessonType;
-import entity.Subject;
-import entity.User;
+import entity.*;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
@@ -39,12 +34,25 @@ public class UpdateLessonServlet extends HttpServlet {
         SubjectDAO subjectDAO = new SubjectDAO();
         LessonTypeDAO lessonTypeDAO = new LessonTypeDAO();
         List<LessonType> lessonTypeList = lessonTypeDAO.getAllLessonTypes();
-        List<Subject> subjectList = subjectDAO.getAllSubjectsWithoutID();
         ArrayList<User> experts = userDAO.getAllExpert();
+        QuizDAO quizDAO = new QuizDAO();
+        if (currentUser.getRoleId() == 2) {
+            List<QuizDTO> quizList = quizDAO.getQuizByCondition(currentUser.getId());
+            List<Subject> subjectList = subjectDAO.getAllSubjects(currentUser.getId());
+            request.setAttribute("quizList", quizList);
+            request.setAttribute("subjectList", subjectList);
+        }
+        if (currentUser.getRoleId() == 1) {
+            List<QuizDTO> quizList = quizDAO.getQuizByCondition(null);
+            List<Subject> subjectList = subjectDAO.getAllSubjectsWithoutID();
+            request.setAttribute("quizList", quizList);
+            request.setAttribute("subjectList", subjectList);
+        }
+        QuizDTO quiz = quizDAO.findByQuizId(lesson.getQuizId());
+        request.setAttribute("quiz", quiz);
         request.setAttribute("lesson", lesson);
         request.setAttribute("experts", experts);
         request.setAttribute("currentUser", currentUser);
-        request.setAttribute("subjectList", subjectList);
         request.setAttribute("lessonTypeList", lessonTypeList);
         request.getRequestDispatcher("/lesson/subject_lesson_edit.jsp").forward(request, response);
     }
@@ -59,10 +67,13 @@ public class UpdateLessonServlet extends HttpServlet {
         int order = Integer.parseInt(request.getParameter("order"));
         String content = request.getParameter("content");
         int status = Integer.parseInt(request.getParameter("status"));
-        int subjectId = Integer.parseInt(request.getParameter("subjectId"));
+        String subjectIdParam = request.getParameter("subjectId");
+        String quizIdParam = request.getParameter("quizId");
         int lessonTypeId = Integer.parseInt(request.getParameter("lessonTypeId"));
         String videoType = request.getParameter("videoType");
         String videoLink = null;
+        if (subjectIdParam != null) {
+            int subjectId = Integer.parseInt(subjectIdParam);
 
         if ("youtube".equals(videoType)) {
             videoLink = request.getParameter("videoLink").trim();
@@ -95,12 +106,31 @@ public class UpdateLessonServlet extends HttpServlet {
         }
         SubjectDAO subjectDAO = new SubjectDAO();
         subjectDAO.updateOwner(subjectId, ownerId);
-        boolean update =dao.updateLesson(id, name, topic, videoLink, order, content, status, subjectId, lessonTypeId);
-        if(update){
-            session.setAttribute("toastNotification", "Lesson has been updated successfully.");
+            boolean update = dao.updateLesson(id, name, topic, videoLink, order, content, status, Integer.parseInt(subjectIdParam), lessonTypeId, null);
 
-        }else {
-            session.setAttribute("toastNotification", "Failed to create lesson.");
+
+            if (update) {
+                session.setAttribute("toastNotification", "Lesson has been updated successfully.");
+
+            } else {
+                session.setAttribute("toastNotification", "Failed to create lesson.");
+            }
+        }
+        else {
+            LessonDAO dao = new LessonDAO();
+
+            QuizDAO quizDAO = new QuizDAO();
+            LessonDTO lesson = dao.getLessonDTOById(id);
+            QuizDTO quiz = quizDAO.findByQuizId(lesson.getQuizId());
+            boolean update = dao.updateLesson(id, name, topic, null, order, content, status, quiz.getSubject().getId(), lessonTypeId, Integer.parseInt(quizIdParam));
+
+
+            if (update) {
+                session.setAttribute("toastNotification", "Lesson has been updated successfully.");
+
+            } else {
+                session.setAttribute("toastNotification", "Failed to create lesson.");
+            }
         }
         response.sendRedirect("list");
     }

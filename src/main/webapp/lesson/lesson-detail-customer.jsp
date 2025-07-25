@@ -36,7 +36,7 @@
                     <p><strong>Name:</strong> ${lesson.name}</p>
                     <p><strong>Topic:</strong> ${lesson.topic}</p>
                     <p><strong>Lesson Type:</strong> ${lesson.lessonType.name}</p>
-
+                    <p><strong>Content:</strong> ${lesson.content}</p></p>
                     <!-- Nội dung bài học (Video hoặc Quiz link) -->
                     <c:choose>
                         <c:when test="${fn:toLowerCase(lesson.lessonType.name) == 'lesson'}">

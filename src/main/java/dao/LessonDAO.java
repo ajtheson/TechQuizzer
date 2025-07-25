@@ -411,8 +411,8 @@ public class LessonDAO extends DBContext {
         }
         return false;
     }
-    public boolean updateLesson(int id, String name, String topic, String videoLink, int order, String content, int status, int subjectId, int lessonTypeId) {
-        String sql = "UPDATE [lessons] SET name = ?, topic = ?, [order] = ?, video_link = ?, content = ?, status = ?, subject_id = ?, lesson_type_id = ? WHERE id = ?";
+    public boolean updateLesson(int id, String name, String topic, String videoLink, int order, String content, int status, int subjectId, int lessonTypeId,Integer quizId) {
+        String sql = "UPDATE [lessons] SET name = ?, topic = ?, [order] = ?, video_link = ?, content = ?, status = ?, subject_id = ?, lesson_type_id = ?, lesson_quiz_id=? WHERE id = ?";
         try (PreparedStatement pstm = connection.prepareStatement(sql)) {
             pstm.setString(1, name);
             pstm.setString(2, topic);
@@ -422,7 +422,8 @@ public class LessonDAO extends DBContext {
             pstm.setInt(6, status);
             pstm.setInt(7, subjectId);
             pstm.setInt(8, lessonTypeId);
-            pstm.setInt(9, id);
+            pstm.setInt(9, quizId);
+            pstm.setInt(10, id);
             return pstm.executeUpdate() > 0;
         } catch (Exception e) {
             System.err.println("Error updating lesson: " + e.getMessage());
