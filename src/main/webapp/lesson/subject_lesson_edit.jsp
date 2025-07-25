@@ -161,17 +161,18 @@
                                 <input type="hidden" name="ownerId" value="${currentUser.id}" />
                             </c:if>
                         </div>
-
-
                         <div class="mb-3">
                             <label>Lesson Type</label>
-                            <select class="form-select" name="lessonTypeId" readonly="true">
+                            <select class="form-select" name="lessonTypeId_display" disabled>
                                 <c:forEach var="lessonType" items="${lessonTypeList}">
-                                    <option value="${lessonType.id}" ${lesson.lessonType.id == lessonType.id ? 'selected' : ''}>${lessonType.name}</option>
+                                    <option value="${lessonType.id}" ${lesson.lessonType.id == lessonType.id ? 'selected' : ''}>
+                                            ${lessonType.name}
+                                    </option>
                                 </c:forEach>
                             </select>
+                            <!-- Hidden input để submit giá trị thực -->
+                            <input type="hidden" name="lessonTypeId" value="${lesson.lessonType.id}" />
                         </div>
-
                         <div class="mt-3">
                             <c:if test="${currentUser != null && currentUser.roleId == 1}">
                                 <a href="list" class="btn btn-secondary">Cancel</a>

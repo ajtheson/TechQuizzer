@@ -68,7 +68,7 @@ public class CreateSubjectLessonServlet extends HttpServlet {
 
         int lessonTypeId = Integer.parseInt(request.getParameter("lessonTypeId"));
         String quizParam = request.getParameter("quizId");
-        if (quizParam == null) {
+        if (quizParam == null || quizParam.trim().isEmpty()) {
             int subjectId = Integer.parseInt(request.getParameter("subjectId"));
             String videoType = request.getParameter("videoType");
             String videoLink = null;
@@ -114,9 +114,21 @@ public class CreateSubjectLessonServlet extends HttpServlet {
             }
 
         } else {
-            int quizId = Integer.parseInt(quizParam);
+            int quizId;
+            try {
+                quizId = Integer.parseInt(quizParam);
+            } catch (NumberFormatException e) {
+                session.setAttribute("toastNotification", "Please choose a quiz");
+                response.sendRedirect("create");
+                return;
+            }
             QuizDAO quizDAO = new QuizDAO();
             Quiz quiz = quizDAO.findById(quizId);
+            if (quiz == null) {
+                session.setAttribute("toastNotification", "Quiz not found.");
+                response.sendRedirect("create");
+                return;
+            }
             int subjectId = quiz.getSubjectId();
             LessonDAO dao = new LessonDAO();
             List<Lesson> lessonList = dao.selectAllLesson(subjectId);

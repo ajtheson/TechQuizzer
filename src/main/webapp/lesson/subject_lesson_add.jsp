@@ -81,8 +81,8 @@
                         <!-- Quiz Section - Show when Quiz is selected -->
                         <div class="mb-3" id="quizSection" style="display: none;">
                             <label>Select Quiz</label>
-                            <select class="form-select" name="quizId">
-                                <option value="">Choose a quiz...</option>
+                            <select class="form-select" name="quizId" required>
+                                <option value="all">Choose a quiz...</option>
                                 <c:forEach var="quiz" items="${quizList}">
                                     <option value="${quiz.id}">${quiz.name}</option>
                                 </c:forEach>
@@ -249,5 +249,6 @@
         toggleLessonTypeSection();
     });
 </script>
+
 </body>
 </html>
