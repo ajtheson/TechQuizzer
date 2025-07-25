@@ -28,7 +28,7 @@
         </h1>
         <div class="btn-group ms-3">
             <a href="${pageContext.request.contextPath}/management/subject/edit?subject_id=${requestScope.subject_id}"  class="btn btn-outline-primary">Overview</a>
-            <a href="${pageContext.request.contextPath}/management/dimension/list?id=${requestScope.subject.id}" class="btn btn-outline-primary">Dimension</a>
+            <a href="${pageContext.request.contextPath}/management/dimension/list?id=${requestScope.subject_id}" class="btn btn-outline-primary">Dimension</a>
             <a href="${pageContext.request.contextPath}/price_package/list?subject_id=${requestScope.subject_id}" class="btn btn-outline-primary active fw-bold">Price
                 Package</a>
         </div>

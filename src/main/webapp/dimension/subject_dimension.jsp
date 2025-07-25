@@ -93,8 +93,8 @@
                                 </td>
                                 <td>
                                     <div class="d-flex justify-content-center gap-2">
-                                        <a style="color: white" href="detail?id=${dim.id}" class="btn btn-info btn-sm">View</a>
-                                        <a style="color: white" href="edit?id=${dim.id}" class="btn btn-warning btn-sm">Edit</a>
+                                        <a style="color: white" href="detail?id=${dim.id}" class="btn btn-info">View</a>
+                                        <a style="color: white" href="edit?id=${dim.id}" class="btn btn-warning">Edit</a>
                                     </div>
                                 </td>
                             </tr>

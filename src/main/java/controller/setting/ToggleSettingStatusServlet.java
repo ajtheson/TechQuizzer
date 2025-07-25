@@ -29,9 +29,9 @@ public class ToggleSettingStatusServlet extends HttpServlet {
             }
             response.sendRedirect(request.getContextPath() + "/admin/setting/list");
         } catch (Exception e) {
-            System.out.println("Error: " + e.getMessage());
-            session.setAttribute("toastNotification", "Setting status has been updated failed!\n" + e.getMessage());
-            response.sendRedirect(request.getContextPath() + "/admin/setting/list");
+            System.out.println(e.getMessage());
+            session.invalidate();
+            response.sendError(HttpServletResponse.SC_NOT_FOUND);
         }
     }
 }

@@ -25,7 +25,7 @@
         </h1>
         <div class="btn-group ms-3">
             <a href="${pageContext.request.contextPath}/management/subject/edit?subject_id=${requestScope.subject_id}"  class="btn btn-outline-primary">Overview</a>
-            <a href="${pageContext.request.contextPath}/management/dimension/list?id=${requestScope.subject.id}" class="btn btn-outline-primary">Dimension</a>
+            <a href="${pageContext.request.contextPath}/management/dimension/list?id=${requestScope.subject_id}" class="btn btn-outline-primary">Dimension</a>
             <a href="${pageContext.request.contextPath}/price_package/list?subject_id=${requestScope.subject_id}" class="btn btn-outline-primary active fw-bold">Price
                 Package</a>
         </div>
@@ -107,7 +107,7 @@
                                                 <input type="hidden" name="id" value="${p.id}"/>
                                                 <input type="hidden" name="status" value="${!p.status}"/>
                                                 <button type="submit"
-                                                        class="btn btn-sm ${p.status ? 'btn-secondary' : 'btn-success'}"
+                                                        class="btn ${p.status ? 'btn-secondary' : 'btn-success'}"
                                                         style="padding: 6px 5px;">
                                                         ${p.status ? 'Deactivated' : 'Activated'}
                                                 </button>
