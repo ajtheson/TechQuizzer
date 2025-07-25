@@ -403,7 +403,7 @@
         if ((e.target.classList.contains('group-dimension') || e.target.classList.contains('group-lesson'))
             && !subjectSelect.value) {
             e.preventDefault();
-            alert("Vui lòng chọn Subject trước khi chọn Dimensi on/Lesson");
+            alert("Please choose one of Dimension/Lesson before submit");
             e.target.blur();
         }
     });
