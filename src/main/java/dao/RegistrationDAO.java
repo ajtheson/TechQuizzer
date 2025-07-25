@@ -372,7 +372,7 @@ public class RegistrationDAO extends DBContext {
             Timestamp currentTime = Timestamp.valueOf(LocalDateTime.now());
             while (rs.next()) {
                 Timestamp validToTime = rs.getTimestamp("valid_to");
-                if(validToTime != null && validToTime.after(currentTime)){
+                if(validToTime == null || validToTime.after(currentTime)){
                     return true;
                 }
             }
