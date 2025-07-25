@@ -4,10 +4,7 @@ import dao.*;
 import dto.LessonDTO;
 import dto.QuizDTO;
 import dto.UserDTO;
-import entity.Lesson;
-import entity.LessonType;
-import entity.Subject;
-import entity.User;
+import entity.*;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
@@ -120,9 +117,11 @@ public class UpdateLessonServlet extends HttpServlet {
             }
         }
         else {
-            QuizDAO quizDAO = new QuizDAO();
-            QuizDTO quiz = quizDAO.findByQuizId(id);
             LessonDAO dao = new LessonDAO();
+
+            QuizDAO quizDAO = new QuizDAO();
+            LessonDTO lesson = dao.getLessonDTOById(id);
+            QuizDTO quiz = quizDAO.findByQuizId(lesson.getQuizId());
             boolean update = dao.updateLesson(id, name, topic, null, order, content, status, quiz.getSubject().getId(), lessonTypeId, Integer.parseInt(quizIdParam));
 
 

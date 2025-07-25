@@ -80,7 +80,12 @@
                                 <td>${lesson.name}</td>
                                 <td>${lesson.order}</td>
                                 <td>${lesson.topic}</td>
-                                <td><a href="${lesson.videoLink}" target="_blank">Video</a></td>
+                                <c:if test="${lesson.lessonType.name eq 'Lesson'}">
+                                    <td><a href="${lesson.videoLink}" target="_blank">Video</a></td>
+                                </c:if>
+                                <c:if test="${lesson.lessonType.name eq 'Quiz'}">
+                                    <td>No Video For Lesson Quiz</td>
+                                </c:if>
                                 <td>${lesson.subject.name}</td>
                                 <td>${lesson.lessonType.name}</td>
                                 <td>
