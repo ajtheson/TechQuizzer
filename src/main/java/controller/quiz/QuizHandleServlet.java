@@ -44,6 +44,9 @@ public class QuizHandleServlet extends HttpServlet {
             //handle multiple and essay question
             if(format.equalsIgnoreCase("multiple")){
                 List<QuestionAttemptDTO> questionAttemptDTOs = new QuestionAttemptDAO().findAllByExamAttemptId(examAttemptId);
+                boolean isPractice = examAttempt.getType().equalsIgnoreCase("practice");
+
+                request.setAttribute("isPractice", isPractice);
                 request.setAttribute("questionAttempts", questionAttemptDTOs);
                 request.getRequestDispatcher("multiple_handle.jsp").forward(request, response);
             }else{

@@ -1,6 +1,7 @@
 package controller.quiz;
 import dao.*;
 import dto.ExamAttemptDTO;
+import dto.UserDTO;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
@@ -32,11 +33,18 @@ public class ViewSubmissionListServlet extends HttpServlet {
 
         try {
             ExamAttemptDAO examAttemptDAO = new ExamAttemptDAO();
+            QuizDAO quizDAO = new QuizDAO();
             if (session == null || session.getAttribute("user") == null) {
                 throw new Exception("User not logged in");
             }
+            UserDTO user = (UserDTO) session.getAttribute("user");
 
             int quizId = Integer.parseInt(quizIdParam);
+
+            if(user.getRoleId() == 2 && !quizDAO.isBelongToExpert(quizId, user.getId()) ){
+                throw new Exception("Quiz is not available");
+            }
+
             int page = pageParam == null ? 1 : Integer.parseInt(pageParam);
             int size = sizeParam == null ? 10 : Integer.parseInt(sizeParam);
             LocalDate filter = filterParam == null ? null : LocalDate.parse(filterParam);

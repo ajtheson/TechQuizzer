@@ -577,5 +577,47 @@ public class QuizDAO extends DBContext {
         return quizzes;
     }
 
+    public boolean isBelongToUser(int quizId, int userId){
+        String sql = """
+                with cte as (
+                	select s.id from registrations r
+                	join price_packages p on r.price_package_id = p.id
+                	join subjects s on p.subject_id = s.id
+                	where r.user_id = ? and r.status = 'Paid'
+                )
+                select 1 from quizzes
+                where subject_id in (select * from cte) and test_type_id = 1 and id = ?
+        """;
+        try (PreparedStatement pstm = connection.prepareStatement(sql)) {
+            pstm.setInt(1, userId);
+            pstm.setInt(2, quizId);
+            ResultSet rs = pstm.executeQuery();
+            if (rs.next()) {
+                return true;
+            }
+        } catch (SQLException e) {
+            System.err.println("Error: " + e.getMessage());
+        }
+        return false;
+    }
+
+    public boolean isBelongToExpert(int quizId, int userId){
+        String sql = "select 1 from subjects s\n" +
+                "join quizzes q on s.id = q.subject_id\n" +
+                "where s.owner_id = ? and s.status = 1 and q.id = ? and q.status = 1";
+        try (PreparedStatement pstm = connection.prepareStatement(sql)) {
+            pstm.setInt(1, userId);
+            pstm.setInt(2, quizId);
+            ResultSet rs = pstm.executeQuery();
+            if(rs.next()){
+                return true;
+            }
+        } catch (SQLException e) {
+            System.err.println("Error: " + e.getMessage());
+            return false;
+        }
+        return false;
+    }
+
 
 }

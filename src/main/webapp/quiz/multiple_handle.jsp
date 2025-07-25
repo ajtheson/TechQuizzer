@@ -215,7 +215,7 @@
         <%--right bottom corner button--%>
         <div class="d-flex justify-content-end gap-3 mt-auto">
             <button id="peekBtn" data-bs-toggle="modal" data-bs-target="#popupPeekAtAnswer"
-                    class="btn ${requestScope.questionAttempts[0].examAttempt.type.equalsIgnoreCase("Practice") ? '' : 'invisible'}"
+                    class="btn ${requestScope.isPractice ? '' : 'd-none'}"
                     style="border: grey solid 2px; color: grey">
                 Peek at answer
             </button>
@@ -372,7 +372,7 @@
     const seSubmitBtn = document.getElementById("seSubmitBtn"); //score exam submit button
     const popupPeekAtAnswer = document.getElementById("popupPeekAtAnswer");
     let countSecond = ${requestScope.questionAttempts[0].examAttempt.duration};
-    let isPractice = ${requestScope.questionAttempts[0].examAttempt.type.equalsIgnoreCase("Practice") ? true : false };
+    let isPractice = ${requestScope.isPractice ? true : false };
 
     //init question array
     <c:forEach var="qa" items="${requestScope.questionAttempts}">

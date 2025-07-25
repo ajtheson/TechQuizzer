@@ -29,17 +29,21 @@ public class GetSimulationExamDetailServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         //get parameter
         String idParam = request.getParameter("id");
+        HttpSession session = request.getSession(false);
 
         try {
-            HttpSession session = request.getSession(false);
+            QuizDAO quizDAO = new QuizDAO();
             if (session == null || session.getAttribute("user") == null) {
                 response.sendRedirect(request.getContextPath() + "/account/login");
             }
 
             UserDTO user = (UserDTO) session.getAttribute("user");
-
             int quizId = Integer.parseInt(idParam);
-            Quiz quiz = new QuizDAO().findById(quizId);
+            if(!quizDAO.isBelongToUser(quizId, user.getId()) ){
+                throw new ServletException("Quiz is not available");
+            }
+
+            Quiz quiz = quizDAO.findById(quizId);
             if (quiz != null) {
                 QuizDTO quizDTO = new QuizService().convertQuizToQuizDTO(quiz);
                 List<ExamAttemptDTO> examAttemptDTOs= new ExamAttemptDAO().findTop10ByQuizIdAndUserIdOrderByDateDescAndIdDesc(quizId, user.getId());
@@ -52,6 +56,7 @@ public class GetSimulationExamDetailServlet extends HttpServlet {
                 throw new ServletException("Quiz not found");
             }
         } catch (Exception e) {
+            session.invalidate();
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         }
 
