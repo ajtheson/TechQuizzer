@@ -51,7 +51,7 @@
                     ${requestScope.sendError}
             </div>
         </c:if>
-        <p><a href="../account/login.jsp">Not ${requestScope.userName} ? Login Here.</a></p>
+        <p><a href="${pageContext.request.contextPath}/account/login">Not ${requestScope.userName} ? Login Here.</a></p>
     </div>
 </section>
 <%@include file="../layout/footer.jsp" %>
