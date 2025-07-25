@@ -60,7 +60,9 @@
                                     <div class="col-md-4 mb-3">
                                         <img src="${pageContext.request.contextPath}/assets/images/subject_description/${image.url}"
                                              alt="Subject Image"
-                                             class="subject-image">
+                                             class="subject-image"
+                                             onclick="openImageModal('${pageContext.request.contextPath}/assets/images/subject_description/${image.url}')"
+                                        >
                                     </div>
                                 </c:forEach>
                             </div>
@@ -179,7 +181,42 @@
     </div>
 </main>
 
+<!-- Modal hiển thị ảnh phóng to -->
+<div id="imageModal" class="image-modal" onclick="closeImageModal()">
+    <div class="modal-content">
+        <span class="close-btn" onclick="closeImageModal()">&times;</span>
+        <img id="modalImage" class="modal-image" src="" alt="Enlarged Image">
+    </div>
+</div>
+
 <jsp:include page="../layout/footer.jsp"/>
+
+<script>
+    // Hàm mở modal với ảnh được chọn
+    function openImageModal(imageSrc) {
+        document.getElementById('imageModal').style.display = 'flex';
+        document.getElementById('modalImage').src = imageSrc;
+        document.body.style.overflow = 'hidden'; // Ngăn scroll khi modal mở
+    }
+
+    // Hàm đóng modal
+    function closeImageModal() {
+        document.getElementById('imageModal').style.display = 'none';
+        document.body.style.overflow = 'auto'; // Cho phép scroll lại
+    }
+
+    // Đóng modal khi nhấn phím ESC
+    document.addEventListener('keydown', function(event) {
+        if (event.key === 'Escape') {
+            closeImageModal();
+        }
+    });
+
+    // Ngăn modal đóng khi click vào ảnh
+    document.getElementById('modalImage').addEventListener('click', function(event) {
+        event.stopPropagation();
+    });
+</script>
 </body>
 <style>
     .subject-thumbnail {
@@ -259,6 +296,83 @@
 
     .subject-image:hover {
         transform: scale(1.05);
+    }
+
+    /* CSS cho modal phóng to ảnh */
+    .image-modal {
+        display: none;
+        position: fixed;
+        z-index: 9999;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.9);
+        justify-content: center;
+        align-items: center;
+        animation: fadeIn 0.3s ease;
+    }
+
+    .modal-content {
+        position: relative;
+        max-width: 90%;
+        max-height: 90%;
+        text-align: center;
+    }
+
+    .modal-image {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
+        border-radius: 8px;
+        box-shadow: 0 4px 20px rgba(255, 255, 255, 0.1);
+        animation: zoomIn 0.3s ease;
+    }
+
+    .close-btn {
+        position: absolute;
+        top: -40px;
+        right: 0;
+        color: white;
+        font-size: 40px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: color 0.3s ease;
+        z-index: 10000;
+    }
+
+    .close-btn:hover {
+        color: #ccc;
+        transform: scale(1.1);
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+
+    @keyframes zoomIn {
+        from {
+            transform: scale(0.7);
+            opacity: 0;
+        }
+        to {
+            transform: scale(1);
+            opacity: 1;
+        }
+    }
+
+    /* Responsive cho modal */
+    @media (max-width: 768px) {
+        .modal-content {
+            max-width: 95%;
+            max-height: 95%;
+        }
+
+        .close-btn {
+            top: -30px;
+            font-size: 30px;
+        }
     }
 </style>
 </html>
