@@ -51,7 +51,7 @@ public class CreateQuizServlet extends HttpServlet {
                 request.setAttribute("subjects", subjects);
                 for (Subject subject : subjects) {
                     dimensions.addAll(dimensionDAO.selectAllDimension(subject.getId()));
-                    lessons.addAll(lessonDAO.selectAllLesson(subject.getId()));
+                    lessons.addAll(lessonDAO.selectAllLessonQuizIsNull(subject.getId()));
                 }
             }
 

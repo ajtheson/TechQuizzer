@@ -156,6 +156,36 @@ public class LessonDAO extends DBContext {
         }
         return lessons;
     }
+    public List<Lesson> selectAllLessonQuizIsNull(int subjectID) {
+        List<Lesson> lessons = new ArrayList<Lesson>();
+        String sql = "select * from [lessons] join [subjects] on [lessons].[subject_id]=subjects.id where subjects.id =? AND lessons.lesson_quiz_id IS NULL";
+
+        try (
+                PreparedStatement ps = connection.prepareStatement(sql);
+        ) {
+            ps.setInt(1, subjectID);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Lesson l = new Lesson(
+                        rs.getInt("id"),
+                        rs.getString("name"),
+                        rs.getString("topic"),
+                        rs.getInt("order"),
+                        rs.getString("video_link"),
+                        rs.getString("content"),
+                        rs.getBoolean("status"),
+                        rs.getInt("subject_id"),
+                        rs.getObject("lesson_type_id") == null
+                                ? null
+                                : rs.getInt("lesson_type_id")
+                );
+                lessons.add(l);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return lessons;
+    }
     public List<LessonDTO> getLessonsByPage(String subjectName, String lessonTypeName, String searchText,
                                             int page, int pageSize, String sortField, String sortOrder) {
         List<LessonDTO> lessons = new ArrayList<>();

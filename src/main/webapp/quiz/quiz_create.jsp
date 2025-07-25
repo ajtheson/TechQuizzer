@@ -1,4 +1,3 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--
   Created by IntelliJ IDEA.
   User: anhnn
@@ -403,7 +402,7 @@
         if ((e.target.classList.contains('group-dimension') || e.target.classList.contains('group-lesson'))
             && !subjectSelect.value) {
             e.preventDefault();
-            alert("Please choose one of Dimension/Lesson before submit");
+            alert("Please choose Subject before choosing Dimension/Lesson");
             e.target.blur();
         }
     });
