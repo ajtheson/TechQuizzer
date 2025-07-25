@@ -85,7 +85,7 @@ public class ExamAttemptService {
             }
 
             List<Integer> questionIds = questions.stream().map(q -> q.getId()).toList();
-            if (format.equalsIgnoreCase("multiple")) {
+            if (format.trim().equalsIgnoreCase("multiple")) {
                 if (!new QuestionAttemptDAO().insertAllByExamAttemptIdAndQuestionIds(insertedExamAttemptId, questionIds)) {
                     throw new Exception("Question attempt not created");
                 }

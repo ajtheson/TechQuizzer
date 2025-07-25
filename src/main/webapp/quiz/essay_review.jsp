@@ -480,7 +480,7 @@
     const renderButton = () => {
         //render prev, next
         if (currentIndex === 0) {
-            if(currentIndex === allQuestions.length - 1){
+            if(currentIndex === allEssayAttempts.length - 1){
                 nextBtn.classList.add("invisible");
                 prevButton.classList.add("invisible");
             }

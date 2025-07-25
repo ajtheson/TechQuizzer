@@ -372,7 +372,7 @@
     const seSubmitBtn = document.getElementById("seSubmitBtn"); //score exam submit button
     const popupPeekAtAnswer = document.getElementById("popupPeekAtAnswer");
     let countSecond = ${requestScope.questionAttempts[0].examAttempt.duration};
-    let isPractice = ${requestScope.isPractice ? true : false };
+    const isPractice = ${requestScope.isPractice ? true : false };
 
     //init question array
     <c:forEach var="qa" items="${requestScope.questionAttempts}">

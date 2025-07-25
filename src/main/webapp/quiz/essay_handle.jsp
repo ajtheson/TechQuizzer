@@ -557,7 +557,7 @@
     const MAX_FILE_SIZE = 20 * 1024 * 1024;
     const toastElement = document.getElementById('toast');
     const toastElementBody = toastElement.querySelector('.toast-body');
-    let isPractice = ${requestScope.questionAttempts[0].examAttempt.type.equalsIgnoreCase("Practice") ? true : false };
+    const isPractice = ${requestScope.isPractice ? true : false };
 
 
     //init question array
@@ -590,7 +590,7 @@
     const renderButton = () => {
         //render prev, next, score exam button
         if (currentIndex === 0) {
-            if(currentIndex === allQuestions.length - 1){
+            if(currentIndex === allEssayAttempts.length - 1){
                 scoreExamBtn.classList.remove("d-none");
                 nextBtn.classList.add("d-none");
                 prevButton.classList.add("invisible");

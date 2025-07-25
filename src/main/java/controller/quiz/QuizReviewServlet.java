@@ -50,7 +50,7 @@ public class QuizReviewServlet extends HttpServlet {
                 format = practice.getFormat();
             }
             //handle multiple or essay question
-            if(format.equalsIgnoreCase("multiple")){
+            if(format.trim().equalsIgnoreCase("multiple")){
                 List<QuestionAttemptDTO> questionAttemptDTOs = new QuestionAttemptDAO().findAllByExamAttemptId(examAttemptId);
                 request.setAttribute("questionAttempts", questionAttemptDTOs);
                 request.getRequestDispatcher("multiple_review.jsp").forward(request, response);
