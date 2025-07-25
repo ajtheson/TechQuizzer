@@ -228,7 +228,7 @@
                             <c:forEach var="choice" items="${requestScope.optionList}" varStatus="status">
                                 <div class="input-group mb-2">
                                     <input type="text" name="choiceText${status.count - 1}" class="form-control"
-                                           placeholder="Enter choice" value="${choice.optionContent}"/>
+                                           placeholder="Enter choice" value="${choice.optionContent}" required/>
                                     <div class="input-group-text">
                                         <input type="checkbox" name="isCorrect${status.count - 1}"
                                                class="form-check-input"
@@ -310,7 +310,7 @@
         const choice = document.createElement("div");
         choice.className = "input-group mb-2";
         choice.innerHTML = `
-        <input type="text" name="choiceText\${choiceIndex}" class="form-control" placeholder="Enter choice">
+        <input type="text" name="choiceText\${choiceIndex}" class="form-control" placeholder="Enter choice" required>
         <div class="input-group-text">
             <input type="checkbox" name="isCorrect\${choiceIndex}" class="form-check-input">
         </div>

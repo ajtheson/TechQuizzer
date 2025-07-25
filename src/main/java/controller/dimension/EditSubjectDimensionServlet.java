@@ -20,32 +20,39 @@ public class EditSubjectDimensionServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        try {
+            String idParam = request.getParameter("id");
+            if (idParam == null) {
+                response.sendRedirect("error.jsp");
+                return;
+            }
 
-        String idParam = request.getParameter("id");
-        if (idParam == null) {
-            response.sendRedirect("error.jsp");
-            return;
+            int dimensionId = Integer.parseInt(idParam);
+            DimensionDTO dimension = new DimensionDAO().getDimensionDTOById(dimensionId);
+
+            if (dimension == null) {
+                response.sendRedirect("error.jsp");
+                return;
+            }
+
+            HttpSession session = request.getSession(false);
+            UserDTO currentUser = (session != null) ? (UserDTO) session.getAttribute("user") : null;
+
+
+            if (currentUser == null) {
+                response.sendRedirect(request.getContextPath() + "/account/login");
+                return;
+            }
+            request.setAttribute("dimension", dimension);
+            request.setAttribute("currentUser", currentUser);
+
+            request.getRequestDispatcher("/dimension/subject_dimension_edit.jsp").forward(request, response);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            HttpSession session = request.getSession();
+            session.invalidate();
+            response.sendError(HttpServletResponse.SC_NOT_FOUND);
         }
-
-        int dimensionId = Integer.parseInt(idParam);
-        DimensionDTO dimension = new DimensionDAO().getDimensionDTOById(dimensionId);
-
-        if (dimension == null) {
-            response.sendRedirect("error.jsp");
-            return;
-        }
-
-        HttpSession session = request.getSession(false);
-        UserDTO currentUser = (session != null) ? (UserDTO) session.getAttribute("user") : null;
-
-
-        if (currentUser == null) {
-            response.sendRedirect(request.getContextPath() + "/account/login");
-            return;
-        }
-        request.setAttribute("dimension", dimension);
-        request.setAttribute("currentUser", currentUser);
-        request.getRequestDispatcher("/dimension/subject_dimension_edit.jsp").forward(request, response);
     }
 
     @Override
@@ -61,9 +68,9 @@ public class EditSubjectDimensionServlet extends HttpServlet {
             Dimension dim = new DimensionDAO().findById(id);
             List<Dimension> dimensionList = new DimensionDAO().selectAllDimension(subjectId);
 
-            if (!name.equalsIgnoreCase(dim.getName())){
+            if (!name.equalsIgnoreCase(dim.getName())) {
                 for (Dimension dimension : dimensionList) {
-                    if(dimension.getName().equalsIgnoreCase(name.trim())) {
+                    if (dimension.getName().equalsIgnoreCase(name.trim())) {
                         session.setAttribute("toastNotification", "Duplicate dimension name");
                         response.sendRedirect("edit?id=" + subjectId);
                         return;

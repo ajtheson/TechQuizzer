@@ -17,62 +17,69 @@ import java.util.List;
 @WebServlet(name = "GetQuizzesDetailServlet", urlPatterns = {"/management/quiz/detail"})
 public class GetQuizzesDetailServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        HttpSession session = request.getSession();
-        UserDTO user = (UserDTO) session.getAttribute("user");
-        if (user == null) {
-            response.sendRedirect(request.getContextPath() + "/account/login");
-            return;
-        }
-        String action = request.getParameter("action");
-        switch (action) {
-            case "view":
-                String idParam = request.getParameter("id");
-                int id = Integer.parseInt(idParam);
-                QuizDAO quizDAO = new QuizDAO();
-                QuizDTO quiz = quizDAO.findByQuizId(id);
-                QuestionLevelDAO questionLevelDAO = new QuestionLevelDAO();
+        try {
+            HttpSession session = request.getSession();
+            UserDTO user = (UserDTO) session.getAttribute("user");
+            if (user == null) {
+                response.sendRedirect(request.getContextPath() + "/account/login");
+                return;
+            }
+            String action = request.getParameter("action");
+            switch (action) {
+                case "view":
+                    String idParam = request.getParameter("id");
+                    int id = Integer.parseInt(idParam);
+                    QuizDAO quizDAO = new QuizDAO();
+                    QuizDTO quiz = quizDAO.findByQuizId(id);
+                    QuestionLevelDAO questionLevelDAO = new QuestionLevelDAO();
 
-                DimensionDAO dimensionDAO = new DimensionDAO();
-                LessonDAO lessonDAO = new LessonDAO();
-                QuizSettingDAO quizSettingDAO = new QuizSettingDAO(); // Assuming this exists
-                List<QuestionLevel> questionLevels = questionLevelDAO.findAll();
-                List<Dimension> dimensions = dimensionDAO.selectAllDimension(quiz.getSubject().getId());
-                List<Lesson> lessons = lessonDAO.selectAllLesson(quiz.getSubject().getId());
+                    DimensionDAO dimensionDAO = new DimensionDAO();
+                    LessonDAO lessonDAO = new LessonDAO();
+                    QuizSettingDAO quizSettingDAO = new QuizSettingDAO(); // Assuming this exists
+                    List<QuestionLevel> questionLevels = questionLevelDAO.findAll();
+                    List<Dimension> dimensions = dimensionDAO.selectAllDimension(quiz.getSubject().getId());
+                    List<Lesson> lessons = lessonDAO.selectAllLesson(quiz.getSubject().getId());
 
-                // Lấy danh sách question groups hiện tại
-                int quizSettingId = quiz.getQuizSetting().getId();
-                List<QuizSettingGroup> listLessonQuestion = quizSettingDAO.listLessonQuestion(quizSettingId);
-                List<QuizSettingGroup> listDimensionQuestion = quizSettingDAO.listDimensionQuestion(quizSettingId);
+                    // Lấy danh sách question groups hiện tại
+                    int quizSettingId = quiz.getQuizSetting().getId();
+                    List<QuizSettingGroup> listLessonQuestion = quizSettingDAO.listLessonQuestion(quizSettingId);
+                    List<QuizSettingGroup> listDimensionQuestion = quizSettingDAO.listDimensionQuestion(quizSettingId);
 
-                // Xác định loại quiz setting hiện tại
-                String currentQuizType = "";
-                if (!listLessonQuestion.isEmpty()) {
-                    currentQuizType = "lesson";
-                } else if (!listDimensionQuestion.isEmpty()) {
-                    currentQuizType = "dimension";
-                }
-                boolean hasAttempt = false;
-                try {
-                    hasAttempt = quizDAO.hasExamAttempt(id);
-                } catch (Exception e) {
-                    throw new RuntimeException(e);
-                }
+                    // Xác định loại quiz setting hiện tại
+                    String currentQuizType = "";
+                    if (!listLessonQuestion.isEmpty()) {
+                        currentQuizType = "lesson";
+                    } else if (!listDimensionQuestion.isEmpty()) {
+                        currentQuizType = "dimension";
+                    }
+                    boolean hasAttempt = false;
+                    try {
+                        hasAttempt = quizDAO.hasExamAttempt(id);
+                    } catch (Exception e) {
+                        throw new RuntimeException(e);
+                    }
 
-                request.setAttribute("selectedLevelId",quiz.getQuestionLevel().getId());
-                request.setAttribute("levels",questionLevels);
+                    request.setAttribute("selectedLevelId", quiz.getQuestionLevel().getId());
+                    request.setAttribute("levels", questionLevels);
 
-                request.setAttribute("hasAttempt", hasAttempt);
-                request.setAttribute("dimensions", dimensions);
-                request.setAttribute("lessons", lessons);
-                request.setAttribute("quiz", quiz);
-                request.setAttribute("listLessonQuestion", listLessonQuestion);
-                request.setAttribute("listDimensionQuestion", listDimensionQuestion);
-                request.setAttribute("currentQuizType", currentQuizType);
+                    request.setAttribute("hasAttempt", hasAttempt);
+                    request.setAttribute("dimensions", dimensions);
+                    request.setAttribute("lessons", lessons);
+                    request.setAttribute("quiz", quiz);
+                    request.setAttribute("listLessonQuestion", listLessonQuestion);
+                    request.setAttribute("listDimensionQuestion", listDimensionQuestion);
+                    request.setAttribute("currentQuizType", currentQuizType);
 
-                request.getRequestDispatcher("/quiz/quiz_detail.jsp").forward(request, response);
-                break;
-            default:
-                response.sendRedirect("list");
+                    request.getRequestDispatcher("/quiz/quiz_detail.jsp").forward(request, response);
+                    break;
+                default:
+                    response.sendRedirect("list");
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            HttpSession session = request.getSession();
+            session.invalidate();
+            response.sendError(HttpServletResponse.SC_NOT_FOUND);
         }
     }
 
@@ -101,7 +108,7 @@ public class GetQuizzesDetailServlet extends HttpServlet {
                     QuizDTO quiz = quizDAO.findByQuizId(id);
                     String testType = request.getParameter("testTypeId");
                     int testTypeId = Integer.parseInt(testType);
-                    quizDAO.updateQuiz(id, name, Integer.parseInt(request.getParameter("level")), duration*60, passRate,testTypeId);
+                    quizDAO.updateQuiz(id, name, Integer.parseInt(request.getParameter("level")), duration * 60, passRate, testTypeId);
 
                     QuizSettingDAO quizSettingDAO = new QuizSettingDAO();
                     quizSettingDAO.updateQuizSetting(quiz.getQuizSetting().getId(), numberOfQuestions);
@@ -112,8 +119,8 @@ public class GetQuizzesDetailServlet extends HttpServlet {
                     quiz = quizDAO.findByQuizId(id);
                     request.setAttribute("quiz", quiz);
                     String selectedLevelId = request.getParameter("level");
-                    request.setAttribute("selectedLevelId",selectedLevelId);
-                    request.setAttribute("levels",questionLevels);
+                    request.setAttribute("selectedLevelId", selectedLevelId);
+                    request.setAttribute("levels", questionLevels);
 
                     session.setAttribute("toastNotification", "Update successfully.");
                     response.sendRedirect("detail?action=view&id=" + id + "&tab=setting");

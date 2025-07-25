@@ -26,61 +26,66 @@ public class GetLessonDetailCustomer extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        try {
+            String idParam = request.getParameter("id");
+            if (idParam == null) {
+                response.sendRedirect("error.jsp");
+                return;
+            }
 
-        String idParam = request.getParameter("id");
-        if (idParam == null) {
-            response.sendRedirect("error.jsp");
-            return;
+            int lessonId = Integer.parseInt(idParam);
+
+            LessonDAO dao = new LessonDAO();
+            LessonDTO lesson = dao.getLessonDTOById(lessonId);
+
+            if (lesson == null) {
+                response.sendRedirect("error.jsp");
+                return;
+            }
+
+            // Lấy user từ session
+            HttpSession session = request.getSession(false);
+            UserDTO currentUser = (session != null) ? (UserDTO) session.getAttribute("user") : null;
+            if (currentUser == null) {
+                response.sendRedirect(request.getContextPath() + "/account/login");
+                return;
+            }
+            List<ExamAttempt> examAttempts = new ExamAttemptDAO().findAllByQuizIdAndUserId(lesson.getQuizId(), currentUser.getId());
+            if (examAttempts != null && !examAttempts.isEmpty()) {
+                request.setAttribute("examAttempts", examAttempts);
+            }
+            List<Lesson> otherLesson = dao.selectAllLesson(lesson.getSubject().getId());
+            request.setAttribute("subjectId", lesson.getSubject().getId());
+            request.setAttribute("lesson", lesson);
+            request.setAttribute("otherLessons", otherLesson);
+            request.setAttribute("currentUser", currentUser);
+            request.setAttribute("examAttemptCount", examAttempts.size());
+            request.getRequestDispatcher("/lesson/lesson-detail-customer.jsp").forward(request, response);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            HttpSession session = request.getSession();
+            session.invalidate();
+            response.sendError(HttpServletResponse.SC_NOT_FOUND);
         }
-
-        int lessonId = Integer.parseInt(idParam);
-
-        LessonDAO dao = new LessonDAO();
-        LessonDTO lesson = dao.getLessonDTOById(lessonId);
-
-        if (lesson == null) {
-            response.sendRedirect("error.jsp");
-            return;
-        }
-
-        // Lấy user từ session
-        HttpSession session = request.getSession(false);
-        UserDTO currentUser = (session != null) ? (UserDTO) session.getAttribute("user") : null;
-        if (currentUser == null) {
-            response.sendRedirect(request.getContextPath() + "/account/login");
-            return;
-        }
-        List<ExamAttempt> examAttempts = new ExamAttemptDAO().findAllByQuizIdAndUserId(lesson.getQuizId(), currentUser.getId());
-        if (examAttempts != null && !examAttempts.isEmpty()) {
-            request.setAttribute("examAttempts", examAttempts);
-        }
-        List<Lesson> otherLesson = dao.selectAllLesson(lesson.getSubject().getId());
-        request.setAttribute("subjectId", lesson.getSubject().getId());
-        request.setAttribute("lesson", lesson);
-        request.setAttribute("otherLessons", otherLesson);
-        request.setAttribute("currentUser", currentUser);
-        request.setAttribute("examAttemptCount", examAttempts.size());
-        request.getRequestDispatcher("/lesson/lesson-detail-customer.jsp").forward(request, response);
-
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String quizIdParam = request.getParameter("quizId");
 
-        try{
+        try {
             HttpSession session = request.getSession(false);
             if (session == null || session.getAttribute("user") == null) {
                 throw new Exception("User not logged in");
             }
 
-            int userId = ((UserDTO)session.getAttribute("user")).getId();
+            int userId = ((UserDTO) session.getAttribute("user")).getId();
             int quizId = Integer.parseInt(quizIdParam);
             QuizDTO quizDTO = new QuizService().convertQuizToQuizDTO(new QuizDAO().findById(quizId));
 
             int insertedExamAttemptId = new ExamAttemptService().createExamAttemptAndQuestionForExamAttempt(quizDTO, userId);
 
-            if(insertedExamAttemptId == -1){
+            if (insertedExamAttemptId == -1) {
                 throw new Exception("Exam attempt not created");
             }
 

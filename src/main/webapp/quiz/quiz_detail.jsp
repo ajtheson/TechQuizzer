@@ -606,12 +606,13 @@
                 dimensionRadio.checked = true;
             }
 
+            dimensionRadio.disabled = true;
+            lessonRadio.disabled = true;
+
             clearAndRebuildGroups();
         } else {
             addDefaultQuestionGroup();
         }
-
-        updateRadioDisabledState();
     });
 </script>
 

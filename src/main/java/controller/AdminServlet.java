@@ -123,42 +123,63 @@ public class AdminServlet extends HttpServlet {
 
     private void viewUser(HttpServletRequest request, HttpServletResponse response, String idParam)
             throws ServletException, IOException {
-        int id = Integer.parseInt(idParam);
-        User user = userDAO.getUserById(id);
-        request.setAttribute("user", user);
-        request.getRequestDispatcher("user_view.jsp").forward(request, response);
+        try {
+            int id = Integer.parseInt(idParam);
+            User user = userDAO.getUserById(id);
+            request.setAttribute("user", user);
+            request.getRequestDispatcher("user_view.jsp").forward(request, response);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            HttpSession session = request.getSession();
+            session.invalidate();
+            response.sendError(HttpServletResponse.SC_NOT_FOUND);
+        }
     }
 
     private void editUserForm(HttpServletRequest request, HttpServletResponse response, String idParam)
             throws ServletException, IOException {
-        int id = Integer.parseInt(idParam);
-        User user = userDAO.getUserById(id);
-        request.setAttribute("user", user);
-        request.getRequestDispatcher("user_edit.jsp").forward(request, response);
+        try {
+            int id = Integer.parseInt(idParam);
+            User user = userDAO.getUserById(id);
+            request.setAttribute("user", user);
+            request.getRequestDispatcher("user_edit.jsp").forward(request, response);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            HttpSession session = request.getSession();
+            session.invalidate();
+            response.sendError(HttpServletResponse.SC_NOT_FOUND);
+        }
     }
 
     private void toggleStatus(HttpServletRequest request, HttpServletResponse response, String idParam)
             throws IOException {
-        int id = Integer.parseInt(idParam);
-        User user = userDAO.getUserById(id);
-        if (user != null) {
-            boolean newStatus = !user.getStatus();
-            userDAO.changeUserStatus(id, newStatus);
-        }
-        String role = request.getParameter("role");
-        String status = request.getParameter("status");
-        String gender = request.getParameter("gender");
-        String sortField = request.getParameter("sortField");
-        String sortOrder = request.getParameter("sortOrder");
-        String page = request.getParameter("page");
-        String pageSize = request.getParameter("pageSize");
+        try {
+            int id = Integer.parseInt(idParam);
+            User user = userDAO.getUserById(id);
+            if (user != null) {
+                boolean newStatus = !user.getStatus();
+                userDAO.changeUserStatus(id, newStatus);
+            }
+            String role = request.getParameter("role");
+            String status = request.getParameter("status");
+            String gender = request.getParameter("gender");
+            String sortField = request.getParameter("sortField");
+            String sortOrder = request.getParameter("sortOrder");
+            String page = request.getParameter("page");
+            String pageSize = request.getParameter("pageSize");
 
-        String redirectURL = String.format(
-                "manage?role=%s&status=%s&gender=%s&sortField=%s&sortOrder=%s&page=%s&pageSize=%s",
-                role, status, gender, sortField, sortOrder, page, pageSize
-        );
-        request.getSession().setAttribute("toastNotification", "Status updated successfully.");
-        response.sendRedirect(redirectURL);
+            String redirectURL = String.format(
+                    "manage?role=%s&status=%s&gender=%s&sortField=%s&sortOrder=%s&page=%s&pageSize=%s",
+                    role, status, gender, sortField, sortOrder, page, pageSize
+            );
+            request.getSession().setAttribute("toastNotification", "Status updated successfully.");
+            response.sendRedirect(redirectURL);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            HttpSession session = request.getSession();
+            session.invalidate();
+            response.sendError(HttpServletResponse.SC_NOT_FOUND);
+        }
     }
 
     @Override
@@ -178,30 +199,37 @@ public class AdminServlet extends HttpServlet {
     private void updateUser(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-            int id = Integer.parseInt(request.getParameter("id"));
-            String name = request.getParameter("name");
-            String mobile = request.getParameter("mobile");
-            String address = request.getParameter("address");
-            int roleId = Integer.parseInt(request.getParameter("roleId"));
-            boolean gender = Boolean.parseBoolean(request.getParameter("gender"));
-            boolean status = Boolean.parseBoolean(request.getParameter("status"));
+            try {
+                int id = Integer.parseInt(request.getParameter("id"));
+                String name = request.getParameter("name");
+                String mobile = request.getParameter("mobile");
+                String address = request.getParameter("address");
+                int roleId = Integer.parseInt(request.getParameter("roleId"));
+                boolean gender = Boolean.parseBoolean(request.getParameter("gender"));
+                boolean status = Boolean.parseBoolean(request.getParameter("status"));
 
-            User existingUser = userDAO.getUserById(id);
-            if (existingUser != null) {
-                existingUser.setName(name);
-                existingUser.setMobile(mobile);
-                existingUser.setAddress(address);
-                existingUser.setRoleId(roleId);
-                existingUser.setGender(gender);
-                existingUser.setStatus(status);
+                User existingUser = userDAO.getUserById(id);
+                if (existingUser != null) {
+                    existingUser.setName(name);
+                    existingUser.setMobile(mobile);
+                    existingUser.setAddress(address);
+                    existingUser.setRoleId(roleId);
+                    existingUser.setGender(gender);
+                    existingUser.setStatus(status);
 
-                userDAO.updateUser(existingUser);
+                    userDAO.updateUser(existingUser);
 
+                }
+                request.getSession().setAttribute("toastNotification", "User updated successfully.");
+                response.sendRedirect("manage?action=view&id=" + id);
+            } catch (Exception e) {
+                throw new ServletException("Update failed", e);
             }
-            request.getSession().setAttribute("toastNotification", "User updated successfully.");
-            response.sendRedirect("manage?action=view&id=" + id);
         } catch (Exception e) {
-            throw new ServletException("Update failed", e);
+            System.out.println(e.getMessage());
+            HttpSession session = request.getSession();
+            session.invalidate();
+            response.sendError(HttpServletResponse.SC_NOT_FOUND);
         }
     }
 
@@ -230,7 +258,7 @@ public class AdminServlet extends HttpServlet {
                 response.sendRedirect("manage?action=add");
                 return;
             }
-            if (mobile.length() >10){
+            if (mobile.length() > 10) {
                 request.getSession().setAttribute("toastNotification", "Mobile number is too long");
                 response.sendRedirect("manage?action=add");
                 return;
@@ -259,5 +287,6 @@ public class AdminServlet extends HttpServlet {
         } catch (Exception e) {
             throw new ServletException("Insert failed", e);
         }
+
     }
 }

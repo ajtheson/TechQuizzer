@@ -154,7 +154,7 @@
                     <label class="form-label">Answer Options</label>
                     <div id="choices">
                         <div class="input-group mb-2">
-                            <input type="text" name="choiceText0" class="form-control" placeholder="Enter choice"/>
+                            <input type="text" name="choiceText0" class="form-control" placeholder="Enter choice" required/>
                             <div class="input-group-text">
                                 <input type="checkbox" name="isCorrect0" class="form-check-input"/>
                             </div>
@@ -230,7 +230,7 @@
         const choice = document.createElement("div");
         choice.className = "input-group mb-2";
         choice.innerHTML = `
-        <input type="text" name="choiceText\${choiceIndex}" class="form-control" placeholder="Enter choice">
+        <input type="text" name="choiceText\${choiceIndex}" class="form-control" placeholder="Enter choice" required>
         <div class="input-group-text">
             <input type="checkbox" name="isCorrect\${choiceIndex}" class="form-check-input">
         </div>

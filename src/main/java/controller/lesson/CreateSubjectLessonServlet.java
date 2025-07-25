@@ -53,6 +53,7 @@ public class CreateSubjectLessonServlet extends HttpServlet {
         request.setAttribute("currentUser", currentUser);
 
         request.getRequestDispatcher("/lesson/subject_lesson_add.jsp").forward(request, response);
+
     }
 
     @Override

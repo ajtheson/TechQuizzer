@@ -21,40 +21,47 @@ import java.util.List;
 public class UpdateLessonServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        HttpSession session = request.getSession(false);
-        UserDTO currentUser = (session != null) ? (UserDTO) session.getAttribute("user") : null;
-        if (currentUser == null) {
-            response.sendRedirect(request.getContextPath() + "/account/login");
-            return;
+        try {
+            HttpSession session = request.getSession(false);
+            UserDTO currentUser = (session != null) ? (UserDTO) session.getAttribute("user") : null;
+            if (currentUser == null) {
+                response.sendRedirect(request.getContextPath() + "/account/login");
+                return;
+            }
+            int lessonId = Integer.parseInt(request.getParameter("id"));
+            LessonDAO lessonDAO = new LessonDAO();
+            LessonDTO lesson = lessonDAO.getLessonDTOById(lessonId);
+            UserDAO userDAO = new UserDAO();
+            SubjectDAO subjectDAO = new SubjectDAO();
+            LessonTypeDAO lessonTypeDAO = new LessonTypeDAO();
+            List<LessonType> lessonTypeList = lessonTypeDAO.getAllLessonTypes();
+            ArrayList<User> experts = userDAO.getAllExpert();
+            QuizDAO quizDAO = new QuizDAO();
+            if (currentUser.getRoleId() == 2) {
+                List<QuizDTO> quizList = quizDAO.getQuizByCondition(currentUser.getId());
+                List<Subject> subjectList = subjectDAO.getAllSubjects(currentUser.getId());
+                request.setAttribute("quizList", quizList);
+                request.setAttribute("subjectList", subjectList);
+            }
+            if (currentUser.getRoleId() == 1) {
+                List<QuizDTO> quizList = quizDAO.getQuizByCondition(null);
+                List<Subject> subjectList = subjectDAO.getAllSubjectsWithoutID();
+                request.setAttribute("quizList", quizList);
+                request.setAttribute("subjectList", subjectList);
+            }
+            QuizDTO quiz = quizDAO.findByQuizId(lesson.getQuizId());
+            request.setAttribute("quiz", quiz);
+            request.setAttribute("lesson", lesson);
+            request.setAttribute("experts", experts);
+            request.setAttribute("currentUser", currentUser);
+            request.setAttribute("lessonTypeList", lessonTypeList);
+            request.getRequestDispatcher("/lesson/subject_lesson_edit.jsp").forward(request, response);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            HttpSession session = request.getSession();
+            session.invalidate();
+            response.sendError(HttpServletResponse.SC_NOT_FOUND);
         }
-        int lessonId = Integer.parseInt(request.getParameter("id"));
-        LessonDAO lessonDAO = new LessonDAO();
-        LessonDTO lesson = lessonDAO.getLessonDTOById(lessonId);
-        UserDAO userDAO = new UserDAO();
-        SubjectDAO subjectDAO = new SubjectDAO();
-        LessonTypeDAO lessonTypeDAO = new LessonTypeDAO();
-        List<LessonType> lessonTypeList = lessonTypeDAO.getAllLessonTypes();
-        ArrayList<User> experts = userDAO.getAllExpert();
-        QuizDAO quizDAO = new QuizDAO();
-        if (currentUser.getRoleId() == 2) {
-            List<QuizDTO> quizList = quizDAO.getQuizByCondition(currentUser.getId());
-            List<Subject> subjectList = subjectDAO.getAllSubjects(currentUser.getId());
-            request.setAttribute("quizList", quizList);
-            request.setAttribute("subjectList", subjectList);
-        }
-        if (currentUser.getRoleId() == 1) {
-            List<QuizDTO> quizList = quizDAO.getQuizByCondition(null);
-            List<Subject> subjectList = subjectDAO.getAllSubjectsWithoutID();
-            request.setAttribute("quizList", quizList);
-            request.setAttribute("subjectList", subjectList);
-        }
-        QuizDTO quiz = quizDAO.findByQuizId(lesson.getQuizId());
-        request.setAttribute("quiz", quiz);
-        request.setAttribute("lesson", lesson);
-        request.setAttribute("experts", experts);
-        request.setAttribute("currentUser", currentUser);
-        request.setAttribute("lessonTypeList", lessonTypeList);
-        request.getRequestDispatcher("/lesson/subject_lesson_edit.jsp").forward(request, response);
     }
 
     @Override
@@ -75,37 +82,37 @@ public class UpdateLessonServlet extends HttpServlet {
         if (subjectIdParam != null) {
             int subjectId = Integer.parseInt(subjectIdParam);
 
-        if ("youtube".equals(videoType)) {
-            videoLink = request.getParameter("videoLink").trim();
-        } else if ("upload".equals(videoType)) {
-            Part videoPart = request.getPart("videoFile");
-            if (videoPart != null && videoPart.getSize() > 0) {
-                String fileName = Paths.get(videoPart.getSubmittedFileName()).getFileName().toString();
-                String uploadDir = getServletContext().getRealPath("/assets/videos");
-                File dir = new File(uploadDir);
-                if (!dir.exists()) dir.mkdirs();
+            if ("youtube".equals(videoType)) {
+                videoLink = request.getParameter("videoLink").trim();
+            } else if ("upload".equals(videoType)) {
+                Part videoPart = request.getPart("videoFile");
+                if (videoPart != null && videoPart.getSize() > 0) {
+                    String fileName = Paths.get(videoPart.getSubmittedFileName()).getFileName().toString();
+                    String uploadDir = getServletContext().getRealPath("/assets/videos");
+                    File dir = new File(uploadDir);
+                    if (!dir.exists()) dir.mkdirs();
 
-                String fullPath = uploadDir + File.separator + fileName;
-                videoPart.write(fullPath);
+                    String fullPath = uploadDir + File.separator + fileName;
+                    videoPart.write(fullPath);
 
-                // Lưu link tương đối để hiển thị
-                videoLink = "assets/videos/" + fileName;
-            }
-        }
-        LessonDAO dao = new LessonDAO();
-        List<Lesson> lessonList = dao.selectAllLesson(subjectId);
-        Lesson lessonName = dao.findById(id);
-        if (!name.equalsIgnoreCase(lessonName.getName())) {
-            for (Lesson lesson : lessonList) {
-                if (name.equals(lesson.getName())) {
-                    session.setAttribute("toastNotification", "Duplicate subject lesson name.");
-                    response.sendRedirect("edit?id=" + id);
-                    return;
+                    // Lưu link tương đối để hiển thị
+                    videoLink = "assets/videos/" + fileName;
                 }
             }
-        }
-        SubjectDAO subjectDAO = new SubjectDAO();
-        subjectDAO.updateOwner(subjectId, ownerId);
+            LessonDAO dao = new LessonDAO();
+            List<Lesson> lessonList = dao.selectAllLesson(subjectId);
+            Lesson lessonName = dao.findById(id);
+            if (!name.equalsIgnoreCase(lessonName.getName())) {
+                for (Lesson lesson : lessonList) {
+                    if (name.equals(lesson.getName())) {
+                        session.setAttribute("toastNotification", "Duplicate subject lesson name.");
+                        response.sendRedirect("edit?id=" + id);
+                        return;
+                    }
+                }
+            }
+            SubjectDAO subjectDAO = new SubjectDAO();
+            subjectDAO.updateOwner(subjectId, ownerId);
             boolean update = dao.updateLesson(id, name, topic, videoLink, order, content, status, Integer.parseInt(subjectIdParam), lessonTypeId, null);
 
 
@@ -115,8 +122,7 @@ public class UpdateLessonServlet extends HttpServlet {
             } else {
                 session.setAttribute("toastNotification", "Failed to create lesson.");
             }
-        }
-        else {
+        } else {
             LessonDAO dao = new LessonDAO();
 
             QuizDAO quizDAO = new QuizDAO();

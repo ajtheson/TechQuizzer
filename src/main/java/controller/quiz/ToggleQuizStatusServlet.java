@@ -6,28 +6,36 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
 
 @WebServlet(name = "ToggleQuizStatusServlet", urlPatterns = {"/management/quiz/toggle-quiz-status"})
-public class  ToggleQuizStatusServlet extends HttpServlet {
+public class ToggleQuizStatusServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String action = request.getParameter("changeStatus");
-
         try {
-            int id = Integer.parseInt(request.getParameter("id"));
-            int status =Integer.parseInt(request.getParameter("status"));
+            String action = request.getParameter("changeStatus");
 
-            QuizDAO dao = new QuizDAO();
-            dao.changeQuizStatus(id, status);
+            try {
+                int id = Integer.parseInt(request.getParameter("id"));
+                int status = Integer.parseInt(request.getParameter("status"));
+
+                QuizDAO dao = new QuizDAO();
+                dao.changeQuizStatus(id, status);
 
 
-            response.sendRedirect("list");
+                response.sendRedirect("list");
+            } catch (Exception e) {
+                System.out.println("Error: " + e.getMessage());
+                response.sendRedirect("list");
+            }
         } catch (Exception e) {
-            System.out.println("Error: " + e.getMessage());
-            response.sendRedirect("list");
+            System.out.println(e.getMessage());
+            HttpSession session = request.getSession();
+            session.invalidate();
+            response.sendError(HttpServletResponse.SC_NOT_FOUND);
         }
     }
 }

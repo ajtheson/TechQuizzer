@@ -17,21 +17,28 @@ public class GetSubjectDimensionDetailServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        try {
+            int dimensionId = Integer.parseInt(request.getParameter("id"));
+            DimensionDAO dao = new DimensionDAO();
+            DimensionDTO dimension = dao.getDimensionDTOById(dimensionId);
 
-        int dimensionId = Integer.parseInt(request.getParameter("id"));
-        DimensionDAO dao = new DimensionDAO();
-        DimensionDTO dimension = dao.getDimensionDTOById(dimensionId);
+            // Lấy user từ session
+            HttpSession session = request.getSession(false);
+            UserDTO currentUser = (session != null) ? (UserDTO) session.getAttribute("user") : null;
 
-        // Lấy user từ session
-        HttpSession session = request.getSession(false);
-        UserDTO currentUser = (session != null) ? (UserDTO) session.getAttribute("user") : null;
-
-        if (currentUser == null) {
-            response.sendRedirect(request.getContextPath() + "/account/login");
-            return;
+            if (currentUser == null) {
+                response.sendRedirect(request.getContextPath() + "/account/login");
+                return;
+            }
+            request.setAttribute("dimension", dimension);
+            request.setAttribute("currentUser", currentUser);
+            request.getRequestDispatcher("/dimension/subject_dimension_detail.jsp").forward(request, response);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            HttpSession session = request.getSession();
+            session.invalidate();
+            response.sendError(HttpServletResponse.SC_NOT_FOUND);
         }
-        request.setAttribute("dimension", dimension);
-        request.setAttribute("currentUser", currentUser);
-        request.getRequestDispatcher("/dimension/subject_dimension_detail.jsp").forward(request, response);
     }
+
 }

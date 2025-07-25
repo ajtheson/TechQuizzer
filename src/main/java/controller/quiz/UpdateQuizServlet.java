@@ -21,21 +21,28 @@ public class UpdateQuizServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        HttpSession session = request.getSession();
-        UserDTO user = (UserDTO) session.getAttribute("user");
+        try {
+            HttpSession session = request.getSession();
+            UserDTO user = (UserDTO) session.getAttribute("user");
 
-        if (user == null) {
-            response.sendRedirect(request.getContextPath() + "/account/login");
-            return;
-        }
-        String action = request.getParameter("action");
+            if (user == null) {
+                response.sendRedirect(request.getContextPath() + "/account/login");
+                return;
+            }
+            String action = request.getParameter("action");
 
-        if ("updateSetting".equals(action)) {
-            updateQuizSetting(request, response);
-        } else if ("removeSetting".equals(action)) {
-            removeQuizSettingGroup(request, response);
-        } else {
-            response.sendRedirect("list");
+            if ("updateSetting".equals(action)) {
+                updateQuizSetting(request, response);
+            } else if ("removeSetting".equals(action)) {
+                removeQuizSettingGroup(request, response);
+            } else {
+                response.sendRedirect("list");
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            HttpSession session = request.getSession();
+            session.invalidate();
+            response.sendError(HttpServletResponse.SC_NOT_FOUND);
         }
     }
 
