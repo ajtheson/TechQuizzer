@@ -49,7 +49,7 @@ public class RegisterServlet extends HttpServlet {
         //Validate through database
         if (error == null) {
             //Check valid email
-            if (!EmailValidator.isEmailValid(email)) {
+            if (false/*!EmailValidator.isEmailValid(email)*/) {
                 error = "Email is not valid";
             } else {
                 //Check temp user
