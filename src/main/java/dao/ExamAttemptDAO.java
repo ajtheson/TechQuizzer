@@ -269,7 +269,7 @@ public class ExamAttemptDAO extends DBContext {
     }
     public List<ExamAttempt> findAllByQuizIdAndUserId(int quizId, int userId) {
         List<ExamAttempt> attempts = new ArrayList<>();
-        String sql = "SELECT * FROM [exam_attempts] WHERE [quiz_id] = ? AND [user_id] = ? ORDER BY [start_date] DESC ";
+        String sql = "SELECT * FROM [exam_attempts] WHERE [quiz_id] = ? AND [user_id] = ? ORDER BY id desc ";
 
         try (PreparedStatement pstm = connection.prepareStatement(sql)) {
             pstm.setInt(1, quizId);

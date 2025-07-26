@@ -86,7 +86,7 @@
                                         <tbody>
                                         <c:forEach var="attempt" items="${examAttempts}" varStatus="loop">
                                             <tr>
-                                                <td>${examAttemptCount - loop.index}</td>
+                                                <td>${loop.index +1}</td>
                                                 <td>${attempt.startDate}</td>
                                                 <td>
                                                     <c:choose>

@@ -59,7 +59,6 @@ public class GetLessonDetailCustomer extends HttpServlet {
             request.setAttribute("lesson", lesson);
             request.setAttribute("otherLessons", otherLesson);
             request.setAttribute("currentUser", currentUser);
-            request.setAttribute("examAttemptCount", examAttempts.size());
             request.getRequestDispatcher("/lesson/lesson-detail-customer.jsp").forward(request, response);
         } catch (Exception e) {
             System.out.println(e.getMessage());
