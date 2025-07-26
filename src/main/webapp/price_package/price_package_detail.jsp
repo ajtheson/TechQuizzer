@@ -60,11 +60,11 @@
 
                         <div class="mb-3 row">
                             <div class="col-md-6">
-                                <label class="col-form-label">List price</label>
+                                <label class="col-form-label">List price ($)</label>
                                 <input class="form-control" type="number" min="0" step="0.01" name="listPrice" value="${p.listPrice}" readonly>
                             </div>
                             <div class="col-md-6">
-                                <label class="col-form-label">Sale price</label>
+                                <label class="col-form-label">Sale price ($)</label>
                                 <input class="form-control" type="number" min="0" step="0.01" name="salePrice" value="${p.salePrice}" readonly>
                             </div>
                         </div>
