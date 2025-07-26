@@ -128,7 +128,7 @@ public class LessonDAO extends DBContext {
 
     public List<Lesson> selectAllLesson(int subjectID) {
         List<Lesson> lessons = new ArrayList<Lesson>();
-        String sql = "select * from [lessons] join [subjects] on [lessons].[subject_id]=subjects.id where subjects.id =?";
+        String sql = "select * from [lessons] join [subjects] on [lessons].[subject_id]=subjects.id where subjects.id =? and [lessons].status=1";
 
         try (
                 PreparedStatement ps = connection.prepareStatement(sql);
